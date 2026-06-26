@@ -63,6 +63,7 @@ const MagistradoDashboard = lazy(() => import("./pages/MagistradoDashboard"));
 const RecuperandaDashboard = lazy(() => import("./pages/RecuperandaDashboard"));
 const AdmjudicialDashboard = lazy(() => import("./pages/AdmjudicialDashboard"));
 const RMAWorkspace = lazy(() => import("./pages/RMAWorkspace"));
+const ProcessoProspeccao = lazy(() => import("./pages/ProcessoProspeccao"));
 const TrainAI = lazy(() => import("./pages/TrainAI"));
 const Audit = lazy(() => import("./pages/Audit"));
 const ModeloMatematico = lazy(() => import("./pages/ModeloMatematico"));
@@ -158,6 +159,7 @@ const App = () => (
               <Route path="/recuperanda" element={<ProtectedRoute allow={["recuperanda"]}><RecuperandaDashboard /></ProtectedRoute>} />
               <Route path="/admjudicial" element={<ProtectedRoute allow={["admjudicial", "coordenador"]}><AdmjudicialDashboard /></ProtectedRoute>} />
               <Route path="/rma" element={<ProtectedRoute><RmaHomeRoute /></ProtectedRoute>} />
+              <Route path="/processo-prospeccao" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ProcessoProspeccao /></ProtectedRoute>} />
               <Route path="/rma/:id" element={<ProtectedRoute><RMAWorkspace /></ProtectedRoute>} />
               <Route path="/treinar-ia" element={<ProtectedRoute allow={["consultor", "coordenador", "gestor_ia", "recuperanda"]}><TrainAI /></ProtectedRoute>} />
               <Route path="/audit" element={<ProtectedRoute allow={["coordenador", "consultor"]}><Audit /></ProtectedRoute>} />
