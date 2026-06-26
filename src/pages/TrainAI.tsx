@@ -4,13 +4,12 @@ import PlatformLayout from "@/components/PlatformLayout";
 import TrainAITab from "@/components/rma/TrainAITab";
 import LearningUploadPanel from "@/components/workspace/stages/LearningUploadPanel";
 import ErrorFilesPanel from "@/components/rma/training/ErrorFilesPanel";
-import PlanilhaTable from "@/components/PlanilhaTable";
-import procData from "@/data/processosServicosAJ.json";
+import ProspeccaoUploadCard from "@/components/prospeccao/ProspeccaoUploadCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Brain, Search, GraduationCap, FileWarning, Upload, FolderTree, FileSpreadsheet } from "lucide-react";
+import { Brain, Search, GraduationCap, FileWarning, Upload, FolderTree } from "lucide-react";
 import OneDriveFoldersStatus from "@/components/workspace/OneDriveFoldersStatus";
 import { listMyAssignedCompanies, listCompanies, type Company } from "@/services/companiesService";
 import { useUserRoles } from "@/hooks/useUserRoles";
@@ -166,36 +165,7 @@ export default function TrainAI() {
         </Card>
 
         {companyId === DEMO_COMPANY.id ? (
-          <>
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Upload className="w-4 h-4 text-[hsl(217,91%,50%)]" />
-                  Carregar novos arquivos para atualizar a planilha
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <label className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-border rounded-lg p-8 cursor-pointer hover:bg-muted/30 transition">
-                  <Upload className="w-8 h-8 text-muted-foreground" />
-                  <div className="text-sm font-semibold">Clique para selecionar ou arraste arquivos aqui</div>
-                  <div className="text-xs text-muted-foreground">XLSX, CSV, PDF até 20MB</div>
-                  <input type="file" multiple className="hidden" />
-                </label>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <FileSpreadsheet className="w-4 h-4 text-[hsl(217,91%,50%)]" />
-                  PROCESSOS_SERVICOS_ADM_JUDICIAL — {DEMO_COMPANY.rma_id}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <PlanilhaTable data={procData as unknown[][]} />
-              </CardContent>
-            </Card>
-          </>
+          <ProspeccaoUploadCard />
         ) : companyId ? (
           <>
             {/* Menu inline */}
