@@ -27,20 +27,21 @@ const cards = [
 ];
 
 const summary = [
-  { label: "RMAs em andamento",   value: 24,  icon: FileText,     tone: "blue"   },
-  { label: "Pendências",          value: 15,  icon: AlertCircle,  tone: "amber"  },
-  { label: "RMA finalizados",     value: 47,  icon: CheckCircle2, tone: "green"  },
-  { label: "Documentos recebidos",value: 128, icon: FolderOpen,   tone: "blue"   },
-  { label: "Clientes ativos",     value: 18,  icon: Users,        tone: "purple" },
-  { label: "Avisos não lidos",    value: "03",icon: Bell,         tone: "orange" },
+  { label: "Processos em andamento", value: 24,  icon: FileText,     tone: "blue"   },
+  { label: "Pendências",             value: 15,  icon: AlertCircle,  tone: "amber"  },
+  { label: "Processos finalizados",  value: 47,  icon: CheckCircle2, tone: "green"  },
+  { label: "Documentos recebidos",   value: 128, icon: FolderOpen,   tone: "blue"   },
+  { label: "Clientes ativos",        value: 18,  icon: Users,        tone: "purple" },
+  { label: "Avisos não lidos",       value: "03",icon: Bell,         tone: "orange" },
 ];
 
 const avisos = [
-  { icon: AlertCircle,  tone: "orange", title: "Prazo de entrega do RMA - Grupo Alfa", sub: "Vencimento em 2 dias", time: "10:30" },
+  { icon: AlertCircle,  tone: "orange", title: "Prazo de entrega - Grupo Alfa", sub: "Vencimento em 2 dias", time: "10:30" },
   { icon: FileText,     tone: "blue",   title: "Documento com pendência de assinatura", sub: "Contrato Social - Beta Ltda.", time: "09:15" },
   { icon: MessageCircle,tone: "purple", title: "Novo comentário em comunicação", sub: "Processo nº 5001234-66.2024.8.26.0100", time: "Ontem" },
-  { icon: CheckCircle2, tone: "green",  title: "RMA finalizado com sucesso", sub: "Grupo Delta - Competência 04/2024", time: "Ontem" },
+  { icon: CheckCircle2, tone: "green",  title: "Processo finalizado com sucesso", sub: "Grupo Delta - Competência 04/2024", time: "Ontem" },
 ];
+
 
 export default function ConsultorHome() {
   const navigate = useNavigate();
