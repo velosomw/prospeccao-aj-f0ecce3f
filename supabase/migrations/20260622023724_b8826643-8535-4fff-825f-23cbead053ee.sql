@@ -1,0 +1,1 @@
+UPDATE public.batch_processing_config SET max_batch_size = 25 WHERE id = 1;

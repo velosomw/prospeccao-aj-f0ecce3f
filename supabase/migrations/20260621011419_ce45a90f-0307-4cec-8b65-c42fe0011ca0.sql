@@ -1,0 +1,1 @@
+UPDATE public.balancete_runs SET status='error', error_message='aborted: replaced by new run after queue drain', finished_at=now(), updated_at=now() WHERE id='9a8cc8cb-42f6-4ea5-b2ce-29f109dbf143' AND status='running';

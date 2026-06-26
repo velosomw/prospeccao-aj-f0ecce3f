@@ -1,0 +1,3 @@
+CREATE INDEX IF NOT EXISTS idx_ai_extractions_rma_created ON public.ai_extractions(rma_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_ai_extractions_status ON public.ai_extractions(status) WHERE status IN ('error','needs_review','failed');
+CREATE INDEX IF NOT EXISTS idx_ai_extractions_confidence ON public.ai_extractions(final_confidence) WHERE final_confidence IS NULL OR final_confidence < 0.85;

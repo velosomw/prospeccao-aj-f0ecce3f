@@ -1,0 +1,1 @@
+UPDATE public.profiles SET role = 'admjudicial' WHERE email = 'admjudicial@rma.com.br' AND role <> 'admjudicial';

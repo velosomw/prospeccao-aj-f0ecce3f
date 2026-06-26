@@ -1,0 +1,64 @@
+// Prefetch de chunks de rota.
+// Vite faz dedupe: usar EXATAMENTE o mesmo specifier do lazy() em App.tsx
+// garante que o chunk pré-carregado seja o mesmo que o Suspense vai consumir.
+
+type Loader = () => Promise<unknown>;
+
+const loaders: Record<string, Loader> = {
+  "/dashboard":               () => import("@/pages/Dashboard"),
+  "/dashboard/equipe":        () => import("@/pages/coordenador/CoordEquipe"),
+  "/dashboard/aprovacoes":    () => import("@/pages/coordenador/CoordAprovacoes"),
+  "/dashboard/empresas":      () => import("@/pages/coordenador/CoordEmpresas"),
+  "/dashboard/relatorios":    () => import("@/pages/coordenador/CoordRelatorios"),
+  "/dashboard/auditoria":     () => import("@/pages/coordenador/CoordAuditoria"),
+  "/dashboard/historico":     () => import("@/pages/coordenador/CoordHistorico"),
+
+  "/consultor":               () => import("@/pages/ConsultorDashboard"),
+  "/consultor/rmas":          () => import("@/pages/consultor/ConsultorRMAs"),
+  "/consultor/processos":     () => import("@/pages/consultor/ConsultorProcessos"),
+  "/consultor/pendencias":    () => import("@/pages/consultor/ConsultorPendencias"),
+  "/consultor/documentos":    () => import("@/pages/consultor/ConsultorDocumentos"),
+  "/consultor/relatorios":    () => import("@/pages/consultor/ConsultorRelatorios"),
+  "/consultor/historico":     () => import("@/pages/consultor/ConsultorHistorico"),
+  "/consultor/logs":          () => import("@/pages/consultor/ConsultorLogsIA"),
+
+  "/magistrado":              () => import("@/pages/MagistradoDashboard"),
+  "/magistrado/processos":    () => import("@/pages/magistrado/MagProcessos"),
+  "/magistrado/rmas":         () => import("@/pages/magistrado/MagRMAs"),
+  "/magistrado/empresas":     () => import("@/pages/magistrado/MagEmpresas"),
+  "/magistrado/decisoes":     () => import("@/pages/magistrado/MagDecisoes"),
+  "/magistrado/historico":    () => import("@/pages/magistrado/MagHistorico"),
+
+  "/recuperanda":             () => import("@/pages/RecuperandaDashboard"),
+  "/recuperanda/documentos":  () => import("@/pages/recuperanda/RecDocumentos"),
+  "/recuperanda/pendencias":  () => import("@/pages/recuperanda/RecPendencias"),
+  "/recuperanda/relatorios":  () => import("@/pages/recuperanda/RecRelatorios"),
+  "/recuperanda/cronograma":  () => import("@/pages/recuperanda/RecCronograma"),
+  "/recuperanda/comunicacao": () => import("@/pages/recuperanda/RecComunicacao"),
+
+  "/admjudicial":              () => import("@/pages/AdmjudicialDashboard"),
+  "/admjudicial/recuperandas": () => import("@/pages/admjudicial/AdmRecuperandas"),
+  "/admjudicial/rmas":         () => import("@/pages/admjudicial/AdmRMAs"),
+  "/admjudicial/pendencias":   () => import("@/pages/admjudicial/AdmPendencias"),
+  "/admjudicial/relatorios":   () => import("@/pages/admjudicial/AdmRelatorios"),
+  "/admjudicial/historico":    () => import("@/pages/admjudicial/AdmHistorico"),
+
+  "/gestor-ia":                   () => import("@/pages/GestorIA"),
+  "/gestor-ia/aprendizado":       () => import("@/pages/GestorIAAprendizado"),
+  "/gestor-ia/perfil-agentes":    () => import("@/pages/GestorIAPerfilAgentes"),
+  "/gestor-ia/failed-jobs":       () => import("@/pages/GestorIAFailedJobs"),
+  "/gestor-ia/busca-semantica":   () => import("@/pages/GestorIABuscaSemantica"),
+  "/gestor-ia/usuarios":          () => import("@/pages/gestor/GestorUsuarios"),
+  "/gestor-ia/auditoria":         () => import("@/pages/gestor/GestorAuditoria"),
+};
+
+const started = new Set<string>();
+
+export function prefetchRoute(path: string): void {
+  if (started.has(path)) return;
+  const loader = loaders[path];
+  if (!loader) return;
+  started.add(path);
+  // Fire-and-forget; falhas (offline) não devem quebrar a UI.
+  loader().catch(() => started.delete(path));
+}

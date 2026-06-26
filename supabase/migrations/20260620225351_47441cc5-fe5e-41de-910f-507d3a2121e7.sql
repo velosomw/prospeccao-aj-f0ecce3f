@@ -1,0 +1,1 @@
+UPDATE processing_queue SET status='pending', picked_at=NULL, lock_until=NULL, attempts=0, max_attempts=3, error_message=NULL WHERE status='processing' AND created_at > now() - interval '6 hours';

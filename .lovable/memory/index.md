@@ -1,0 +1,86 @@
+# Project Memory
+
+## Core
+- Architecture: Supabase + Lovable Cloud. Pipeline 2 estágios: Google Vision OCR → Lovable AI (Flash-Lite default, Flash fallback, Pro só BALANCETE/DRE).
+- Visuals: Deep Navy hsl(222, 47%, 14%), Vibrant Blue hsl(217, 91%, 50%). Plus Jakarta Sans + Inter.
+- UI Layout: Reduced spacing (py-6/py-10), rounded-lg buttons, solid white minimal headers.
+- Status Colors: Red (<33%, hsl(0,84%,60%)), Orange (33-67%, hsl(38,92%,50%)), Green (>67%, hsl(142,76%,36%)).
+- Security: Devtools/right-click blocked, no text selection, anti-scraping via robots.txt and noarchive.
+- Personas: 'Auditor Contábil Sênior IA' (Standard AI), 'GPT OSS' (Finance Model).
+- Roles: 5 strict levels (Gestor IA, Coordenador, Consultor, Magistrado, Recuperanda). Top-down creation.
+- React Auth: Fetch auth state using non-blocking Promise chains (then/catch) to avoid deadlocks.
+
+## Memories
+- [RMA Template DIP Capital](mem://features/rma-template-dip-capital) — Template oficial rma_mensal_dip (17 tópicos, 3 níveis) com data_source por seção e capa DIP no docx
+- [Agent NFe Compras Reader](mem://features/agent-nfe-compras-reader) — Classe NFE_COMPRAS, agente Pro extraindo notas linha-a-linha, tabelas nfe_compras + document_patterns, persistência server-side, classe na tela de Aprendizado
+- [Pipeline Incremental V2](mem://features/pipeline-incremental-v2) — Fases 1-4: Delta Engine, onedrive_files, processing_queue, ocr_cache, document_versions, balancete-build incremental (force=false skip-unchanged)
+- [Two-Stage Pipeline](mem://architecture/two-stage-pipeline) — Vision OCR + Flash-Lite/Flash/Pro cascata, ~US$ 0,003/doc
+- [Service Methodology](mem://features/service-methodology)
+- [Audit Engine Architecture](mem://features/audit-engine-architecture)
+- [Audit Data Model V3](mem://architecture/audit-data-model-v3)
+- [Login UI Features](mem://auth/login-ui-features)
+- [BEx-RJ Risk Model](mem://features/bex-rj-risk-model)
+- [Gestor IA Dashboard](mem://features/gestor-ia-dashboard)
+- [Gestor IA Tech Stack](mem://architecture/gestor-ia-technical-stack)
+- [Agent Persona VPC](mem://features/agent-persona-vpc)
+- [BEx Solvency Score](mem://features/bex-solvency-score)
+- [Layout Spacing](mem://style/layout-spacing)
+- [Audit Mathematical Logic](mem://features/audit-mathematical-logic)
+- [Security Protections](mem://architecture/security-protections)
+- [AI Agent Persona Standard](mem://features/ai-agent-persona-standard)
+- [Kanitz Insolvency Model V2](mem://features/kanitz-insolvency-model-v2)
+- [AI Processing Stack V3](mem://architecture/ai-processing-stack-v3)
+- [Professional Report Layout](mem://features/professional-report-layout-a4-v2)
+- [Balance Sheet Layout](mem://features/report-balance-sheet-layout-v2)
+- [Image Assets Specs](mem://metadata/image-assets-specification)
+- [RMA Dashboard Structure](mem://features/rma-dashboard-structure)
+- [RMA Governance Flow](mem://features/rma-governance-flow)
+- [Brand Identity](mem://style/brand-identity)
+- [RMA Workspace Tabs](mem://style/rma-workspace-tabs)
+- [Hero Banner Optimization](mem://performance/hero-banner-optimization)
+- [Status Color Palette](mem://style/status-color-palette)
+- [Gestor IA Email Module](mem://features/gestor-ia-email-module)
+- [Gestor IA Access Log](mem://features/gestor-ia-access-log-audit)
+- [User Roles & Permissions](mem://auth/user-roles-permissions)
+- [Header Behavior & Branding](mem://navigation/header-behavior-branding)
+- [Gestor IA Legal Audit Trail](mem://features/gestor-ia-legal-audit-trail)
+- [Supabase Architecture](mem://auth/supabase-architecture)
+- [Hierarchical User Management](mem://auth/hierarchical-user-management)
+- [Navigation Back Button](mem://style/navigation-back-button)
+- [Auth Context Concurrency](mem://architecture/auth-context-concurrency)
+- [Personalized Dashboard Greetings](mem://features/personalized-dashboard-greetings)
+- [RMA Document Editor Logic](mem://features/rma-document-editor-logic)
+- [RMA Workspace Architecture](mem://features/rma-workspace-architecture-v3)
+- [Home UX Concept](mem://style/home-ux-concept)
+- [Visual Identity V3](mem://style/visual-identity-v3)
+- [RMA Workspace Filtering](mem://features/rma-workspace-filtering)
+- [OneDrive Integration MD](mem://features/onedrive-integration-md)
+- [OneDrive Folder Naming](mem://features/onedrive-folder-naming) — Pastas operacionais "Entradas IA / Processando IA / Processados IA / Relatórios IA / Auditoria IA / Erros IA"; renomeia legadas in-place
+- [OCR Google Vision](mem://features/ocr-google-vision)
+- [AI Agent Engine](mem://features/ai-agent-engine)
+- [AI Learning Loop](mem://features/ai-learning-loop)
+- [Learning Documents Screen](mem://features/learning-documents-screen)
+- [Vertex AI Embeddings](mem://features/vertex-embeddings) — Vertex AI (text-embedding-004) reusando GOOGLE_VISION_CREDENTIALS, tabela ocr_embeddings + busca semântica via ai-search-similar
+- [Prompt Builder Inteligente](mem://features/prompt-builder-inteligente) — Few-shot dinâmico com ranking similarity*weight + boost por pasta, top-K≤5, fallback, edge function ai-prompt-builder
+- [AI Adaptive Pipeline](mem://features/ai-adaptive-pipeline) — Pipeline ai-full-process + motor de qualidade (auto-retry <0.7, pending <0.5) + antifraude (duplicidade/outlier z-score/inconsistência) com aba em /gestor-ia/aprendizado
+- [AI Model Strategy](mem://features/ai-model-strategy) — Flash padrão (classify/análise), Pro crítico (validador + BALANCETE/DRE), Document AI para OCR
+- [Financeiro/Tokens Tab](mem://features/financeiro-tokens-tab) — Aba /gestao-agentes com ai_cost_config + ai_usage_logs append-only, KPIs, gráficos, edição de preços, diagnóstico retroativo
+- [Bank Receipt Agent](mem://features/bank-receipt-agent) — Classe BANK_RECEIPT + AGENTE_BANK_RECEIPT (TED/DOC/Transferência) + heurística por header (Bradesco Net Empresa etc.) economiza chamada IA do classifier
+- [Balancete Pipeline](mem://features/balancete-pipeline) — Construção automática balancete mensal: chart_of_accounts/lancamentos/balancete_consolidado/balancete_runs/account_mapping_cache, OneDrive→Vision→agente→mapeamento→consolida→reconcilia
+- [BS Dados Pipeline](mem://features/bs-dados-pipeline) — Single source of truth: REF1_MAP BEX 47 chaves, builder consolidador, 6 gráficos Excel (ECharts), aba "BS & Dados" + "Gráficos de Auditoria" no RMAWorkspace
+- [Motor Balancete BEx V3](mem://features/motor-balancete-bex-v3) — Parser BEx (extenso/saldo_atual), folhas len=10, classificação por prefixo de código; bsDadosBuilder e adapter priorizam codigo+saldo
+- [Prompt Builder MD](mem://features/prompt-builder-md) — Camada opt-in: edge prompt-builder + tabelas prompt_learning/erros/versions, loop de aprendizado em balancete-build
+- [Balancete Reformulation V2](mem://features/balancete-reformulation-v2) — MD canônico: schema D/C/saldo, pipeline reescrito, DRE/FC auto, UI hierárquica, 8 fases. Doc: /mnt/documents/MD_Reformulacao_Balancete_RMA_v1.md
+- [RMA Analyze Incremental](mem://features/rma-analyze-incremental) — rma-analyze usa Delta Engine + rma_file_parse_cache: ignora arquivos com etag inalterado, só baixa/parseia novos ou atualizados
+- [Delta Engine V2](mem://features/delta-engine-v2) — Edge delta-engine standalone (varredura recursiva de subpasta) + paralelismo BATCH_SIZE=10 no onedrive-sync-rma
+- [Worker Pipeline DLQ](mem://features/worker-pipeline-dlq) — process-queue com paralelismo controlado (concurrency 1-10) + Dead Letter Queue (failed_jobs) e RPC archive_failed_job
+- [Multi-Agent Orchestrator](mem://features/orquestrador-multi-agente) — ai-orchestrate decide single/parallel/fallback, valida cada candidato por evidência textual (nullify hallucinations), score ≥0.85 aceita, log em orchestration_log
+- [RMA Intelligent Document](mem://features/rma-intelligent-document) — Escopo IA → Pré-Parecer → Final. Templates parametrizáveis (parecer_tecnico/rma_mensal), seções com versionamento, edge functions rma-doc-init + rma-doc-section-ai, UI sumário lateral + ações por seção
+- [RMA Final DOCX Auto-Generation](mem://features/rma-final-docx-autogeneration) — Edge rma-doc-consolidate-docx auto-dispara em ≥90% seções aprovadas, gera .docx no bucket rma-documents, signed URL persistida em rma_documents.arquivo_final_url
+- [Deferred Batch Pipeline](mem://features/deferred-batch-pipeline) — Fila batch econômica (Doc AI ~50% off, até 24h) para arquivos >10MB/>50 pgs; STUB até GCS configurado
+- [OneDrive Incremental Agent](mem://features/onedrive-incremental-agent) — Crawler 5min com scan_id, prioridade inteligente (novo=10/upd=8), detecção de removidos, tabela onedrive_scan_runs + view onedrive_incremental_metrics
+- [Consolidation Worker](mem://features/consolidation-worker) — Worker determinístico (consolidate-worker + _shared/consolidation.ts) calcula indicadores, Kanitz, Score BEx-RJ e payload de relatório a partir de ai_extractions; integrado ao process-queue na rota CONSOLIDATION e espelhado em rma_period_analyses
+- [Dynamic Prompt Context-Aware](mem://features/dynamic-prompt-context-aware) — Builder per-empresa (perfil+plano de contas+padrões históricos+contexto doc+regras anti-alucinação) com auto-seleção de modelo; `_shared/dynamic-prompt-builder.ts` + edge `dynamic-prompt-build` (preview ou run com cache LLM)
+- [RAG Context-Aware](mem://features/rag-context-aware) — Retriever sobre company_memory_embeddings com re-rank (sim40+rec25+freq20+conf15) e boost por tipo (struct×1.5, op×1.2), top-K dinâmico, indexer determinístico SHA-256; integrado ao dynamic-prompt-builder via _shared/rag-retriever.ts + edge rag-context (retrieve/index/index_batch)
+- [RMA Document Independent Rules](mem://features/rma-document-independent-rules) — Parecer Técnico (100%/pericial) vs RMA Mensal (70%/descritivo): rmaDocumentRules.ts, MIN_PCT_BY_TIPO no consolidate-docx, SYSTEM_PROMPT_BY_TIPO no section-ai
+- [RMA Report Intelligence Engine](mem://features/rma-report-intelligence-engine) — v3: novo template `rma_intelligence` (14 capítulos, 5 blocos: dados/evidências/validação/análise/conclusão), tabela `rma_section_evidences`, colunas dados_extraidos/validacao/analise_ia/conclusao_ia/risco/risk_score; edges rma-report-{data-collector,evidence-engine,narrative,risk-engine,conclusion,builder} (sprints 2-5)

@@ -1,0 +1,1 @@
+UPDATE public.processing_queue SET status='pending', error_message=NULL, attempts=0, finished_at=NULL WHERE status IN ('error','processing');

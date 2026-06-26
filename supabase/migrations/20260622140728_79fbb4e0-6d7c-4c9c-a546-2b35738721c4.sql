@@ -1,0 +1,1 @@
+UPDATE public.worker_config SET enabled = false, updated_at = now() WHERE id = 'default';

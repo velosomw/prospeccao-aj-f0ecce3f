@@ -1,0 +1,78 @@
+{
+  "fonte": "Relatorio_Mensal_Detalhado_Composicao_Endividamento.docx",
+  "emitidoEm": "2026-06-08",
+  "persona": "Auditor Contábil Sênior IA",
+  "periodo": { "inicio": "2025-09", "fim": "2026-03" },
+  "meses": [
+    {
+      "mes": "Setembro/2025", "mesKey": "2025-09",
+      "resumo": { "ativo_total": 313582010.64, "ativo_circulante": 127797654.72, "ativo_nao_circulante": 185784355.92, "passivo_total": 305714171.03, "passivo_circulante": 229332490.74, "passivo_nao_circulante": 21589716.06, "patrimonio_liquido": 54791964.23, "receita_liquida_acum": 226143749.39 },
+      "ativo_circulante": { "disponivel": 490276.26, "valores_conversiveis_cp": 94626015.58, "estoques": 31902517.13, "mercadorias_a_receber": 0, "despesas_exerc_seguinte": 778845.75 },
+      "ativo_nao_circulante": { "realizavel_longo_prazo": 141014958.58, "investimentos": 56071.82, "imobilizado": 44713325.52 },
+      "passivo_circulante": { "contas_a_pagar": 58478832.44, "emprestimos_financiamentos": 0, "obrigacoes_sociais_trabalhistas": 44990425.95, "obrigacoes_tributarias_fiscais": 48248568.92, "mercadorias_a_entregar": 32845550.18, "outras_obrigacoes": 25286556.46, "provisoes": 19482556.79 },
+      "passivo_nao_circulante": { "contas_a_pagar_lp": 20395233.93, "credores_diversos_lp": 0, "obrigacoes_tributarias_lp": 1194482.13 },
+      "patrimonio_liquido": { "capital_social": 48198752.37, "reservas": 43859295.38, "lucros_prejuizos_acumulados": -37266083.52 },
+      "indicadores": { "liquidez_corrente": 0.557, "endividamento_geral": 0.9749, "endividamento_curto_prazo": 0.7313, "endividamento_longo_prazo": 0.0688, "composicao_endividamento": 0.7502, "capital_terceiros": 0.8480, "imobilizacao_pl": 3.3907 }
+    },
+    {
+      "mes": "Outubro/2025", "mesKey": "2025-10",
+      "resumo": { "ativo_total": 325988269.62, "ativo_circulante": 142211947.26, "ativo_nao_circulante": 183776322.36, "passivo_total": 319030495.48, "passivo_circulante": 239335479.77, "passivo_nao_circulante": 24903051.48, "patrimonio_liquido": 54791964.23, "receita_liquida_acum": 251630615.98 },
+      "ativo_circulante": { "disponivel": 442899.98, "valores_conversiveis_cp": 96294116.14, "estoques": 36102018.68, "mercadorias_a_receber": 12850.00, "despesas_exerc_seguinte": 9360062.46 },
+      "ativo_nao_circulante": { "realizavel_longo_prazo": 138257844.25, "investimentos": 56071.82, "imobilizado": 45462406.29 },
+      "passivo_circulante": { "contas_a_pagar": 63550471.81, "emprestimos_financiamentos": 0, "obrigacoes_sociais_trabalhistas": 45200082.15, "obrigacoes_tributarias_fiscais": 48449248.14, "mercadorias_a_entregar": 37359818.19, "outras_obrigacoes": 24951556.46, "provisoes": 19824303.02 },
+      "passivo_nao_circulante": { "contas_a_pagar_lp": 23708569.35, "credores_diversos_lp": 0, "obrigacoes_tributarias_lp": 1194482.13 },
+      "patrimonio_liquido": { "capital_social": 48198752.37, "reservas": 43859295.38, "lucros_prejuizos_acumulados": -37266083.52 },
+      "indicadores": { "liquidez_corrente": 0.594, "endividamento_geral": 0.9787, "endividamento_curto_prazo": 0.7342, "endividamento_longo_prazo": 0.0764, "composicao_endividamento": 0.7502, "capital_terceiros": 0.8534, "imobilizacao_pl": 3.3541 }
+    },
+    {
+      "mes": "Novembro/2025", "mesKey": "2025-11",
+      "resumo": { "ativo_total": 324546906.58, "ativo_circulante": 139577868.72, "ativo_nao_circulante": 184969037.86, "passivo_total": 317762731.68, "passivo_circulante": 238767634.48, "passivo_nao_circulante": 24203132.97, "patrimonio_liquido": 54791964.23, "receita_liquida_acum": 274058417.25 },
+      "ativo_circulante": { "disponivel": 385534.10, "valores_conversiveis_cp": 95979242.18, "estoques": 34491180.97, "mercadorias_a_receber": 0, "despesas_exerc_seguinte": 8721911.47 },
+      "ativo_nao_circulante": { "realizavel_longo_prazo": 138966230.13, "investimentos": 56071.82, "imobilizado": 45946735.91 },
+      "passivo_circulante": { "contas_a_pagar": 62376157.11, "emprestimos_financiamentos": 0, "obrigacoes_sociais_trabalhistas": 46083984.17, "obrigacoes_tributarias_fiscais": 49454583.44, "mercadorias_a_entregar": 35421757.92, "outras_obrigacoes": 26966556.46, "provisoes": 18464595.38 },
+      "passivo_nao_circulante": { "contas_a_pagar_lp": 23008650.84, "credores_diversos_lp": 0, "obrigacoes_tributarias_lp": 1194482.13 },
+      "patrimonio_liquido": { "capital_social": 48198752.37, "reservas": 43859295.38, "lucros_prejuizos_acumulados": -37266083.52 },
+      "indicadores": { "liquidez_corrente": 0.585, "endividamento_geral": 0.9791, "endividamento_curto_prazo": 0.7357, "endividamento_longo_prazo": 0.0746, "composicao_endividamento": 0.7514, "capital_terceiros": 0.8529, "imobilizacao_pl": 3.3758 }
+    },
+    {
+      "mes": "Dezembro/2025", "mesKey": "2025-12",
+      "resumo": { "ativo_total": 321860373.38, "ativo_circulante": 138840496.65, "ativo_nao_circulante": 183019876.73, "passivo_total": 314659565.72, "passivo_circulante": 236225275.68, "passivo_nao_circulante": 23642325.81, "patrimonio_liquido": 54791964.23, "receita_liquida_acum": 299956969.50 },
+      "ativo_circulante": { "disponivel": 544886.96, "valores_conversiveis_cp": 93663435.32, "estoques": 36994761.21, "mercadorias_a_receber": 0, "despesas_exerc_seguinte": 7637413.16 },
+      "ativo_nao_circulante": { "realizavel_longo_prazo": 137213300.71, "investimentos": 61013.16, "imobilizado": 45745562.86 },
+      "passivo_circulante": { "contas_a_pagar": 61140125.44, "emprestimos_financiamentos": 0, "obrigacoes_sociais_trabalhistas": 45526834.43, "obrigacoes_tributarias_fiscais": 50081300.67, "mercadorias_a_entregar": 38664756.03, "outras_obrigacoes": 29474889.80, "provisoes": 11337369.31 },
+      "passivo_nao_circulante": { "contas_a_pagar_lp": 22447843.68, "credores_diversos_lp": 0, "obrigacoes_tributarias_lp": 1194482.13 },
+      "patrimonio_liquido": { "capital_social": 48198752.37, "reservas": 43859295.38, "lucros_prejuizos_acumulados": -37266083.52 },
+      "indicadores": { "liquidez_corrente": 0.588, "endividamento_geral": 0.9776, "endividamento_curto_prazo": 0.7339, "endividamento_longo_prazo": 0.0735, "composicao_endividamento": 0.7507, "capital_terceiros": 0.8517, "imobilizacao_pl": 3.3403 }
+    },
+    {
+      "mes": "Janeiro/2026", "mesKey": "2026-01",
+      "resumo": { "ativo_total": 329848420.57, "ativo_circulante": 147279852.44, "ativo_nao_circulante": 182568568.13, "passivo_total": 327529708.30, "passivo_circulante": 238032445.65, "passivo_nao_circulante": 27504490.76, "patrimonio_liquido": 61992771.89, "receita_liquida_acum": 22820089.42 },
+      "ativo_circulante": { "disponivel": 414857.26, "valores_conversiveis_cp": 95857444.79, "estoques": 43773112.21, "mercadorias_a_receber": 0, "despesas_exerc_seguinte": 7234438.18 },
+      "ativo_nao_circulante": { "realizavel_longo_prazo": 136528189.20, "investimentos": 61013.16, "imobilizado": 45979365.77 },
+      "passivo_circulante": { "contas_a_pagar": 55586838.75, "emprestimos_financiamentos": 0, "obrigacoes_sociais_trabalhistas": 45056167.67, "obrigacoes_tributarias_fiscais": 51464345.95, "mercadorias_a_entregar": 46126079.44, "outras_obrigacoes": 28286289.00, "provisoes": 11512724.84 },
+      "passivo_nao_circulante": { "contas_a_pagar_lp": 26310008.63, "credores_diversos_lp": 0, "obrigacoes_tributarias_lp": 1194482.13 },
+      "patrimonio_liquido": { "capital_social": 48198752.37, "reservas": 43859295.38, "lucros_prejuizos_acumulados": -30065275.86 },
+      "indicadores": { "liquidez_corrente": 0.619, "endividamento_geral": 0.9930, "endividamento_curto_prazo": 0.7216, "endividamento_longo_prazo": 0.0834, "composicao_endividamento": 0.7268, "capital_terceiros": 0.8408, "imobilizacao_pl": 2.9450 }
+    },
+    {
+      "mes": "Fevereiro/2026", "mesKey": "2026-02",
+      "resumo": { "ativo_total": 319803248.35, "ativo_circulante": 136043445.86, "ativo_nao_circulante": 183759802.49, "passivo_total": 321970068.24, "passivo_circulante": 232983757.73, "passivo_nao_circulante": 26993538.62, "patrimonio_liquido": 61992771.89, "receita_liquida_acum": 48026235.74 },
+      "ativo_circulante": { "disponivel": 421610.30, "valores_conversiveis_cp": 82333181.66, "estoques": 46464814.58, "mercadorias_a_receber": 0, "despesas_exerc_seguinte": 6823839.32 },
+      "ativo_nao_circulante": { "realizavel_longo_prazo": 136513337.00, "investimentos": 61013.16, "imobilizado": 47185452.33 },
+      "passivo_circulante": { "contas_a_pagar": 55554965.82, "emprestimos_financiamentos": 0, "obrigacoes_sociais_trabalhistas": 45370805.35, "obrigacoes_tributarias_fiscais": 51860836.64, "mercadorias_a_entregar": 48736299.46, "outras_obrigacoes": 19675712.80, "provisoes": 11785137.66 },
+      "passivo_nao_circulante": { "contas_a_pagar_lp": 25799056.49, "credores_diversos_lp": 0, "obrigacoes_tributarias_lp": 1194482.13 },
+      "patrimonio_liquido": { "capital_social": 48198752.37, "reservas": 43859295.38, "lucros_prejuizos_acumulados": -30065275.86 },
+      "indicadores": { "liquidez_corrente": 0.584, "endividamento_geral": 1.0068, "endividamento_curto_prazo": 0.7285, "endividamento_longo_prazo": 0.0844, "composicao_endividamento": 0.7236, "capital_terceiros": 0.8385, "imobilizacao_pl": 2.9642 }
+    },
+    {
+      "mes": "Março/2026", "mesKey": "2026-03",
+      "resumo": { "ativo_total": 331984602.00, "ativo_circulante": 140315806.53, "ativo_nao_circulante": 191668795.47, "passivo_total": 330943635.10, "passivo_circulante": 242227927.02, "passivo_nao_circulante": 26722936.19, "patrimonio_liquido": 61992771.89, "receita_liquida_acum": 77856316.94 },
+      "ativo_circulante": { "disponivel": 439056.14, "valores_conversiveis_cp": 79426269.06, "estoques": 53918619.00, "mercadorias_a_receber": 41021.00, "despesas_exerc_seguinte": 6490841.33 },
+      "ativo_nao_circulante": { "realizavel_longo_prazo": 144871952.11, "investimentos": 61013.16, "imobilizado": 46735830.20 },
+      "passivo_circulante": { "contas_a_pagar": 56531503.61, "emprestimos_financiamentos": 0, "obrigacoes_sociais_trabalhistas": 45492235.05, "obrigacoes_tributarias_fiscais": 52417497.43, "mercadorias_a_entregar": 55803197.11, "outras_obrigacoes": 19830800.30, "provisoes": 12152693.52 },
+      "passivo_nao_circulante": { "contas_a_pagar_lp": 25528454.06, "credores_diversos_lp": 0, "obrigacoes_tributarias_lp": 1194482.13 },
+      "patrimonio_liquido": { "capital_social": 48198752.37, "reservas": 43859295.38, "lucros_prejuizos_acumulados": -30065275.86 },
+      "indicadores": { "liquidez_corrente": 0.579, "endividamento_geral": 0.9969, "endividamento_curto_prazo": 0.7296, "endividamento_longo_prazo": 0.0805, "composicao_endividamento": 0.7320, "capital_terceiros": 0.8421, "imobilizacao_pl": 3.0925 }
+    }
+  ]
+}

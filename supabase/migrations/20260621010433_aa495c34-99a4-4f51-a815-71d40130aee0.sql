@@ -1,0 +1,1 @@
+UPDATE public.ai_cost_circuit_breaker SET daily_usd_limit = 100, hourly_usd_limit = 50, pause_until = NULL, last_trip_reason = NULL, updated_at = now();

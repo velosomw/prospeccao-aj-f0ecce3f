@@ -1,0 +1,305 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 97%;
+    --foreground: 220 25% 14%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 14%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 14%;
+
+    --primary: 222 47% 14%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 220 18% 93%;
+    --secondary-foreground: 220 25% 14%;
+
+    --muted: 220 15% 95%;
+    --muted-foreground: 220 10% 46%;
+
+    --accent: 217 91% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 18% 90%;
+    --input: 220 18% 90%;
+    --ring: 217 91% 50%;
+
+    --radius: 0.625rem;
+
+    --hero-gradient: linear-gradient(135deg, hsl(222 47% 14%) 0%, hsl(220 55% 20%) 40%, hsl(217 60% 28%) 100%);
+    --accent-gradient: linear-gradient(135deg, hsl(217 91% 50%) 0%, hsl(230 80% 60%) 100%);
+    --btn-gradient: linear-gradient(135deg, hsl(270 70% 50%) 0%, hsl(217 91% 55%) 100%);
+    --btn-gradient-hover: linear-gradient(135deg, hsl(270 70% 45%) 0%, hsl(217 91% 50%) 100%);
+    --overlay-gradient: linear-gradient(180deg, hsla(222 47% 14% / 0.88) 0%, hsla(222 47% 14% / 0.65) 100%);
+    --card-hover-shadow: 0 20px 60px -15px hsla(217 91% 50% / 0.12);
+    --hero-shadow: 0 4px 30px hsla(222 47% 14% / 0.2);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217 91% 50%;
+  }
+
+  .dark {
+    --background: 222 30% 8%;
+    --foreground: 220 20% 95%;
+    --card: 222 30% 12%;
+    --card-foreground: 220 20% 95%;
+    --popover: 222 30% 12%;
+    --popover-foreground: 220 20% 95%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 222 47% 14%;
+    --secondary: 222 25% 18%;
+    --secondary-foreground: 220 20% 95%;
+    --muted: 222 25% 18%;
+    --muted-foreground: 220 15% 60%;
+    --accent: 217 91% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 222 25% 20%;
+    --input: 222 25% 20%;
+    --ring: 217 91% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply px-6 py-6 md:px-12 lg:px-20 xl:px-32 lg:py-10;
+  }
+
+  .hero-overlay {
+    background: var(--overlay-gradient);
+  }
+
+  .accent-underline {
+    @apply relative inline-block;
+  }
+
+  .accent-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-[3px];
+    background: var(--accent-gradient);
+  }
+
+  .card-hover {
+    @apply transition-all duration-300;
+    box-shadow: 0 4px 20px -8px hsla(217, 91%, 50%, 0.06);
+  }
+
+  .card-hover:hover {
+    box-shadow: var(--card-hover-shadow);
+    @apply -translate-y-1;
+  }
+
+  .platform-protected {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .platform-protected img {
+    -webkit-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
+  }
+
+  .no-copy {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+/* ── A4 Report Container ── */
+.report-pages-container {
+  background: hsl(220, 10%, 92%);
+  padding: 40px 0;
+  border-radius: 8px;
+}
+
+/* ── A4 Report Styles ── */
+.report-a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto 40px;
+  background: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px hsla(0, 0%, 0%, 0.08);
+  border: 1px solid hsl(220, 15%, 85%);
+  color: hsl(220, 25%, 14%);
+}
+
+.report-a4-cover {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto 40px;
+  background: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px hsla(0, 0%, 0%, 0.08);
+  border: 1px solid hsl(220, 15%, 85%);
+  color: hsl(220, 25%, 14%);
+}
+
+.report-a4-cover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: var(--report-watermark);
+  background-repeat: no-repeat;
+  background-position: center 55%;
+  background-size: 60%;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.report-a4-cover > * {
+  position: relative;
+  z-index: 1;
+}
+
+.report-page-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 6mm 8mm 0;
+  flex-shrink: 0;
+}
+
+.report-page-body {
+  flex: 1;
+  margin: 3mm 16mm 0;
+  padding: 4mm 2mm;
+  position: relative;
+}
+
+.report-page-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: var(--report-watermark);
+  background-repeat: no-repeat;
+  background-position: center 50%;
+  background-size: 55%;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.report-page-body > * {
+  position: relative;
+  z-index: 1;
+}
+
+.report-footer-bar {
+  border-top: 3px solid hsl(195, 53%, 50%);
+  padding: 3mm 8mm;
+  text-align: center;
+  font-size: 9px;
+  color: hsl(220, 10%, 46%);
+  line-height: 1.5;
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+@media print {
+  /* Hide EVERYTHING by default */
+  body.printing-report * {
+    visibility: hidden !important;
+  }
+
+  /* Show only report pages container and its children */
+  body.printing-report .report-pages-container,
+  body.printing-report .report-pages-container *,
+  body.printing-report .report-a4-cover,
+  body.printing-report .report-a4-cover *,
+  body.printing-report .report-a4-page,
+  body.printing-report .report-a4-page * {
+    visibility: visible !important;
+  }
+
+  /* Position report container as the only visible block */
+  body.printing-report .report-pages-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Force hide print:hidden elements even inside report */
+  body.printing-report .print\:hidden,
+  body.printing-report [class*="print:hidden"] {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  .report-a4-page,
+  .report-a4-cover {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
+    page-break-after: always;
+    page-break-inside: avoid;
+    width: 100% !important;
+    min-height: auto !important;
+    height: 297mm;
+    overflow: hidden;
+  }
+
+  .report-a4-page:last-child,
+  .report-a4-cover:last-child {
+    page-break-after: auto;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}
