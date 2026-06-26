@@ -27,7 +27,7 @@ export default function ConsultorClientes() {
 
   return (
     <ConsultorPageShell
-      title="Clientes"
+      title="Planilha de Carta"
       subtitle="Empresas cadastradas com RMA em execução sob sua consultoria."
       search={search}
       onSearch={setSearch}

@@ -23,7 +23,7 @@ const cards = [
   { label: "Dashboard",   desc: "Acompanhe indicadores e métricas em tempo real.",                  icon: MonitorPlay,        to: "/consultor/dashboard",   tone: "purple" },
   { label: "Comunicação", desc: "Comunique-se de forma eficiente com sua equipe e clientes.",      icon: MessageSquareText,  to: "/consultor/comunicacao", tone: "amber"  },
   { label: "Avisos",      desc: "Fique por dentro de avisos importantes e prazos.",                 icon: Bell,               to: "/consultor/avisos",      tone: "orange" },
-  { label: "Clientes",    desc: "Gerencie clientes e acompanhe todas as informações.",              icon: Users,              to: "/consultor/clientes",    tone: "teal"   },
+  { label: "Planilha de Carta",    desc: "Gerencie clientes e acompanhe todas as informações.",              icon: Users,              to: "/consultor/clientes",    tone: "teal"   },
 ];
 
 const summary = [
