@@ -50,12 +50,8 @@ export default function ConsultorHome() {
   return (
     <PlatformLayout>
       <div className="px-6 lg:px-10 py-8 max-w-[1600px] mx-auto">
-        {/* Greeting */}
         <header className="mb-7">
-          <h1 className="text-2xl lg:text-3xl font-bold text-foreground flex items-center gap-2">
-            Bem-vindo(a), {name}! <span aria-hidden>👋</span>
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">Aqui está o resumo geral do sistema.</p>
+          <p className="text-sm text-muted-foreground">Aqui está o resumo geral do sistema.</p>
         </header>
 
         {/* Quick access cards */}
