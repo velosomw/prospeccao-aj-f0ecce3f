@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConsultorPageShell from "@/components/consultor/PageShell";
-import { Building2, Briefcase, CheckCircle2, AlertTriangle, Eye, MapPin, Calendar } from "lucide-react";
+import { Building2, Mail, Printer, Send, XCircle, Eye, MapPin, Calendar } from "lucide-react";
 import { useCompaniesPage } from "@/hooks/useCompaniesPage";
 
 const MESES = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
@@ -28,20 +28,20 @@ export default function ConsultorClientes() {
   return (
     <ConsultorPageShell
       title="Planilha de Carta"
-      subtitle="Empresas cadastradas com RMA em execução sob sua consultoria."
+      subtitle="Gestão das cartas enviadas às empresas externas."
       search={search}
       onSearch={setSearch}
       kpis={[
-        { label: "Total Clientes", value: allCompanies.length, icon: Building2, tone: "blue" },
-        { label: "Com RMA Ativo", value: totalAtivas, icon: CheckCircle2, tone: "green" },
-        { label: "Sem RMA / Inativas", value: totalInativas, icon: AlertTriangle, tone: "orange" },
-        { label: "Em Análise", value: totalAtivas, icon: Briefcase, tone: "purple" },
+        { label: "Total de Cartas", value: allCompanies.length, icon: Mail, tone: "blue" },
+        { label: "Total de Cartas Impressas", value: 0, icon: Printer, tone: "purple" },
+        { label: "Total Cartas Reenviadas", value: 0, icon: Send, tone: "orange" },
+        { label: "Total de Cartas Não enviadas", value: 0, icon: XCircle, tone: "red" },
       ]}
     >
       <div className="bg-white rounded-xl border overflow-hidden">
         <div className="p-4 border-b flex items-center justify-between gap-3">
           <h3 className="text-sm font-semibold">
-            {onlyActive ? "Clientes com RMA em execução" : "Todos os clientes"}
+            {onlyActive ? "Empresas com carta enviada" : "Todas as empresas"}
           </h3>
           <label className="inline-flex items-center gap-2 text-xs text-muted-foreground cursor-pointer select-none">
             <input
@@ -50,7 +50,7 @@ export default function ConsultorClientes() {
               onChange={(e) => setOnlyActive(e.target.checked)}
               className="h-3.5 w-3.5"
             />
-            Apenas com RMA em execução
+            Apenas com carta enviada
           </label>
         </div>
 
@@ -58,7 +58,7 @@ export default function ConsultorClientes() {
           <div className="p-8 text-center text-sm text-muted-foreground">Carregando...</div>
         ) : companies.length === 0 ? (
           <div className="p-8 text-center text-sm text-muted-foreground">
-            Nenhuma empresa encontrada{onlyActive ? " com RMA em execução." : "."}
+            Nenhuma empresa encontrada{onlyActive ? " com carta enviada." : "."}
           </div>
         ) : (
           <div className="divide-y">
