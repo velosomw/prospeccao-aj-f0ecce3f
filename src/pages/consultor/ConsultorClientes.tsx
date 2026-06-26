@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConsultorPageShell from "@/components/consultor/PageShell";
-import { Building2, Briefcase, CheckCircle2, AlertTriangle, Eye, MapPin, Calendar } from "lucide-react";
+import { Building2, Mail, Printer, Send, XCircle, Eye, MapPin, Calendar } from "lucide-react";
 import { useCompaniesPage } from "@/hooks/useCompaniesPage";
 
 const MESES = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
@@ -58,7 +58,7 @@ export default function ConsultorClientes() {
           <div className="p-8 text-center text-sm text-muted-foreground">Carregando...</div>
         ) : companies.length === 0 ? (
           <div className="p-8 text-center text-sm text-muted-foreground">
-            Nenhuma empresa encontrada{onlyActive ? " com RMA em execução." : "."}
+            Nenhuma empresa encontrada{onlyActive ? " com carta enviada." : "."}
           </div>
         ) : (
           <div className="divide-y">
