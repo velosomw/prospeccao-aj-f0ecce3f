@@ -50,7 +50,7 @@ const buildNav = (role: string | null): NavGroup[] => {
       items: [
         { label: "Dashboard",   to: "/dashboard/analitico",   icon: LayoutDashboard },
         { label: "Processo Prospecção", to: "/processo-prospeccao", icon: Briefcase },
-        { label: "RMA Correção", to: "/treinar-ia",           icon: Brain },
+        { label: "Upload Planilha", to: "/treinar-ia",           icon: Brain },
         { label: "Auditoria",   to: "/dashboard/auditoria",   icon: Shield },
         { label: "Comunicação", to: "/dashboard/comunicacao", icon: MessageCircle },
         { label: "Planilha",  to: "/dashboard/relatorios",  icon: FileBarChart },
@@ -73,7 +73,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Home",          to: "/consultor",               icon: Home },
         { label: "Dashboard",     to: "/consultor/dashboard",     icon: LayoutDashboard },
         { label: "Processo Prospecção", to: "/processo-prospeccao",     icon: Briefcase },
-        { label: "RMA Correção",  to: "/treinar-ia",              icon: Brain },
+        { label: "Upload Planilha",  to: "/treinar-ia",              icon: Brain },
         { label: "Auditoria",     to: "/consultor/auditoria",     icon: Shield, badge: 17 },
         { label: "Comunicação",   to: "/consultor/comunicacao",   icon: MessageCircle },
         { label: "Planilha",    to: "/consultor/relatorios",    icon: FileBarChart },
@@ -94,7 +94,7 @@ const buildNav = (role: string | null): NavGroup[] => {
       label: "Governança IA",
       items: [
         { label: "Aprendizado IA",     to: "/gestor-ia/aprendizado",     icon: Brain },
-        { label: "RMA Correção",         to: "/treinar-ia",                icon: Brain },
+        { label: "Upload Planilha",         to: "/treinar-ia",                icon: Brain },
         { label: "Perfil de Agentes",  to: "/gestor-ia/perfil-agentes",  icon: Settings },
         { label: "Failed Jobs",        to: "/gestor-ia/failed-jobs",     icon: AlertTriangle, badge: 3 },
         { label: "Busca Semântica",    to: "/gestor-ia/busca-semantica", icon: FileText },
@@ -125,7 +125,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Planilha",   to: "/recuperanda/relatorios",  icon: FileBarChart },
         { label: "Cronograma",   to: "/recuperanda/cronograma",  icon: Calendar },
         { label: "Comunicação",  to: "/recuperanda/comunicacao", icon: MessageCircle, badge: 2 },
-        { label: "RMA Correção",   to: "/treinar-ia",              icon: Brain },
+        { label: "Upload Planilha",   to: "/treinar-ia",              icon: Brain },
       ],
     });
   }
