@@ -5,6 +5,7 @@ import TrainAITab from "@/components/rma/TrainAITab";
 import LearningUploadPanel from "@/components/workspace/stages/LearningUploadPanel";
 import ErrorFilesPanel from "@/components/rma/training/ErrorFilesPanel";
 import PlanilhaTable from "@/components/PlanilhaTable";
+import ProspeccaoUploadCard from "@/components/prospeccao/ProspeccaoUploadCard";
 import procData from "@/data/processosServicosAJ.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
