@@ -24,7 +24,7 @@ export default function TrainAI() {
   const [companyId, setCompanyId] = useState<string | null>(null);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState<ViewMode>("erros");
+  const [view, setView] = useState<ViewMode>("upload");
 
 
   useEffect(() => {
@@ -76,16 +76,16 @@ export default function TrainAI() {
             <Brain className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-foreground">Treinar IA</h1>
+            <h1 className="text-xl font-bold text-foreground">Upload Planilha</h1>
             <p className="text-sm text-muted-foreground">
-              Corrija extrações dos RMAs para gerar gabaritos e melhorar o aprendizado dos agentes.
+              Carregue a planilha da empresa e as informações de referência para processamento.
             </p>
           </div>
         </div>
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Selecione o RMA</CardTitle>
+            <CardTitle className="text-base">Selecione a Planilha</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] gap-3">
@@ -95,7 +95,7 @@ export default function TrainAI() {
                   <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                   <Input
                     className="pl-7"
-                    placeholder="Empresa ou código RMA"
+                    placeholder="Empresa ou código da planilha"
                     value={filter}
                     onChange={(e) => setFilter(e.target.value)}
                   />
@@ -120,19 +120,19 @@ export default function TrainAI() {
                 </Select>
               </div>
               <div>
-                <Label className="text-xs">RMA vinculado</Label>
+                <Label className="text-xs">Planilha de upload</Label>
                 <Select
                   value={companyId ?? ""}
                   onValueChange={(v) => setCompanyId(v || null)}
                   disabled={!companyName}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={!companyName ? "Selecione a empresa primeiro" : "Escolha um RMA"} />
+                    <SelectValue placeholder={!companyName ? "Selecione a empresa primeiro" : "Escolha uma planilha"} />
                   </SelectTrigger>
                   <SelectContent className="max-h-80">
                     {rmasOfCompany.length === 0 && (
                       <div className="px-2 py-4 text-xs text-muted-foreground text-center">
-                        Nenhum RMA vinculado.
+                        Nenhuma planilha vinculada.
                       </div>
                     )}
                     {rmasOfCompany.map(c => (
@@ -209,7 +209,7 @@ export default function TrainAI() {
           </>
         ) : (
           <div className="text-center text-sm text-muted-foreground border border-dashed rounded-lg p-10">
-            Selecione um RMA acima para iniciar a correção dos arquivos com erro.
+            Selecione uma planilha acima para iniciar o upload e o processamento.
           </div>
         )}
 
