@@ -1,68 +1,148 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
-import PlanilhaTable from "@/components/PlanilhaTable";
-import bexData from "@/data/bexPlanilhaPadrao.json";
-import {
-  FileBarChart, Download, Eye, CheckCircle2, FileText, Building2, Briefcase,
-} from "lucide-react";
-
-interface Rel { id: string; titulo: string; rma: string; empresa: string; periodo: string; status: "publicado"|"rascunho"|"revisao"; score: number; data: string; }
-
-const rels: Rel[] = [
-  { id: "REL-201", titulo: "RMA Janeiro/2026 - DIPLOMATA",  rma: "RMA-DIP-01-2026", empresa: "DIPLOMATA",  periodo: "01/2026", status: "publicado", score: 87, data: "Há 4h" },
-  { id: "REL-200", titulo: "RMA Dezembro/2025 - DIPLOMATA", rma: "RMA-DIP-12-2025", empresa: "DIPLOMATA",  periodo: "12/2025", status: "publicado", score: 82, data: "Há 1d" },
-  { id: "REL-199", titulo: "RMA Novembro/2025 - DIPLOMATA", rma: "RMA-DIP-11-2025", empresa: "DIPLOMATA",  periodo: "11/2025", status: "revisao",   score: 74, data: "Há 3d" },
-];
+import { listLinhas, countByStatus, processJobs, type ProspeccaoLinha } from "@/services/prospeccaoService";
+import { useToast } from "@/hooks/use-toast";
+import { FileSpreadsheet, Clock, CheckCircle2, AlertTriangle, RefreshCw, PlayCircle, ExternalLink } from "lucide-react";
 
 const statusMeta: Record<string, { label: string; bg: string; fg: string }> = {
-  publicado: { label: "Publicado",  bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
-  revisao:   { label: "Em Revisão", bg: "hsl(38,92%,95%)",  fg: "hsl(38,92%,40%)"  },
-  rascunho:  { label: "Rascunho",   bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" },
+  pendente: { label: "Pendente", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" },
+  baixado:  { label: "Baixado",  bg: "hsl(38,92%,95%)",  fg: "hsl(38,92%,40%)"  },
+  extraido: { label: "Extraído", bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
+  erro:     { label: "Erro",     bg: "hsl(0,84%,95%)",   fg: "hsl(0,84%,40%)"   },
+  sem_link: { label: "Sem link", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" },
 };
 
-const scoreColor = (s: number) => s < 33 ? "hsl(0,84%,55%)" : s < 67 ? "hsl(38,92%,50%)" : "hsl(142,76%,40%)";
+function fmtMoney(n: number | null) {
+  if (n == null) return "—";
+  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function fmtDate(s: string | null) {
+  if (!s) return "—";
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[3]}/${m[2]}/${m[1]}` : s;
+}
 
 export default function ConsultorRelatorios() {
   const [search, setSearch] = useState("");
+  const [linhas, setLinhas] = useState<ProspeccaoLinha[]>([]);
+  const [stats, setStats] = useState({ total: 0, pendentes: 0, extraidos: 0, erros: 0 });
+  const [loading, setLoading] = useState(true);
+  const [processing, setProcessing] = useState(false);
+  const { toast } = useToast();
 
-  const grouped = useMemo(() => {
-    const byEmpresa: Record<string, Record<string, Rel[]>> = {};
-    for (const r of rels) {
-      byEmpresa[r.empresa] ??= {};
-      byEmpresa[r.empresa][r.rma] ??= [];
-      byEmpresa[r.empresa][r.rma].push(r);
-    }
-    return byEmpresa;
-  }, []);
+  const load = async () => {
+    setLoading(true);
+    try {
+      const [l, s] = await Promise.all([listLinhas(), countByStatus()]);
+      setLinhas(l); setStats(s);
+    } catch (e) {
+      toast({ title: "Erro ao carregar", description: String((e as Error).message), variant: "destructive" });
+    } finally { setLoading(false); }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const onProcessar = async () => {
+    setProcessing(true);
+    try {
+      const r = await processJobs(5);
+      toast({ title: "Processamento iniciado", description: `${r.processed} job(s) processados.` });
+      await load();
+    } catch (e) {
+      toast({ title: "Erro no processamento", description: String((e as Error).message), variant: "destructive" });
+    } finally { setProcessing(false); }
+  };
+
+  const filtered = linhas.filter(l => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return [l.numero_processo, l.parte_con_nome, l.parte_pro_nome, l.municipio, l.uf]
+      .some(v => v && v.toLowerCase().includes(q));
+  });
 
   return (
     <ConsultorPageShell
       title="Planilha"
-      subtitle="Documentos finais organizados por empresa, RMA e período."
+      subtitle="Linhas carregadas a partir dos uploads e enriquecidas pela IA com dados extraídos dos PDFs."
       search={search}
       onSearch={setSearch}
       kpis={[
-        { label: "Publicados",      value: rels.filter(r => r.status === "publicado").length, hint: "Total geral", icon: CheckCircle2, tone: "green"  },
-        { label: "Em Revisão",      value: rels.filter(r => r.status === "revisao").length,   hint: "Aguardando",  icon: Eye,          tone: "orange" },
-        { label: "Rascunhos",       value: rels.filter(r => r.status === "rascunho").length,  hint: "Em construção",icon: FileText,    tone: "purple" },
-        { label: "Empresas",        value: Object.keys(grouped).length,                       hint: "Distintas",   icon: Building2,    tone: "blue"   },
-        { label: "RMAs",            value: Object.values(grouped).reduce((a, b) => a + Object.keys(b).length, 0), hint: "No período", icon: Briefcase, tone: "blue" },
-        { label: "Score Médio",     value: rels.length ? Math.round(rels.reduce((a, b) => a + b.score, 0) / rels.length) : 0, hint: "Qualidade IA", icon: FileBarChart, tone: "slate" },
+        { label: "Total de Linhas", value: stats.total,     hint: "Acumulado", icon: FileSpreadsheet, tone: "blue"   },
+        { label: "PDFs Pendentes",  value: stats.pendentes, hint: "A processar", icon: Clock,        tone: "orange" },
+        { label: "PDFs Extraídos",  value: stats.extraidos, hint: "Concluídos", icon: CheckCircle2, tone: "green"  },
+        { label: "Erros",           value: stats.erros,     hint: "Revisar",    icon: AlertTriangle, tone: "purple" },
       ]}
     >
       <div className="bg-white rounded-xl border overflow-hidden">
         <div className="p-4 border-b flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-semibold">Planilha&nbsp; carregada & status</h3>
+            <h3 className="text-sm font-semibold">Planilha carregada & status</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              BEx — Planilha Padrão Prospecção Administrador Judicial
+              Dados extraídos automaticamente dos PDFs vinculados na coluna Link_Documento.
             </p>
           </div>
-          <button className="text-xs font-semibold text-primary hover:underline flex items-center gap-1">
-            <Download className="w-3.5 h-3.5" /> Exportar
-          </button>
+          <div className="flex gap-2">
+            <button onClick={load} className="text-xs font-semibold px-3 py-1.5 rounded border hover:bg-muted flex items-center gap-1">
+              <RefreshCw className="w-3.5 h-3.5" /> Atualizar
+            </button>
+            <button onClick={onProcessar} disabled={processing || stats.pendentes === 0}
+              className="text-xs font-semibold px-3 py-1.5 rounded bg-[hsl(217,91%,50%)] text-white hover:bg-[hsl(217,91%,45%)] disabled:opacity-50 flex items-center gap-1">
+              <PlayCircle className="w-3.5 h-3.5" /> {processing ? "Processando..." : "Processar PDFs"}
+            </button>
+          </div>
         </div>
-        <PlanilhaTable data={bexData as unknown[][]} />
+
+        {loading ? (
+          <div className="p-10 text-center text-sm text-muted-foreground">Carregando…</div>
+        ) : filtered.length === 0 ? (
+          <div className="p-10 text-center text-sm text-muted-foreground">
+            Nenhuma linha. Envie uma planilha em <strong>Upload Planilha</strong>.
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs border-collapse">
+              <thead className="bg-[hsl(217,91%,50%)] text-white">
+                <tr>
+                  {["Status IA","Nº Processo","Parte CON","CNPJ","Parte PRO","Órgão/Tribunal","UF","Município","Valor Pleito","Status","Dt. Início","Advogado","OAB","Link"].map(h => (
+                    <th key={h} className="px-3 py-2 text-left font-semibold whitespace-nowrap border-r border-white/20 last:border-r-0">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((r, i) => {
+                  const sm = statusMeta[r.ai_status] || statusMeta.pendente;
+                  return (
+                    <tr key={r.id} className={i % 2 === 0 ? "bg-white" : "bg-muted/20"}>
+                      <td className="px-3 py-2 border-b">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
+                      </td>
+                      <td className="px-3 py-2 border-b font-mono">{r.numero_processo || "—"}</td>
+                      <td className="px-3 py-2 border-b max-w-[200px]"><span className="block truncate">{r.parte_con_nome || "—"}</span></td>
+                      <td className="px-3 py-2 border-b font-mono">{r.parte_con_cnpj || "—"}</td>
+                      <td className="px-3 py-2 border-b max-w-[200px]"><span className="block truncate">{r.parte_pro_nome || "—"}</span></td>
+                      <td className="px-3 py-2 border-b max-w-[220px]"><span className="block truncate">{r.orgao_tribunal || "—"}</span></td>
+                      <td className="px-3 py-2 border-b">{r.uf || "—"}</td>
+                      <td className="px-3 py-2 border-b">{r.municipio || "—"}</td>
+                      <td className="px-3 py-2 border-b">{fmtMoney(r.valor_pleito)}</td>
+                      <td className="px-3 py-2 border-b">{r.status_processo || "—"}</td>
+                      <td className="px-3 py-2 border-b">{fmtDate(r.dt_inicio)}</td>
+                      <td className="px-3 py-2 border-b">{r.advogado_nome || "—"}</td>
+                      <td className="px-3 py-2 border-b">{r.advogado_oab || "—"}</td>
+                      <td className="px-3 py-2 border-b">
+                        {r.link_documento ? (
+                          <a href={r.link_documento} target="_blank" rel="noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        ) : "—"}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </ConsultorPageShell>
   );
