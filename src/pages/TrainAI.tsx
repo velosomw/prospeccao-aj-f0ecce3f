@@ -1,20 +1,32 @@
-// Página dedicada "Treinar IA" — fora do RMA Workspace.
-// Permite selecionar um RMA/empresa e abrir o console de correção/aprendizado.
+// Página dedicada "Upload Planilha" — fora do RMA Workspace.
 import { useEffect, useMemo, useState } from "react";
 import PlatformLayout from "@/components/PlatformLayout";
 import TrainAITab from "@/components/rma/TrainAITab";
 import LearningUploadPanel from "@/components/workspace/stages/LearningUploadPanel";
 import ErrorFilesPanel from "@/components/rma/training/ErrorFilesPanel";
+import PlanilhaTable from "@/components/PlanilhaTable";
+import procData from "@/data/processosServicosAJ.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Brain, Search, GraduationCap, FileWarning, Upload, FolderTree } from "lucide-react";
+import { Brain, Search, GraduationCap, FileWarning, Upload, FolderTree, FileSpreadsheet } from "lucide-react";
 import OneDriveFoldersStatus from "@/components/workspace/OneDriveFoldersStatus";
 import { listMyAssignedCompanies, listCompanies, type Company } from "@/services/companiesService";
 import { useUserRoles } from "@/hooks/useUserRoles";
 
 type ViewMode = "treinar" | "erros" | "upload" | "worker";
+
+// Empresa demo cadastrada localmente (E-XYON) com planilha fixa.
+const DEMO_COMPANY: Company = {
+  id: "demo-exyon",
+  name: "E-XYON",
+  rma_id: "Arquivo E-XYON-JUNHO-2026",
+  execution_year: 2026,
+  current_period_month: 6,
+} as unknown as Company;
+
+
 
 
 export default function TrainAI() {
