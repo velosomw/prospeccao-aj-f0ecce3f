@@ -46,7 +46,7 @@ export default function ConsultorRelatorios() {
 
   return (
     <ConsultorPageShell
-      title="Relatórios"
+      title="Planilha"
       subtitle="Documentos finais organizados por empresa, RMA e período."
       search={search}
       onSearch={setSearch}
@@ -61,7 +61,7 @@ export default function ConsultorRelatorios() {
     >
       <div className="bg-white rounded-xl border">
         <div className="p-4 border-b flex items-center justify-between">
-          <h3 className="text-sm font-semibold">Empresas · RMAs · Relatórios</h3>
+          <h3 className="text-sm font-semibold">Planilha&nbsp; carregada & status</h3>
           <button className="text-xs font-semibold text-primary hover:underline flex items-center gap-1">
             <Download className="w-3.5 h-3.5" /> Exportar Lote
           </button>
