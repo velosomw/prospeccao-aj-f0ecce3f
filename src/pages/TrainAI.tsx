@@ -166,36 +166,7 @@ export default function TrainAI() {
         </Card>
 
         {companyId === DEMO_COMPANY.id ? (
-          <>
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Upload className="w-4 h-4 text-[hsl(217,91%,50%)]" />
-                  Carregar novos arquivos para atualizar a planilha
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <label className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-border rounded-lg p-8 cursor-pointer hover:bg-muted/30 transition">
-                  <Upload className="w-8 h-8 text-muted-foreground" />
-                  <div className="text-sm font-semibold">Clique para selecionar ou arraste arquivos aqui</div>
-                  <div className="text-xs text-muted-foreground">XLSX, CSV, PDF até 20MB</div>
-                  <input type="file" multiple className="hidden" />
-                </label>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <FileSpreadsheet className="w-4 h-4 text-[hsl(217,91%,50%)]" />
-                  PROCESSOS_SERVICOS_ADM_JUDICIAL — {DEMO_COMPANY.rma_id}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <PlanilhaTable data={procData as unknown[][]} />
-              </CardContent>
-            </Card>
-          </>
+          <ProspeccaoUploadCard />
         ) : companyId ? (
           <>
             {/* Menu inline */}
