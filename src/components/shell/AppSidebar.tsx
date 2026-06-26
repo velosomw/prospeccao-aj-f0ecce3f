@@ -54,7 +54,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Auditoria",   to: "/dashboard/auditoria",   icon: Shield },
         { label: "Comunicação", to: "/dashboard/comunicacao", icon: MessageCircle },
         { label: "Relatórios",  to: "/dashboard/relatorios",  icon: FileBarChart },
-        { label: "Clientes",    to: "/dashboard/empresas",    icon: Building2 },
+        { label: "Planilha de Carta", to: "/dashboard/empresas",    icon: Building2 },
         { label: "Avisos",      to: "/dashboard/avisos",      icon: Megaphone, badge: 5 },
         { label: "Cadastros",   to: "/cadastro-rma",          icon: FilePlus },
         { label: "Relatórios Contábeis", to: "/relatorios-contabeis", icon: FileBarChart },
@@ -77,7 +77,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Auditoria",     to: "/consultor/auditoria",     icon: Shield, badge: 17 },
         { label: "Comunicação",   to: "/consultor/comunicacao",   icon: MessageCircle },
         { label: "Relatórios",    to: "/consultor/relatorios",    icon: FileBarChart },
-        { label: "Clientes",      to: "/consultor/clientes",      icon: Building2 },
+        { label: "Planilha de Carta", to: "/consultor/clientes",      icon: Building2 },
         { label: "Avisos",        to: "/consultor/avisos",        icon: Bell, badge: 3 },
         { label: "Cadastros",     to: "/consultor/cadastro",      icon: FilePlus, children: [
           { label: "Administrador Judicial", to: "/consultor/cadastro/admjudicial" },
