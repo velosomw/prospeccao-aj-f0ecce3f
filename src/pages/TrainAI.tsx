@@ -46,7 +46,8 @@ export default function TrainAI() {
       try {
         const isAdmin = roles.includes("gestor_ia") || roles.includes("coordenador");
         const data = isAdmin ? await listCompanies() : await listMyAssignedCompanies();
-        if (!cancelled) setCompanies(data || []);
+        const merged = [DEMO_COMPANY, ...(data || [])];
+        if (!cancelled) setCompanies(merged);
       } finally {
         if (!cancelled) setLoading(false);
       }
