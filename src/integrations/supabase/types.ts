@@ -4046,6 +4046,229 @@ export type Database = {
         }
         Relationships: []
       }
+      prospeccao_linhas: {
+        Row: {
+          acao_judicial: string | null
+          advogado_nome: string | null
+          advogado_oab: string | null
+          ai_error: string | null
+          ai_extracted: Json | null
+          ai_status: string
+          area_judicial: string | null
+          assunto_judicial: string | null
+          created_at: string
+          data_protocolo: string | null
+          denominacao: string | null
+          dt_cad_causa: string | null
+          dt_inicio: string | null
+          endereco_requerente: string | null
+          esfera: string | null
+          id: string
+          id_servico: string | null
+          instancia: string | null
+          link_documento: string | null
+          municipio: string | null
+          numero_processo: string | null
+          orgao_tribunal: string | null
+          parte_con_cnpj: string | null
+          parte_con_nome: string | null
+          parte_con_qualif: string | null
+          parte_pro_cnpj: string | null
+          parte_pro_nome: string | null
+          pedidos_principais: string | null
+          processo_eletronico: boolean | null
+          status_processo: string | null
+          tipo_acao: string | null
+          uf: string | null
+          updated_at: string
+          upload_id: string | null
+          user_id: string
+          valor_pleito: number | null
+        }
+        Insert: {
+          acao_judicial?: string | null
+          advogado_nome?: string | null
+          advogado_oab?: string | null
+          ai_error?: string | null
+          ai_extracted?: Json | null
+          ai_status?: string
+          area_judicial?: string | null
+          assunto_judicial?: string | null
+          created_at?: string
+          data_protocolo?: string | null
+          denominacao?: string | null
+          dt_cad_causa?: string | null
+          dt_inicio?: string | null
+          endereco_requerente?: string | null
+          esfera?: string | null
+          id?: string
+          id_servico?: string | null
+          instancia?: string | null
+          link_documento?: string | null
+          municipio?: string | null
+          numero_processo?: string | null
+          orgao_tribunal?: string | null
+          parte_con_cnpj?: string | null
+          parte_con_nome?: string | null
+          parte_con_qualif?: string | null
+          parte_pro_cnpj?: string | null
+          parte_pro_nome?: string | null
+          pedidos_principais?: string | null
+          processo_eletronico?: boolean | null
+          status_processo?: string | null
+          tipo_acao?: string | null
+          uf?: string | null
+          updated_at?: string
+          upload_id?: string | null
+          user_id: string
+          valor_pleito?: number | null
+        }
+        Update: {
+          acao_judicial?: string | null
+          advogado_nome?: string | null
+          advogado_oab?: string | null
+          ai_error?: string | null
+          ai_extracted?: Json | null
+          ai_status?: string
+          area_judicial?: string | null
+          assunto_judicial?: string | null
+          created_at?: string
+          data_protocolo?: string | null
+          denominacao?: string | null
+          dt_cad_causa?: string | null
+          dt_inicio?: string | null
+          endereco_requerente?: string | null
+          esfera?: string | null
+          id?: string
+          id_servico?: string | null
+          instancia?: string | null
+          link_documento?: string | null
+          municipio?: string | null
+          numero_processo?: string | null
+          orgao_tribunal?: string | null
+          parte_con_cnpj?: string | null
+          parte_con_nome?: string | null
+          parte_con_qualif?: string | null
+          parte_pro_cnpj?: string | null
+          parte_pro_nome?: string | null
+          pedidos_principais?: string | null
+          processo_eletronico?: boolean | null
+          status_processo?: string | null
+          tipo_acao?: string | null
+          uf?: string | null
+          updated_at?: string
+          upload_id?: string | null
+          user_id?: string
+          valor_pleito?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_linhas_upload_id_fkey"
+            columns: ["upload_id"]
+            isOneToOne: false
+            referencedRelation: "prospeccao_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prospeccao_pdf_jobs: {
+        Row: {
+          attempts: number
+          created_at: string
+          error: string | null
+          extracted_json: Json | null
+          id: string
+          linha_id: string
+          link: string
+          onedrive_path: string | null
+          pdf_sha256: string | null
+          status: string
+          storage_path: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          error?: string | null
+          extracted_json?: Json | null
+          id?: string
+          linha_id: string
+          link: string
+          onedrive_path?: string | null
+          pdf_sha256?: string | null
+          status?: string
+          storage_path?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          error?: string | null
+          extracted_json?: Json | null
+          id?: string
+          linha_id?: string
+          link?: string
+          onedrive_path?: string | null
+          pdf_sha256?: string | null
+          status?: string
+          storage_path?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_pdf_jobs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "prospeccao_linhas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prospeccao_uploads: {
+        Row: {
+          company_id: string | null
+          created_at: string
+          error: string | null
+          file_name: string
+          file_type: string
+          id: string
+          rows_count: number
+          status: string
+          storage_path: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string
+          error?: string | null
+          file_name: string
+          file_type: string
+          id?: string
+          rows_count?: number
+          status?: string
+          storage_path: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string
+          error?: string | null
+          file_name?: string
+          file_type?: string
+          id?: string
+          rows_count?: number
+          status?: string
+          storage_path?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       rate_limit_buckets: {
         Row: {
           blocked_until: string | null
