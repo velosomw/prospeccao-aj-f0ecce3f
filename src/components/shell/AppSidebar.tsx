@@ -49,7 +49,7 @@ const buildNav = (role: string | null): NavGroup[] => {
       label: "Coordenação",
       items: [
         { label: "Dashboard",   to: "/dashboard/analitico",   icon: LayoutDashboard },
-        { label: "RMAs",        to: "/consultor/rmas",        icon: Briefcase },
+        { label: "Processo Prospecção", to: "/processo-prospeccao", icon: Briefcase },
         { label: "RMA Correção", to: "/treinar-ia",           icon: Brain },
         { label: "Auditoria",   to: "/dashboard/auditoria",   icon: Shield },
         { label: "Comunicação", to: "/dashboard/comunicacao", icon: MessageCircle },
@@ -72,7 +72,7 @@ const buildNav = (role: string | null): NavGroup[] => {
       items: [
         { label: "Home",          to: "/consultor",               icon: Home },
         { label: "Dashboard",     to: "/consultor/dashboard",     icon: LayoutDashboard },
-        { label: "RMAs",          to: "/consultor/rmas",          icon: Briefcase },
+        { label: "Processo Prospecção", to: "/processo-prospeccao",     icon: Briefcase },
         { label: "RMA Correção",  to: "/treinar-ia",              icon: Brain },
         { label: "Auditoria",     to: "/consultor/auditoria",     icon: Shield, badge: 17 },
         { label: "Comunicação",   to: "/consultor/comunicacao",   icon: MessageCircle },
