@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import ConsultorPageShell from "@/components/consultor/PageShell";
+import PlanilhaTable from "@/components/PlanilhaTable";
+import bexData from "@/data/bexPlanilhaPadrao.json";
 import {
-  FileBarChart, Download, Eye, CheckCircle2, Clock, FileText,
-  ChevronDown, ChevronRight, Building2, Briefcase,
+  FileBarChart, Download, Eye, CheckCircle2, FileText, Building2, Briefcase,
 } from "lucide-react";
 
 interface Rel { id: string; titulo: string; rma: string; empresa: string; periodo: string; status: "publicado"|"rascunho"|"revisao"; score: number; data: string; }
