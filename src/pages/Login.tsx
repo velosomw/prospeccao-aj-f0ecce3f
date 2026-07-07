@@ -22,11 +22,6 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!mathRef.current?.validate()) {
-      toast.error("Verificação matemática incorreta. Tente novamente.");
-      mathRef.current?.reset();
-      return;
-    }
 
     setLoading(true);
 
