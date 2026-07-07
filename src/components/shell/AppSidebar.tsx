@@ -4,7 +4,7 @@ import {
   Shield, Brain, Building2, Scale, User, LogOut,
   LayoutDashboard, FileText, Upload, Download,
   History, Activity, Settings, Users,
-  Briefcase, AlertTriangle, FolderOpen, FileBarChart, CheckCircle2,
+  Briefcase, AlertTriangle, FolderOpen, FileBarChart, FileSpreadsheet, CheckCircle2,
   Gavel, MessageCircle, Calendar, Megaphone, FilePlus, Sun, Moon, Home, Bell,
 } from "lucide-react";
 import {
@@ -77,6 +77,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Auditoria",     to: "/consultor/auditoria",     icon: Shield, badge: 17 },
         { label: "Comunicação",   to: "/consultor/comunicacao",   icon: MessageCircle },
         { label: "Planilha",    to: "/consultor/relatorios",    icon: FileBarChart },
+        { label: "Planilha Padrão Prospecção", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
         { label: "Planilha de Carta", to: "/consultor/clientes",      icon: Building2 },
         { label: "Avisos",        to: "/consultor/avisos",        icon: Bell, badge: 3 },
         { label: "Cadastros",     to: "/consultor/cadastro",      icon: FilePlus, children: [

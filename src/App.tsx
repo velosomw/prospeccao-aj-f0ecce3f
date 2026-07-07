@@ -24,6 +24,7 @@ const ConsultorProcessos = lazy(() => import("./pages/consultor/ConsultorProcess
 const ConsultorPendencias = lazy(() => import("./pages/consultor/ConsultorPendencias"));
 const ConsultorDocumentos = lazy(() => import("./pages/consultor/ConsultorDocumentos"));
 const ConsultorRelatorios = lazy(() => import("./pages/consultor/ConsultorRelatorios"));
+const PlanilhaPadraoProspeccao = lazy(() => import("./pages/consultor/PlanilhaPadraoProspeccao"));
 const ConsultorHistorico = lazy(() => import("./pages/consultor/ConsultorHistorico"));
 const ConsultorLogsIA = lazy(() => import("./pages/consultor/ConsultorLogsIA"));
 const ConsultorClientes = lazy(() => import("./pages/consultor/ConsultorClientes"));
@@ -145,6 +146,7 @@ const App = () => (
               <Route path="/consultor/comunicacao" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorComunicacao /></ProtectedRoute>} />
               <Route path="/consultor/documentos" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorDocumentos /></ProtectedRoute>} />
               <Route path="/consultor/relatorios" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorRelatorios /></ProtectedRoute>} />
+              <Route path="/consultor/planilha-padrao-prospeccao" element={<ProtectedRoute allow={["consultor", "coordenador"]}><PlanilhaPadraoProspeccao /></ProtectedRoute>} />
               <Route path="/consultor/clientes" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorClientes /></ProtectedRoute>} />
               <Route path="/consultor/cadastro" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorCadastro /></ProtectedRoute>} />
               <Route path="/consultor/cadastro/admjudicial" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorCadastroAJ /></ProtectedRoute>} />
