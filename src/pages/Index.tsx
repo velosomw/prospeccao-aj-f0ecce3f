@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import logoBex from "@/assets/logo-brasil-expert-full.jpeg";
 import heroIllustration from "@/assets/rma-isometric-hub.png";
-import MathChallenge, { type MathChallengeHandle } from "@/components/MathChallenge";
+
 
 const trustItems = [
   { icon: Shield, title: "Segurança", desc: "Proteção de dados e conformidade com a LGPD", color: "hsl(142,71%,45%)" },
