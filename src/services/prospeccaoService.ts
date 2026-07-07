@@ -3,19 +3,27 @@ import { supabase } from "@/integrations/supabase/client";
 
 export interface ProspeccaoLinha {
   id: string;
+  id_servico: string | null;
   numero_processo: string | null;
   parte_con_nome: string | null;
   parte_con_cnpj: string | null;
+  parte_con_qualif: string | null;
   parte_pro_nome: string | null;
   parte_pro_cnpj: string | null;
+  denominacao: string | null;
   orgao_tribunal: string | null;
+  esfera: string | null;
+  instancia: string | null;
   uf: string | null;
   municipio: string | null;
   area_judicial: string | null;
+  assunto_judicial: string | null;
   acao_judicial: string | null;
   valor_pleito: number | null;
   status_processo: string | null;
   dt_inicio: string | null;
+  dt_cad_causa: string | null;
+  processo_eletronico: boolean | null;
   link_documento: string | null;
   advogado_nome: string | null;
   advogado_oab: string | null;
