@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import logoBex from "@/assets/logo-bex.png";
-import MathChallenge, { type MathChallengeHandle } from "@/components/MathChallenge";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
