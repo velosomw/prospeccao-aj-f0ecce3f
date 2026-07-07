@@ -113,7 +113,15 @@ export default function ConsultorRelatorios() {
             <table className="w-full text-xs border-collapse">
               <thead className="bg-[hsl(217,91%,50%)] text-white">
                 <tr>
-                  {["Status IA","Nº Processo","Parte CON","CNPJ","Parte PRO","Órgão/Tribunal","UF","Município","Valor Pleito","Status","Dt. Início","Advogado","OAB","Link"].map(h => (
+                  {[
+                    "Status IA","ID Serviço","Nº Processo",
+                    "Parte CON - Nome","Parte CON - CPF/CNPJ","Parte CON - Qualificação",
+                    "Parte PRO - Nome","Parte PRO - CPF/CNPJ",
+                    "Denominação","Órgão/Tribunal","Esfera","Instância","UF","Município",
+                    "Área Judicial","Assunto Judicial","Ação Judicial",
+                    "Valor Pleito","Status do Processo","Dt. Início","Dt. Cad. Causa",
+                    "Processo Eletrônico?","Link Documento",
+                  ].map(h => (
                     <th key={h} className="px-3 py-2 text-left font-semibold whitespace-nowrap border-r border-white/20 last:border-r-0">{h}</th>
                   ))}
                 </tr>
@@ -121,29 +129,48 @@ export default function ConsultorRelatorios() {
               <tbody>
                 {filtered.map((r, i) => {
                   const sm = statusMeta[r.ai_status] || statusMeta.pendente;
+                  const pb = pdfBadge(r.ai_status, r.link_documento);
                   return (
                     <tr key={r.id} className={i % 2 === 0 ? "bg-white" : "bg-muted/20"}>
                       <td className="px-3 py-2 border-b">
                         <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
                       </td>
-                      <td className="px-3 py-2 border-b font-mono">{r.numero_processo || "—"}</td>
-                      <td className="px-3 py-2 border-b max-w-[200px]"><span className="block truncate">{r.parte_con_nome || "—"}</span></td>
+                      <td className="px-3 py-2 border-b font-mono">{r.id_servico || "—"}</td>
+                      <td className="px-3 py-2 border-b font-mono whitespace-nowrap">{r.numero_processo || "—"}</td>
+                      <td className="px-3 py-2 border-b max-w-[220px]"><span className="block truncate">{r.parte_con_nome || "—"}</span></td>
                       <td className="px-3 py-2 border-b font-mono">{r.parte_con_cnpj || "—"}</td>
-                      <td className="px-3 py-2 border-b max-w-[200px]"><span className="block truncate">{r.parte_pro_nome || "—"}</span></td>
-                      <td className="px-3 py-2 border-b max-w-[220px]"><span className="block truncate">{r.orgao_tribunal || "—"}</span></td>
+                      <td className="px-3 py-2 border-b">{r.parte_con_qualif || "—"}</td>
+                      <td className="px-3 py-2 border-b max-w-[220px]"><span className="block truncate">{r.parte_pro_nome || "—"}</span></td>
+                      <td className="px-3 py-2 border-b font-mono">{r.parte_pro_cnpj || "—"}</td>
+                      <td className="px-3 py-2 border-b max-w-[200px]"><span className="block truncate">{r.denominacao || "—"}</span></td>
+                      <td className="px-3 py-2 border-b max-w-[240px]"><span className="block truncate">{r.orgao_tribunal || "—"}</span></td>
+                      <td className="px-3 py-2 border-b">{r.esfera || "—"}</td>
+                      <td className="px-3 py-2 border-b">{r.instancia || "—"}</td>
                       <td className="px-3 py-2 border-b">{r.uf || "—"}</td>
                       <td className="px-3 py-2 border-b">{r.municipio || "—"}</td>
-                      <td className="px-3 py-2 border-b">{fmtMoney(r.valor_pleito)}</td>
+                      <td className="px-3 py-2 border-b">{r.area_judicial || "—"}</td>
+                      <td className="px-3 py-2 border-b max-w-[240px]"><span className="block truncate">{r.assunto_judicial || "—"}</span></td>
+                      <td className="px-3 py-2 border-b max-w-[240px]"><span className="block truncate">{r.acao_judicial || "—"}</span></td>
+                      <td className="px-3 py-2 border-b whitespace-nowrap">{fmtMoney(r.valor_pleito)}</td>
                       <td className="px-3 py-2 border-b">{r.status_processo || "—"}</td>
-                      <td className="px-3 py-2 border-b">{fmtDate(r.dt_inicio)}</td>
-                      <td className="px-3 py-2 border-b">{r.advogado_nome || "—"}</td>
-                      <td className="px-3 py-2 border-b">{r.advogado_oab || "—"}</td>
+                      <td className="px-3 py-2 border-b whitespace-nowrap">{fmtDate(r.dt_inicio)}</td>
+                      <td className="px-3 py-2 border-b whitespace-nowrap">{fmtDate(r.dt_cad_causa)}</td>
+                      <td className="px-3 py-2 border-b">{r.processo_eletronico == null ? "—" : r.processo_eletronico ? "SIM" : "NÃO"}</td>
                       <td className="px-3 py-2 border-b">
                         {r.link_documento ? (
-                          <a href={r.link_documento} target="_blank" rel="noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">
-                            <ExternalLink className="w-3 h-3" />
+                          <a
+                            href={r.link_documento}
+                            target="_blank"
+                            rel="noreferrer"
+                            title={r.ai_error || r.link_documento}
+                            className="px-2 py-0.5 rounded text-[10px] font-semibold hover:opacity-80"
+                            style={{ background: pb.bg, color: pb.fg }}
+                          >
+                            {pb.label}
                           </a>
-                        ) : "—"}
+                        ) : (
+                          <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: pb.bg, color: pb.fg }}>{pb.label}</span>
+                        )}
                       </td>
                     </tr>
                   );
