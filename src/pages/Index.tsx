@@ -23,21 +23,14 @@ const Index = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const mathRef = useRef<MathChallengeHandle>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!mathRef.current?.validate()) {
-      toast.error("Verificação matemática incorreta. Tente novamente.");
-      mathRef.current?.reset();
-      return;
-    }
     setLoading(true);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         toast.error("Credenciais inválidas. Verifique e-mail e senha.");
-        mathRef.current?.reset();
         setLoading(false);
         return;
       }
