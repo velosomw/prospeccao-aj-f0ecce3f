@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { UserProvider } from "./contexts/UserContext";
 import Layout from "./components/Layout";
 import Index from "./pages/Index";
@@ -125,7 +125,7 @@ const App = () => (
               {/* Site público (eager) */}
               <Route path="/" element={<Index />} />
 
-              {/* Plataforma RMA IA (lazy) */}
+              {/* Plataforma Prospecção AJ (lazy) */}
               <Route path="/login" element={<Login />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/select-role" element={<RoleSelection />} />
@@ -139,7 +139,8 @@ const App = () => (
               <Route path="/dashboard/historico" element={<ProtectedRoute allow={["coordenador"]}><CoordHistorico /></ProtectedRoute>} />
               <Route path="/consultor" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorHome /></ProtectedRoute>} />
               <Route path="/consultor/dashboard" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorDashboard /></ProtectedRoute>} />
-              <Route path="/consultor/rmas" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorRMAs /></ProtectedRoute>} />
+              <Route path="/consultor/rmas" element={<Navigate to="/consultor/prospeccoes-aj" replace />} />
+              <Route path="/consultor/prospeccoes-aj" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorRMAs /></ProtectedRoute>} />
               <Route path="/consultor/processos" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorProcessos /></ProtectedRoute>} />
               <Route path="/consultor/pendencias" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorPendencias /></ProtectedRoute>} />
               <Route path="/consultor/auditoria" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorPendencias /></ProtectedRoute>} />
@@ -160,9 +161,11 @@ const App = () => (
               <Route path="/magistrado" element={<ProtectedRoute allow={["magistrado"]}><MagistradoDashboard /></ProtectedRoute>} />
               <Route path="/recuperanda" element={<ProtectedRoute allow={["recuperanda"]}><RecuperandaDashboard /></ProtectedRoute>} />
               <Route path="/admjudicial" element={<ProtectedRoute allow={["admjudicial", "coordenador"]}><AdmjudicialDashboard /></ProtectedRoute>} />
-              <Route path="/rma" element={<ProtectedRoute><RmaHomeRoute /></ProtectedRoute>} />
+              <Route path="/rma" element={<Navigate to="/prospeccao-aj" replace />} />
+              <Route path="/prospeccao-aj" element={<ProtectedRoute><RmaHomeRoute /></ProtectedRoute>} />
               <Route path="/processo-prospeccao" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ProcessoProspeccao /></ProtectedRoute>} />
-              <Route path="/rma/:id" element={<ProtectedRoute><RMAWorkspace /></ProtectedRoute>} />
+              <Route path="/rma/:id" element={<Navigate to="/prospeccao-aj-workspace/:id" replace />} />
+              <Route path="/prospeccao-aj-workspace/:id" element={<ProtectedRoute><RMAWorkspace /></ProtectedRoute>} />
               <Route path="/treinar-ia" element={<ProtectedRoute allow={["consultor", "coordenador", "gestor_ia", "recuperanda"]}><TrainAI /></ProtectedRoute>} />
               <Route path="/audit" element={<ProtectedRoute allow={["coordenador", "consultor"]}><Audit /></ProtectedRoute>} />
               <Route path="/gestor-ia" element={<ProtectedRoute allow={["gestor_ia"]}><GestorIA /></ProtectedRoute>} />
@@ -177,8 +180,10 @@ const App = () => (
               <Route path="/user-management" element={<ProtectedRoute allow={["coordenador"]}><UserManagement /></ProtectedRoute>} />
               <Route path="/admin/admjudicial-links" element={<ProtectedRoute allow={["coordenador"]}><AdminAdmjudicialLinks /></ProtectedRoute>} />
               <Route path="/modelo-matematico" element={<ProtectedRoute allow={["coordenador", "consultor"]}><ModeloMatematico /></ProtectedRoute>} />
-              <Route path="/cadastro-rma" element={<ProtectedRoute allow={["coordenador"]}><CadastroRMA /></ProtectedRoute>} />
-              <Route path="/liberar-rma" element={<ProtectedRoute allow={["coordenador"]}><LiberarRMA /></ProtectedRoute>} />
+              <Route path="/cadastro-rma" element={<Navigate to="/cadastro-prospeccao-aj" replace />} />
+              <Route path="/cadastro-prospeccao-aj" element={<ProtectedRoute allow={["coordenador"]}><CadastroRMA /></ProtectedRoute>} />
+              <Route path="/liberar-rma" element={<Navigate to="/liberar-prospeccao-aj" replace />} />
+              <Route path="/liberar-prospeccao-aj" element={<ProtectedRoute allow={["coordenador"]}><LiberarRMA /></ProtectedRoute>} />
               <Route path="/relatorios-contabeis" element={<ProtectedRoute allow={["consultor", "coordenador", "gestor_ia"]}><RelatoriosContabeis /></ProtectedRoute>} />
               <Route path="/unsubscribe" element={<Unsubscribe />} />
               <Route path="/controle-status" element={<ControleStatus />} />
