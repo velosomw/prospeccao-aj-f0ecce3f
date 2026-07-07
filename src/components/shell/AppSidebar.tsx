@@ -57,7 +57,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Planilha de Carta", to: "/dashboard/empresas",    icon: Building2 },
         { label: "Avisos",      to: "/dashboard/avisos",      icon: Megaphone, badge: 5 },
         { label: "Cadastros",   to: "/cadastro-rma",          icon: FilePlus },
-        { label: "Relatórios Contábeis", to: "/relatorios-contabeis", icon: FileBarChart },
+        { label: "Relatórios & Cartas", to: "/relatorios-contabeis", icon: FileBarChart },
         { label: "Aprovações",  to: "/dashboard/aprovacoes",  icon: CheckCircle2, badge: 9 },
         { label: "Equipe",      to: "/dashboard/equipe",      icon: Users },
         { label: "Histórico",   to: "/dashboard/historico",   icon: History },
@@ -84,7 +84,7 @@ const buildNav = (role: string | null): NavGroup[] => {
           { label: "Administrador Judicial", to: "/consultor/cadastro/admjudicial" },
           { label: "Recuperandas",            to: "/consultor/cadastro/recuperandas" },
         ] },
-        { label: "Relatórios Contábeis", to: "/relatorios-contabeis", icon: FileBarChart },
+        { label: "Relatórios & Cartas", to: "/relatorios-contabeis", icon: FileBarChart },
         { label: "Configurações", to: "/consultor/configuracoes", icon: Settings },
       ],
     });
