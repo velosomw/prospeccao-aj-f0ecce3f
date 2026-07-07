@@ -3,20 +3,41 @@ import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Upload, FileSpreadsheet, FileText, Loader2, CheckCircle2, AlertTriangle, PlayCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { uploadFile, processJobs, countByStatus } from "@/services/prospeccaoService";
+import { uploadFile, processJobs, countByStatus, listLinhas, type ProspeccaoLinha } from "@/services/prospeccaoService";
 import { Link } from "react-router-dom";
 
 interface Item { name: string; status: "enviando" | "ok" | "erro"; rows?: number; error?: string; }
 
+function pdfBadge(ai_status: string, link: string | null) {
+  if (!link) return { label: "Sem link", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" };
+  if (ai_status === "erro") return { label: "Falha PDF", bg: "hsl(0,84%,95%)", fg: "hsl(0,84%,40%)" };
+  if (ai_status === "baixado" || ai_status === "extraido") return { label: "PDF Carregado", bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" };
+  return { label: "Aguardando", bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)" };
+}
+
+function fmtMoney(n: number | null) {
+  if (n == null) return "—";
+  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+function fmtDate(s: string | null) {
+  if (!s) return "—";
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[3]}/${m[2]}/${m[1]}` : s;
+}
+
 export default function ProspeccaoUploadCard() {
   const [items, setItems] = useState<Item[]>([]);
   const [stats, setStats] = useState({ total: 0, pendentes: 0, extraidos: 0, erros: 0 });
+  const [linhas, setLinhas] = useState<ProspeccaoLinha[]>([]);
   const [processing, setProcessing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const refresh = async () => {
-    try { setStats(await countByStatus()); } catch { /* ignore */ }
+    try {
+      const [s, l] = await Promise.all([countByStatus(), listLinhas()]);
+      setStats(s); setLinhas(l);
+    } catch { /* ignore */ }
   };
   useEffect(() => { refresh(); }, []);
 
