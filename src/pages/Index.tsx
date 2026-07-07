@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import logoBex from "@/assets/logo-brasil-expert-full.jpeg";
-import heroIllustration from "@/assets/rma-isometric-hub.png";
+import heroIllustration from "@/assets/hero-rma-global.png.asset.json";
 
 
 const trustItems = [
@@ -163,7 +163,7 @@ const Index = () => {
         <section className="relative bg-gradient-to-br from-[hsl(220,30%,97%)] via-white to-[hsl(217,91%,97%)] flex flex-col min-w-0">
           <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-12 min-h-[280px] sm:min-h-[380px] lg:min-h-[520px]">
             <motion.img
-              src={heroIllustration}
+              src={heroIllustration.url}
               alt="Hub central RMA com módulos de Administração Judicial, Comunicação, Segurança, Análise, Relatórios e Governança"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
