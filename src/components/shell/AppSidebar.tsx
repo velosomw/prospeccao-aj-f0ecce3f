@@ -4,7 +4,7 @@ import {
   Shield, Brain, Building2, Scale, User, LogOut,
   LayoutDashboard, FileText, Upload, Download,
   History, Activity, Settings, Users,
-  Briefcase, AlertTriangle, FolderOpen, FileBarChart, CheckCircle2,
+  Briefcase, AlertTriangle, FolderOpen, FileBarChart, FileSpreadsheet, CheckCircle2,
   Gavel, MessageCircle, Calendar, Megaphone, FilePlus, Sun, Moon, Home, Bell,
 } from "lucide-react";
 import {
