@@ -114,12 +114,6 @@ const InlineLoginCard = ({ onClose }: InlineLoginCardProps) => {
           </div>
         </div>
 
-        <MathChallenge
-          ref={mathRef}
-          labelClassName="text-white/90 text-sm"
-          inputClassName="bg-white/80 border-white/40 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary pr-10"
-          iconClassName="text-muted-foreground hover:text-foreground"
-        />
 
         <Button
           type="submit"
