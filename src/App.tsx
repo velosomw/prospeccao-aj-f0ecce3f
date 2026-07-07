@@ -146,6 +146,7 @@ const App = () => (
               <Route path="/consultor/comunicacao" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorComunicacao /></ProtectedRoute>} />
               <Route path="/consultor/documentos" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorDocumentos /></ProtectedRoute>} />
               <Route path="/consultor/relatorios" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorRelatorios /></ProtectedRoute>} />
+              <Route path="/consultor/planilha-padrao-prospeccao" element={<ProtectedRoute allow={["consultor", "coordenador"]}><PlanilhaPadraoProspeccao /></ProtectedRoute>} />
               <Route path="/consultor/clientes" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorClientes /></ProtectedRoute>} />
               <Route path="/consultor/cadastro" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorCadastro /></ProtectedRoute>} />
               <Route path="/consultor/cadastro/admjudicial" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorCadastroAJ /></ProtectedRoute>} />
