@@ -154,10 +154,6 @@ const Login = () => {
                   </div>
                 </div>
 
-                <MathChallenge
-                  ref={mathRef}
-                  inputClassName="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-primary pr-10"
-                />
 
                 <Button
                   type="submit"
