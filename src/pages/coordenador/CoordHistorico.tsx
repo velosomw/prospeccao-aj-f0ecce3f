@@ -23,7 +23,7 @@ export default function CoordHistorico() {
       title="Histórico" subtitle="Todas as ações de coordenação ao longo do tempo."
       kpis={[
         { label: "Eventos (30d)", value: 412, hint: "Total",        icon: History,      tone: "blue" },
-        { label: "Publicações",   value: 47,  hint: "RMAs",         icon: CheckCircle2, tone: "green" },
+        { label: "Publicações",   value: 47,  hint: "Prospecções AJ",         icon: CheckCircle2, tone: "green" },
         { label: "Edições",       value: 198, hint: "Blocos",       icon: GitCommit,    tone: "purple" },
         { label: "Aprovações",    value: 89,  hint: "Coordenação",  icon: CheckCircle2, tone: "green" },
         { label: "Rejeições",     value: 14,  hint: "Revisão",      icon: AlertTriangle, tone: "red" },

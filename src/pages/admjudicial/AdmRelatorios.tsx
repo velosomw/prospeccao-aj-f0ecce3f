@@ -17,7 +17,7 @@ const scoreColor = (s: number) => s < 33 ? "hsl(0,84%,55%)" : s < 67 ? "hsl(38,9
 export default function AdmRelatorios() {
   return (
     <ConsultorPageShell
-      title="Relatórios" subtitle="RMAs publicados das recuperandas sob sua administração."
+      title="Relatórios" subtitle="Prospecções AJ publicados das recuperandas sob sua administração."
       kpis={[
         { label: "Publicados",    value: 47, hint: "Total geral",   icon: CheckCircle2, tone: "green" },
         { label: "Em Revisão",    value: 8,  hint: "Coordenação",   icon: Eye,          tone: "orange" },

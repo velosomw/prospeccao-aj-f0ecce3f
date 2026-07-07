@@ -193,11 +193,11 @@ const RMAParecerFinalTab = ({ tipo: tipoInicial = "rma_intelligence", titulo = "
                 value={tipo}
                 onChange={(e) => setTipo(e.target.value as DocTipo)}
                 className="text-xs border rounded-md px-2 py-1 bg-background text-foreground"
-                title="Template do RMA"
+                title="Template do Prospecção AJ"
               >
-                <option value="rma_intelligence">RMA Intelligence Engine (v3, padrão)</option>
-                <option value="rma_mensal_dip">RMA Mensal — DIP (Capital AJ)</option>
-                <option value="rma_mensal">RMA Mensal (CNJ 72 — legado)</option>
+                <option value="rma_intelligence">Prospecção AJ Intelligence Engine (v3, padrão)</option>
+                <option value="rma_mensal_dip">Prospecção AJ Mensal — DIP (Capital AJ)</option>
+                <option value="rma_mensal">Prospecção AJ Mensal (CNJ 72 — legado)</option>
               </select>
             )}
             {isFinalized && (
@@ -247,7 +247,7 @@ const RMAParecerFinalTab = ({ tipo: tipoInicial = "rma_intelligence", titulo = "
         {blockedForRecuperanda ? (
           <div className="bg-muted/30 border rounded-lg p-10 text-center">
             <Lock className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-            <p className="text-sm font-medium text-foreground mb-1">Relatório RMA Final ainda não liberado</p>
+            <p className="text-sm font-medium text-foreground mb-1">Relatório Prospecção AJ Final ainda não liberado</p>
             <p className="text-xs text-muted-foreground max-w-md mx-auto">
               O Coordenador ainda não liberou este Relatório Mensal de Atividades para visualização.
               Você será notificada assim que ele estiver disponível.
@@ -291,10 +291,10 @@ const RMAParecerFinalTab = ({ tipo: tipoInicial = "rma_intelligence", titulo = "
               {tipo === "parecer_tecnico"
                 ? <>Nenhum <b>Parecer Técnico Contábil</b> criado ainda. Inicie pela aba <b>Revisão-Parecer Técnico</b>; ao atingir 100% de seções aprovadas, o Parecer Técnico Final é emitido automaticamente em .docx.</>
                 : tipo === "rma_intelligence"
-                  ? <>Nenhum <b>RMA Intelligence Engine (v3)</b> criado ainda. O relatório é gerado por evidências em 5 blocos por capítulo (Dados extraídos · Evidências · Validação · Análise IA · Conclusão IA), com Sumário Executivo, Health Score e Risco Global. Ao atingir 70% de seções aprovadas, o RMA Final é emitido automaticamente em .docx.</>
+                  ? <>Nenhum <b>Prospecção AJ Intelligence Engine (v3)</b> criado ainda. O relatório é gerado por evidências em 5 blocos por capítulo (Dados extraídos · Evidências · Validação · Análise IA · Conclusão IA), com Sumário Executivo, Health Score e Risco Global. Ao atingir 70% de seções aprovadas, o Prospecção AJ Final é emitido automaticamente em .docx.</>
                   : tipo === "rma_mensal_dip"
-                    ? <>Nenhum <b>RMA Mensal — DIP (Capital AJ)</b> criado ainda. Use o template <b>rma_mensal_dip</b> para iniciar o documento institucional. Ao atingir 70% de seções aprovadas, o RMA Final é emitido automaticamente em .docx.</>
-                    : <>Nenhum <b>Relatório Mensal de Atividades</b> (CNJ 72/2020) criado ainda. Ao atingir 90% de seções aprovadas, o RMA Final é emitido automaticamente em .docx.</>}
+                    ? <>Nenhum <b>Prospecção AJ Mensal — DIP (Capital AJ)</b> criado ainda. Use o template <b>rma_mensal_dip</b> para iniciar o documento institucional. Ao atingir 70% de seções aprovadas, o Prospecção AJ Final é emitido automaticamente em .docx.</>
+                    : <>Nenhum <b>Relatório Mensal de Atividades</b> (CNJ 72/2020) criado ainda. Ao atingir 90% de seções aprovadas, o Prospecção AJ Final é emitido automaticamente em .docx.</>}
             </p>
             {(tipo === "rma_intelligence" || tipo === "rma_mensal_dip") && canRelease && (
               <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">

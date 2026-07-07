@@ -127,7 +127,7 @@ export default function RMASnapshotMensalTab({ companyId, periodo }: Props) {
                     <th className="py-2 px-2 font-semibold">Competência</th>
                     <th className="py-2 px-2 font-semibold">Versão</th>
                     <th className="py-2 px-2 font-semibold">Gerado em</th>
-                    <th className="py-2 px-2 font-semibold text-right">% RMA</th>
+                    <th className="py-2 px-2 font-semibold text-right">% Prospecção AJ</th>
                     <th className="py-2 px-2 font-semibold text-right">Bal/BS/DRE</th>
                     <th className="py-2 px-2 font-semibold text-right">Ativo Total</th>
                     <th className="py-2 px-2 font-semibold text-right">Receita</th>

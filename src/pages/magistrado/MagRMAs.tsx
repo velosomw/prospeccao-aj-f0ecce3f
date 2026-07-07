@@ -45,7 +45,7 @@ export default function MagRMAs() {
   const columns = [
     {
       key: "info",
-      header: "RMA",
+      header: "Prospecção AJ",
       cell: (r: typeof rows[number]) => {
         const s = statusMeta[r.status];
         return (
@@ -86,10 +86,10 @@ export default function MagRMAs() {
 
   return (
     <ConsultorPageShell
-      title="RMAs Recebidos" subtitle="Relatórios de Monitoramento das recuperandas para análise judicial."
+      title="Prospecções AJ Recebidos" subtitle="Relatórios de Monitoramento das recuperandas para análise judicial."
       search={search} onSearch={(s) => { setSearch(s); setPage(1); }}
       kpis={[
-        { label: "RMAs (30d)",    value: total, hint: "Recebidos",    icon: FileText,     tone: "blue" },
+        { label: "Prospecções AJ (30d)",    value: total, hint: "Recebidos",    icon: FileText,     tone: "blue" },
         { label: "Para Análise",  value: paraAnalise,  hint: "Pendente",     icon: AlertTriangle, tone: "orange" },
         { label: "Visualizados",  value: 0,   hint: "Lidos",        icon: Eye,          tone: "green" },
         { label: "Score Médio",   value: 0, hint: "Qualidade",    icon: Award,        tone: "blue" },
@@ -98,7 +98,7 @@ export default function MagRMAs() {
       ]}
     >
       <div className="bg-white rounded-xl border">
-        <div className="p-4 border-b"><h3 className="text-sm font-semibold">RMAs Recebidos</h3></div>
+        <div className="p-4 border-b"><h3 className="text-sm font-semibold">Prospecções AJ Recebidos</h3></div>
         {isLoading && (
           <div className="text-center text-muted-foreground py-10 text-sm">Carregando…</div>
         )}

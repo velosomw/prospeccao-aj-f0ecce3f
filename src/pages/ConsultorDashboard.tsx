@@ -133,7 +133,7 @@ export default function ConsultorDashboard() {
   const safePct = (n: number) => total > 0 ? Math.round((n / total) * 100) : 0;
 
   const kpis = [
-    { label: "RMAs Totais",       value: total,             sub: "No período atual",        icon: Briefcase,    color: "hsl(217,91%,50%)" },
+    { label: "Prospecções AJ Totais",       value: total,             sub: "No período atual",        icon: Briefcase,    color: "hsl(217,91%,50%)" },
     { label: "Em Andamento",      value: emAndamento,       sub: `${safePct(emAndamento)}% do total`, icon: Activity,     color: "hsl(258,90%,56%)" },
     { label: "Pendências Abertas",value: pendenciasAbertas, sub: `Críticas: ${criticas}`,   icon: AlertTriangle, color: "hsl(38,92%,50%)" },
     { label: "Concluídos",        value: concluidos,        sub: `${safePct(concluidos)}% do total`, icon: CheckCircle2,  color: "hsl(142,76%,36%)" },
@@ -188,7 +188,7 @@ export default function ConsultorDashboard() {
   const rmaColumns = [
     {
       key: "id",
-      header: "ID RMA",
+      header: "ID Prospecção AJ",
       cell: (r: Row) => (
         <button onClick={() => openRMA(r.companyId)} className="font-semibold text-[hsl(217,91%,50%)] hover:underline">
           {r.id}
@@ -251,7 +251,7 @@ export default function ConsultorDashboard() {
       header: <span className="text-right w-full block">Ações</span>,
       cell: (r: Row) => (
         <div className="inline-flex items-center gap-1">
-          <button onClick={() => openRMA(r.companyId)} className="p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground" title="Abrir RMA"><Eye className="w-4 h-4" /></button>
+          <button onClick={() => openRMA(r.companyId)} className="p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground" title="Abrir Prospecção AJ"><Eye className="w-4 h-4" /></button>
           <button onClick={() => openRMA(r.companyId)} className="p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground" title="Gráficos"><BarChart3 className="w-4 h-4" /></button>
           <button className="p-1.5 rounded hover:bg-muted text-muted-foreground" title="Mais ações"><MoreVertical className="w-4 h-4" /></button>
         </div>
@@ -267,14 +267,14 @@ export default function ConsultorDashboard() {
           <div className="max-w-[1500px] mx-auto flex flex-col lg:flex-row lg:items-center gap-4">
             <div className="flex-1">
               <h1 className="text-2xl font-bold text-foreground">Olá, {firstName}! <span className="inline-block">👋</span></h1>
-              <p className="text-sm text-muted-foreground">Aqui está o resumo dos seus RMAs e processos.</p>
+              <p className="text-sm text-muted-foreground">Aqui está o resumo dos seus Prospecções AJ e processos.</p>
             </div>
             <div className="lg:w-[420px] relative">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                placeholder="Buscar por empresa, ID RMA ou CNPJ..."
+                placeholder="Buscar por empresa, ID Prospecção AJ ou CNPJ..."
                 className="w-full pl-10 pr-3 py-2.5 rounded-lg bg-[hsl(220,20%,97%)] border border-border text-sm outline-none focus:border-[hsl(217,91%,50%)]"
               />
             </div>
@@ -380,7 +380,7 @@ export default function ConsultorDashboard() {
           <div className="bg-white border border-border rounded-xl p-4">
             <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <div className="text-sm font-bold text-foreground">RMAs em Andamento</div>
+                <div className="text-sm font-bold text-foreground">Prospecções AJ em Andamento</div>
                 <span className="text-xs font-bold w-6 h-6 rounded-full bg-[hsl(258,90%,96%)] text-[hsl(258,90%,40%)] flex items-center justify-center">{emAndamento}</span>
               </div>
               <div className="flex items-center gap-2">

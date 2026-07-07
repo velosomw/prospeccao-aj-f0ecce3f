@@ -93,7 +93,7 @@ export default function RmaDipKpiCards({ rmaId, companyId, scoreFinal }: Props) 
       tone: (kanitzAtual ?? 0) > 0 ? "emerald" : (kanitzAtual ?? 0) > -3 ? "amber" : "rose",
     },
     {
-      label: "Health Score RMA",
+      label: "Health Score Prospecção AJ",
       value: healthScore,
       hint: `Baseado em ${scoreFinal}%`,
       tone: ["AA", "A"].includes(healthScore) ? "emerald" : healthScore === "BB" ? "amber" : "rose",

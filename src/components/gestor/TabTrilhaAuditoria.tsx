@@ -278,7 +278,7 @@ const TabTrilhaAuditoria = () => {
           { label: "Eventos Críticos", value: criticos, icon: AlertTriangle, color: "hsl(0,80%,55%)" },
           { label: "Eventos Médios", value: medios, icon: Clock, color: "hsl(38,90%,55%)" },
           { label: "Eventos Baixos", value: baixos, icon: Eye, color: "hsl(152,70%,45%)" },
-          { label: "RMAs Rastreados", value: uniqueRmas, icon: FileCheck, color: "hsl(210,80%,55%)" },
+          { label: "Prospecções AJ Rastreados", value: uniqueRmas, icon: FileCheck, color: "hsl(210,80%,55%)" },
         ].map((kpi, i) => (
           <div key={i} className="bg-card rounded-xl border border-border p-4 relative overflow-hidden">
             <div className="absolute top-2 right-2 opacity-10">
@@ -315,7 +315,7 @@ const TabTrilhaAuditoria = () => {
 
         {/* ── Tab: Linha do Tempo ── */}
         <TabsContent value="timeline" className="mt-4 space-y-4">
-          <p className="text-sm text-muted-foreground">Reconstrução cronológica completa dos eventos por processo RMA.</p>
+          <p className="text-sm text-muted-foreground">Reconstrução cronológica completa dos eventos por processo Prospecção AJ.</p>
           {rmaTimelines.map(rmaId => {
             const rmaLogs = mockLogs.filter(l => l.rmaId === rmaId).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
             return (
@@ -421,7 +421,7 @@ const TabTrilhaAuditoria = () => {
             </Select>
             <div className="flex items-center gap-1.5 bg-background border border-border rounded-lg px-2.5 py-1.5 max-w-[140px]">
               <input
-                placeholder="RMA ID..."
+                placeholder="Prospecção AJ ID..."
                 className="bg-transparent text-xs outline-none flex-1 text-foreground placeholder:text-muted-foreground w-full"
                 value={filterRma}
                 onChange={e => setFilterRma(e.target.value)}
@@ -441,7 +441,7 @@ const TabTrilhaAuditoria = () => {
                   <TableHead className="text-xs">ID</TableHead>
                   <TableHead className="text-xs">Evento</TableHead>
                   <TableHead className="text-xs">Criticidade</TableHead>
-                  <TableHead className="text-xs">RMA</TableHead>
+                  <TableHead className="text-xs">Prospecção AJ</TableHead>
                   <TableHead className="text-xs">Usuário</TableHead>
                   <TableHead className="text-xs">Perfil</TableHead>
                   <TableHead className="text-xs">Data/Hora</TableHead>

@@ -396,7 +396,7 @@ const UserManagement = () => {
           <div className="relative">
             <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Buscar por empresa RMA (nome, ID RMA, CNPJ)..."
+              placeholder="Buscar por empresa Prospecção AJ (nome, ID Prospecção AJ, CNPJ)..."
               value={companySearch}
               onChange={(e) => setCompanySearch(e.target.value)}
               className="pl-9 pr-9"

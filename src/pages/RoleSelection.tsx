@@ -37,7 +37,7 @@ const RoleSelection = () => {
       <div className="w-full max-w-4xl">
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold text-white mb-2">Selecione seu Perfil</h1>
-          <p className="text-[hsl(220,15%,55%)]">Escolha como deseja acessar a plataforma RMA IA</p>
+          <p className="text-[hsl(220,15%,55%)]">Escolha como deseja acessar a plataforma Prospecção AJ IA</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

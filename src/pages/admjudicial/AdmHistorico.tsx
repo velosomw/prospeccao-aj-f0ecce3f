@@ -22,7 +22,7 @@ export default function AdmHistorico() {
       title="Histórico" subtitle="Trilha das ações administrativas e cobranças."
       kpis={[
         { label: "Eventos (30d)", value: 184, hint: "Total",     icon: History,      tone: "blue" },
-        { label: "Publicações",   value: 47,  hint: "RMAs",      icon: CheckCircle2, tone: "green" },
+        { label: "Publicações",   value: 47,  hint: "Prospecções AJ",      icon: CheckCircle2, tone: "green" },
         { label: "Cobranças",     value: 88,  hint: "Pendências",icon: GitCommit,    tone: "purple" },
         { label: "Aprovações",    value: 41,  hint: "Documentos",icon: CheckCircle2, tone: "green" },
         { label: "Rejeições",     value: 8,   hint: "Para refazer",icon: AlertTriangle, tone: "red" },

@@ -53,7 +53,7 @@ import AuditoriaCard from "@/components/workspace/AuditoriaCard";
 
 
 const tabConfig = [
-  { value: "status", label: "Status RMA", icon: Activity, color: "hsl(217,91%,50%)" },
+  { value: "status", label: "Status Prospecção AJ", icon: Activity, color: "hsl(217,91%,50%)" },
   { value: "processamento", label: "Processamento IA", icon: Cpu, color: "hsl(258,90%,56%)" },
   { value: "analise", label: "Registro e Cobrança", icon: Search, color: "hsl(38,92%,50%)" },
   { value: "balancete", label: "Balancete", icon: BookOpen, color: "hsl(142,76%,36%)" },
@@ -61,10 +61,10 @@ const tabConfig = [
   { value: "pnl", label: "P&L (DRE)", icon: LineChart, color: "hsl(258,90%,56%)" },
   { value: "analise-tecnica", label: "Análise Técnica", icon: GitMerge, color: "hsl(38,92%,50%)" },
   { value: "dashboards", label: "Gráficos de Auditoria", icon: BarChart3, color: "hsl(217,91%,50%)" },
-  { value: "relatorio", label: "Revisão-Relatório RMA", icon: FileCheck, color: "hsl(280,60%,50%)" },
-  { value: "evolucao", label: "Evolução RMA", icon: GitBranch, color: "hsl(170,60%,40%)" },
+  { value: "relatorio", label: "Revisão-Relatório Prospecção AJ", icon: FileCheck, color: "hsl(280,60%,50%)" },
+  { value: "evolucao", label: "Evolução Prospecção AJ", icon: GitBranch, color: "hsl(170,60%,40%)" },
   { value: "snapshot", label: "Snapshot Mensal", icon: Camera, color: "hsl(217,91%,40%)" },
-  { value: "relatorio-final", label: "Relatório RMA Final", icon: ShieldCheck, color: "hsl(142,76%,30%)" },
+  { value: "relatorio-final", label: "Relatório Prospecção AJ Final", icon: ShieldCheck, color: "hsl(142,76%,30%)" },
 ];
 
 
@@ -505,7 +505,7 @@ const RMAWorkspace = () => {
             { id: 3, label: "Auditoria", status: completos > 0 ? "em_andamento" : "pendente", hint: completos > 0 ? "Indicadores prontos" : "Aguardando processamento", percent: dadosPct },
             { id: 4, label: "Revisão Inteligente", status: incompletos + pendentes > 0 ? "pendente" : "concluido", hint: `${incompletos + pendentes} pendências`, percent: 100 - dadosPct },
             { id: 5, label: "Fechamento & Assinatura", status: dadosPct === 100 ? "em_andamento" : "bloqueado", hint: dadosPct === 100 ? "Pronto para fechar" : "Pendente" },
-            { id: 6, label: "Relatório RMA", status: dadosPct >= 80 ? "em_andamento" : "bloqueado", hint: dadosPct >= 80 ? "Pronto para gerar" : "Aguardando dados" },
+            { id: 6, label: "Relatório Prospecção AJ", status: dadosPct >= 80 ? "em_andamento" : "bloqueado", hint: dadosPct >= 80 ? "Pronto para gerar" : "Aguardando dados" },
             
           ];
 
@@ -602,7 +602,7 @@ const RMAWorkspace = () => {
                     <div className="bg-white border border-border rounded-lg p-4">
                       <div className="flex items-center justify-between mb-3">
                         <div>
-                          <h2 className="text-base font-bold text-foreground">Tópicos do RMA</h2>
+                          <h2 className="text-base font-bold text-foreground">Tópicos do Prospecção AJ</h2>
                           <p className="text-xs text-muted-foreground">Priorize as pendências que mais impactam seu relatório.</p>
                         </div>
                         <span className="text-xs text-muted-foreground">{filteredTopics.length} de {topicItems.length}</span>

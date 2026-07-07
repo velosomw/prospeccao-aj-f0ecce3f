@@ -447,7 +447,7 @@ const RMAAnaliseTab = ({ rma }: Props) => {
                 <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{rma.empresa}</p>
               </div>
               <div className="text-center">
-                <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">RMA</p>
+                <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Prospecção AJ</p>
                 <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{rma.id}</p>
               </div>
               <div className="text-center">

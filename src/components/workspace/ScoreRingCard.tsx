@@ -21,7 +21,7 @@ export default function ScoreRingCard({ score, trend = "down" }: Props) {
   return (
     <div className="bg-white border border-border rounded-lg p-4 flex flex-col">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">RMA Score (Qualidade)</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Prospecção AJ Score (Qualidade)</h3>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center py-2">
         <div className="relative w-[140px] h-[140px]">

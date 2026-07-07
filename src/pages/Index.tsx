@@ -164,7 +164,7 @@ const Index = () => {
           <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-12 min-h-[280px] sm:min-h-[380px] lg:min-h-[520px]">
             <motion.img
               src={heroIllustration.url}
-              alt="Hub central RMA com módulos de Administração Judicial, Comunicação, Segurança, Análise, Relatórios e Governança"
+              alt="Hub central Prospecção AJ com módulos de Administração Judicial, Comunicação, Segurança, Análise, Relatórios e Governança"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, ease: "easeOut" }}

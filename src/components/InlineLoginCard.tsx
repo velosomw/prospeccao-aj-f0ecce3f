@@ -77,7 +77,7 @@ const InlineLoginCard = ({ onClose }: InlineLoginCardProps) => {
 
       <div className="text-center mb-6">
         <h2 className="text-2xl font-display font-bold text-white mb-1">Bem-vindo(a)</h2>
-        <p className="text-sm text-white/80">Acesse a Plataforma RMA</p>
+        <p className="text-sm text-white/80">Acesse a Plataforma Prospecção AJ</p>
       </div>
 
       <form onSubmit={handleLogin} className="space-y-4">

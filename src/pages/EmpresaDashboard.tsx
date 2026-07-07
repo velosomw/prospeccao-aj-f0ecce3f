@@ -134,7 +134,7 @@ const EmpresaDashboard = () => {
       });
       navigate(`/rma/${company.id}`);
     } catch (e: any) {
-      toast({ title: "Erro ao ativar RMA", description: e.message, variant: "destructive" });
+      toast({ title: "Erro ao ativar Prospecção AJ", description: e.message, variant: "destructive" });
     } finally {
       setActivatingId(null);
     }
@@ -206,7 +206,7 @@ const EmpresaDashboard = () => {
   const concluidos = displayRmas.filter(r => r.status === "concluido").length;
 
   const kpis = [
-    { label: "RMAs em Andamento", value: emProcessamento, icon: Clock, color: "hsl(var(--accent))" },
+    { label: "Prospecções AJ em Andamento", value: emProcessamento, icon: Clock, color: "hsl(var(--accent))" },
     { label: "Em Análise IA", value: emProcessamento, icon: Activity, color: "hsl(var(--ring))" },
     { label: "Em Revisão", value: emRevisao, icon: AlertTriangle, color: "hsl(var(--destructive))" },
     { label: "Concluídos", value: concluidos, icon: CheckCircle2, color: "hsl(var(--primary))" },
@@ -317,12 +317,12 @@ const EmpresaDashboard = () => {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Olá, {firstName || "Empresa"}</h1>
-            <p className="text-sm text-muted-foreground">Gestão de RMAs e acompanhamento de processos</p>
+            <p className="text-sm text-muted-foreground">Gestão de Prospecções AJ e acompanhamento de processos</p>
           </div>
           <RmaCompanySearch
             companies={[...activatedCompanies, ...pendingCompanies]}
             onSelect={(c) => navigate(`/rma/${c.id}`)}
-            placeholder="Buscar por empresa, ID RMA ou CNPJ..."
+            placeholder="Buscar por empresa, ID Prospecção AJ ou CNPJ..."
             className="w-full md:w-96"
           />
         </div>
@@ -597,7 +597,7 @@ const EmpresaDashboard = () => {
               <CardContent>
                 <div className="space-y-3">
                   {recentActivities.length === 0 ? (
-                    <p className="text-xs text-muted-foreground">Sem atividades recentes registradas para os seus RMAs.</p>
+                    <p className="text-xs text-muted-foreground">Sem atividades recentes registradas para os seus Prospecções AJ.</p>
                   ) : recentActivities.map((act) => (
                     <div key={act.id} className="flex items-start gap-3">
                       <div className="w-2 h-2 rounded-full bg-accent mt-1.5 shrink-0" />
@@ -616,7 +616,7 @@ const EmpresaDashboard = () => {
           <TabsContent value="rmas" className="space-y-4">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">Lista de RMAs</CardTitle>
+                <CardTitle className="text-base">Lista de Prospecções AJ</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">
