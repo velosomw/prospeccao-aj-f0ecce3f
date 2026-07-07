@@ -129,11 +129,6 @@ const Index = () => {
               </button>
             </div>
 
-            <MathChallenge
-              ref={mathRef}
-              labelClassName="text-xs text-muted-foreground"
-              inputClassName="h-12 pr-10 bg-[hsl(220,20%,97%)] border-[hsl(220,15%,90%)] rounded-xl"
-            />
 
             <Button
               type="submit"
