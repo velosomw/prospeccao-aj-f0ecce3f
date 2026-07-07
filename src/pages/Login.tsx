@@ -17,7 +17,7 @@ const Login = () => {
   const [mode, setMode] = useState<"login" | "forgot">("login");
   const [resetSent, setResetSent] = useState(false);
   const navigate = useNavigate();
-  const mathRef = useRef<MathChallengeHandle>(null);
+  
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
