@@ -3,20 +3,41 @@ import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Upload, FileSpreadsheet, FileText, Loader2, CheckCircle2, AlertTriangle, PlayCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { uploadFile, processJobs, countByStatus } from "@/services/prospeccaoService";
+import { uploadFile, processJobs, countByStatus, listLinhas, type ProspeccaoLinha } from "@/services/prospeccaoService";
 import { Link } from "react-router-dom";
 
 interface Item { name: string; status: "enviando" | "ok" | "erro"; rows?: number; error?: string; }
 
+function pdfBadge(ai_status: string, link: string | null) {
+  if (!link) return { label: "Sem link", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" };
+  if (ai_status === "erro") return { label: "Falha PDF", bg: "hsl(0,84%,95%)", fg: "hsl(0,84%,40%)" };
+  if (ai_status === "baixado" || ai_status === "extraido") return { label: "PDF Carregado", bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" };
+  return { label: "Aguardando", bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)" };
+}
+
+function fmtMoney(n: number | null) {
+  if (n == null) return "—";
+  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+function fmtDate(s: string | null) {
+  if (!s) return "—";
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[3]}/${m[2]}/${m[1]}` : s;
+}
+
 export default function ProspeccaoUploadCard() {
   const [items, setItems] = useState<Item[]>([]);
   const [stats, setStats] = useState({ total: 0, pendentes: 0, extraidos: 0, erros: 0 });
+  const [linhas, setLinhas] = useState<ProspeccaoLinha[]>([]);
   const [processing, setProcessing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const refresh = async () => {
-    try { setStats(await countByStatus()); } catch { /* ignore */ }
+    try {
+      const [s, l] = await Promise.all([countByStatus(), listLinhas()]);
+      setStats(s); setLinhas(l);
+    } catch { /* ignore */ }
   };
   useEffect(() => { refresh(); }, []);
 
@@ -119,6 +140,83 @@ export default function ProspeccaoUploadCard() {
               <PlayCircle className="w-3.5 h-3.5" /> {processing ? "Processando..." : "Processar PDFs pendentes"}
             </button>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2">
+            <FileSpreadsheet className="w-4 h-4 text-[hsl(217,91%,50%)]" />
+            Planilha carregada ({linhas.length} linha{linhas.length === 1 ? "" : "s"})
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          {linhas.length === 0 ? (
+            <div className="p-10 text-center text-sm text-muted-foreground">
+              Nenhuma linha carregada ainda. Envie um arquivo XLSX/CSV acima.
+            </div>
+          ) : (
+            <div className="overflow-x-auto max-h-[520px]">
+              <table className="w-full text-xs border-collapse">
+                <thead className="bg-[hsl(217,91%,50%)] text-white sticky top-0">
+                  <tr>
+                    {[
+                      "ID Serviço","Nº Processo",
+                      "Parte CON - Nome","Parte CON - CPF/CNPJ","Parte CON - Qualif.",
+                      "Parte PRO - Nome","Parte PRO - CPF/CNPJ",
+                      "Denominação","Órgão/Tribunal","Esfera","Instância","UF","Município",
+                      "Área Judicial","Assunto Judicial","Ação Judicial",
+                      "Valor Pleito","Status do Processo","Dt. Início","Dt. Cad. Causa",
+                      "Processo Eletrônico?","Link Documento",
+                    ].map(h => (
+                      <th key={h} className="px-2 py-1.5 text-left font-semibold whitespace-nowrap border-r border-white/20 last:border-r-0">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {linhas.map((r, i) => {
+                    const pb = pdfBadge(r.ai_status, r.link_documento);
+                    return (
+                      <tr key={r.id} className={i % 2 === 0 ? "bg-white" : "bg-muted/20"}>
+                        <td className="px-2 py-1.5 border-b font-mono">{r.id_servico || "—"}</td>
+                        <td className="px-2 py-1.5 border-b font-mono whitespace-nowrap">{r.numero_processo || "—"}</td>
+                        <td className="px-2 py-1.5 border-b max-w-[200px]"><span className="block truncate">{r.parte_con_nome || "—"}</span></td>
+                        <td className="px-2 py-1.5 border-b font-mono">{r.parte_con_cnpj || "—"}</td>
+                        <td className="px-2 py-1.5 border-b">{r.parte_con_qualif || "—"}</td>
+                        <td className="px-2 py-1.5 border-b max-w-[200px]"><span className="block truncate">{r.parte_pro_nome || "—"}</span></td>
+                        <td className="px-2 py-1.5 border-b font-mono">{r.parte_pro_cnpj || "—"}</td>
+                        <td className="px-2 py-1.5 border-b max-w-[180px]"><span className="block truncate">{r.denominacao || "—"}</span></td>
+                        <td className="px-2 py-1.5 border-b max-w-[220px]"><span className="block truncate">{r.orgao_tribunal || "—"}</span></td>
+                        <td className="px-2 py-1.5 border-b">{r.esfera || "—"}</td>
+                        <td className="px-2 py-1.5 border-b">{r.instancia || "—"}</td>
+                        <td className="px-2 py-1.5 border-b">{r.uf || "—"}</td>
+                        <td className="px-2 py-1.5 border-b">{r.municipio || "—"}</td>
+                        <td className="px-2 py-1.5 border-b">{r.area_judicial || "—"}</td>
+                        <td className="px-2 py-1.5 border-b max-w-[220px]"><span className="block truncate">{r.assunto_judicial || "—"}</span></td>
+                        <td className="px-2 py-1.5 border-b max-w-[220px]"><span className="block truncate">{r.acao_judicial || "—"}</span></td>
+                        <td className="px-2 py-1.5 border-b whitespace-nowrap">{fmtMoney(r.valor_pleito)}</td>
+                        <td className="px-2 py-1.5 border-b">{r.status_processo || "—"}</td>
+                        <td className="px-2 py-1.5 border-b whitespace-nowrap">{fmtDate(r.dt_inicio)}</td>
+                        <td className="px-2 py-1.5 border-b whitespace-nowrap">{fmtDate(r.dt_cad_causa)}</td>
+                        <td className="px-2 py-1.5 border-b">{r.processo_eletronico == null ? "—" : r.processo_eletronico ? "SIM" : "NÃO"}</td>
+                        <td className="px-2 py-1.5 border-b">
+                          {r.link_documento ? (
+                            <a href={r.link_documento} target="_blank" rel="noreferrer" title={r.ai_error || r.link_documento}
+                               className="px-2 py-0.5 rounded text-[10px] font-semibold hover:opacity-80"
+                               style={{ background: pb.bg, color: pb.fg }}>
+                              {pb.label}
+                            </a>
+                          ) : (
+                            <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: pb.bg, color: pb.fg }}>{pb.label}</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </CardContent>
       </Card>
     </>
