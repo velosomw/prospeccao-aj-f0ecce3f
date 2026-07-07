@@ -329,7 +329,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar empresa, CNPJ, RMA-ID..."
+                placeholder="Buscar empresa, CNPJ, Prospecção AJ-ID..."
                 className="pl-9"
               />
             </div>
@@ -372,9 +372,9 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 border-b">
                   <tr>
-                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">RMA · Empresa</th>
+                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospecção AJ · Empresa</th>
                     <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">CNPJ</th>
-                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">RMAs Apurados</th>
+                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospecções AJ Apurados</th>
                     <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Último Período</th>
                     <th className="text-right px-4 py-3 text-sm font-semibold text-muted-foreground">Ações</th>
                   </tr>
@@ -472,7 +472,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
             {/* KPIs da empresa */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="p-3 rounded-lg border border-border/60 bg-muted/20">
-                <p className="text-xs text-muted-foreground">RMAs Apurados</p>
+                <p className="text-xs text-muted-foreground">Prospecções AJ Apurados</p>
                 <p className="text-2xl font-bold text-foreground">{companyKpis.apurados}</p>
               </div>
               <div className="p-3 rounded-lg border border-border/60 bg-muted/20">

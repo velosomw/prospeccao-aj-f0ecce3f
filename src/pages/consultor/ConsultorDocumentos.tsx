@@ -30,7 +30,7 @@ export default function ConsultorDocumentos() {
       title="Documentos" subtitle="Acervo digital de todos os arquivos processados pela IA."
       search={search} onSearch={setSearch}
       kpis={[
-        { label: "Total Indexado", value: 1842, hint: "Em todos RMAs", icon: FolderOpen,    tone: "blue" },
+        { label: "Total Indexado", value: 1842, hint: "Em todos Prospecções AJ", icon: FolderOpen,    tone: "blue" },
         { label: "Validados IA",   value: 1670, hint: "90.6%",         icon: CheckCircle2,  tone: "green" },
         { label: "Incompletos",    value: 148,  hint: "Necessita revisão", icon: AlertTriangle, tone: "orange" },
         { label: "Vazios",         value: 24,   hint: "Aguardando upload", icon: AlertTriangle, tone: "red" },
@@ -48,7 +48,7 @@ export default function ConsultorDocumentos() {
             <thead className="bg-muted/40 text-xs text-muted-foreground uppercase tracking-wider">
               <tr>
                 <th className="text-left px-4 py-2.5">Documento</th>
-                <th className="text-left px-4 py-2.5">RMA</th>
+                <th className="text-left px-4 py-2.5">Prospecção AJ</th>
                 <th className="text-left px-4 py-2.5">Empresa</th>
                 <th className="text-left px-4 py-2.5">Pasta</th>
                 <th className="text-left px-4 py-2.5">Status</th>

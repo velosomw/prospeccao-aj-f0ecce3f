@@ -50,7 +50,7 @@ export default function CoordEmpresas() {
       ),
     },
     { key: "cnpj", header: "CNPJ", cell: (e: typeof rows[number]) => <span className="font-mono text-xs text-muted-foreground">{e.cnpj}</span> },
-    { key: "rmaId", header: "RMA ID", cell: (e: typeof rows[number]) => <span className="font-mono text-xs text-muted-foreground">{e.rmaId}</span> },
+    { key: "rmaId", header: "Prospecção AJ ID", cell: (e: typeof rows[number]) => <span className="font-mono text-xs text-muted-foreground">{e.rmaId}</span> },
     {
       key: "status",
       header: "Status",
@@ -68,7 +68,7 @@ export default function CoordEmpresas() {
       search={search} onSearch={(s) => { setSearch(s); setPage(1); }}
       kpis={[
         { label: "Empresas",      value: total,       hint: "Cadastradas",  icon: Building2,    tone: "blue" },
-        { label: "RMAs Totais",   value: total,       hint: "Acumulado",    icon: Briefcase,    tone: "purple" },
+        { label: "Prospecções AJ Totais",   value: total,       hint: "Acumulado",    icon: Briefcase,    tone: "purple" },
         { label: "Ativas",        value: ativas,      hint: "Em operação",  icon: TrendingUp,   tone: "green" },
         { label: "Pend. Ativação",value: pendentes,   hint: "Aguardando",   icon: AlertTriangle, tone: "orange" },
         { label: "Inativas",      value: inativas,    hint: "Desabilitadas",icon: AlertTriangle, tone: "red" },

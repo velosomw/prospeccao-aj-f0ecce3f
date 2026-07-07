@@ -98,12 +98,12 @@ const LiberarRMA = () => {
         released_to_role: targetRole,
         notes: notes || undefined,
       });
-      toast({ title: "RMA liberado com sucesso" });
+      toast({ title: "Prospecção AJ liberado com sucesso" });
       setNotes("");
       setTargetUserId("");
       load();
     } catch (e: any) {
-      toast({ title: "Erro ao liberar RMA", description: e.message, variant: "destructive" });
+      toast({ title: "Erro ao liberar Prospecção AJ", description: e.message, variant: "destructive" });
     }
   };
 
@@ -298,7 +298,7 @@ const LiberarRMA = () => {
                     <table className="w-full text-sm">
                       <thead className="bg-muted/50 border-b">
                         <tr>
-                          <th className="text-left px-3 py-2 font-medium text-muted-foreground">Empresa RMA</th>
+                          <th className="text-left px-3 py-2 font-medium text-muted-foreground">Empresa Prospecção AJ</th>
                           <th className="text-left px-3 py-2 font-medium text-muted-foreground">Período</th>
                           <th className="text-left px-3 py-2 font-medium text-muted-foreground">Destinatário</th>
                           <th className="text-left px-3 py-2 font-medium text-muted-foreground">Perfil</th>
@@ -369,7 +369,7 @@ const LiberarRMA = () => {
 
           <TabsContent value="movimentacoes">
             <RmaMovementHistory
-              title="Movimentações RMA"
+              title="Movimentações Prospecção AJ"
               description="Inclui atribuições, movimentações, desvínculos e liberações para Magistrado/Recuperanda."
             />
           </TabsContent>

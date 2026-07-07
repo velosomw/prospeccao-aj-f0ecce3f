@@ -178,7 +178,7 @@ export default function RelatoriosContabeis() {
               <div className="relative">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <Input
-                  placeholder="Buscar por nome ou RMA..."
+                  placeholder="Buscar por nome ou Prospecção AJ..."
                   value={filter}
                   onChange={e => setFilter(e.target.value)}
                   className="pl-9"
@@ -365,7 +365,7 @@ export default function RelatoriosContabeis() {
               <CardContent className="space-y-2 text-sm">
                 <div><b>Empresa:</b> {selected.name}</div>
                 {selected.cnpj && <div><b>CNPJ:</b> {selected.cnpj}</div>}
-                <div><b>RMA:</b> {selected.rma_id || "—"}</div>
+                <div><b>Prospecção AJ:</b> {selected.rma_id || "—"}</div>
                 <div><b>Agregação:</b> {AGREG_LABEL[agregacao]}</div>
                 <div><b>Períodos disponíveis:</b> {periodKeys.length}</div>
                 <div><b>Intervalo:</b> {fromKey || "—"} → {toKey || "—"}</div>

@@ -57,7 +57,7 @@ const timelineSteps = [
   { id: 2, label: "Carregamento", icon: Upload },
   { id: 3, label: "Processamento", icon: Loader2 },
   { id: 4, label: "Análise Técnica", icon: FileSearch },
-  { id: 5, label: "Relatório RMA Final", icon: BookOpen },
+  { id: 5, label: "Relatório Prospecção AJ Final", icon: BookOpen },
 ];
 
 const StepTimeline = ({ currentStep }: { currentStep: number }) => (

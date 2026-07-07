@@ -21,16 +21,16 @@ import { RMA_TOPICS } from "@/data/rmaTopics";
 
 // As 10 abas do workspace RMA — espelho do RMAWorkspace
 const WORKSPACE_TABS = [
-  { key: "status", label: "Status RMA" },
+  { key: "status", label: "Status Prospecção AJ" },
   { key: "processamento", label: "Processamento IA" },
   { key: "balancete", label: "Balancete" },
   { key: "analise", label: "Análise Técnica" },
   { key: "evolucao", label: "Evolução" },
   { key: "dashboards", label: "Dashboards" },
   { key: "parecer", label: "Revisão-Parecer Técnico" },
-  { key: "relatorio", label: "Revisão-Relatório RMA" },
+  { key: "relatorio", label: "Revisão-Relatório Prospecção AJ" },
   { key: "parecer-final", label: "Parecer Técnico Final" },
-  { key: "relatorio-final", label: "Relatório RMA Final" },
+  { key: "relatorio-final", label: "Relatório Prospecção AJ Final" },
 ];
 
 type ProfileLite = { user_id: string; full_name: string; email: string };
@@ -152,7 +152,7 @@ const RMA360Panel = ({ company, onClose }: Props) => {
         {/* Progresso geral */}
         <div className="bg-card border rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-semibold text-foreground">Progresso geral do RMA</p>
+            <p className="text-sm font-semibold text-foreground">Progresso geral do Prospecção AJ</p>
             <span className="text-sm font-bold text-[hsl(217,91%,50%)]">{overallProgress}%</span>
           </div>
           <Progress value={overallProgress} className="h-2" />
@@ -299,7 +299,7 @@ const RMA360Panel = ({ company, onClose }: Props) => {
         </div>
 
         {loading && (
-          <p className="text-xs text-muted-foreground text-center">Carregando dados do RMA...</p>
+          <p className="text-xs text-muted-foreground text-center">Carregando dados do Prospecção AJ...</p>
         )}
       </CardContent>
     </Card>

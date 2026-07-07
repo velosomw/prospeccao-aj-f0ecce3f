@@ -91,7 +91,7 @@ export default function TopicFilesPanel({ rmaId, topicNumber }: Props) {
   }, [rows, topicNumber]);
 
   if (!rmaId) {
-    return <div className="text-xs text-muted-foreground px-3 py-3">RMA não definido.</div>;
+    return <div className="text-xs text-muted-foreground px-3 py-3">Prospecção AJ não definido.</div>;
   }
 
   return (

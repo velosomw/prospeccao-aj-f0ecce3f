@@ -342,7 +342,7 @@ const RMABalanceteTab = ({ initialSubtab, periodo }: RMABalanceteTabProps = {}) 
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               <Select value={String(year)} disabled>
-                <SelectTrigger className="h-9 w-24 opacity-90 cursor-not-allowed" title="Período definido no cadastro do RMA">
+                <SelectTrigger className="h-9 w-24 opacity-90 cursor-not-allowed" title="Período definido no cadastro do Prospecção AJ">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -350,7 +350,7 @@ const RMABalanceteTab = ({ initialSubtab, periodo }: RMABalanceteTabProps = {}) 
                 </SelectContent>
               </Select>
               <Select value={String(month)} disabled>
-                <SelectTrigger className="h-9 w-32 opacity-90 cursor-not-allowed" title="Período definido no cadastro do RMA">
+                <SelectTrigger className="h-9 w-32 opacity-90 cursor-not-allowed" title="Período definido no cadastro do Prospecção AJ">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -411,7 +411,7 @@ const RMABalanceteTab = ({ initialSubtab, periodo }: RMABalanceteTabProps = {}) 
             </CardHeader>
             <CardContent className="space-y-3">
               {!run ? (
-                <p className="text-sm text-muted-foreground">Nenhum run para este período. Clique em <b>Atualizar Status IA</b> na aba <b>Status RMA</b>.</p>
+                <p className="text-sm text-muted-foreground">Nenhum run para este período. Clique em <b>Atualizar Status IA</b> na aba <b>Status Prospecção AJ</b>.</p>
               ) : (
                 <>
                   <Progress value={run.progress} className="h-2" />

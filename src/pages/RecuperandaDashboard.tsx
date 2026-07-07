@@ -22,14 +22,14 @@ export default function RecuperandaDashboard() {
         { label: "Documentos",      value: 60,   icon: FileText,      tone: "blue"   },
         { label: "Pendências",      value: 14,   icon: AlertTriangle, tone: "orange", to: "/recuperanda/pendencias" },
         { label: "Próximo Prazo",   value: "8d", icon: Calendar,      tone: "red"    },
-        { label: "RMAs Publicados", value: "04", icon: CheckCircle2,  tone: "green"  },
+        { label: "Prospecções AJ Publicados", value: "04", icon: CheckCircle2,  tone: "green"  },
         { label: "Uploads (30d)",   value: 47,   icon: Upload,        tone: "purple" },
       ]}
       avisos={[
         { icon: AlertTriangle, tone: "red",    title: "Envie o Balancete de Maio/2026", sub: "Vencimento em 8 dias", time: "Hoje" },
         { icon: Clock,         tone: "orange", title: "DRE 04/2026 aguardando revisão", sub: "Status: pendente assinatura", time: "Ontem" },
         { icon: MessageCircle, tone: "blue",   title: "Nova mensagem do AJ",            sub: "Sobre conciliação bancária", time: "Ontem" },
-        { icon: CheckCircle2,  tone: "green",  title: "RMA 03/2026 aprovado",           sub: "Publicado no processo", time: "12/06" },
+        { icon: CheckCircle2,  tone: "green",  title: "Prospecção AJ 03/2026 aprovado",           sub: "Publicado no processo", time: "12/06" },
       ]}
     />
   );

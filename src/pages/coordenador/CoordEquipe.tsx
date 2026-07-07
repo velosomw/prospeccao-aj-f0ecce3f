@@ -20,7 +20,7 @@ export default function CoordEquipe() {
       title="Equipe" subtitle="Gestão de consultores, carga e performance individual."
       kpis={[
         { label: "Consultores",   value: team.length, hint: "Ativos",         icon: Users,        tone: "blue" },
-        { label: "RMAs Atribuídos", value: totalRMAs, hint: "Total da equipe",icon: Briefcase,    tone: "purple" },
+        { label: "Prospecções AJ Atribuídos", value: totalRMAs, hint: "Total da equipe",icon: Briefcase,    tone: "purple" },
         { label: "Score Médio",   value: avgScore,    hint: "Qualidade",      icon: Award,        tone: "green" },
         { label: "SLA Médio",     value: `${avgSLA}%`, hint: "Cumprimento",    icon: Activity,     tone: "blue" },
         { label: "Sobrecarga",    value: team.filter(t => t.status === "Sobrecarga").length, hint: "Atenção", icon: AlertTriangle, tone: "orange" },
@@ -38,7 +38,7 @@ export default function CoordEquipe() {
           <thead className="bg-muted/40 text-xs text-muted-foreground uppercase tracking-wider">
             <tr>
               <th className="text-left px-4 py-2.5">Consultor</th>
-              <th className="text-left px-4 py-2.5">RMAs</th>
+              <th className="text-left px-4 py-2.5">Prospecções AJ</th>
               <th className="text-left px-4 py-2.5">Score</th>
               <th className="text-left px-4 py-2.5">SLA</th>
               <th className="text-left px-4 py-2.5">Status</th>

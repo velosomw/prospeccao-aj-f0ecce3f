@@ -11,7 +11,7 @@ export default function AdmjudicialDashboard() {
       subtitle="Painel das recuperandas sob sua administração judicial."
       cards={[
         { label: "Recuperandas", desc: "Empresas sob sua administração.",       icon: Building2,     to: "/admjudicial/recuperandas", tone: "blue"   },
-        { label: "RMAs",         desc: "Relatórios mensais em monitoramento.",  icon: Briefcase,     to: "/admjudicial/rmas",         tone: "purple" },
+        { label: "Prospecções AJ",         desc: "Relatórios mensais em monitoramento.",  icon: Briefcase,     to: "/admjudicial/rmas",         tone: "purple" },
         { label: "Pendências",   desc: "Documentos aguardando recuperandas.",   icon: AlertTriangle, to: "/admjudicial/pendencias",   tone: "red"    },
         { label: "Relatórios",   desc: "Consolidados e exportações.",           icon: FileBarChart,  to: "/admjudicial/relatorios",   tone: "green"  },
         { label: "Histórico",    desc: "Linha do tempo das ações realizadas.",  icon: History,       to: "/admjudicial/historico",    tone: "teal"   },
@@ -19,7 +19,7 @@ export default function AdmjudicialDashboard() {
       ]}
       summary={[
         { label: "Recuperandas",      value: 16,    icon: Building2,     tone: "blue",   to: "/admjudicial/recuperandas" },
-        { label: "RMAs Vigentes",     value: 47,    icon: Briefcase,     tone: "purple", to: "/admjudicial/rmas" },
+        { label: "Prospecções AJ Vigentes",     value: 47,    icon: Briefcase,     tone: "purple", to: "/admjudicial/rmas" },
         { label: "Pendências",        value: 23,    icon: AlertTriangle, tone: "orange", to: "/admjudicial/pendencias" },
         { label: "Críticas",          value: "06",  icon: AlertTriangle, tone: "red"    },
         { label: "Concluídos (30d)",  value: 12,    icon: CheckCircle2,  tone: "green",  to: "/admjudicial/historico" },
@@ -28,7 +28,7 @@ export default function AdmjudicialDashboard() {
       avisos={[
         { icon: AlertTriangle, tone: "red",    title: "MOVAG com score crítico (41)", sub: "Requer plano de ação imediato", time: "Hoje" },
         { icon: Clock,         tone: "orange", title: "TECNOMAX com 5 pendências",    sub: "Balancete, DRE e conciliação", time: "10:30" },
-        { icon: FileText,      tone: "blue",   title: "Novo RMA para revisão",        sub: "DIPLOMATA - Comp. 05/2026", time: "Ontem" },
+        { icon: FileText,      tone: "blue",   title: "Novo Prospecção AJ para revisão",        sub: "DIPLOMATA - Comp. 05/2026", time: "Ontem" },
         { icon: CheckCircle2,  tone: "green",  title: "BENTOIA finalizou ciclo",      sub: "RMA aprovado e publicado", time: "Ontem" },
       ]}
     />

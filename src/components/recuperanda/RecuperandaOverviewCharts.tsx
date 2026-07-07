@@ -121,7 +121,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
               <Layers className="w-4 h-4" style={{ color: COLOR_GREEN }} />
             </div>
             <p className="text-2xl font-bold text-foreground mt-1">{avgPct}%</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">Média dos RMAs</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Média dos Prospecções AJ</p>
           </CardContent>
         </Card>
         <Card className="border-l-4" style={{ borderLeftColor: COLOR_ORANGE }}>
@@ -131,7 +131,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
               <Activity className="w-4 h-4" style={{ color: COLOR_ORANGE }} />
             </div>
             <p className="text-2xl font-bold text-foreground mt-1">{emAnalise}</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">RMAs sendo processados</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Prospecções AJ sendo processados</p>
           </CardContent>
         </Card>
         <Card className="border-l-4" style={{ borderLeftColor: COLOR_PURPLE }}>
@@ -141,7 +141,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
               <PieIcon className="w-4 h-4" style={{ color: COLOR_PURPLE }} />
             </div>
             <p className="text-2xl font-bold text-foreground mt-1">{concluidos}</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">RMAs entregues</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Prospecções AJ entregues</p>
           </CardContent>
         </Card>
       </div>
@@ -202,7 +202,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
             <CardTitle className="text-base flex items-center gap-2">
               <TrendingUp className="w-4 h-4" style={{ color: COLOR_GREEN }} /> Cadastros de RMA — 6 meses
             </CardTitle>
-            <CardDescription>Evolução mensal dos novos RMAs</CardDescription>
+            <CardDescription>Evolução mensal dos novos Prospecções AJ</CardDescription>
           </CardHeader>
           <CardContent className="h-[260px]">
             <ResponsiveContainer width="100%" height="100%">

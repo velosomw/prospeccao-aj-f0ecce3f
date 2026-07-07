@@ -56,7 +56,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Planilha de Carga",  to: "/dashboard/relatorios",  icon: FileBarChart },
         { label: "Planilha de Carta", to: "/dashboard/empresas",    icon: Building2 },
         { label: "Avisos",      to: "/dashboard/avisos",      icon: Megaphone, badge: 5 },
-        { label: "Cadastros",   to: "/cadastro-rma",          icon: FilePlus },
+        { label: "Cadastros",   to: "/cadastro-prospeccao-aj", icon: FilePlus },
         { label: "Relatórios & Cartas", to: "/relatorios-contabeis", icon: FileBarChart },
         { label: "Aprovações",  to: "/dashboard/aprovacoes",  icon: CheckCircle2, badge: 9 },
         { label: "Equipe",      to: "/dashboard/equipe",      icon: Users },
@@ -109,7 +109,7 @@ const buildNav = (role: string | null): NavGroup[] => {
       label: "Jurisdição",
       items: [
         { label: "Processos",       to: "/magistrado/processos", icon: Gavel },
-        { label: "RMAs Recebidos",  to: "/magistrado/rmas",      icon: FileText, badge: 7 },
+        { label: "Prospecções AJ Recebidas",  to: "/magistrado/prospeccoes-aj",      icon: FileText, badge: 7 },
         { label: "Recuperandas",    to: "/magistrado/empresas",  icon: Building2 },
         { label: "Decisões",        to: "/magistrado/decisoes",  icon: Scale },
         { label: "Histórico",       to: "/magistrado/historico", icon: History },
@@ -136,7 +136,7 @@ const buildNav = (role: string | null): NavGroup[] => {
       label: "Administração",
       items: [
         { label: "Recuperandas", to: "/admjudicial/recuperandas", icon: Building2 },
-        { label: "RMAs",         to: "/admjudicial/rmas",         icon: Briefcase },
+        { label: "Prospecções AJ", to: "/admjudicial/prospeccoes-aj",         icon: Briefcase },
         { label: "Pendências",   to: "/admjudicial/pendencias",   icon: AlertTriangle, badge: 23 },
         { label: "Planilha de Carga",   to: "/admjudicial/relatorios",   icon: FileBarChart },
         { label: "Histórico",    to: "/admjudicial/historico",    icon: History },
@@ -208,7 +208,7 @@ export default function AppSidebar() {
             </div>
             {!collapsed && (
               <div className="leading-tight">
-                <div className={`text-base font-bold tracking-wide ${txtStrong}`}>RMA</div>
+                <div className={`text-base font-bold tracking-wide ${txtStrong}`}>Prospecção AJ</div>
               </div>
             )}
           </div>

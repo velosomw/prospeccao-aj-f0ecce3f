@@ -133,7 +133,7 @@ export default function StageRelatorioRMA({
 
   async function runPipeline(mode: "gerar" | "atualizar") {
     if (!doc) {
-      toast({ title: "Documento RMA não inicializado", variant: "destructive" });
+      toast({ title: "Documento Prospecção AJ não inicializado", variant: "destructive" });
       return;
     }
     setBusy(mode);
@@ -196,7 +196,7 @@ export default function StageRelatorioRMA({
               <FileText className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-foreground">Relatório DIP — RMA</h2>
+              <h2 className="text-lg font-bold text-foreground">Relatório DIP — Prospecção AJ</h2>
               <p className="text-sm text-muted-foreground max-w-2xl">
                 Relatório Mensal de Atividade (CNJ 72/2020) — objeto vivo de consolidação processual.
                 Dados extraídos são continuamente incorporados, revisados e consolidados até a versão
@@ -322,7 +322,7 @@ export default function StageRelatorioRMA({
           </div>
         ) : (
           <iframe
-            title="Relatório RMA"
+            title="Relatório Prospecção AJ"
             src={`https://docs.google.com/viewer?url=${encodeURIComponent(
               doc!.arquivo_final_url!,
             )}&embedded=true`}

@@ -123,7 +123,7 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de RMA", de
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar por empresa, ID RMA, consultor ou responsável..."
+              placeholder="Buscar por empresa, ID Prospecção AJ, consultor ou responsável..."
               className="pl-9"
             />
           </div>
@@ -162,7 +162,7 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de RMA", de
                 <tr>
                   <th className="text-left px-3 py-2 font-medium text-muted-foreground">Data</th>
                   <th className="text-left px-3 py-2 font-medium text-muted-foreground">Ação</th>
-                  <th className="text-left px-3 py-2 font-medium text-muted-foreground">Empresa RMA</th>
+                  <th className="text-left px-3 py-2 font-medium text-muted-foreground">Empresa Prospecção AJ</th>
                   <th className="text-left px-3 py-2 font-medium text-muted-foreground">Movimento</th>
                   <th className="text-left px-3 py-2 font-medium text-muted-foreground">Responsável</th>
                 </tr>
