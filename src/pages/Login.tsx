@@ -30,7 +30,6 @@ const Login = () => {
 
       if (error) {
         toast.error("Credenciais inválidas. Verifique e-mail e senha.");
-        mathRef.current?.reset();
         setLoading(false);
         return;
       }
