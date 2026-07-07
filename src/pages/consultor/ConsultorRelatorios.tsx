@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 import { listLinhas, countByStatus, processJobs, type ProspeccaoLinha } from "@/services/prospeccaoService";
 import { useToast } from "@/hooks/use-toast";
-import { FileSpreadsheet, Clock, CheckCircle2, AlertTriangle, RefreshCw, PlayCircle, ExternalLink } from "lucide-react";
+import { FileSpreadsheet, Clock, CheckCircle2, AlertTriangle, RefreshCw, PlayCircle } from "lucide-react";
 
 const statusMeta: Record<string, { label: string; bg: string; fg: string }> = {
   pendente: { label: "Pendente", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" },
@@ -11,6 +11,15 @@ const statusMeta: Record<string, { label: string; bg: string; fg: string }> = {
   erro:     { label: "Erro",     bg: "hsl(0,84%,95%)",   fg: "hsl(0,84%,40%)"   },
   sem_link: { label: "Sem link", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" },
 };
+
+// Rótulo exibido na coluna "Link Documento" — indica se o PDF foi carregado
+// (baixado ou extraído com sucesso) ou se houve falha ao obtê-lo.
+function pdfBadge(ai_status: string, link: string | null) {
+  if (!link) return { label: "Sem link", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" };
+  if (ai_status === "erro") return { label: "Falha PDF", bg: "hsl(0,84%,95%)", fg: "hsl(0,84%,40%)" };
+  if (ai_status === "baixado" || ai_status === "extraido") return { label: "PDF Carregado", bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" };
+  return { label: "Aguardando", bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)" };
+}
 
 function fmtMoney(n: number | null) {
   if (n == null) return "—";
