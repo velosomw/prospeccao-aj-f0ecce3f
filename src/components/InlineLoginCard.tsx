@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, X } from "lucide-react";
@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import MathChallenge, { type MathChallengeHandle } from "@/components/MathChallenge";
 
 interface InlineLoginCardProps {
   onClose?: () => void;
@@ -19,17 +18,9 @@ const InlineLoginCard = ({ onClose }: InlineLoginCardProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const mathRef = useRef<MathChallengeHandle>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!mathRef.current?.validate()) {
-      toast.error("Verificação matemática incorreta. Tente novamente.");
-      mathRef.current?.reset();
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -37,7 +28,6 @@ const InlineLoginCard = ({ onClose }: InlineLoginCardProps) => {
 
       if (error) {
         toast.error("Credenciais inválidas. Verifique e-mail e senha.");
-        mathRef.current?.reset();
         setLoading(false);
         return;
       }
@@ -124,12 +114,6 @@ const InlineLoginCard = ({ onClose }: InlineLoginCardProps) => {
           </div>
         </div>
 
-        <MathChallenge
-          ref={mathRef}
-          labelClassName="text-white/90 text-sm"
-          inputClassName="bg-white/80 border-white/40 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary pr-10"
-          iconClassName="text-muted-foreground hover:text-foreground"
-        />
 
         <Button
           type="submit"

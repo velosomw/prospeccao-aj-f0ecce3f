@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import logoBex from "@/assets/logo-brasil-expert-full.jpeg";
 import heroIllustration from "@/assets/rma-isometric-hub.png";
-import MathChallenge, { type MathChallengeHandle } from "@/components/MathChallenge";
+
 
 const trustItems = [
   { icon: Shield, title: "Segurança", desc: "Proteção de dados e conformidade com a LGPD", color: "hsl(142,71%,45%)" },
@@ -23,21 +23,14 @@ const Index = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const mathRef = useRef<MathChallengeHandle>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!mathRef.current?.validate()) {
-      toast.error("Verificação matemática incorreta. Tente novamente.");
-      mathRef.current?.reset();
-      return;
-    }
     setLoading(true);
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         toast.error("Credenciais inválidas. Verifique e-mail e senha.");
-        mathRef.current?.reset();
         setLoading(false);
         return;
       }
@@ -136,11 +129,6 @@ const Index = () => {
               </button>
             </div>
 
-            <MathChallenge
-              ref={mathRef}
-              labelClassName="text-xs text-muted-foreground"
-              inputClassName="h-12 pr-10 bg-[hsl(220,20%,97%)] border-[hsl(220,15%,90%)] rounded-xl"
-            />
 
             <Button
               type="submit"

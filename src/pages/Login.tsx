@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import logoBex from "@/assets/logo-bex.png";
-import MathChallenge, { type MathChallengeHandle } from "@/components/MathChallenge";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -17,16 +17,11 @@ const Login = () => {
   const [mode, setMode] = useState<"login" | "forgot">("login");
   const [resetSent, setResetSent] = useState(false);
   const navigate = useNavigate();
-  const mathRef = useRef<MathChallengeHandle>(null);
+  
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!mathRef.current?.validate()) {
-      toast.error("Verificação matemática incorreta. Tente novamente.");
-      mathRef.current?.reset();
-      return;
-    }
 
     setLoading(true);
 
@@ -35,7 +30,6 @@ const Login = () => {
 
       if (error) {
         toast.error("Credenciais inválidas. Verifique e-mail e senha.");
-        mathRef.current?.reset();
         setLoading(false);
         return;
       }
@@ -160,10 +154,6 @@ const Login = () => {
                   </div>
                 </div>
 
-                <MathChallenge
-                  ref={mathRef}
-                  inputClassName="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-primary pr-10"
-                />
 
                 <Button
                   type="submit"
