@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import logoBex from "@/assets/logo-brasil-expert-full.jpeg";
-import heroIllustration from "@/assets/hero-rma-global.png.asset.json";
+import heroIllustration from "@/assets/hero-prospeccao-aj.jpg.asset.json";
 
 
 const trustItems = [
