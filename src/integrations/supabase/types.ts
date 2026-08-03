@@ -2746,6 +2746,51 @@ export type Database = {
         }
         Relationships: []
       }
+      letters: {
+        Row: {
+          aj_id: string
+          created_at: string | null
+          id: string
+          printed_at: string | null
+          process_id: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          aj_id: string
+          created_at?: string | null
+          id?: string
+          printed_at?: string | null
+          process_id: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          aj_id?: string
+          created_at?: string | null
+          id?: string
+          printed_at?: string | null
+          process_id?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "letters_aj_id_fkey"
+            columns: ["aj_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "letters_aj_id_fkey"
+            columns: ["aj_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_cadastro_aj"
+            referencedColumns: ["source_id"]
+          },
+        ]
+      }
       llm_response_cache: {
         Row: {
           created_at: string
@@ -4439,13 +4484,6 @@ export type Database = {
             columns: ["linha_id"]
             isOneToOne: false
             referencedRelation: "vw_export_aj_nomeados"
-            referencedColumns: ["source_id"]
-          },
-          {
-            foreignKeyName: "prospeccao_pdf_jobs_linha_id_fkey"
-            columns: ["linha_id"]
-            isOneToOne: false
-            referencedRelation: "vw_export_cartas_aj"
             referencedColumns: ["source_id"]
           },
         ]
