@@ -37,7 +37,7 @@ export const databaseExportService = {
 
     const { data: runs, error: runsError } = await supabase
       .from('export_runs')
-      .select('export_definition_id, status, finished_at, record_count, requested_by')
+      .select('id, export_definition_id, status, finished_at, record_count, requested_by')
       .order('created_at', { ascending: false });
 
     if (runsError) throw runsError;
