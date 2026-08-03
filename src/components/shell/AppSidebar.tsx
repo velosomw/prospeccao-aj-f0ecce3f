@@ -84,6 +84,7 @@ const buildNav = (role: string | null): NavGroup[] => {
           { label: "Administrador Judicial", to: "/consultor/cadastro/admjudicial" },
           { label: "Recuperandas",            to: "/consultor/cadastro/recuperandas" },
           { label: "Magistrado",              to: "/consultor/cadastro/magistrados" },
+          { label: "Técnicos",                to: "/consultor/cadastro/tecnicos" },
         ] },
         { label: "Relatórios & Cartas", to: "/relatorios-contabeis", icon: FileBarChart },
         { label: "Configurações", to: "/consultor/configuracoes", icon: Settings },
