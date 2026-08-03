@@ -129,7 +129,24 @@ Deno.serve(async (req) => {
     if (!upResp.ok) {
       throw new Error(`Upload bucket falhou: ${upResp.status} ${await upResp.text()}`);
     }
-    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${learningPath}`;
+    // Bucket privado: gera URL assinada temporária (2h) para OCR/visualização
+    const signResp = await fetch(
+      `${SUPABASE_URL}/storage/v1/object/sign/${BUCKET}/${learningPath}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${SERVICE_KEY}`,
+          apikey: SERVICE_KEY,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ expiresIn: 60 * 60 * 2 }),
+      },
+    );
+    if (!signResp.ok) {
+      throw new Error(`Falha ao assinar URL: ${signResp.status} ${await signResp.text()}`);
+    }
+    const signJson = await signResp.json();
+    const publicUrl = `${SUPABASE_URL}/storage/v1${signJson.signedURL ?? signJson.signedUrl}`;
 
     // 4) Dispara OCR (sync se possível, ou async)
     let ocrInfo: any = { skipped: true };

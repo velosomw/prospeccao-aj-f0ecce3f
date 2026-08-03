@@ -85,11 +85,17 @@ export async function uploadLearningFile(file: File): Promise<UploadedLearningFi
   });
   if (error) throw new Error(`Falha ao enviar arquivo: ${error.message}`);
 
-  const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(path);
+  // Bucket privado: usamos URL assinada temporária (2h) em vez de URL pública.
+  const { data: signed, error: signErr } = await supabase.storage
+    .from(BUCKET)
+    .createSignedUrl(path, 60 * 60 * 2);
+  if (signErr || !signed?.signedUrl) {
+    throw new Error(`Falha ao gerar URL do arquivo: ${signErr?.message ?? "desconhecido"}`);
+  }
 
   return {
     path,
-    publicUrl: pub.publicUrl,
+    publicUrl: signed.signedUrl,
     fileName: file.name,
     mimeType: file.type || "application/octet-stream",
     kind,
