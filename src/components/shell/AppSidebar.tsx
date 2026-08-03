@@ -5,7 +5,7 @@ import {
   LayoutDashboard, FileText, Upload, Download,
   History, Activity, Settings, Users,
   Briefcase, AlertTriangle, FolderOpen, FileBarChart, FileSpreadsheet, CheckCircle2,
-  Gavel, MessageCircle, Calendar, Megaphone, FilePlus, Sun, Moon, Home, Bell,
+  Gavel, MessageCircle, Calendar, Megaphone, FilePlus, Sun, Moon, Home, Bell, ChevronDown, ChevronRight,
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent,
@@ -159,6 +159,11 @@ export default function AppSidebar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const groups = buildNav(role);
+  const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
+
+  const toggleSubmenu = (label: string) => {
+    setOpenSubmenus(prev => ({ ...prev, [label]: !prev[label] }));
+  };
 
   const [contrast, setContrast] = useState<"dark" | "light">(() => {
     if (typeof window === "undefined") return "dark";
@@ -259,31 +264,49 @@ export default function AppSidebar() {
                     <SidebarMenuItem key={`${g.label}-${it.label}`}>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <SidebarMenuButton
-                            asChild
-                            className={`${txtMuted} ${hoverBg} ${hoverTxt} data-[active=true]:bg-[hsl(217,91%,50%)] data-[active=true]:text-white`}
-                            isActive={active}
-                          >
-                            <Link
-                              to={it.to}
-                              className="flex items-center gap-2.5"
-                              onMouseEnter={() => prefetchRoute(it.to)}
-                              onFocus={() => prefetchRoute(it.to)}
-                              onTouchStart={() => prefetchRoute(it.to)}
+                          <div className="flex items-center">
+                            <SidebarMenuButton
+                              asChild
+                              className={`${txtMuted} ${hoverBg} ${hoverTxt} data-[active=true]:bg-[hsl(217,91%,50%)] data-[active=true]:text-white flex-1`}
+                              isActive={active}
                             >
-                              <Icon className="w-6 h-6 flex-shrink-0" />
-                              {!collapsed && (
-                                <>
-                                  <span className="text-sm">{it.label}</span>
-                                  {it.badge !== undefined && (
-                                    <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[hsl(0,84%,60%)] text-white">
-                                      {it.badge}
-                                    </span>
-                                  )}
-                                </>
-                              )}
-                            </Link>
-                          </SidebarMenuButton>
+                              <Link
+                                to={it.to}
+                                className="flex items-center gap-2.5"
+                                onMouseEnter={() => prefetchRoute(it.to)}
+                                onFocus={() => prefetchRoute(it.to)}
+                                onTouchStart={() => prefetchRoute(it.to)}
+                              >
+                                <Icon className="w-6 h-6 flex-shrink-0" />
+                                {!collapsed && (
+                                  <>
+                                    <span className="text-sm">{it.label}</span>
+                                    {it.badge !== undefined && (
+                                      <span className="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[hsl(0,84%,60%)] text-white">
+                                        {it.badge}
+                                      </span>
+                                    )}
+                                  </>
+                                )}
+                              </Link>
+                            </SidebarMenuButton>
+                            {!collapsed && it.children && (
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  toggleSubmenu(it.label);
+                                }}
+                                className={`p-1.5 rounded-md ${hoverBg} ${txtSubtle} transition-colors ml-0.5`}
+                              >
+                                {openSubmenus[it.label] || (active || it.children.some(c => pathname.startsWith(c.to))) ? (
+                                  <ChevronDown className="w-4 h-4" />
+                                ) : (
+                                  <ChevronRight className="w-4 h-4" />
+                                )}
+                              </button>
+                            )}
+                          </div>
                         </TooltipTrigger>
                         {collapsed && (
                           <TooltipContent
@@ -300,7 +323,7 @@ export default function AppSidebar() {
                           </TooltipContent>
                         )}
                       </Tooltip>
-                      {!collapsed && it.children && (active || it.children.some(c => pathname.startsWith(c.to))) && (
+                      {!collapsed && it.children && (openSubmenus[it.label] || active || it.children.some(c => pathname.startsWith(c.to))) && (
                         <SidebarMenuSub className={subBorder}>
                           {it.children.map((c) => {
                             const cActive = pathname === c.to || pathname.startsWith(c.to + "/");
