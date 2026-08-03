@@ -117,7 +117,7 @@ Deno.serve(async (req) => {
 
     // CREATE USER
     if (action === "create") {
-      const { email, password, full_name, role } = body;
+      const { email, password, full_name, role, ...metadata } = body;
 
       if (!email || !password || !full_name || !role) {
         return new Response(JSON.stringify({ error: "Campos obrigatórios: email, password, full_name, role" }), {
@@ -157,7 +157,7 @@ Deno.serve(async (req) => {
 
       await adminClient
         .from("profiles")
-        .update({ role, full_name })
+        .update({ role, full_name, ...metadata })
         .eq("user_id", newUser.user.id);
 
       await adminClient

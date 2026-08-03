@@ -35,16 +35,17 @@ export async function importAJs(data: AJData[]) {
         password: password,
         role: "admjudicial",
         // Campos extras para profiles
+        razao_social: item.nome,
+        cnpj: "", // Planilha não tem CNPJ, mas o perfil pode ter
         endereco: `${item.endereco || ""}, ${item.numero || ""}`.trim(),
         cidade: item.cidade,
         uf: item.uf,
         telefone: item.telefone,
-        metadata: {
-          razao_social: item.nome,
-          complemento: item.complemento,
-          bairro: item.bairro,
-          cep: item.cep
-        }
+        site: "",
+        contato_nome: item.contato,
+        bairro: item.bairro,
+        cep: item.cep,
+        complemento: item.complemento
       };
 
       const { error } = await invokeAuthed("admin-create-user", payload);
