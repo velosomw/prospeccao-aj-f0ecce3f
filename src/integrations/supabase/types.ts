@@ -3991,31 +3991,61 @@ export type Database = {
       profiles: {
         Row: {
           active: boolean
+          bairro: string | null
+          cep: string | null
+          cidade: string | null
+          complemento: string | null
+          contato_principal: string | null
           created_at: string
           email: string
+          endereco: string | null
           full_name: string
           id: string
+          numero: string | null
           role: Database["public"]["Enums"]["app_role"]
+          telefone: string | null
+          treatment_sigla: string | null
+          uf: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           active?: boolean
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          complemento?: string | null
+          contato_principal?: string | null
           created_at?: string
           email: string
+          endereco?: string | null
           full_name?: string
           id?: string
+          numero?: string | null
           role?: Database["public"]["Enums"]["app_role"]
+          telefone?: string | null
+          treatment_sigla?: string | null
+          uf?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
           active?: boolean
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          complemento?: string | null
+          contato_principal?: string | null
           created_at?: string
           email?: string
+          endereco?: string | null
           full_name?: string
           id?: string
+          numero?: string | null
           role?: Database["public"]["Enums"]["app_role"]
+          telefone?: string | null
+          treatment_sigla?: string | null
+          uf?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -4396,6 +4426,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "prospeccao_linhas"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prospeccao_pdf_jobs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_agcs_realizadas"
+            referencedColumns: ["source_id"]
+          },
+          {
+            foreignKeyName: "prospeccao_pdf_jobs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_aj_nomeados"
+            referencedColumns: ["source_id"]
+          },
+          {
+            foreignKeyName: "prospeccao_pdf_jobs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_cartas_aj"
+            referencedColumns: ["source_id"]
           },
         ]
       }
@@ -5748,6 +5799,77 @@ export type Database = {
           total_new: number | null
           total_scans: number | null
           total_updated: number | null
+        }
+        Relationships: []
+      }
+      vw_export_agcs_realizadas: {
+        Row: {
+          ano: number | null
+          cidade: string | null
+          cliente: string | null
+          data_agc: string | null
+          estado: string | null
+          mes: string | null
+          recuperanda: string | null
+          source_id: string | null
+          source_updated_at: string | null
+        }
+        Relationships: []
+      }
+      vw_export_aj_nomeados: {
+        Row: {
+          aj_nomeado: string | null
+          data_distribuicao: string | null
+          empresa: string | null
+          magistrado_nome: string | null
+          mes_distribuicao: string | null
+          numero_processo: string | null
+          source_id: string | null
+          source_updated_at: string | null
+          uf: string | null
+          valor_passivo: number | null
+          vara_comarca: string | null
+        }
+        Relationships: []
+      }
+      vw_export_cadastro_aj: {
+        Row: {
+          bairro: string | null
+          cep: string | null
+          cidade: string | null
+          complemento: string | null
+          contato: string | null
+          email: string | null
+          endereco: string | null
+          nome: string | null
+          numero: string | null
+          sigla: string | null
+          source_id: string | null
+          source_updated_at: string | null
+          telefone: string | null
+          uf: string | null
+        }
+        Relationships: []
+      }
+      vw_export_cartas_aj: {
+        Row: {
+          ano: number | null
+          cliente: string | null
+          contato: string | null
+          data_distribuicao: string | null
+          data_impressao: string | null
+          dia: number | null
+          dias_120: string | null
+          dias_150: string | null
+          dias_90: string | null
+          mes: string | null
+          processo: string | null
+          sep1: string | null
+          sep2: string | null
+          sigla: string | null
+          source_id: string | null
+          source_updated_at: string | null
+          status: string | null
         }
         Relationships: []
       }
