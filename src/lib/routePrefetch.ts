@@ -17,7 +17,6 @@ const loaders: Record<string, Loader> = {
   "/consultor/rmas":          () => import("@/pages/consultor/ConsultorRMAs"),
   "/consultor/processos":     () => import("@/pages/consultor/ConsultorProcessos"),
   "/consultor/pendencias":    () => import("@/pages/consultor/ConsultorPendencias"),
-  "/consultor/documentos":    () => import("@/pages/consultor/ConsultorDocumentos"),
   "/consultor/relatorios":    () => import("@/pages/consultor/ConsultorRelatorios"),
   "/consultor/historico":     () => import("@/pages/consultor/ConsultorHistorico"),
   "/consultor/logs":          () => import("@/pages/consultor/ConsultorLogsIA"),
@@ -34,7 +33,6 @@ const loaders: Record<string, Loader> = {
   "/recuperanda/pendencias":  () => import("@/pages/recuperanda/RecPendencias"),
   "/recuperanda/relatorios":  () => import("@/pages/recuperanda/RecRelatorios"),
   "/recuperanda/cronograma":  () => import("@/pages/recuperanda/RecCronograma"),
-  "/recuperanda/comunicacao": () => import("@/pages/recuperanda/RecComunicacao"),
 
   "/admjudicial":              () => import("@/pages/AdmjudicialDashboard"),
   "/admjudicial/recuperandas": () => import("@/pages/admjudicial/AdmRecuperandas"),
