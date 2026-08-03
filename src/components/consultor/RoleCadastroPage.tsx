@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
-  Plus, Search, Edit2, Trash2, Loader2, Scale, Gavel, Building2, Users, X, ArrowLeft, Filter,
+  Plus, Search, Edit2, Trash2, Loader2, Scale, Gavel, Building2, Users, X, ArrowLeft, Filter, Upload,
 } from "lucide-react";
 import CadastroPageShell from "@/components/consultor/CadastroPageShell";
 import CadastroEntityForm from "@/components/consultor/CadastroEntityForm";
@@ -80,11 +80,19 @@ export default function RoleCadastroPage({
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await invokeAuthed<{ profiles: ProfileRow[] }>("admin-create-user", { action: "list" });
-    if (error) toast.error(`Falha ao carregar usuários: ${error.message ?? error}`);
-    const all = data?.profiles ?? [];
-    setRows(all.filter((p) => (p.user_roles ?? []).some((r) => r.role === role)));
-    setLoading(false);
+    try {
+      const { data, error } = await invokeAuthed<{ profiles: ProfileRow[] }>("admin-create-user", { action: "list" });
+      if (error) {
+        toast.error(`Falha ao carregar usuários: ${error.message ?? error}`);
+      } else {
+        const all = data?.profiles ?? [];
+        setRows(all.filter((p) => (p.user_roles ?? []).some((r) => r.role === role)));
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [role]);
@@ -222,12 +230,40 @@ export default function RoleCadastroPage({
                   />
                 </div>
                 {canManage && (
-                  <button
-                    onClick={() => setStarted(true)}
-                    className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-xl bg-[hsl(217,91%,40%)] hover:bg-[hsl(217,91%,35%)] text-white text-sm font-bold transition whitespace-nowrap"
-                  >
-                    <Plus className="w-4 h-4" /> Cadastrar {singular}
-                  </button>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setStarted(true)}
+                      className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-xl bg-[hsl(217,91%,40%)] hover:bg-[hsl(217,91%,35%)] text-white text-sm font-bold transition whitespace-nowrap"
+                    >
+                      <Plus className="w-4 h-4" /> Cadastrar {singular}
+                    </button>
+                    {role === "admjudicial" && (
+                      <button
+                        onClick={async () => {
+                          const confirm = window.confirm("Deseja processar os dados da planilha de teste 'Administrador Judicial'?");
+                          if (!confirm) return;
+                          
+                          setLoading(true);
+                          const { importAJs } = await import("@/services/importService");
+                          
+                          // Dados extraídos da planilha de teste fornecida
+                          const mockData = [
+                            { nome: "2C CONSULTORIA", contato: "CAINAN RETHONDIN", endereco: "Rua Nagib Miguel", numero: "4105", complemento: "Sala 15C", bairro: "Jardim Recanto do Bosque", cidade: "São João da Boa Vista", uf: "SP", cep: "13874-439", telefone: "(11) 3797-6888", email: "contato@s2consultoria.com.br" },
+                            { nome: "360 ASSESSORIA EMPRESARIAL", contato: "AGENOR PEDRO DA SILVA JÚNIOR", endereco: "Avenida 09", numero: "SN", complemento: "Qd 26, Lt 03", bairro: "Reverendo Archibald", cidade: "Anápolis", uf: "GO", cep: "75063-320", telefone: "(62)99227-9497", email: "agenor.junior@360aj.com.br" },
+                            { nome: "A SANTOS ADVOGADOS ASSOCIADOS", contato: "RODOLFO GARCIA SALMAZO", endereco: "Rua Bela Cintra", numero: "768", complemento: "Conjunto 82", bairro: "Consolação", cidade: "São Paulo", uf: "SP", cep: "01415-000", email: "esantosadv@esantosadv.com.br" },
+                            { nome: "A&S PARTNERS", contato: "JOÃO RICARDO UCHÔA VIANA", endereco: "Rua Funchal", numero: "203", bairro: "Vila Oímpia", cidade: "São Paulo", uf: "SP", cep: "04455-904", telefone: "(11) 2293-0507", email: "contato@aespartners.com.br" }
+                          ];
+                          
+                          const results = await importAJs(mockData);
+                          toast.success(`Importação concluída: ${results.success} sucessos, ${results.errors} erros.`);
+                          load();
+                        }}
+                        className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-xl border border-[hsl(217,91%,40%)] text-[hsl(217,91%,40%)] hover:bg-[hsl(217,91%,96%)] text-sm font-bold transition whitespace-nowrap"
+                      >
+                        <Upload className="w-4 h-4" /> Importar Planilha
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
 
