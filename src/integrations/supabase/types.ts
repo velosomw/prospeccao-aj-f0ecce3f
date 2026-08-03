@@ -2229,6 +2229,178 @@ export type Database = {
         }
         Relationships: []
       }
+      export_definitions: {
+        Row: {
+          code: string
+          column_definition: Json | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          format_definition: Json | null
+          id: string
+          is_active: boolean | null
+          name: string
+          output_filename_pattern: string | null
+          permission_key: string | null
+          route_key: string | null
+          sort_definition: Json | null
+          source_view: string
+          template_path: string | null
+          updated_at: string | null
+          updated_by: string | null
+          version: number | null
+        }
+        Insert: {
+          code: string
+          column_definition?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          format_definition?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          output_filename_pattern?: string | null
+          permission_key?: string | null
+          route_key?: string | null
+          sort_definition?: Json | null
+          source_view: string
+          template_path?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+          version?: number | null
+        }
+        Update: {
+          code?: string
+          column_definition?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          format_definition?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          output_filename_pattern?: string | null
+          permission_key?: string | null
+          route_key?: string | null
+          sort_definition?: Json | null
+          source_view?: string
+          template_path?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+          version?: number | null
+        }
+        Relationships: []
+      }
+      export_downloads: {
+        Row: {
+          created_at: string | null
+          downloaded_at: string | null
+          downloaded_by: string
+          export_run_id: string
+          id: string
+          ip_hash: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          downloaded_at?: string | null
+          downloaded_by: string
+          export_run_id: string
+          id?: string
+          ip_hash?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          downloaded_at?: string | null
+          downloaded_by?: string
+          export_run_id?: string
+          id?: string
+          ip_hash?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "export_downloads_export_run_id_fkey"
+            columns: ["export_run_id"]
+            isOneToOne: false
+            referencedRelation: "export_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      export_runs: {
+        Row: {
+          created_at: string | null
+          definition_version: number | null
+          error_code: string | null
+          error_message: string | null
+          export_definition_id: string
+          file_hash_sha256: string | null
+          file_name: string | null
+          file_path: string | null
+          file_size_bytes: number | null
+          filters: Json | null
+          finished_at: string | null
+          id: string
+          record_count: number | null
+          requested_by: string
+          source_max_updated_at: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["export_status"]
+          template_version: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          definition_version?: number | null
+          error_code?: string | null
+          error_message?: string | null
+          export_definition_id: string
+          file_hash_sha256?: string | null
+          file_name?: string | null
+          file_path?: string | null
+          file_size_bytes?: number | null
+          filters?: Json | null
+          finished_at?: string | null
+          id?: string
+          record_count?: number | null
+          requested_by: string
+          source_max_updated_at?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["export_status"]
+          template_version?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          definition_version?: number | null
+          error_code?: string | null
+          error_message?: string | null
+          export_definition_id?: string
+          file_hash_sha256?: string | null
+          file_name?: string | null
+          file_path?: string | null
+          file_size_bytes?: number | null
+          filters?: Json | null
+          finished_at?: string | null
+          id?: string
+          record_count?: number | null
+          requested_by?: string
+          source_max_updated_at?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["export_status"]
+          template_version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "export_runs_export_definition_id_fkey"
+            columns: ["export_definition_id"]
+            isOneToOne: false
+            referencedRelation: "export_definitions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       failed_jobs: {
         Row: {
           ano: number | null
@@ -6269,6 +6441,13 @@ export type Database = {
         | "recuperanda"
         | "gestor_ia"
         | "admjudicial"
+      export_status:
+        | "AVAILABLE"
+        | "OUTDATED"
+        | "GENERATING"
+        | "SUCCESS"
+        | "ERROR"
+        | "NO_DATA"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -6403,6 +6582,14 @@ export const Constants = {
         "recuperanda",
         "gestor_ia",
         "admjudicial",
+      ],
+      export_status: [
+        "AVAILABLE",
+        "OUTDATED",
+        "GENERATING",
+        "SUCCESS",
+        "ERROR",
+        "NO_DATA",
       ],
     },
   },
