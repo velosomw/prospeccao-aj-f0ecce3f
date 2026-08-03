@@ -69,8 +69,7 @@ export default function RoleCadastroPage({
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
 
-  const [showNew, setShowNew] = useState(false);
-  const [showEntity, setShowEntity] = useState(false);
+  const [started, setStarted] = useState(false);
   const [editing, setEditing] = useState<ProfileRow | null>(null);
   const [deleting, setDeleting] = useState<ProfileRow | null>(null);
 
@@ -105,7 +104,7 @@ export default function RoleCadastroPage({
     setSaving(false);
     if (error) { toast.error(`Erro ao criar: ${error.message ?? error}`); return; }
     toast.success(`${singular} cadastrado com sucesso`);
-    setShowNew(false);
+    setStarted(false);
     setForm({ full_name: "", email: "", password: "" });
     load();
   };
@@ -135,38 +134,69 @@ export default function RoleCadastroPage({
 
   return (
     <CadastroPageShell
-      breadcrumb={[{ label: "Cadastro de Perfils", to: backTo }, { label: breadcrumbLabel }]}
+      breadcrumb={[{ label: "Cadastro de Perfis", to: backTo }, { label: breadcrumbLabel }]}
       title={title}
       subtitle={subtitle}
     >
-      <div className="bg-white border border-border rounded-2xl">
-        <div className="p-4 flex flex-col lg:flex-row gap-4 border-b border-border bg-[hsl(220,20%,98%)]/50">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={`Buscar por nome ou email de ${singular.toLowerCase()}...`}
-              className="w-full h-11 pl-10 pr-4 rounded-xl border border-border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(217,91%,50%)]/30"
-            />
-          </div>
-          {canManage && (
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => setShowEntity(true)}
-                className="inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-white border border-border text-sm font-semibold hover:border-[hsl(217,91%,50%)]"
-              >
-                <EntityIcon className="w-4 h-4" /> Cadastrar {singular}
-              </button>
-              <button
-                onClick={() => setShowNew(true)}
-                className="inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-[hsl(217,91%,40%)] hover:bg-[hsl(217,91%,35%)] text-white text-sm font-semibold"
-              >
-                <Plus className="w-4 h-4" /> Novo Usuário
-              </button>
+      <div className="flex items-center gap-3 mb-6">
+        {started && (
+          <button
+            onClick={() => setStarted(false)}
+            className="w-8 h-8 rounded-lg bg-[hsl(217,91%,50%)] hover:bg-[hsl(217,91%,45%)] text-white flex items-center justify-center transition shrink-0"
+          >
+            <Plus className="w-4 h-4 rotate-45" />
+          </button>
+        )}
+        <h2 className="text-xl font-bold text-foreground">
+          {started ? `Cadastrar ${singular}` : `Gestão de ${title}`}
+        </h2>
+      </div>
+
+      {started ? (
+        <CadastroEntityForm
+          backTo={backTo}
+          variant={role === "consultor" ? "admjudicial" : role === "admjudicial" ? "admjudicial" : role === "magistrado" ? "magistrado" : "recuperanda"}
+          razaoLabel={role === "recuperanda" ? "Razão Social" : role === "admjudicial" ? "Nome / Razão Social" : undefined}
+          onSubmit={async (data) => {
+            setSaving(true);
+            const { error } = await invokeAuthed("admin-create-user", {
+              action: "create",
+              full_name: data.nome,
+              email: data.email,
+              password: Math.random().toString(36).slice(-8) + "!", // Senha temporária
+              role,
+              ...data
+            });
+            setSaving(false);
+            if (error) { toast.error(`Erro ao cadastrar: ${error.message ?? error}`); return; }
+            toast.success(`${singular} cadastrado com sucesso`);
+            setStarted(false);
+            load();
+          }}
+        />
+      ) : (
+        <div className="bg-white border border-border rounded-2xl overflow-hidden">
+          <div className="p-4 flex flex-col lg:flex-row gap-4 border-b border-border bg-[hsl(220,20%,98%)]/50">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={`Buscar por nome ou email de ${singular.toLowerCase()}...`}
+                className="w-full h-11 pl-10 pr-4 rounded-xl border border-border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(217,91%,50%)]/30"
+              />
             </div>
-          )}
-        </div>
+            {canManage && (
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => setStarted(true)}
+                  className="inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-[hsl(217,91%,40%)] hover:bg-[hsl(217,91%,35%)] text-white text-sm font-semibold transition"
+                >
+                  <Plus className="w-4 h-4" /> Cadastrar {singular}
+                </button>
+              </div>
+            )}
+          </div>
 
         {loading ? (
           <div className="p-12 flex items-center justify-center gap-2 text-sm text-muted-foreground">
@@ -235,31 +265,7 @@ export default function RoleCadastroPage({
             </table>
           </div>
         )}
-      </div>
-
-      {showNew && (
-        <Modal title={`Novo ${singular}`} onClose={() => setShowNew(false)}>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1.5">Nome completo<span className="text-[hsl(0,84%,55%)] ml-0.5">*</span></label>
-              <input className={inputCls} value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1.5">Email<span className="text-[hsl(0,84%,55%)] ml-0.5">*</span></label>
-              <input type="email" className={inputCls} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1.5">Senha inicial<span className="text-[hsl(0,84%,55%)] ml-0.5">*</span></label>
-              <input type="text" className={inputCls} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
-            </div>
-            <div className="flex justify-end gap-3 pt-2">
-              <button onClick={() => setShowNew(false)} className="h-10 px-4 rounded-lg border border-border text-sm font-semibold">Cancelar</button>
-              <button onClick={create} disabled={saving} className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-[hsl(217,91%,40%)] hover:bg-[hsl(217,91%,35%)] text-white text-sm font-semibold disabled:opacity-60">
-                {saving && <Loader2 className="w-4 h-4 animate-spin" />} Cadastrar
-              </button>
-            </div>
-          </div>
-        </Modal>
+        </div>
       )}
 
       {editing && (
@@ -285,17 +291,6 @@ export default function RoleCadastroPage({
               {saving && <Loader2 className="w-4 h-4 animate-spin" />} Excluir definitivamente
             </button>
           </div>
-        </Modal>
-      )}
-
-      {showEntity && (
-        <Modal wide title={`Novo Cadastro de ${singular}`} onClose={() => setShowEntity(false)}>
-          <CadastroEntityForm
-            backTo={backTo}
-            variant={role === "consultor" ? "admjudicial" : role}
-            razaoLabel={role === "recuperanda" ? "Razão Social" : undefined}
-            onSubmit={() => { toast.success(`${singular} cadastrado com sucesso`); setShowEntity(false); }}
-          />
         </Modal>
       )}
     </CadastroPageShell>

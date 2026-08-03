@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UploadCloud, Save, X } from "lucide-react";
 import { toast } from "sonner";
 
-export type CadastroEntityVariant = "recuperanda" | "admjudicial" | "magistrado";
+export type CadastroEntityVariant = "recuperanda" | "admjudicial" | "magistrado" | "consultor";
 
 export interface CadastroEntityFormProps {
   backTo: string;
@@ -55,6 +55,7 @@ export default function CadastroEntityForm({
   const navigate = useNavigate();
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const isMagistrado = variant === "magistrado";
+  const isConsultor = variant === "consultor";
 
 
 
@@ -88,6 +89,14 @@ export default function CadastroEntityForm({
           <SelectField label="UF" name="uf" required options={UFS} />
           <Field label="Cidade" name="cidade" placeholder="Cidade" />
           <Field label="E-mail" name="email" type="email" required placeholder="magistrado@tribunal.gov.br" className="md:col-span-2" />
+        </div>
+      ) : isConsultor ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <Field label="Nome Completo" name="nome" placeholder="Ex.: João Silva" required />
+          <Field label="E-mail Corporativo" name="email" type="email" placeholder="joao@bex.com.br" required />
+          <Field label="Telefone/WhatsApp" name="telefone" placeholder="(00) 00000-0000" />
+          <Field label="OAB/Registro Profissional" name="registro" placeholder="Ex.: OAB/SP 123456" />
+          <SelectField label="Especialidade" name="especialidade" options={["Contábil", "Jurídico", "Financeiro"]} />
         </div>
       ) : (
         <>
