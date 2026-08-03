@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Scale, Building2, Gavel, ArrowRight, FilePlus } from "lucide-react";
+import { Scale, Building2, Gavel, Users, ArrowRight, FilePlus } from "lucide-react";
 import CadastroPageShell from "@/components/consultor/CadastroPageShell";
 
 const opts = [
@@ -21,8 +21,15 @@ const opts = [
     label: "Magistrados",
     desc: "Cadastre e gerencie usuários com perfil de Magistrado.",
     icon: Gavel,
-    tone: { bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)", ring: "hsl(38,92%,90%)" },
+    tone: { bg: "hsl(261,80%,96%)", fg: "hsl(261,80%,45%)", ring: "hsl(261,80%,92%)" },
     to: "/consultor/cadastro/magistrados",
+  },
+  {
+    label: "Técnicos",
+    desc: "Cadastre e gerencie usuários com perfil de Técnico (Consultor).",
+    icon: Users,
+    tone: { bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)", ring: "hsl(38,92%,90%)" },
+    to: "/consultor/cadastro/tecnicos",
   },
 ];
 

@@ -36,6 +36,7 @@ const ConsultorCadastroRec = lazy(() => import("./pages/consultor/ConsultorCadas
 const ConsultorCadastroRecNova = lazy(() => import("./pages/consultor/ConsultorCadastroRecNova"));
 const ConsultorCadastroMag = lazy(() => import("./pages/consultor/ConsultorCadastroMag"));
 const ConsultorCadastroMagNovo = lazy(() => import("./pages/consultor/ConsultorCadastroMagNovo"));
+const ConsultorCadastroTecnicos = lazy(() => import("./pages/consultor/ConsultorCadastroTecnicos"));
 const CoordCadastroPerfis = lazy(() => import("./pages/coordenador/CoordCadastroPerfis"));
 const CoordCadastroPerfilPage = lazy(() => import("./pages/coordenador/CoordCadastroPerfilPage"));
 
@@ -161,6 +162,7 @@ const App = () => (
               <Route path="/consultor/cadastro/recuperandas/nova" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorCadastroRecNova /></ProtectedRoute>} />
               <Route path="/consultor/cadastro/magistrados" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorCadastroMag /></ProtectedRoute>} />
               <Route path="/consultor/cadastro/magistrados/novo" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorCadastroMagNovo /></ProtectedRoute>} />
+              <Route path="/consultor/cadastro/tecnicos" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorCadastroTecnicos /></ProtectedRoute>} />
               <Route path="/tecnico/cadastro" element={<Navigate to="/consultor/cadastro" replace />} />
               <Route path="/tecnico/cadastro/:tipo" element={<Navigate to="/consultor/cadastro" replace />} />
               <Route path="/dashboard/cadastro" element={<ProtectedRoute allow={["coordenador"]}><CoordCadastroPerfis /></ProtectedRoute>} />
