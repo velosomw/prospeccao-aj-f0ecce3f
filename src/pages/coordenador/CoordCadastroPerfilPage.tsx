@@ -13,10 +13,10 @@ const CONFIG: Record<string, {
   },
   recuperandas: {
     role: "recuperanda",
-    title: "Empresas Externas",
+    title: "Empresas Prospecção",
     subtitle: "Usuários com perfil de Empresa Externa cadastrados na plataforma.",
-    singular: "Empresa Externa",
-    breadcrumbLabel: "Empresas Externas",
+    singular: "Empresa Prospecção",
+    breadcrumbLabel: "Empresas Prospecção",
   },
   magistrados: {
     role: "magistrado",

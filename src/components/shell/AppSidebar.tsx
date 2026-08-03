@@ -82,7 +82,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         
         { label: "Cadastros",     to: "/consultor/cadastro",      icon: FilePlus, children: [
           { label: "Administrador Judicial", to: "/consultor/cadastro/admjudicial" },
-          { label: "Recuperandas",            to: "/consultor/cadastro/recuperandas" },
+          { label: "Empresas Prospecção",            to: "/consultor/cadastro/recuperandas" },
           { label: "Magistrado",              to: "/consultor/cadastro/magistrados" },
           { label: "Técnicos",                to: "/consultor/cadastro/tecnicos" },
         ] },
