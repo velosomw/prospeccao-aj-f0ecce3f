@@ -52,7 +52,6 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Processamento IA", to: "/processo-prospeccao", icon: Briefcase },
         { label: "Upload Planilha", to: "/treinar-ia",           icon: Brain },
         
-        { label: "Comunicação", to: "/dashboard/comunicacao", icon: MessageCircle },
         { label: "Planilha de Carga",  to: "/dashboard/relatorios",  icon: FileBarChart },
         { label: "Empresas Prospecção", to: "/dashboard/empresas",    icon: Building2 },
         
@@ -75,7 +74,6 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Processamento IA", to: "/processo-prospeccao",     icon: Briefcase },
         { label: "Upload Planilha",  to: "/treinar-ia",              icon: Brain },
         
-        { label: "Comunicação",   to: "/consultor/comunicacao",   icon: MessageCircle },
         { label: "Planilha de Carga",    to: "/consultor/relatorios",    icon: FileBarChart },
         { label: "Planilha Padrão Prospecção", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
         { label: "Empresas Prospecção", to: "/consultor/clientes",      icon: Building2 },
@@ -127,7 +125,6 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Pendências",   to: "/recuperanda/pendencias",  icon: AlertTriangle, badge: 14 },
         { label: "Planilha de Carga",   to: "/recuperanda/relatorios",  icon: FileBarChart },
         { label: "Cronograma",   to: "/recuperanda/cronograma",  icon: Calendar },
-        { label: "Comunicação",  to: "/recuperanda/comunicacao", icon: MessageCircle, badge: 2 },
         { label: "Upload Planilha",   to: "/treinar-ia",              icon: Brain },
       ],
     });

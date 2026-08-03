@@ -15,7 +15,6 @@ export default function MagistradoDashboard() {
         { label: "Empresas Prospecção",   desc: "Empresas em recuperação.",              icon: Building2,     to: "/magistrado/empresas",  tone: "teal"   },
         { label: "Decisões",       desc: "Deliberações e despachos.",             icon: Scale,         to: "/magistrado/decisoes",  tone: "amber"  },
         { label: "Histórico",      desc: "Linha do tempo e arquivo.",             icon: History,       to: "/magistrado/historico", tone: "green"  },
-        { label: "Comunicação",    desc: "Mensagens com AJ e consultores.",       icon: MessageCircle, to: "/dashboard/comunicacao", tone: "orange" },
       ]}
       summary={[
         { label: "Processos Ativos",   value: 33,    icon: Gavel,         tone: "blue"   },

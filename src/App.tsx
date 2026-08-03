@@ -22,13 +22,11 @@ const ConsultorHome = lazy(() => import("./pages/consultor/ConsultorHome"));
 const ConsultorRMAs = lazy(() => import("./pages/consultor/ConsultorRMAs"));
 const ConsultorProcessos = lazy(() => import("./pages/consultor/ConsultorProcessos"));
 const ConsultorPendencias = lazy(() => import("./pages/consultor/ConsultorPendencias"));
-const ConsultorDocumentos = lazy(() => import("./pages/consultor/ConsultorDocumentos"));
 const ConsultorRelatorios = lazy(() => import("./pages/consultor/ConsultorRelatorios"));
 const PlanilhaPadraoProspeccao = lazy(() => import("./pages/consultor/PlanilhaPadraoProspeccao"));
 const ConsultorHistorico = lazy(() => import("./pages/consultor/ConsultorHistorico"));
 const ConsultorLogsIA = lazy(() => import("./pages/consultor/ConsultorLogsIA"));
 const ConsultorClientes = lazy(() => import("./pages/consultor/ConsultorClientes"));
-const ConsultorComunicacao = lazy(() => import("./pages/consultor/ConsultorComunicacao"));
 const ConsultorCadastro = lazy(() => import("./pages/consultor/ConsultorCadastro"));
 const ConsultorCadastroAJ = lazy(() => import("./pages/consultor/ConsultorCadastroAJ"));
 const ConsultorCadastroRec = lazy(() => import("./pages/consultor/ConsultorCadastroRec"));
@@ -37,7 +35,6 @@ const ConsultorCadastroTecnicos = lazy(() => import("./pages/consultor/Consultor
 const CoordCadastroPerfis = lazy(() => import("./pages/coordenador/CoordCadastroPerfis"));
 const CoordCadastroPerfilPage = lazy(() => import("./pages/coordenador/CoordCadastroPerfilPage"));
 
-const ConsultorAvisos = lazy(() => import("./pages/consultor/ConsultorAvisos"));
 const ConsultorConfiguracoes = lazy(() => import("./pages/consultor/ConsultorConfiguracoes"));
 const CoordEquipe = lazy(() => import("./pages/coordenador/CoordEquipe"));
 const CoordDashboardAnalitico = lazy(() => import("./pages/coordenador/CoordDashboardAnalitico"));
@@ -57,7 +54,6 @@ const RecDocumentos = lazy(() => import("./pages/recuperanda/RecDocumentos"));
 const RecPendencias = lazy(() => import("./pages/recuperanda/RecPendencias"));
 const RecRelatorios = lazy(() => import("./pages/recuperanda/RecRelatorios"));
 const RecCronograma = lazy(() => import("./pages/recuperanda/RecCronograma"));
-const RecComunicacao = lazy(() => import("./pages/recuperanda/RecComunicacao"));
 const AdmRecuperandas = lazy(() => import("./pages/admjudicial/AdmRecuperandas"));
 const AdmRMAs = lazy(() => import("./pages/admjudicial/AdmRMAs"));
 const AdmPendencias = lazy(() => import("./pages/admjudicial/AdmPendencias"));
@@ -69,7 +65,6 @@ const AdmjudicialDashboard = lazy(() => import("./pages/AdmjudicialDashboard"));
 const RMAWorkspace = lazy(() => import("./pages/RMAWorkspace"));
 const ProcessoProspeccao = lazy(() => import("./pages/ProcessoProspeccao"));
 const TrainAI = lazy(() => import("./pages/TrainAI"));
-const Audit = lazy(() => import("./pages/Audit"));
 const ModeloMatematico = lazy(() => import("./pages/ModeloMatematico"));
 const GestorIA = lazy(() => import("./pages/GestorIA"));
 const GestaoAgentesOCR = lazy(() => import("./pages/GestaoAgentesOCR"));
@@ -147,8 +142,6 @@ const App = () => (
               <Route path="/consultor/processos" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorProcessos /></ProtectedRoute>} />
               <Route path="/consultor/pendencias" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorPendencias /></ProtectedRoute>} />
               <Route path="/consultor/auditoria" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorPendencias /></ProtectedRoute>} />
-              <Route path="/consultor/comunicacao" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorComunicacao /></ProtectedRoute>} />
-              <Route path="/consultor/documentos" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorDocumentos /></ProtectedRoute>} />
               <Route path="/consultor/relatorios" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorRelatorios /></ProtectedRoute>} />
               <Route path="/consultor/planilha-padrao-prospeccao" element={<ProtectedRoute allow={["consultor", "coordenador"]}><PlanilhaPadraoProspeccao /></ProtectedRoute>} />
               <Route path="/consultor/clientes" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorClientes /></ProtectedRoute>} />
@@ -162,7 +155,6 @@ const App = () => (
               <Route path="/dashboard/cadastro" element={<ProtectedRoute allow={["coordenador"]}><CoordCadastroPerfis /></ProtectedRoute>} />
               <Route path="/dashboard/cadastro/:tipo" element={<ProtectedRoute allow={["coordenador"]}><CoordCadastroPerfilPage /></ProtectedRoute>} />
 
-              <Route path="/consultor/avisos" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorAvisos /></ProtectedRoute>} />
               <Route path="/consultor/configuracoes" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorConfiguracoes /></ProtectedRoute>} />
               <Route path="/consultor/historico" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorHistorico /></ProtectedRoute>} />
               <Route path="/consultor/logs" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorLogsIA /></ProtectedRoute>} />
@@ -175,7 +167,6 @@ const App = () => (
               <Route path="/rma/:id" element={<Navigate to="/prospeccao-aj-workspace/:id" replace />} />
               <Route path="/prospeccao-aj-workspace/:id" element={<ProtectedRoute><RMAWorkspace /></ProtectedRoute>} />
               <Route path="/treinar-ia" element={<ProtectedRoute allow={["consultor", "coordenador", "gestor_ia", "recuperanda"]}><TrainAI /></ProtectedRoute>} />
-              <Route path="/audit" element={<ProtectedRoute allow={["coordenador", "consultor"]}><Audit /></ProtectedRoute>} />
               <Route path="/gestor-ia" element={<ProtectedRoute allow={["gestor_ia"]}><GestorIA /></ProtectedRoute>} />
               <Route path="/gestao-agentes-ocr" element={<ProtectedRoute allow={["gestor_ia"]}><GestaoAgentesOCR /></ProtectedRoute>} />
               <Route path="/gestao-agentes" element={<ProtectedRoute allow={["gestor_ia"]}><GestaoAgentes /></ProtectedRoute>} />
