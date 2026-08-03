@@ -4,10 +4,10 @@ export default function ConsultorCadastroRec() {
   return (
     <RoleCadastroPage
       role="recuperanda"
-      title="Empresas Externas"
+      title="Empresas Prospecção"
       subtitle="Usuários com perfil de Empresa Externa cadastrados na plataforma."
-      singular="Empresa Externa"
-      breadcrumbLabel="Empresa Externa"
+      singular="Empresa Prospecção"
+      breadcrumbLabel="Empresa Prospecção"
       backTo="/consultor/cadastro"
     />
   );

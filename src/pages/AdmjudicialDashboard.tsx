@@ -8,17 +8,17 @@ export default function AdmjudicialDashboard() {
   return (
     <ProfileHome
       defaultName="Administrador"
-      subtitle="Painel das recuperandas sob sua administração judicial."
+      subtitle="Painel das empresas prospecção sob sua administração judicial."
       cards={[
-        { label: "Recuperandas", desc: "Empresas sob sua administração.",       icon: Building2,     to: "/admjudicial/recuperandas", tone: "blue"   },
+        { label: "Empresas Prospecção", desc: "Empresas sob sua administração.",       icon: Building2,     to: "/admjudicial/recuperandas", tone: "blue"   },
         { label: "Prospecções AJ",         desc: "Relatórios mensais em monitoramento.",  icon: Briefcase,     to: "/admjudicial/rmas",         tone: "purple" },
-        { label: "Pendências",   desc: "Documentos aguardando recuperandas.",   icon: AlertTriangle, to: "/admjudicial/pendencias",   tone: "red"    },
+        { label: "Pendências",   desc: "Documentos aguardando empresas prospecção.",   icon: AlertTriangle, to: "/admjudicial/pendencias",   tone: "red"    },
         { label: "Relatórios",   desc: "Consolidados e exportações.",           icon: FileBarChart,  to: "/admjudicial/relatorios",   tone: "green"  },
         { label: "Histórico",    desc: "Linha do tempo das ações realizadas.",  icon: History,       to: "/admjudicial/historico",    tone: "teal"   },
         { label: "Comunicação",  desc: "Mensagens com consultores e juízo.",    icon: MessageCircle, to: "/dashboard/comunicacao",    tone: "amber"  },
       ]}
       summary={[
-        { label: "Recuperandas",      value: 16,    icon: Building2,     tone: "blue",   to: "/admjudicial/recuperandas" },
+        { label: "Empresas Prospecção",      value: 16,    icon: Building2,     tone: "blue",   to: "/admjudicial/recuperandas" },
         { label: "Prospecções AJ Vigentes",     value: 47,    icon: Briefcase,     tone: "purple", to: "/admjudicial/rmas" },
         { label: "Pendências",        value: 23,    icon: AlertTriangle, tone: "orange", to: "/admjudicial/pendencias" },
         { label: "Críticas",          value: "06",  icon: AlertTriangle, tone: "red"    },

@@ -20,7 +20,7 @@ export default function MagProcessos() {
       title="Processos" subtitle="Recuperações judiciais sob sua jurisdição."
       kpis={[
         { label: "Total Ativos", value: 33, hint: "Em curso",          icon: Gavel,        tone: "blue" },
-        { label: "Recuperandas",  value: 18, hint: "Empresas",         icon: Building2,    tone: "purple" },
+        { label: "Empresas Prospecção",  value: 18, hint: "Empresas",         icon: Building2,    tone: "purple" },
         { label: "Em AGC",        value: 7,  hint: "Assembleia",       icon: Clock,        tone: "orange" },
         { label: "Decisão",       value: 4,  hint: "Aguardando",       icon: AlertTriangle, tone: "red" },
         { label: "Encerrados",    value: 9,  hint: "Últimos 12m",      icon: CheckCircle2, tone: "green" },

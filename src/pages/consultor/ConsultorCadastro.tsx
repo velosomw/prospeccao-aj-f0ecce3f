@@ -11,7 +11,7 @@ const opts = [
     to: "/consultor/cadastro/admjudicial",
   },
   {
-    label: "Empresa Externa",
+    label: "Empresas Prospecção",
     desc: "Cadastre as empresas que enviam a planilha com informações",
     icon: Building2,
     tone: { bg: "hsl(142,60%,95%)", fg: "hsl(142,60%,35%)", ring: "hsl(142,60%,90%)" },
