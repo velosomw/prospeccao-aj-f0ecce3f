@@ -4,6 +4,9 @@ import {
   Mail, Printer, Send, XCircle, ChevronDown, ChevronRight, FileText,
   Download, Sparkles, MapPin, CalendarClock, User, CheckCircle2, Clock,
 } from "lucide-react";
+import { previewCarta, downloadCarta, printCarta } from "@/services/carta/cartaPdfEngine";
+import { toast } from "@/hooks/use-toast";
+
 
 type CartaStatus = "Em elaboração" | "Enviada";
 
