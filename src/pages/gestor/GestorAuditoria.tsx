@@ -109,7 +109,7 @@ export default function GestorAuditoria() {
 
   return (
     <ConsultorPageShell
-      title="Auditoria"
+      title="Auditoria PDF"
       subtitle="Trilha imutável WORM de toda governança e interação na plataforma."
       kpis={[
         { label: "Eventos (filtro)", value: stats.total, hint: "Resultados",       icon: Activity,      tone: "blue" },
