@@ -155,9 +155,24 @@ Deno.serve(async (req) => {
         });
       }
 
+      const profileUpdates: any = { role, full_name, ...metadata };
+      
+      // Map legacy/spreadsheet fields to profile columns
+      if (metadata.nome && !full_name) profileUpdates.full_name = metadata.nome;
+      if (metadata.treatment_sigla) profileUpdates.treatment_sigla = metadata.treatment_sigla;
+      if (metadata.contato_principal) profileUpdates.contato_principal = metadata.contato_principal;
+      if (metadata.endereco) profileUpdates.endereco = metadata.endereco;
+      if (metadata.numero) profileUpdates.numero = metadata.numero;
+      if (metadata.complemento) profileUpdates.complemento = metadata.complemento;
+      if (metadata.bairro) profileUpdates.bairro = metadata.bairro;
+      if (metadata.cidade) profileUpdates.cidade = metadata.cidade;
+      if (metadata.uf) profileUpdates.uf = metadata.uf;
+      if (metadata.cep) profileUpdates.cep = metadata.cep;
+      if (metadata.telefone) profileUpdates.telefone = metadata.telefone;
+
       await adminClient
         .from("profiles")
-        .update({ role, full_name, ...metadata })
+        .update(profileUpdates)
         .eq("user_id", newUser.user.id);
 
       await adminClient

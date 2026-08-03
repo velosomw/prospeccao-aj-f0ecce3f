@@ -1,5 +1,4 @@
 import { invokeAuthed } from "@/lib/invokeAuthed";
-import { toast } from "sonner";
 
 export interface AJData {
   nome: string;
@@ -13,7 +12,7 @@ export interface AJData {
   uf?: string;
   cep?: string;
   telefone?: string;
-  razao_social?: string;
+  treatment_sigla?: string;
 }
 
 export async function importAJs(data: AJData[]) {
@@ -25,27 +24,25 @@ export async function importAJs(data: AJData[]) {
 
   for (const item of data) {
     try {
-      // Usamos uma senha padrão forte ou aleatória para importação
       const password = Math.random().toString(36).slice(-10) + "A1!";
       
       const payload = {
         action: "create",
-        full_name: item.contato || item.nome, // Prioriza o contato se disponível como nome de exibição
+        full_name: item.nome,
         email: item.email,
         password: password,
         role: "admjudicial",
-        // Campos extras para profiles
-        razao_social: item.nome,
-        cnpj: "", // Planilha não tem CNPJ, mas o perfil pode ter
-        endereco: `${item.endereco || ""}, ${item.numero || ""}`.trim(),
+        // Precise mapping to match profile columns
+        treatment_sigla: item.treatment_sigla || "Dr.",
+        contato_principal: item.contato,
+        endereco: item.endereco,
+        numero: item.numero,
+        complemento: item.complemento,
+        bairro: item.bairro,
         cidade: item.cidade,
         uf: item.uf,
-        telefone: item.telefone,
-        site: "",
-        contato_nome: item.contato,
-        bairro: item.bairro,
         cep: item.cep,
-        complemento: item.complemento
+        telefone: item.telefone
       };
 
       const { error } = await invokeAuthed("admin-create-user", payload);

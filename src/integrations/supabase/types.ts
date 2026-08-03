@@ -2229,6 +2229,178 @@ export type Database = {
         }
         Relationships: []
       }
+      export_definitions: {
+        Row: {
+          code: string
+          column_definition: Json | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          format_definition: Json | null
+          id: string
+          is_active: boolean | null
+          name: string
+          output_filename_pattern: string | null
+          permission_key: string | null
+          route_key: string | null
+          sort_definition: Json | null
+          source_view: string
+          template_path: string | null
+          updated_at: string | null
+          updated_by: string | null
+          version: number | null
+        }
+        Insert: {
+          code: string
+          column_definition?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          format_definition?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          output_filename_pattern?: string | null
+          permission_key?: string | null
+          route_key?: string | null
+          sort_definition?: Json | null
+          source_view: string
+          template_path?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+          version?: number | null
+        }
+        Update: {
+          code?: string
+          column_definition?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          format_definition?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          output_filename_pattern?: string | null
+          permission_key?: string | null
+          route_key?: string | null
+          sort_definition?: Json | null
+          source_view?: string
+          template_path?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+          version?: number | null
+        }
+        Relationships: []
+      }
+      export_downloads: {
+        Row: {
+          created_at: string | null
+          downloaded_at: string | null
+          downloaded_by: string
+          export_run_id: string
+          id: string
+          ip_hash: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          downloaded_at?: string | null
+          downloaded_by: string
+          export_run_id: string
+          id?: string
+          ip_hash?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          downloaded_at?: string | null
+          downloaded_by?: string
+          export_run_id?: string
+          id?: string
+          ip_hash?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "export_downloads_export_run_id_fkey"
+            columns: ["export_run_id"]
+            isOneToOne: false
+            referencedRelation: "export_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      export_runs: {
+        Row: {
+          created_at: string | null
+          definition_version: number | null
+          error_code: string | null
+          error_message: string | null
+          export_definition_id: string
+          file_hash_sha256: string | null
+          file_name: string | null
+          file_path: string | null
+          file_size_bytes: number | null
+          filters: Json | null
+          finished_at: string | null
+          id: string
+          record_count: number | null
+          requested_by: string
+          source_max_updated_at: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["export_status"]
+          template_version: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          definition_version?: number | null
+          error_code?: string | null
+          error_message?: string | null
+          export_definition_id: string
+          file_hash_sha256?: string | null
+          file_name?: string | null
+          file_path?: string | null
+          file_size_bytes?: number | null
+          filters?: Json | null
+          finished_at?: string | null
+          id?: string
+          record_count?: number | null
+          requested_by: string
+          source_max_updated_at?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["export_status"]
+          template_version?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          definition_version?: number | null
+          error_code?: string | null
+          error_message?: string | null
+          export_definition_id?: string
+          file_hash_sha256?: string | null
+          file_name?: string | null
+          file_path?: string | null
+          file_size_bytes?: number | null
+          filters?: Json | null
+          finished_at?: string | null
+          id?: string
+          record_count?: number | null
+          requested_by?: string
+          source_max_updated_at?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["export_status"]
+          template_version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "export_runs_export_definition_id_fkey"
+            columns: ["export_definition_id"]
+            isOneToOne: false
+            referencedRelation: "export_definitions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       failed_jobs: {
         Row: {
           ano: number | null
@@ -2573,6 +2745,51 @@ export type Database = {
           valor?: number
         }
         Relationships: []
+      }
+      letters: {
+        Row: {
+          aj_id: string
+          created_at: string | null
+          id: string
+          printed_at: string | null
+          process_id: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          aj_id: string
+          created_at?: string | null
+          id?: string
+          printed_at?: string | null
+          process_id: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          aj_id?: string
+          created_at?: string | null
+          id?: string
+          printed_at?: string | null
+          process_id?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "letters_aj_id_fkey"
+            columns: ["aj_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "letters_aj_id_fkey"
+            columns: ["aj_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_cadastro_aj"
+            referencedColumns: ["source_id"]
+          },
+        ]
       }
       llm_response_cache: {
         Row: {
@@ -3819,31 +4036,61 @@ export type Database = {
       profiles: {
         Row: {
           active: boolean
+          bairro: string | null
+          cep: string | null
+          cidade: string | null
+          complemento: string | null
+          contato_principal: string | null
           created_at: string
           email: string
+          endereco: string | null
           full_name: string
           id: string
+          numero: string | null
           role: Database["public"]["Enums"]["app_role"]
+          telefone: string | null
+          treatment_sigla: string | null
+          uf: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           active?: boolean
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          complemento?: string | null
+          contato_principal?: string | null
           created_at?: string
           email: string
+          endereco?: string | null
           full_name?: string
           id?: string
+          numero?: string | null
           role?: Database["public"]["Enums"]["app_role"]
+          telefone?: string | null
+          treatment_sigla?: string | null
+          uf?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
           active?: boolean
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          complemento?: string | null
+          contato_principal?: string | null
           created_at?: string
           email?: string
+          endereco?: string | null
           full_name?: string
           id?: string
+          numero?: string | null
           role?: Database["public"]["Enums"]["app_role"]
+          telefone?: string | null
+          treatment_sigla?: string | null
+          uf?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -4224,6 +4471,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "prospeccao_linhas"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prospeccao_pdf_jobs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_agcs_realizadas"
+            referencedColumns: ["source_id"]
+          },
+          {
+            foreignKeyName: "prospeccao_pdf_jobs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_aj_nomeados"
+            referencedColumns: ["source_id"]
           },
         ]
       }
@@ -5579,6 +5840,77 @@ export type Database = {
         }
         Relationships: []
       }
+      vw_export_agcs_realizadas: {
+        Row: {
+          ano: number | null
+          cidade: string | null
+          cliente: string | null
+          data_agc: string | null
+          estado: string | null
+          mes: string | null
+          recuperanda: string | null
+          source_id: string | null
+          source_updated_at: string | null
+        }
+        Relationships: []
+      }
+      vw_export_aj_nomeados: {
+        Row: {
+          aj_nomeado: string | null
+          data_distribuicao: string | null
+          empresa: string | null
+          magistrado_nome: string | null
+          mes_distribuicao: string | null
+          numero_processo: string | null
+          source_id: string | null
+          source_updated_at: string | null
+          uf: string | null
+          valor_passivo: number | null
+          vara_comarca: string | null
+        }
+        Relationships: []
+      }
+      vw_export_cadastro_aj: {
+        Row: {
+          bairro: string | null
+          cep: string | null
+          cidade: string | null
+          complemento: string | null
+          contato: string | null
+          email: string | null
+          endereco: string | null
+          nome: string | null
+          numero: string | null
+          sigla: string | null
+          source_id: string | null
+          source_updated_at: string | null
+          telefone: string | null
+          uf: string | null
+        }
+        Relationships: []
+      }
+      vw_export_cartas_aj: {
+        Row: {
+          ano: number | null
+          cliente: string | null
+          contato: string | null
+          data_distribuicao: string | null
+          data_impressao: string | null
+          dia: number | null
+          dias_120: string | null
+          dias_150: string | null
+          dias_90: string | null
+          mes: string | null
+          processo: string | null
+          sep1: string | null
+          sep2: string | null
+          sigla: string | null
+          source_id: string | null
+          source_updated_at: string | null
+          status: string | null
+        }
+        Relationships: []
+      }
       vw_training_pending: {
         Row: {
           agent: string | null
@@ -6269,6 +6601,13 @@ export type Database = {
         | "recuperanda"
         | "gestor_ia"
         | "admjudicial"
+      export_status:
+        | "AVAILABLE"
+        | "OUTDATED"
+        | "GENERATING"
+        | "SUCCESS"
+        | "ERROR"
+        | "NO_DATA"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -6403,6 +6742,14 @@ export const Constants = {
         "recuperanda",
         "gestor_ia",
         "admjudicial",
+      ],
+      export_status: [
+        "AVAILABLE",
+        "OUTDATED",
+        "GENERATING",
+        "SUCCESS",
+        "ERROR",
+        "NO_DATA",
       ],
     },
   },
