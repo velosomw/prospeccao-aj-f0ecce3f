@@ -209,19 +209,29 @@ export default function ConsultorClientes() {
                               <h4 className="text-base font-bold">Carta</h4>
                             </div>
                             <div className="flex flex-wrap gap-2 mt-4">
-                              <button className="inline-flex items-center gap-2 text-xs font-medium px-3 h-9 rounded-lg border bg-white hover:bg-muted/40">
+                              <button
+                                onClick={() => runCarta("preview", l)}
+                                disabled={busy === l.id}
+                                className="inline-flex items-center gap-2 text-xs font-medium px-3 h-9 rounded-lg border bg-white hover:bg-muted/40 disabled:opacity-50"
+                              >
                                 <Sparkles className="w-3.5 h-3.5" /> Preview da Carta
                               </button>
-                              <button className="inline-flex items-center gap-2 text-xs font-medium px-3 h-9 rounded-lg border bg-white hover:bg-muted/40">
+                              <button
+                                onClick={() => runCarta("download", l)}
+                                disabled={busy === l.id}
+                                className="inline-flex items-center gap-2 text-xs font-medium px-3 h-9 rounded-lg border bg-white hover:bg-muted/40 disabled:opacity-50"
+                              >
                                 <Download className="w-3.5 h-3.5" /> Exportar PDF
                               </button>
                               <button
-                                disabled={l.carta !== "Enviada"}
+                                onClick={() => runCarta("print", l)}
+                                disabled={l.carta !== "Enviada" || busy === l.id}
                                 className="inline-flex items-center gap-2 text-xs font-semibold px-3 h-9 rounded-lg bg-[hsl(217,91%,50%)] text-white hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
                               >
                                 <Printer className="w-3.5 h-3.5" /> Imprimir Carta
                               </button>
                             </div>
+
                             {l.carta !== "Enviada" && (
                               <p className="text-[11px] text-amber-700 mt-2">
                                 Impressão liberada somente após a carta ser finalizada e enviada.
