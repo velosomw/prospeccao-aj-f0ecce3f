@@ -63,7 +63,9 @@ const BOTTOM_LIMIT = L.page.height - L.margin.bottom;
 function newPage(ctx: Ctx, first = false): void {
   if (!first) ctx.doc.addPage();
   ctx.doc.addImage(ctx.bg, "PNG", 0, 0, L.page.width, L.page.height, undefined, "FAST");
-  ctx.y = L.margin.top;
+  // Início do texto abaixo do timbre gráfico do template (área útil real).
+  ctx.y = Math.max(L.margin.top, 48);
+
   ctx.doc.setFont("Carlito", "normal");
   ctx.doc.setFontSize(L.body.sizePt);
   ctx.doc.setTextColor(L.body.color);
