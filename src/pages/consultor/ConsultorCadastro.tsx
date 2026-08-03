@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Scale, Building2, Gavel, Users, ArrowRight, FilePlus } from "lucide-react";
 import CadastroPageShell from "@/components/consultor/CadastroPageShell";
+import { invokeAuthed } from "@/lib/invokeAuthed";
 
 const opts = [
   {
@@ -35,12 +37,52 @@ const opts = [
 
 export default function ConsultorCadastro() {
   const navigate = useNavigate();
+  const [stats, setStats] = useState({ aj: 0, emp: 0, mag: 0, tec: 0 });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const { data } = await invokeAuthed<{ profiles: any[] }>("admin-create-user", { action: "list" });
+      const profiles = data?.profiles || [];
+      const counts = { aj: 0, emp: 0, mag: 0, tec: 0 };
+      profiles.forEach((p) => {
+        const roles = (p.user_roles || []).map((r: any) => r.role);
+        if (roles.includes("admjudicial")) counts.aj++;
+        if (roles.includes("recuperanda")) counts.emp++;
+        if (roles.includes("magistrado")) counts.mag++;
+        if (roles.includes("consultor")) counts.tec++;
+      });
+      setStats(counts);
+    };
+    fetchStats();
+  }, []);
+
+  const dashboards = [
+    { label: "Adm. Judiciais", value: stats.aj, icon: Scale, color: "text-[hsl(217,91%,45%)]", bg: "bg-[hsl(217,91%,96%)]" },
+    { label: "Empresas Prospecção", value: stats.emp, icon: Building2, color: "text-[hsl(142,60%,35%)]", bg: "bg-[hsl(142,60%,95%)]" },
+    { label: "Magistrados", value: stats.mag, icon: Gavel, color: "text-[hsl(261,80%,45%)]", bg: "bg-[hsl(261,80%,96%)]" },
+    { label: "Técnicos", value: stats.tec, icon: Users, color: "text-[hsl(38,92%,40%)]", bg: "bg-[hsl(38,92%,95%)]" },
+  ];
+
   return (
     <CadastroPageShell
-      breadcrumb={[{ label: "Cadastro de Perfils" }]}
-      title="Cadastro de Perfils"
-      subtitle="Selecione abaixo o tipo de cadastro que deseja gerenciar."
+      breadcrumb={[{ label: "Cadastro de Perfis" }]}
+      title="Cadastro de Perfis"
+      subtitle="Gerencie usuários e perfis da plataforma."
     >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {dashboards.map((d) => (
+          <div key={d.label} className="bg-white border border-border rounded-2xl p-5 flex items-center gap-4">
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${d.bg} ${d.color}`}>
+              <d.icon className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-foreground">{d.value}</div>
+              <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{d.label}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {opts.map((o) => {
           const Icon = o.icon;
