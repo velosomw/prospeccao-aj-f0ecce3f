@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Scale, Building2, Gavel, ArrowRight, FilePlus } from "lucide-react";
+import { Scale, Building2, Gavel, Users, ArrowRight, FilePlus } from "lucide-react";
 import CadastroPageShell from "@/components/consultor/CadastroPageShell";
 
 const opts = [
@@ -8,31 +8,38 @@ const opts = [
     desc: "Cadastre e gerencie usuários com perfil de Administrador Judicial.",
     icon: Scale,
     tone: { bg: "hsl(217,91%,96%)", fg: "hsl(217,91%,45%)", ring: "hsl(217,91%,92%)" },
-    to: "/consultor/cadastro/admjudicial",
+    to: "/dashboard/cadastro/admjudicial",
   },
   {
-    label: "Empresa Externa",
-    desc: "Cadastre as empresas que enviam a planilha com informações",
+    label: "Empresas Externas",
+    desc: "Cadastre e gerencie usuários com perfil de Empresa Externa.",
     icon: Building2,
     tone: { bg: "hsl(142,60%,95%)", fg: "hsl(142,60%,35%)", ring: "hsl(142,60%,90%)" },
-    to: "/consultor/cadastro/recuperandas",
+    to: "/dashboard/cadastro/recuperandas",
   },
   {
     label: "Magistrados",
     desc: "Cadastre e gerencie usuários com perfil de Magistrado.",
     icon: Gavel,
+    tone: { bg: "hsl(261,80%,96%)", fg: "hsl(261,80%,45%)", ring: "hsl(261,80%,92%)" },
+    to: "/dashboard/cadastro/magistrados",
+  },
+  {
+    label: "Técnicos",
+    desc: "Cadastre e gerencie usuários com perfil de Técnico (Consultor).",
+    icon: Users,
     tone: { bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)", ring: "hsl(38,92%,90%)" },
-    to: "/consultor/cadastro/magistrados",
+    to: "/dashboard/cadastro/tecnicos",
   },
 ];
 
-export default function ConsultorCadastro() {
+export default function CoordCadastroPerfis() {
   const navigate = useNavigate();
   return (
     <CadastroPageShell
       breadcrumb={[{ label: "Cadastro de Perfils" }]}
       title="Cadastro de Perfils"
-      subtitle="Selecione abaixo o tipo de cadastro que deseja gerenciar."
+      subtitle="Selecione o tipo de perfil para visualizar os usuários cadastrados e realizar novos cadastros."
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {opts.map((o) => {
