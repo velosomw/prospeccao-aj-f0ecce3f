@@ -47,12 +47,13 @@ Deno.serve(async (req) => {
     const isCoordenador = callerRoleList.includes("coordenador");
     const isConsultor = callerRoleList.includes("consultor");
     const isAdmjudicial = callerRoleList.includes("admjudicial");
+    const isMagistrado = callerRoleList.includes("magistrado");
 
     const body = await req.json();
     const { action } = body;
 
-    // Consultor pode apenas listar (para selecionar consultores em atribuições)
-    if (!isGestor && !isCoordenador && !isAdmjudicial && !(isConsultor && action === "list")) {
+    // Consultor e Magistrado podem apenas listar (para selecionar consultores em atribuições ou ver processos)
+    if (!isGestor && !isCoordenador && !isAdmjudicial && !isMagistrado && !(isConsultor && action === "list")) {
       return new Response(JSON.stringify({ error: "Sem permissão para gerenciar usuários" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -86,13 +87,13 @@ Deno.serve(async (req) => {
         user_roles: (rolesByUser.get(p.user_id) || []).map((role) => ({ role })),
       }));
 
-      if (isConsultor && !isGestor && !isCoordenador && !isAdmjudicial) {
+      if ((isConsultor || isMagistrado) && !isGestor && !isCoordenador && !isAdmjudicial) {
         merged = merged.filter((p: any) => {
           const roles = (p.user_roles || []).map((r: any) => r.role);
-          return roles.includes("consultor");
+          return roles.includes("consultor") || roles.includes("magistrado");
         });
       } else if (isAdmjudicial && !isGestor && !isCoordenador) {
-        // Admjudicial vê apenas Recuperandas vinculadas a si
+        // Admjudicial vê apenas Empresas Prospecção vinculadas a si
         const { data: links } = await adminClient
           .from("admjudicial_recuperandas")
           .select("recuperanda_user_id")
@@ -129,9 +130,10 @@ Deno.serve(async (req) => {
         gestor_ia: ["coordenador", "admjudicial", "consultor", "magistrado", "recuperanda"],
         coordenador: ["consultor", "magistrado", "recuperanda", "admjudicial"],
         admjudicial: ["recuperanda"],
+        consultor: ["admjudicial", "recuperanda", "magistrado", "consultor"],
       };
 
-      const callerRole = isGestor ? "gestor_ia" : isCoordenador ? "coordenador" : "admjudicial";
+      const callerRole = isGestor ? "gestor_ia" : isCoordenador ? "coordenador" : isAdmjudicial ? "admjudicial" : "consultor";
       if (!allowedRoles[callerRole]?.includes(role)) {
         return new Response(JSON.stringify({ error: `Você não pode cadastrar o perfil: ${role}` }), {
           status: 403,
