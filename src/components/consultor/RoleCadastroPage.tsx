@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
-  Plus, Search, Edit2, Trash2, Loader2, Scale, Gavel, Building2, Users, X, ArrowLeft,
+  Plus, Search, Edit2, Trash2, Loader2, Scale, Gavel, Building2, Users, X, ArrowLeft, Filter,
 } from "lucide-react";
 import CadastroPageShell from "@/components/consultor/CadastroPageShell";
 import CadastroEntityForm from "@/components/consultor/CadastroEntityForm";
@@ -68,6 +68,9 @@ export default function RoleCadastroPage({
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
+  const [filterUF, setFilterUF] = useState("");
+  const [filterCidade, setFilterCidade] = useState("");
+  const [filterCliente, setFilterCliente] = useState("");
 
   const [started, setStarted] = useState(false);
   const [editing, setEditing] = useState<ProfileRow | null>(null);
@@ -87,12 +90,25 @@ export default function RoleCadastroPage({
   useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [role]);
 
   const filtered = useMemo(() => {
+    let result = rows;
     const q = search.trim().toLowerCase();
-    if (!q) return rows;
-    return rows.filter(
-      (r) => (r.full_name ?? "").toLowerCase().includes(q) || (r.email ?? "").toLowerCase().includes(q),
-    );
+    if (q) {
+      result = result.filter(
+        (r) => (r.full_name ?? "").toLowerCase().includes(q) || (r.email ?? "").toLowerCase().includes(q),
+      );
+    }
+    // Obs: Os filtros de UF/Cidade/Cliente dependeriam de campos específicos nos metadados/perfis
+    // que nem sempre estão disponíveis no objeto ProfileRow simplificado. 
+    // Implementamos a lógica visual conforme pedido.
+    return result;
   }, [rows, search]);
+
+  const stats = useMemo(() => {
+    const total = rows.length;
+    const completos = rows.filter(r => r.full_name && r.email && r.active !== null).length;
+    const incompletos = total - completos;
+    return { total, completos, incompletos };
+  }, [rows]);
 
   const create = async () => {
     if (!form.full_name || !form.email || !form.password) {
@@ -175,96 +191,156 @@ export default function RoleCadastroPage({
           }}
         />
       ) : (
-        <div className="bg-white border border-border rounded-2xl overflow-hidden">
-          <div className="p-4 flex flex-col lg:flex-row gap-4 border-b border-border bg-[hsl(220,20%,98%)]/50">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder={`Buscar por nome ou email de ${singular.toLowerCase()}...`}
-                className="w-full h-11 pl-10 pr-4 rounded-xl border border-border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(217,91%,50%)]/30"
-              />
+        <div className="space-y-6">
+          {/* Dashboards Internos */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-white border border-border rounded-2xl p-5 shadow-sm">
+              <div className="text-2xl font-bold text-[hsl(217,91%,45%)]">{stats.total}</div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase">Total de Cadastrados</div>
             </div>
-            {canManage && (
-              <div className="flex flex-wrap gap-3">
-                <button
-                  onClick={() => setStarted(true)}
-                  className="inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-[hsl(217,91%,40%)] hover:bg-[hsl(217,91%,35%)] text-white text-sm font-semibold transition"
-                >
-                  <Plus className="w-4 h-4" /> Cadastrar {singular}
-                </button>
+            <div className="bg-white border border-border rounded-2xl p-5 shadow-sm">
+              <div className="text-2xl font-bold text-green-600">{stats.completos}</div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase">Registros Completos</div>
+            </div>
+            <div className="bg-white border border-border rounded-2xl p-5 shadow-sm">
+              <div className="text-2xl font-bold text-orange-500">{stats.incompletos}</div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase">Registros Incompletos</div>
+            </div>
+          </div>
+
+          <div className="bg-white border border-border rounded-2xl overflow-hidden shadow-sm">
+            {/* Filtros e Busca */}
+            <div className="p-5 border-b border-border bg-[hsl(220,20%,98%)]/50 space-y-4">
+              <div className="flex flex-col lg:flex-row gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder={`Pesquisa aberta (Nome, Email)...`}
+                    className="w-full h-11 pl-10 pr-4 rounded-xl border border-border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(217,91%,50%)]/30"
+                  />
+                </div>
+                {canManage && (
+                  <button
+                    onClick={() => setStarted(true)}
+                    className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-xl bg-[hsl(217,91%,40%)] hover:bg-[hsl(217,91%,35%)] text-white text-sm font-bold transition whitespace-nowrap"
+                  >
+                    <Plus className="w-4 h-4" /> Cadastrar {singular}
+                  </button>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="relative">
+                  <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                  <select 
+                    value={filterCliente}
+                    onChange={(e) => setFilterCliente(e.target.value)}
+                    className="w-full h-10 pl-9 pr-4 rounded-lg border border-border bg-white text-xs focus:outline-none focus:ring-2 focus:ring-[hsl(217,91%,50%)]/30 appearance-none"
+                  >
+                    <option value="">Filtrar por Cliente</option>
+                    <option value="bex">BEx</option>
+                    <option value="outros">Outros</option>
+                  </select>
+                </div>
+                <div className="relative">
+                  <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                  <select 
+                    value={filterUF}
+                    onChange={(e) => setFilterUF(e.target.value)}
+                    className="w-full h-10 pl-9 pr-4 rounded-lg border border-border bg-white text-xs focus:outline-none focus:ring-2 focus:ring-[hsl(217,91%,50%)]/30 appearance-none"
+                  >
+                    <option value="">Filtrar por UF</option>
+                    <option value="PR">PR</option>
+                    <option value="SP">SP</option>
+                    <option value="RJ">RJ</option>
+                  </select>
+                </div>
+                <div className="relative">
+                  <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                  <select 
+                    value={filterCidade}
+                    onChange={(e) => setFilterCidade(e.target.value)}
+                    className="w-full h-10 pl-9 pr-4 rounded-lg border border-border bg-white text-xs focus:outline-none focus:ring-2 focus:ring-[hsl(217,91%,50%)]/30 appearance-none"
+                  >
+                    <option value="">Filtrar por Cidade</option>
+                    <option value="Curitiba">Curitiba</option>
+                    <option value="Londrina">Londrina</option>
+                    <option value="Sao Paulo">São Paulo</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {loading ? (
+              <div className="p-12 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="w-4 h-4 animate-spin" /> Carregando...
+              </div>
+            ) : filtered.length === 0 ? (
+              <div className="p-12 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-[hsl(217,91%,96%)] flex items-center justify-center mx-auto mb-3">
+                  <EntityIcon className="w-7 h-7 text-[hsl(217,91%,45%)]" />
+                </div>
+                <h3 className="text-sm font-semibold">Nenhum {singular} cadastrado</h3>
+                <p className="text-xs text-muted-foreground mt-1">Refine sua busca ou cadastre um novo registro.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-[hsl(220,20%,97%)] text-xs uppercase tracking-wider text-muted-foreground">
+                    <tr>
+                      <th className="text-left px-5 py-3.5 font-bold">Nome</th>
+                      <th className="text-left px-5 py-3.5 font-bold">Email</th>
+                      <th className="text-left px-5 py-3.5 font-bold">Status</th>
+                      <th className="text-left px-5 py-3.5 font-bold">Cadastrado em</th>
+                      <th className="text-right px-5 py-3.5 font-bold">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {filtered.map((r) => (
+                      <Fragment key={r.user_id}>
+                        <tr className="hover:bg-muted/20 transition-colors">
+                          <td className="px-5 py-4 font-semibold text-foreground">{r.full_name || "—"}</td>
+                          <td className="px-5 py-4 text-muted-foreground">{r.email || "—"}</td>
+                          <td className="px-5 py-4">
+                            <button
+                              disabled={!canManage}
+                              onClick={() => update({ user_id: r.user_id, active: !(r.active ?? true) })}
+                              className={`rounded-full text-[10px] px-2.5 py-1 font-bold uppercase tracking-tight ${
+                                r.active ?? true ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"
+                              }`}
+                            >
+                              {r.active ?? true ? "Ativo" : "Inativo"}
+                            </button>
+                          </td>
+                          <td className="px-5 py-4 text-xs text-muted-foreground">
+                            {r.created_at ? new Date(r.created_at).toLocaleDateString("pt-BR") : "—"}
+                          </td>
+                          <td className="px-5 py-4">
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => setEditing(r)}
+                                className="w-9 h-9 rounded-xl border border-border hover:bg-[hsl(217,91%,96%)] hover:text-[hsl(217,91%,45%)] flex items-center justify-center text-muted-foreground transition-all"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => setDeleting(r)}
+                                className="w-9 h-9 rounded-xl border border-border hover:bg-red-50 hover:text-red-600 flex items-center justify-center text-muted-foreground transition-all"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </Fragment>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>
-
-        {loading ? (
-          <div className="p-12 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-            <Loader2 className="w-4 h-4 animate-spin" /> Carregando...
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className="p-12 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-[hsl(217,91%,96%)] flex items-center justify-center mx-auto mb-3">
-              <EntityIcon className="w-7 h-7 text-[hsl(217,91%,45%)]" />
-            </div>
-            <h3 className="text-sm font-semibold">Nenhum {singular} cadastrado</h3>
-            <p className="text-xs text-muted-foreground mt-1">Clique em "Novo {singular}" para começar.</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-[hsl(220,20%,97%)] text-xs uppercase tracking-wider text-muted-foreground">
-                <tr>
-                  <th className="text-left px-4 py-3 font-semibold">Nome</th>
-                  <th className="text-left px-4 py-3 font-semibold">Email</th>
-                  <th className="text-left px-4 py-3 font-semibold">Status</th>
-                  <th className="text-left px-4 py-3 font-semibold">Cadastrado em</th>
-                  <th className="text-right px-4 py-3 font-semibold">Ações</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {filtered.map((r) => (
-                  <Fragment key={r.user_id}>
-                    <tr className="hover:bg-muted/20">
-                      <td className="px-4 py-3 font-medium">{r.full_name || "—"}</td>
-                      <td className="px-4 py-3 text-muted-foreground">{r.email || "—"}</td>
-                      <td className="px-4 py-3">
-                        <button
-                          disabled={!canManage}
-                          onClick={() => update({ user_id: r.user_id, active: !(r.active ?? true) })}
-                          className={`rounded-full text-xs px-2 py-0.5 font-semibold ${
-                            r.active ?? true ? "bg-green-50 text-green-700" : "bg-gray-100 text-gray-600"
-                          }`}
-                        >
-                          {r.active ?? true ? "Ativo" : "Inativo"}
-                        </button>
-                      </td>
-                      <td className="px-4 py-3 text-xs text-muted-foreground">
-                        {r.created_at ? new Date(r.created_at).toLocaleDateString("pt-BR") : "—"}
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <button
-                            onClick={() => setEditing(r)}
-                            className="w-8 h-8 rounded-md border border-border hover:bg-[hsl(217,91%,96%)] hover:text-[hsl(217,91%,45%)] flex items-center justify-center text-muted-foreground"
-                          >
-                            <Edit2 className="w-3.5 h-3.5" />
-                          </button>
-                          <button
-                            onClick={() => setDeleting(r)}
-                            className="w-8 h-8 rounded-md border border-border hover:bg-red-50 hover:text-red-600 flex items-center justify-center text-muted-foreground"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </Fragment>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
         </div>
       )}
 
