@@ -4,6 +4,9 @@ import {
   Mail, Printer, Send, XCircle, ChevronDown, ChevronRight, FileText,
   Download, Sparkles, MapPin, CalendarClock, User, CheckCircle2, Clock,
 } from "lucide-react";
+import { previewCarta, downloadCarta, printCarta } from "@/services/carta/cartaPdfEngine";
+import { toast } from "@/hooks/use-toast";
+
 
 type CartaStatus = "Em elaboração" | "Enviada";
 
@@ -108,6 +111,41 @@ function MiniStat({ label, value, hint }: { label: string; value: string; hint?:
 export default function ConsultorClientes() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState<string | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+
+  const toLetterData = (l: LinhaCarta) => {
+    const partes = l.endereco.split(",").map((p) => p.trim());
+    const cidadeUf = partes[partes.length - 1] || "";
+    return {
+      cliente: l.empresa,
+      contato: l.endereco,
+      processo: l.processo,
+      administrador: l.aj,
+      cidade: cidadeUf,
+      vara: "Vara de Falências e Recuperações Judiciais",
+      tribunal: "Tribunal de Justiça",
+      referenceDate: new Date(2026, 7, 3),
+    };
+  };
+
+  const runCarta = async (acao: "preview" | "download" | "print", l: LinhaCarta) => {
+    setBusy(l.id);
+    try {
+      const data = toLetterData(l);
+      if (acao === "preview") await previewCarta(data);
+      else if (acao === "download") await downloadCarta(data);
+      else await printCarta(data);
+    } catch (e) {
+      toast({
+        title: "Não foi possível gerar a carta",
+        description: e instanceof Error ? e.message : "Erro no motor editorial.",
+        variant: "destructive",
+      });
+    } finally {
+      setBusy(null);
+    }
+  };
+
 
   const rows = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -206,19 +244,29 @@ export default function ConsultorClientes() {
                               <h4 className="text-base font-bold">Carta</h4>
                             </div>
                             <div className="flex flex-wrap gap-2 mt-4">
-                              <button className="inline-flex items-center gap-2 text-xs font-medium px-3 h-9 rounded-lg border bg-white hover:bg-muted/40">
+                              <button
+                                onClick={() => runCarta("preview", l)}
+                                disabled={busy === l.id}
+                                className="inline-flex items-center gap-2 text-xs font-medium px-3 h-9 rounded-lg border bg-white hover:bg-muted/40 disabled:opacity-50"
+                              >
                                 <Sparkles className="w-3.5 h-3.5" /> Preview da Carta
                               </button>
-                              <button className="inline-flex items-center gap-2 text-xs font-medium px-3 h-9 rounded-lg border bg-white hover:bg-muted/40">
+                              <button
+                                onClick={() => runCarta("download", l)}
+                                disabled={busy === l.id}
+                                className="inline-flex items-center gap-2 text-xs font-medium px-3 h-9 rounded-lg border bg-white hover:bg-muted/40 disabled:opacity-50"
+                              >
                                 <Download className="w-3.5 h-3.5" /> Exportar PDF
                               </button>
                               <button
-                                disabled={l.carta !== "Enviada"}
+                                onClick={() => runCarta("print", l)}
+                                disabled={l.carta !== "Enviada" || busy === l.id}
                                 className="inline-flex items-center gap-2 text-xs font-semibold px-3 h-9 rounded-lg bg-[hsl(217,91%,50%)] text-white hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
                               >
                                 <Printer className="w-3.5 h-3.5" /> Imprimir Carta
                               </button>
                             </div>
+
                             {l.carta !== "Enviada" && (
                               <p className="text-[11px] text-amber-700 mt-2">
                                 Impressão liberada somente após a carta ser finalizada e enviada.
