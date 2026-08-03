@@ -18,6 +18,7 @@ const loaders: Record<string, Loader> = {
   "/consultor/processos":     () => import("@/pages/consultor/ConsultorProcessos"),
   "/consultor/pendencias":    () => import("@/pages/consultor/ConsultorPendencias"),
   "/consultor/relatorios":    () => import("@/pages/consultor/ConsultorRelatorios"),
+  "/consultor/base-de-dados": () => import("@/pages/consultor/BaseDeDados"),
   "/consultor/historico":     () => import("@/pages/consultor/ConsultorHistorico"),
   "/consultor/logs":          () => import("@/pages/consultor/ConsultorLogsIA"),
 
