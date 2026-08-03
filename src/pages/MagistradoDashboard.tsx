@@ -12,14 +12,14 @@ export default function MagistradoDashboard() {
       cards={[
         { label: "Processos",      desc: "Processos sob sua jurisdição.",         icon: Gavel,         to: "/magistrado/processos", tone: "blue"   },
         { label: "Prospecções AJ Recebidos", desc: "RMAs aguardando sua análise.",          icon: FileText,      to: "/magistrado/rmas",      tone: "purple" },
-        { label: "Recuperandas",   desc: "Empresas em recuperação.",              icon: Building2,     to: "/magistrado/empresas",  tone: "teal"   },
+        { label: "Empresas Prospecção",   desc: "Empresas em recuperação.",              icon: Building2,     to: "/magistrado/empresas",  tone: "teal"   },
         { label: "Decisões",       desc: "Deliberações e despachos.",             icon: Scale,         to: "/magistrado/decisoes",  tone: "amber"  },
         { label: "Histórico",      desc: "Linha do tempo e arquivo.",             icon: History,       to: "/magistrado/historico", tone: "green"  },
         { label: "Comunicação",    desc: "Mensagens com AJ e consultores.",       icon: MessageCircle, to: "/dashboard/comunicacao", tone: "orange" },
       ]}
       summary={[
         { label: "Processos Ativos",   value: 33,    icon: Gavel,         tone: "blue"   },
-        { label: "Recuperandas",       value: 18,    icon: Building2,     tone: "purple" },
+        { label: "Empresas Prospecção",       value: 18,    icon: Building2,     tone: "purple" },
         { label: "Prospecções AJ a Analisar",    value: "07",  icon: FileText,      tone: "orange", to: "/magistrado/rmas" },
         { label: "Decisões Pendentes", value: "04",  icon: AlertTriangle, tone: "red",    to: "/magistrado/decisoes" },
         { label: "Encerrados (30d)",   value: 9,     icon: CheckCircle2,  tone: "green"  },

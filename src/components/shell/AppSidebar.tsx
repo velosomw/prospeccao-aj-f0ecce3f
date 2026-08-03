@@ -54,7 +54,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         
         { label: "Comunicação", to: "/dashboard/comunicacao", icon: MessageCircle },
         { label: "Planilha de Carga",  to: "/dashboard/relatorios",  icon: FileBarChart },
-        { label: "Planilha de Carta", to: "/dashboard/empresas",    icon: Building2 },
+        { label: "Empresas Prospecção", to: "/dashboard/empresas",    icon: Building2 },
         
         { label: "Cadastros",   to: "/cadastro-prospeccao-aj", icon: FilePlus },
         { label: "Relatórios & Cartas", to: "/relatorios-contabeis", icon: FileBarChart },
@@ -78,7 +78,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Comunicação",   to: "/consultor/comunicacao",   icon: MessageCircle },
         { label: "Planilha de Carga",    to: "/consultor/relatorios",    icon: FileBarChart },
         { label: "Planilha Padrão Prospecção", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
-        { label: "Planilha de Carta", to: "/consultor/clientes",      icon: Building2 },
+        { label: "Empresas Prospecção", to: "/consultor/clientes",      icon: Building2 },
         
         { label: "Cadastros",     to: "/consultor/cadastro",      icon: FilePlus, children: [
           { label: "Administrador Judicial", to: "/consultor/cadastro/admjudicial" },
@@ -112,7 +112,7 @@ const buildNav = (role: string | null): NavGroup[] => {
       items: [
         { label: "Processos",       to: "/magistrado/processos", icon: Gavel },
         { label: "Prospecções AJ Recebidas",  to: "/magistrado/prospeccoes-aj",      icon: FileText, badge: 7 },
-        { label: "Recuperandas",    to: "/magistrado/empresas",  icon: Building2 },
+        { label: "Empresas Prospecção",    to: "/magistrado/empresas",  icon: Building2 },
         { label: "Decisões",        to: "/magistrado/decisoes",  icon: Scale },
         { label: "Histórico",       to: "/magistrado/historico", icon: History },
       ],
@@ -137,7 +137,7 @@ const buildNav = (role: string | null): NavGroup[] => {
     groups.push({
       label: "Administração",
       items: [
-        { label: "Recuperandas", to: "/admjudicial/recuperandas", icon: Building2 },
+        { label: "Empresas Prospecção", to: "/admjudicial/recuperandas", icon: Building2 },
         { label: "Prospecções AJ", to: "/admjudicial/prospeccoes-aj",         icon: Briefcase },
         { label: "Pendências",   to: "/admjudicial/pendencias",   icon: AlertTriangle, badge: 23 },
         { label: "Planilha de Carga",   to: "/admjudicial/relatorios",   icon: FileBarChart },

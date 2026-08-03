@@ -6,7 +6,7 @@ export default function ConsultorComunicacao() {
   return (
     <ConsultorPageShell
       title="Comunicação"
-      subtitle="Mensagens em tempo real com recuperandas, coordenadores e magistrado."
+      subtitle="Mensagens em tempo real com empresas prospecção, coordenadores e magistrado."
       kpis={[
         { label: "Conversas",   value: 0, icon: MessageCircle, tone: "blue"   },
         { label: "Não lidas",   value: 0, icon: Inbox,         tone: "red"    },
