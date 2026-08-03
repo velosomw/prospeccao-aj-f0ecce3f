@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
-  Plus, Search, Edit2, Trash2, Loader2, Scale, Gavel, Building2, Users, X,
+  Plus, Search, Edit2, Trash2, Loader2, Scale, Gavel, Building2, Users, X, ArrowLeft,
 } from "lucide-react";
 import CadastroPageShell from "@/components/consultor/CadastroPageShell";
 import CadastroEntityForm from "@/components/consultor/CadastroEntityForm";
@@ -144,7 +144,7 @@ export default function RoleCadastroPage({
             onClick={() => setStarted(false)}
             className="w-8 h-8 rounded-lg bg-[hsl(217,91%,50%)] hover:bg-[hsl(217,91%,45%)] text-white flex items-center justify-center transition shrink-0"
           >
-            <Plus className="w-4 h-4 rotate-45" />
+            <ArrowLeft className="w-4 h-4" />
           </button>
         )}
         <h2 className="text-xl font-bold text-foreground">
