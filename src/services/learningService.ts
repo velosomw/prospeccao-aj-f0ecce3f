@@ -95,7 +95,7 @@ export async function uploadLearningFile(file: File): Promise<UploadedLearningFi
 
   return {
     path,
-    publicUrl: pub.publicUrl,
+    publicUrl: signed.signedUrl,
     fileName: file.name,
     mimeType: file.type || "application/octet-stream",
     kind,
