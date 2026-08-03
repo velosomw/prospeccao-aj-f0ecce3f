@@ -54,6 +54,10 @@ export default function ConsultorCadastro() {
       setStats(counts);
     };
     fetchStats();
+    
+    // Configurar o polling para atualizar os dashboards quando novos registros entrarem
+    const interval = setInterval(fetchStats, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const dashboards = [
