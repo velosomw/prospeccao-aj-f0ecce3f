@@ -15,7 +15,6 @@ export default function AdmjudicialDashboard() {
         { label: "Pendências",   desc: "Documentos aguardando empresas prospecção.",   icon: AlertTriangle, to: "/admjudicial/pendencias",   tone: "red"    },
         { label: "Relatórios",   desc: "Consolidados e exportações.",           icon: FileBarChart,  to: "/admjudicial/relatorios",   tone: "green"  },
         { label: "Histórico",    desc: "Linha do tempo das ações realizadas.",  icon: History,       to: "/admjudicial/historico",    tone: "teal"   },
-        { label: "Comunicação",  desc: "Mensagens com consultores e juízo.",    icon: MessageCircle, to: "/dashboard/comunicacao",    tone: "amber"  },
       ]}
       summary={[
         { label: "Empresas Prospecção",      value: 16,    icon: Building2,     tone: "blue",   to: "/admjudicial/recuperandas" },

@@ -14,7 +14,6 @@ export default function Dashboard() {
         { label: "Cadastros",   desc: "Novos clientes, processos e RMAs.",          icon: FilePlus,     to: "/cadastro-rma",          tone: "blue"   },
         { label: "Relatórios",  desc: "Gere, revise e exporte relatórios.",         icon: FileBarChart, to: "/dashboard/relatorios",  tone: "green"  },
         { label: "Dashboard",   desc: "Indicadores analíticos da operação.",        icon: Activity,     to: "/dashboard/analitico",   tone: "purple" },
-        { label: "Comunicação", desc: "Mensagens, comentários e revisões.",         icon: MessageCircle,to: "/dashboard/comunicacao", tone: "amber"  },
         { label: "Avisos",      desc: "Prazos críticos e alertas da equipe.",       icon: Megaphone,    to: "/dashboard/avisos",      tone: "orange" },
         { label: "Clientes",    desc: "Carteira e empresas sob acompanhamento.",    icon: Building2,    to: "/dashboard/empresas",    tone: "teal"   },
       ]}

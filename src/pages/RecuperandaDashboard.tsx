@@ -14,7 +14,6 @@ export default function RecuperandaDashboard() {
         { label: "Pendências",  desc: "Documentos que faltam enviar.",          icon: AlertTriangle, to: "/recuperanda/pendencias",  tone: "red"    },
         { label: "Relatórios",  desc: "RMAs publicados sobre sua empresa.",     icon: FileBarChart,  to: "/recuperanda/relatorios",  tone: "green"  },
         { label: "Cronograma",  desc: "Prazos do plano de recuperação.",        icon: Calendar,      to: "/recuperanda/cronograma",  tone: "purple" },
-        { label: "Comunicação", desc: "Mensagens com AJ e consultores.",        icon: MessageCircle, to: "/recuperanda/comunicacao", tone: "amber"  },
         { label: "Upload",      desc: "Envie novos documentos agora.",          icon: Upload,        to: "/recuperanda/documentos",  tone: "teal"   },
       ]}
       summary={[
