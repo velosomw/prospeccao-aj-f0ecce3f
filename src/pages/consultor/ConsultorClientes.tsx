@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 import {
   Mail, Printer, Send, XCircle, ChevronDown, ChevronRight, FileText,
@@ -161,9 +161,8 @@ export default function ConsultorClientes() {
               {rows.map((l, i) => {
                 const isOpen = open === l.id;
                 return (
-                  <>
+                  <Fragment key={l.id}>
                     <tr
-                      key={l.id}
                       onClick={() => setOpen(isOpen ? null : l.id)}
                       className={`cursor-pointer hover:bg-blue-50/50 ${isOpen ? "bg-blue-50/60" : i % 2 === 0 ? "bg-white" : "bg-muted/20"}`}
                     >
@@ -186,7 +185,7 @@ export default function ConsultorClientes() {
                     </tr>
 
                     {isOpen && (
-                      <tr key={`${l.id}-detail`}>
+                      <tr>
                         <td colSpan={7} className="bg-muted/30 border-b p-4 lg:p-5">
                           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                             <MiniStat label="Carta" value={l.carta} />
@@ -265,7 +264,7 @@ export default function ConsultorClientes() {
                         </td>
                       </tr>
                     )}
-                  </>
+                  </Fragment>
                 );
               })}
             </tbody>
