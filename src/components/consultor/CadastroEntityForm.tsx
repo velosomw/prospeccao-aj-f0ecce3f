@@ -3,17 +3,25 @@ import { useNavigate } from "react-router-dom";
 import { UploadCloud, Save, X } from "lucide-react";
 import { toast } from "sonner";
 
+export type CadastroEntityVariant = "recuperanda" | "admjudicial" | "magistrado";
+
 export interface CadastroEntityFormProps {
   backTo: string;
   /** Label do label "Razão Social" (ou "Razão Social / Nome Fantasia") */
   razaoLabel?: string;
+  variant?: CadastroEntityVariant;
   onSubmit?: (data: Record<string, string>) => void;
 }
 
+const UFS = "AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO".split(" ");
+
+const inputCls =
+  "w-full h-11 px-3.5 rounded-lg border border-border bg-white text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-[hsl(217,91%,50%)]/30 focus:border-[hsl(217,91%,50%)]";
+
 const Field = ({
-  label, name, placeholder, type = "text", required = false,
-}: { label: string; name: string; placeholder?: string; type?: string; required?: boolean }) => (
-  <div>
+  label, name, placeholder, type = "text", required = false, className,
+}: { label: string; name: string; placeholder?: string; type?: string; required?: boolean; className?: string }) => (
+  <div className={className}>
     <label className="block text-sm font-medium text-foreground mb-1.5">
       {label}{required && <span className="text-[hsl(0,84%,55%)] ml-0.5">*</span>}
     </label>
@@ -22,16 +30,33 @@ const Field = ({
       type={type}
       placeholder={placeholder}
       required={required}
-      className="w-full h-11 px-3.5 rounded-lg border border-border bg-white text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-[hsl(217,91%,50%)]/30 focus:border-[hsl(217,91%,50%)]"
+      className={inputCls}
     />
   </div>
 );
 
+const SelectField = ({
+  label, name, options, required = false, placeholder = "Selecione",
+}: { label: string; name: string; options: string[]; required?: boolean; placeholder?: string }) => (
+  <div>
+    <label className="block text-sm font-medium text-foreground mb-1.5">
+      {label}{required && <span className="text-[hsl(0,84%,55%)] ml-0.5">*</span>}
+    </label>
+    <select name={name} required={required} defaultValue="" className={inputCls}>
+      <option value="" disabled>{placeholder}</option>
+      {options.map((o) => <option key={o} value={o}>{o}</option>)}
+    </select>
+  </div>
+);
+
 export default function CadastroEntityForm({
-  backTo, razaoLabel = "Razão Social", onSubmit,
+  backTo, razaoLabel = "Razão Social", variant = "recuperanda", onSubmit,
 }: CadastroEntityFormProps) {
   const navigate = useNavigate();
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const isMagistrado = variant === "magistrado";
+
+
 
   const handleLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
