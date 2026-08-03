@@ -34,6 +34,11 @@ const ConsultorCadastroAJ = lazy(() => import("./pages/consultor/ConsultorCadast
 const ConsultorCadastroAJNovo = lazy(() => import("./pages/consultor/ConsultorCadastroAJNovo"));
 const ConsultorCadastroRec = lazy(() => import("./pages/consultor/ConsultorCadastroRec"));
 const ConsultorCadastroRecNova = lazy(() => import("./pages/consultor/ConsultorCadastroRecNova"));
+const ConsultorCadastroMag = lazy(() => import("./pages/consultor/ConsultorCadastroMag"));
+const ConsultorCadastroMagNovo = lazy(() => import("./pages/consultor/ConsultorCadastroMagNovo"));
+const CoordCadastroPerfis = lazy(() => import("./pages/coordenador/CoordCadastroPerfis"));
+const CoordCadastroPerfilPage = lazy(() => import("./pages/coordenador/CoordCadastroPerfilPage"));
+
 const ConsultorAvisos = lazy(() => import("./pages/consultor/ConsultorAvisos"));
 const ConsultorConfiguracoes = lazy(() => import("./pages/consultor/ConsultorConfiguracoes"));
 const CoordEquipe = lazy(() => import("./pages/coordenador/CoordEquipe"));
