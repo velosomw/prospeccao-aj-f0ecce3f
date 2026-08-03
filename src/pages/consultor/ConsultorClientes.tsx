@@ -111,6 +111,41 @@ function MiniStat({ label, value, hint }: { label: string; value: string; hint?:
 export default function ConsultorClientes() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState<string | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+
+  const toLetterData = (l: LinhaCarta) => {
+    const partes = l.endereco.split(",").map((p) => p.trim());
+    const cidadeUf = partes[partes.length - 1] || "";
+    return {
+      cliente: l.empresa,
+      contato: l.endereco,
+      processo: l.processo,
+      administrador: l.aj,
+      cidade: cidadeUf,
+      vara: "Vara de Falências e Recuperações Judiciais",
+      tribunal: "Tribunal de Justiça",
+      referenceDate: new Date(2026, 7, 3),
+    };
+  };
+
+  const runCarta = async (acao: "preview" | "download" | "print", l: LinhaCarta) => {
+    setBusy(l.id);
+    try {
+      const data = toLetterData(l);
+      if (acao === "preview") await previewCarta(data);
+      else if (acao === "download") await downloadCarta(data);
+      else await printCarta(data);
+    } catch (e) {
+      toast({
+        title: "Não foi possível gerar a carta",
+        description: e instanceof Error ? e.message : "Erro no motor editorial.",
+        variant: "destructive",
+      });
+    } finally {
+      setBusy(null);
+    }
+  };
+
 
   const rows = useMemo(() => {
     const q = search.trim().toLowerCase();
