@@ -51,11 +51,11 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Dashboard",   to: "/dashboard/analitico",   icon: LayoutDashboard },
         { label: "Processamento IA", to: "/processo-prospeccao", icon: Briefcase },
         { label: "Upload Planilha", to: "/treinar-ia",           icon: Brain },
-        { label: "Auditoria PDF",   to: "/dashboard/auditoria",   icon: Shield },
+        
         { label: "Comunicação", to: "/dashboard/comunicacao", icon: MessageCircle },
         { label: "Planilha de Carga",  to: "/dashboard/relatorios",  icon: FileBarChart },
         { label: "Planilha de Carta", to: "/dashboard/empresas",    icon: Building2 },
-        { label: "Avisos",      to: "/dashboard/avisos",      icon: Megaphone, badge: 5 },
+        
         { label: "Cadastros",   to: "/cadastro-prospeccao-aj", icon: FilePlus },
         { label: "Relatórios & Cartas", to: "/relatorios-contabeis", icon: FileBarChart },
         { label: "Aprovações",  to: "/dashboard/aprovacoes",  icon: CheckCircle2, badge: 9 },
@@ -74,12 +74,12 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Dashboard",     to: "/consultor/dashboard",     icon: LayoutDashboard },
         { label: "Processamento IA", to: "/processo-prospeccao",     icon: Briefcase },
         { label: "Upload Planilha",  to: "/treinar-ia",              icon: Brain },
-        { label: "Auditoria PDF",     to: "/consultor/auditoria",     icon: Shield, badge: 17 },
+        
         { label: "Comunicação",   to: "/consultor/comunicacao",   icon: MessageCircle },
         { label: "Planilha de Carga",    to: "/consultor/relatorios",    icon: FileBarChart },
         { label: "Planilha Padrão Prospecção", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
         { label: "Planilha de Carta", to: "/consultor/clientes",      icon: Building2 },
-        { label: "Avisos",        to: "/consultor/avisos",        icon: Bell, badge: 3 },
+        
         { label: "Cadastros",     to: "/consultor/cadastro",      icon: FilePlus, children: [
           { label: "Administrador Judicial", to: "/consultor/cadastro/admjudicial" },
           { label: "Recuperandas",            to: "/consultor/cadastro/recuperandas" },
@@ -100,7 +100,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Failed Jobs",        to: "/gestor-ia/failed-jobs",     icon: AlertTriangle, badge: 3 },
         { label: "Busca Semântica",    to: "/gestor-ia/busca-semantica", icon: FileText },
         { label: "Usuários",           to: "/gestor-ia/usuarios",        icon: Users },
-        { label: "Auditoria PDF",          to: "/gestor-ia/auditoria",       icon: Shield },
+        
       ],
     });
   }
@@ -327,31 +327,6 @@ export default function AppSidebar() {
           </SidebarGroup>
         ))}
 
-        {!collapsed && (
-          <SidebarGroup>
-            <SidebarGroupLabel className={`${txtFainter} text-[10px] font-bold uppercase tracking-wider`}>
-              Ações Rápidas
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {[
-                  { label: "Upload de Documentos", icon: Upload },
-                  { label: "Exportar Relatório",   icon: Download },
-                ].map((a) => {
-                  const Icon = a.icon;
-                  return (
-                    <SidebarMenuItem key={a.label}>
-                      <SidebarMenuButton className={`${txtSubtle} ${hoverBg} ${hoverTxt}`}>
-                        <Icon className="w-6 h-6 flex-shrink-0" />
-                        <span className="text-sm">{a.label}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
       </SidebarContent>
 
       <SidebarFooter className="border-t-0 gap-2" style={{ background: NAVY }}>
