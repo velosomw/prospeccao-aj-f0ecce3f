@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { Scale, Building2, ArrowRight, FilePlus } from "lucide-react";
+import { Scale, Building2, Gavel, ArrowRight, FilePlus } from "lucide-react";
 import CadastroPageShell from "@/components/consultor/CadastroPageShell";
 
 const opts = [
   {
     label: "Administrador Judicial",
-    desc: "Cadastre escritórios e responsáveis pela administração judicial dos processos.",
+    desc: "Cadastre e gerencie usuários com perfil de Administrador Judicial.",
     icon: Scale,
     tone: { bg: "hsl(217,91%,96%)", fg: "hsl(217,91%,45%)", ring: "hsl(217,91%,92%)" },
     to: "/consultor/cadastro/admjudicial",
@@ -17,14 +17,21 @@ const opts = [
     tone: { bg: "hsl(142,60%,95%)", fg: "hsl(142,60%,35%)", ring: "hsl(142,60%,90%)" },
     to: "/consultor/cadastro/recuperandas",
   },
+  {
+    label: "Magistrados",
+    desc: "Cadastre e gerencie usuários com perfil de Magistrado.",
+    icon: Gavel,
+    tone: { bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)", ring: "hsl(38,92%,90%)" },
+    to: "/consultor/cadastro/magistrados",
+  },
 ];
 
 export default function ConsultorCadastro() {
   const navigate = useNavigate();
   return (
     <CadastroPageShell
-      breadcrumb={[{ label: "Cadastros" }]}
-      title="Cadastros"
+      breadcrumb={[{ label: "Cadastro de Perfils" }]}
+      title="Cadastro de Perfils"
       subtitle="Selecione abaixo o tipo de cadastro que deseja gerenciar."
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
