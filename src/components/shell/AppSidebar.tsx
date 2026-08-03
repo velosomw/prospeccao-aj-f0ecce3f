@@ -5,7 +5,7 @@ import {
   LayoutDashboard, FileText, Upload, Download,
   History, Activity, Settings, Users,
   Briefcase, AlertTriangle, FolderOpen, FileBarChart, FileSpreadsheet, CheckCircle2,
-  Gavel, MessageCircle, Calendar, Megaphone, FilePlus, Sun, Moon, Home, Bell, ChevronDown, ChevronRight,
+  Gavel, MessageCircle, Calendar, Megaphone, FilePlus, Sun, Moon, Home, Bell, ChevronDown, ChevronRight, Database,
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent,
@@ -53,6 +53,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Upload Planilha", to: "/treinar-ia",           icon: Brain },
         
         { label: "Planilha de Carga",  to: "/dashboard/relatorios",  icon: FileBarChart },
+        { label: "Base de Dados",      to: "/consultor/base-de-dados", icon: Database },
         { label: "Empresas Prospecção", to: "/dashboard/empresas",    icon: Building2 },
         
         { label: "Cadastros",   to: "/cadastro-prospeccao-aj", icon: FilePlus },
@@ -75,6 +76,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Upload Planilha",  to: "/treinar-ia",              icon: Brain },
         
         { label: "Planilha de Carga",    to: "/consultor/relatorios",    icon: FileBarChart },
+        { label: "Base de Dados",        to: "/consultor/base-de-dados",  icon: Database },
         { label: "Planilha Padrão Prospecção", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
         { label: "Empresas Prospecção", to: "/consultor/clientes",      icon: Building2 },
         
