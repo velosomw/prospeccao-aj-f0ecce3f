@@ -12,7 +12,7 @@ const trilha = [
 export default function CoordAuditoria() {
   return (
     <ConsultorPageShell
-      title="Auditoria" subtitle="Trilha imutável WORM de todas as ações de governança."
+      title="Auditoria PDF" subtitle="Trilha imutável WORM de todas as ações de governança."
       kpis={[
         { label: "Eventos (30d)", value: 412, hint: "Registrados",       icon: Activity,     tone: "blue" },
         { label: "Aprovações",    value: 89,  hint: "Coordenação",       icon: CheckCircle2, tone: "green" },

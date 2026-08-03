@@ -84,7 +84,7 @@ export default function ProcessoProspeccao() {
 
   return (
     <ConsultorPageShell
-      title="Processo Prospecção"
+      title="Processamento IA"
       subtitle={`Acompanhamento diário de e-mails recebidos e extração de planilhas por IA — ${hoje}. (mockup — dados fictícios)`}
       search={search}
       onSearch={setSearch}
