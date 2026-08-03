@@ -210,9 +210,6 @@ export default function ConsultorClientes() {
                                 <Sparkles className="w-3.5 h-3.5" /> Preview da Carta
                               </button>
                               <button className="inline-flex items-center gap-2 text-xs font-medium px-3 h-9 rounded-lg border bg-white hover:bg-muted/40">
-                                <Download className="w-3.5 h-3.5" /> Exportar A4 .Docx
-                              </button>
-                              <button className="inline-flex items-center gap-2 text-xs font-medium px-3 h-9 rounded-lg border bg-white hover:bg-muted/40">
                                 <Download className="w-3.5 h-3.5" /> Exportar PDF
                               </button>
                               <button
