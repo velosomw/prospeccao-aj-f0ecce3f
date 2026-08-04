@@ -156,11 +156,6 @@ export default function TrainAI() {
                 </Select>
               </div>
             </div>
-            {selected && (
-              <div className="text-xs text-muted-foreground">
-                Selecionado: <span className="font-semibold text-foreground">{selected.rma_id}</span> — {selected.name}
-              </div>
-            )}
           </CardContent>
         </Card>
 
