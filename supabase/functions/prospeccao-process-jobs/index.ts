@@ -79,37 +79,37 @@ Deno.serve(async (req) => {
           pdfBytes = new Uint8Array(await file.arrayBuffer());
         }
 
-        // 2) Enviar ao Lovable AI (Gemini multimodal via file part)
+        // 2) Enviar ao Gemini diretamente (Multimodal via inlineData)
         const base64 = base64Encode(pdfBytes);
-        const aiResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
+        if (!GOOGLE_AI_API_KEY) throw new Error("GOOGLE_AI_API_KEY ausente para chamada direta");
+
+        const aiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GOOGLE_AI_API_KEY}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Lovable-API-Key": LOVABLE_API_KEY,
           },
           body: JSON.stringify({
-            model: "google/gemini-3-flash-preview",
-            messages: [
-              {
-                role: "user",
-                content: [
-                  { type: "text", text: EXTRACTION_PROMPT },
-                  {
-                    type: "file",
-                    file: {
-                      filename: "processo.pdf",
-                      file_data: `data:application/pdf;base64,${base64}`,
-                    },
-                  },
-                ],
-              },
-            ],
+            contents: [{
+              parts: [
+                { text: EXTRACTION_PROMPT },
+                {
+                  inlineData: {
+                    mimeType: "application/pdf",
+                    data: base64
+                  }
+                }
+              ]
+            }],
+            generationConfig: {
+              responseMimeType: "application/json"
+            }
           }),
         });
         const aiText = await aiResp.text();
-        if (!aiResp.ok) throw new Error(`AI ${aiResp.status}: ${aiText.slice(0, 300)}`);
+        if (!aiResp.ok) throw new Error(`Gemini ${aiResp.status}: ${aiText.slice(0, 300)}`);
         const aiJson = JSON.parse(aiText);
-        const content = aiJson?.choices?.[0]?.message?.content ?? "";
+        const content = aiJson?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
         const extracted = extractJson(content);
 
         // 3) atualizar linha
