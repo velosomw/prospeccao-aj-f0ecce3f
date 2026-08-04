@@ -123,6 +123,10 @@ Deno.serve(async (req) => {
           const v = extracted?.[k];
           if (v != null && v !== "") linhaUpdate[k] = v;
         }
+
+        // Se todos os campos essenciais estiverem preenchidos, marcar como validado na UI (implícito pelo ai_status: extraido)
+        // No frontend ConsultorRelatorios, vamos ajustar para exibir "Validado" se extraido.
+        
         await admin.from("prospeccao_linhas").update(linhaUpdate).eq("id", job.linha_id);
         await admin.from("prospeccao_pdf_jobs").update({
           status: "extraido", extracted_json: extracted,

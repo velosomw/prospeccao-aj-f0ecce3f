@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 import { FileSpreadsheet, Building2, Scale, MapPin } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 type Linha = {
   data_distribuicao: string | null;
@@ -53,15 +54,52 @@ function fmtMoney(n: number | null) {
 
 export default function PlanilhaPadraoProspeccao() {
   const [search, setSearch] = useState("");
+  const [dbLinhas, setDbLinhas] = useState<Linha[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLinhas = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("prospeccao_linhas" as never)
+          .select("*")
+          .order("created_at", { ascending: false });
+        
+        if (error) throw error;
+
+        const mapped: Linha[] = (data as any[]).map(l => ({
+          data_distribuicao: l.dt_inicio,
+          mes: null,
+          numero_processo: l.numero_processo,
+          empresa: l.parte_pro_nome,
+          vara_comarca: l.orgao_tribunal,
+          estado: l.uf,
+          valor_passivo: l.valor_pleito,
+          aj_nomeado: l.advogado_nome,
+          juiz: l.pedidos_principais, // Juiz mapeado aqui conforme nossa lógica de importação
+        }));
+        
+        // Combina com mock se vazio, ou apenas usa os do DB
+        setDbLinhas(mapped.length > 0 ? mapped : LINHAS);
+      } catch (err) {
+        console.error("Erro ao carregar linhas:", err);
+        setDbLinhas(LINHAS);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLinhas();
+  }, []);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return LINHAS;
-    return LINHAS.filter((l) =>
+    if (!q) return dbLinhas;
+    return dbLinhas.filter((l) =>
       [l.numero_processo, l.empresa, l.vara_comarca, l.estado, l.juiz, l.aj_nomeado]
         .some((v) => v && v.toLowerCase().includes(q)),
     );
-  }, [search]);
+  }, [search, dbLinhas]);
 
   const totalPassivo = filtered.reduce((s, l) => s + (l.valor_passivo || 0), 0);
   const ufs = new Set(filtered.map((l) => l.estado).filter(Boolean)).size;

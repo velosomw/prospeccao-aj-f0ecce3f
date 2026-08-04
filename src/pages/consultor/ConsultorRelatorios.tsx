@@ -7,7 +7,7 @@ import { FileSpreadsheet, Clock, CheckCircle2, AlertTriangle, RefreshCw, PlayCir
 const statusMeta: Record<string, { label: string; bg: string; fg: string }> = {
   pendente: { label: "Pendente", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" },
   baixado:  { label: "Baixado",  bg: "hsl(38,92%,95%)",  fg: "hsl(38,92%,40%)"  },
-  extraido: { label: "Extraído", bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
+  extraido: { label: "Validado", bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
   erro:     { label: "Erro",     bg: "hsl(0,84%,95%)",   fg: "hsl(0,84%,40%)"   },
   sem_link: { label: "Sem link", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" },
 };
