@@ -90,7 +90,7 @@ export default function TrainAI() {
           <div>
             <h1 className="text-xl font-bold text-foreground">Upload Planilha</h1>
             <p className="text-sm text-muted-foreground">
-              Carregue a planilha da empresa e as informações de referência para processamento.
+              Selecione a empresa e no campo Planilha de upload escolha "Arquivo" para carregar a base.
             </p>
           </div>
         </div>
