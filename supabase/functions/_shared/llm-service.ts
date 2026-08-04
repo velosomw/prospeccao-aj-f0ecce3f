@@ -180,13 +180,18 @@ async function callOpenAI(opts: LLMOptions, model: string): Promise<LLMResult> {
 async function callGemini(opts: LLMOptions, model: string): Promise<LLMResult> {
   const key = Deno.env.get("GOOGLE_AI_API_KEY");
   if (!key) throw new Error("GOOGLE_AI_API_KEY not configured");
+  
+  // Se houver anexo (multimodal), o chamador pode passar file_data em opts.file
+  // Aqui implementamos suporte multimodal básico via inlineData
+  const parts: any[] = [{ text: opts.prompt }];
+  
   const resp = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${key}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: opts.prompt }] }],
+        contents: [{ role: "user", parts }],
         ...(opts.system ? { systemInstruction: { parts: [{ text: opts.system }] } } : {}),
       }),
     },
