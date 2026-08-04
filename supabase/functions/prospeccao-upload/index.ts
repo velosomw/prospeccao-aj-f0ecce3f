@@ -46,6 +46,14 @@ const HEADER_MAP: Record<string, string> = {
   "processo eletronico?": "processo_eletronico",
   "link_documento": "link_documento",
   "link documento": "link_documento",
+  // Novos mapeamentos para a planilha padrão de prospecção
+  "data da distribuição": "dt_inicio",
+  "empresa": "parte_pro_nome",
+  "vara e comarca": "orgao_tribunal",
+  "estado": "uf",
+  "valor do passivo": "valor_pleito",
+  "juiz / juíza": "pedidos_principais", // Mapeando juiz para pedidos_principais temporariamente se não houver coluna juiz
+  "aj nomeado": "advogado_nome", // Mapeando AJ nomeado para advogado_nome
 };
 
 function normalizeHeader(h: string): string {
@@ -115,19 +123,36 @@ Deno.serve(async (req) => {
       const ws = wb.Sheets[wb.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json<XlsxRow>(ws, { defval: null });
 
+      const seenRows = new Set<string>();
       const linhas = rows.map((r) => {
         const out: Record<string, unknown> = { user_id: user.id, upload_id: uploadRow.id };
+        let rowIdentifier = "";
+        
         for (const [k, v] of Object.entries(r)) {
           const col = HEADER_MAP[normalizeHeader(k)];
           if (!col) continue;
-          if (col === "valor_pleito") out[col] = parseNumber(v);
-          else if (col === "dt_inicio" || col === "dt_cad_causa") out[col] = parseDate(v);
-          else if (col === "processo_eletronico") out[col] = parseBool(v);
-          else out[col] = v == null ? null : String(v);
+          
+          let val: any = v;
+          if (col === "valor_pleito") val = parseNumber(v);
+          else if (col === "dt_inicio" || col === "dt_cad_causa") val = parseDate(v);
+          else if (col === "processo_eletronico") val = parseBool(v);
+          else val = v == null ? null : String(v);
+          
+          out[col] = val;
+          // Cria um identificador único baseado no número do processo e empresa para remover duplicatas
+          if (col === "numero_processo" || col === "parte_pro_nome") {
+            rowIdentifier += String(val || "").toLowerCase().trim();
+          }
         }
+        
+        if (rowIdentifier && seenRows.has(rowIdentifier)) {
+          return null; // Marca para remoção
+        }
+        if (rowIdentifier) seenRows.add(rowIdentifier);
+        
         if (!out.link_documento) out.ai_status = "sem_link";
         return out;
-      });
+      }).filter(l => l !== null); // Remove duplicatas detectadas no lote atual
 
       // Insere em lotes
       for (let i = 0; i < linhas.length; i += 200) {

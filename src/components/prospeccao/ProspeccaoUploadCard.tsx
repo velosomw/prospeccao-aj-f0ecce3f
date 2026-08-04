@@ -125,7 +125,7 @@ export default function ProspeccaoUploadCard() {
           <div className="grid grid-cols-4 gap-3 text-center">
             <Kpi label="Linhas" value={stats.total} />
             <Kpi label="Pendentes" value={stats.pendentes} tone="orange" />
-            <Kpi label="Extraídos" value={stats.extraidos} tone="green" />
+            <Kpi label="Validado" value={stats.extraidos} tone="green" />
             <Kpi label="Erros" value={stats.erros} tone="red" />
           </div>
           <div className="mt-4 flex items-center justify-between">
@@ -137,7 +137,7 @@ export default function ProspeccaoUploadCard() {
               disabled={processing || stats.pendentes === 0}
               className="text-xs font-semibold px-3 py-1.5 rounded bg-[hsl(217,91%,50%)] text-white hover:bg-[hsl(217,91%,45%)] disabled:opacity-50 flex items-center gap-1"
             >
-              <PlayCircle className="w-3.5 h-3.5" /> {processing ? "Processando..." : "Processar PDFs pendentes"}
+              <PlayCircle className="w-3.5 h-3.5" /> {processing ? "Processando..." : "Processar PDFs"}
             </button>
           </div>
         </CardContent>
