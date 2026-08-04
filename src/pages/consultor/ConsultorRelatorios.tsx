@@ -79,7 +79,7 @@ export default function ConsultorRelatorios() {
       kpis={[
         { label: "Total de Linhas", value: stats.total,     hint: "Acumulado", icon: FileSpreadsheet, tone: "blue"   },
         { label: "PDFs Pendentes",  value: stats.pendentes, hint: "A processar", icon: Clock,        tone: "orange" },
-        { label: "PDFs Extraídos",  value: stats.extraidos, hint: "Concluídos", icon: CheckCircle2, tone: "green"  },
+        { label: "Linhas Validadas",  value: stats.extraidos, hint: "Concluídos", icon: CheckCircle2, tone: "green"  },
         { label: "Erros",           value: stats.erros,     hint: "Revisar",    icon: AlertTriangle, tone: "purple" },
       ]}
     >
