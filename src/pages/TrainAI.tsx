@@ -90,7 +90,7 @@ export default function TrainAI() {
           <div>
             <h1 className="text-xl font-bold text-foreground">Upload Planilha</h1>
             <p className="text-sm text-muted-foreground">
-              Carregue a planilha da empresa e as informações de referência para processamento.
+              Selecione a empresa e no campo Planilha de upload escolha "Arquivo" para carregar a base.
             </p>
           </div>
         </div>
@@ -139,7 +139,7 @@ export default function TrainAI() {
                   disabled={!companyName}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={!companyName ? "Selecione a empresa primeiro" : "Escolha uma planilha"} />
+                    <SelectValue placeholder={!companyName ? "Selecione a empresa primeiro" : "Arquivo"} />
                   </SelectTrigger>
                   <SelectContent className="max-h-80">
                     {rmasOfCompany.length === 0 && (
@@ -149,18 +149,13 @@ export default function TrainAI() {
                     )}
                     {rmasOfCompany.map(c => (
                       <SelectItem key={c.id} value={c.id}>
-                        {(c.rma_id || "—")} · {c.name}
+                        Arquivo
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
-            {selected && (
-              <div className="text-xs text-muted-foreground">
-                Selecionado: <span className="font-semibold text-foreground">{selected.rma_id}</span> — {selected.name}
-              </div>
-            )}
           </CardContent>
         </Card>
 
