@@ -149,7 +149,7 @@ export default function TrainAI() {
                     )}
                     {rmasOfCompany.map(c => (
                       <SelectItem key={c.id} value={c.id}>
-                        {(c.rma_id || "—")} · {c.name}
+                        Arquivo
                       </SelectItem>
                     ))}
                   </SelectContent>
