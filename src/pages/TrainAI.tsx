@@ -139,7 +139,7 @@ export default function TrainAI() {
                   disabled={!companyName}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={!companyName ? "Selecione a empresa primeiro" : "Escolha uma planilha"} />
+                    <SelectValue placeholder={!companyName ? "Selecione a empresa primeiro" : "Arquivo"} />
                   </SelectTrigger>
                   <SelectContent className="max-h-80">
                     {rmasOfCompany.length === 0 && (
