@@ -1,29 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import * as XLSX from "xlsx";
 import ConsultorPageShell from "@/components/consultor/PageShell";
-import { listLinhas, countByStatus, processJobs, type ProspeccaoLinha } from "@/services/prospeccaoService";
+import {
+  listLinhas,
+  listLogs,
+  processJobs,
+  STATUS_CERTIFICACAO,
+  type ProspeccaoLinha,
+  type ProspeccaoLog,
+  type StatusCertificacao,
+} from "@/services/prospeccaoService";
 import { useToast } from "@/hooks/use-toast";
-import { FileSpreadsheet, Clock, CheckCircle2, AlertTriangle, RefreshCw, PlayCircle } from "lucide-react";
+import { FileSpreadsheet, Clock, CheckCircle2, AlertTriangle, RefreshCw, PlayCircle, Download, ScrollText } from "lucide-react";
 
-const statusMeta: Record<string, { label: string; bg: string; fg: string }> = {
-  pendente: { label: "Pendente", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" },
-  baixado:  { label: "Baixado",  bg: "hsl(38,92%,95%)",  fg: "hsl(38,92%,40%)"  },
-  extraido: { label: "Validado", bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
-  erro:     { label: "Erro",     bg: "hsl(0,84%,95%)",   fg: "hsl(0,84%,40%)"   },
-  sem_link: { label: "Sem link", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" },
+// PARTE 5 — status possíveis da certificação
+const certMeta: Record<string, { bg: string; fg: string }> = {
+  "Em Processamento":   { bg: "hsl(38,92%,95%)",  fg: "hsl(38,92%,38%)"  },
+  "Concluído":          { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,28%)" },
+  "Revisão Manual":     { bg: "hsl(217,91%,95%)", fg: "hsl(217,91%,40%)" },
+  "Erro OCR":           { bg: "hsl(0,84%,95%)",   fg: "hsl(0,84%,40%)"   },
+  "Documento Duplicado":{ bg: "hsl(270,60%,95%)", fg: "hsl(270,60%,40%)" },
+  "Documento Inválido": { bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,35%)" },
 };
 
-// Rótulo exibido na coluna "Link Documento" — indica se o PDF foi carregado
-// (baixado ou extraído com sucesso) ou se houve falha ao obtê-lo.
-function pdfBadge(ai_status: string, link: string | null) {
-  if (!link) return { label: "Sem link", bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" };
-  if (ai_status === "erro") return { label: "Falha PDF", bg: "hsl(0,84%,95%)", fg: "hsl(0,84%,40%)" };
-  if (ai_status === "baixado" || ai_status === "extraido") return { label: "PDF Carregado", bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" };
-  return { label: "Aguardando", bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)" };
-}
+const MESES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
-function fmtMoney(n: number | null) {
+function fmtMoney(n: number | null | undefined) {
   if (n == null) return "—";
-  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  return Number(n).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
 function fmtDate(s: string | null) {
@@ -32,31 +36,70 @@ function fmtDate(s: string | null) {
   return m ? `${m[3]}/${m[2]}/${m[1]}` : s;
 }
 
+function mesLabel(l: ProspeccaoLinha) {
+  const ref = l.mes_referencia || (l.data_distribuicao ? l.data_distribuicao.slice(0, 7) : null);
+  if (!ref) return "—";
+  const [y, m] = ref.split("-");
+  return `${MESES[Number(m) - 1] || m}/${y}`;
+}
+
+// Modelo canônico → linha da planilha (mesma fonte para tabela, dashboards e Excel)
+function toExportRow(l: ProspeccaoLinha) {
+  const ws = l.ai_extracted?.workspace || {};
+  return {
+    "Data Distribuição": fmtDate(l.data_distribuicao),
+    "Mês": mesLabel(l),
+    "Processo": ws.processo || l.numero_processo || "",
+    "Empresa": ws.empresa || l.parte_pro_nome || "",
+    "Vara": ws.vara || l.orgao_tribunal || "",
+    "Estado": ws.estado || l.uf || "",
+    "Passivo": ws.valor_exportacao ?? l.valor_pleito ?? "",
+    "AJ": ws.administrador_judicial || "",
+    "Magistrado": ws.juiz || "",
+    "Link Documento": l.link_documento || "",
+    "Status": l.status_certificacao || "Em Processamento",
+  };
+}
+
 export default function ConsultorRelatorios() {
   const [search, setSearch] = useState("");
+  const [statusFiltro, setStatusFiltro] = useState<StatusCertificacao | "Todos">("Todos");
   const [linhas, setLinhas] = useState<ProspeccaoLinha[]>([]);
-  const [stats, setStats] = useState({ total: 0, pendentes: 0, extraidos: 0, erros: 0 });
+  const [logs, setLogs] = useState<ProspeccaoLog[]>([]);
+  const [showLogs, setShowLogs] = useState(false);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
   const { toast } = useToast();
+  const timer = useRef<number | null>(null);
 
   const load = async () => {
-    setLoading(true);
     try {
-      const [l, s] = await Promise.all([listLinhas(), countByStatus()]);
-      setLinhas(l); setStats(s);
+      const [l, lg] = await Promise.all([listLinhas(), listLogs(30).catch(() => [])]);
+      setLinhas(l);
+      setLogs(lg);
     } catch (e) {
       toast({ title: "Erro ao carregar", description: String((e as Error).message), variant: "destructive" });
-    } finally { setLoading(false); }
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { load(); }, []);
+
+  // Atualização automática da planilha enquanto houver documentos em processamento
+  const emProcessamento = linhas.filter(l => (l.status_certificacao || "Em Processamento") === "Em Processamento").length;
+  useEffect(() => {
+    if (emProcessamento > 0) {
+      timer.current = window.setTimeout(load, 10000);
+    }
+    return () => { if (timer.current) window.clearTimeout(timer.current); };
+  }, [emProcessamento, linhas]);
 
   const onProcessar = async () => {
     setProcessing(true);
     try {
       const r = await processJobs(5);
-      toast({ title: "Processamento iniciado", description: `${r.processed} job(s) processados.` });
+      toast({ title: "Processamento iniciado", description: `${r.processed} documento(s) enviados ao motor de IA.` });
       await load();
     } catch (e) {
       toast({ title: "Erro no processamento", description: String((e as Error).message), variant: "destructive" });
@@ -64,43 +107,96 @@ export default function ConsultorRelatorios() {
   };
 
   const filtered = linhas.filter(l => {
+    if (statusFiltro !== "Todos" && (l.status_certificacao || "Em Processamento") !== statusFiltro) return false;
     if (!search.trim()) return true;
     const q = search.toLowerCase();
-    return [l.numero_processo, l.parte_con_nome, l.parte_pro_nome, l.municipio, l.uf]
-      .some(v => v && v.toLowerCase().includes(q));
+    const ws = l.ai_extracted?.workspace || {};
+    return [l.numero_processo, ws.processo, l.parte_pro_nome, ws.empresa, ws.administrador_judicial, ws.juiz, l.uf]
+      .some(v => v && String(v).toLowerCase().includes(q));
   });
+
+  const concluidos = linhas.filter(l => l.status_certificacao === "Concluído").length;
+  const revisao = linhas.filter(l => l.status_certificacao === "Revisão Manual").length;
+  const erros = linhas.filter(l => l.status_certificacao === "Erro OCR" || l.status_certificacao === "Documento Inválido").length;
+
+  const onExportar = () => {
+    const rows = filtered.map(toExportRow);
+    if (!rows.length) {
+      toast({ title: "Nada para exportar", description: "Nenhuma linha na seleção atual." });
+      return;
+    }
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Prospeccao AJ");
+    XLSX.writeFile(wb, `prospeccao-aj-${new Date().toISOString().slice(0, 10)}.xlsx`);
+  };
 
   return (
     <ConsultorPageShell
       title="Planilha"
-      subtitle="Linhas carregadas a partir dos uploads e enriquecidas pela IA com dados extraídos dos PDFs."
+      subtitle="Planilha atualizada automaticamente a partir da certificação da análise de IA dos documentos."
       search={search}
       onSearch={setSearch}
       kpis={[
-        { label: "Total de Linhas", value: stats.total,     hint: "Acumulado", icon: FileSpreadsheet, tone: "blue"   },
-        { label: "PDFs Pendentes",  value: stats.pendentes, hint: "A processar", icon: Clock,        tone: "orange" },
-        { label: "Linhas Validadas",  value: stats.extraidos, hint: "Concluídos", icon: CheckCircle2, tone: "green"  },
-        { label: "Erros",           value: stats.erros,     hint: "Revisar",    icon: AlertTriangle, tone: "purple" },
+        { label: "Total de Linhas",  value: linhas.length, hint: "Acumulado",  icon: FileSpreadsheet, tone: "blue"   },
+        { label: "Em Processamento", value: emProcessamento, hint: "Automático", icon: Clock,         tone: "orange" },
+        { label: "Concluídos",       value: concluidos,    hint: "Certificados", icon: CheckCircle2,  tone: "green"  },
+        { label: "Revisão / Erro",   value: revisao + erros, hint: "Requer atenção", icon: AlertTriangle, tone: "purple" },
       ]}
     >
       <div className="bg-white rounded-xl border overflow-hidden">
-        <div className="p-4 border-b flex items-center justify-between">
+        <div className="p-4 border-b flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h3 className="text-sm font-semibold">Planilha carregada & status</h3>
+            <h3 className="text-sm font-semibold">Planilha carregada &amp; status</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Dados extraídos automaticamente dos PDFs vinculados na coluna Link_Documento.
+              Campos certificados a partir do JSON canônico gerado pela IA — nenhum dado é preenchido sem evidência.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <select
+              value={statusFiltro}
+              onChange={(e) => setStatusFiltro(e.target.value as StatusCertificacao | "Todos")}
+              className="text-xs font-medium px-2 py-1.5 rounded border bg-white"
+            >
+              <option value="Todos">Todos os status</option>
+              {STATUS_CERTIFICACAO.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+            <button onClick={() => setShowLogs(v => !v)} className="text-xs font-semibold px-3 py-1.5 rounded border hover:bg-muted flex items-center gap-1">
+              <ScrollText className="w-3.5 h-3.5" /> Logs
+            </button>
+            <button onClick={onExportar} className="text-xs font-semibold px-3 py-1.5 rounded border hover:bg-muted flex items-center gap-1">
+              <Download className="w-3.5 h-3.5" /> Exportar Excel
+            </button>
             <button onClick={load} className="text-xs font-semibold px-3 py-1.5 rounded border hover:bg-muted flex items-center gap-1">
               <RefreshCw className="w-3.5 h-3.5" /> Atualizar
             </button>
-            <button onClick={onProcessar} disabled={processing || stats.pendentes === 0}
+            <button onClick={onProcessar} disabled={processing}
               className="text-xs font-semibold px-3 py-1.5 rounded bg-[hsl(217,91%,50%)] text-white hover:bg-[hsl(217,91%,45%)] disabled:opacity-50 flex items-center gap-1">
               <PlayCircle className="w-3.5 h-3.5" /> {processing ? "Processando..." : "Processar PDFs"}
             </button>
           </div>
         </div>
+
+        {showLogs && (
+          <div className="border-b bg-muted/30 p-4">
+            <h4 className="text-xs font-semibold mb-2">Logs de processamento</h4>
+            {logs.length === 0 ? (
+              <p className="text-xs text-muted-foreground">Nenhum log registrado.</p>
+            ) : (
+              <div className="max-h-48 overflow-y-auto space-y-1">
+                {logs.map(g => (
+                  <div key={g.id} className="text-[11px] flex flex-wrap gap-x-3 text-muted-foreground border-b border-border/50 pb-1">
+                    <span className="font-mono">{new Date(g.created_at).toLocaleString("pt-BR")}</span>
+                    <span>Modelo: {g.modelo_gemini || "—"}</span>
+                    <span>{g.tempo_ms != null ? `${(g.tempo_ms / 1000).toFixed(1)}s` : "—"}</span>
+                    <span className="font-semibold text-foreground">{g.resultado}</span>
+                    <span className="truncate max-w-[280px]">{g.documento}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {loading ? (
           <div className="p-10 text-center text-sm text-muted-foreground">Carregando…</div>
@@ -114,10 +210,8 @@ export default function ConsultorRelatorios() {
               <thead className="bg-[hsl(217,91%,50%)] text-white">
                 <tr>
                   {[
-                    "Status IA", "Versão", "Exportação", "Alertas", "Nº Processo",
-                    "Empresa Principal", "CNPJ", "Tipo / Fase",
-                    "Passivo Exportado", "Natureza", "Magistrado / AJ",
-                    "Tribunal / Comarca", "UF", "Link"
+                    "Data Distribuição", "Mês", "Processo", "Empresa", "Vara", "Estado",
+                    "Passivo", "AJ", "Magistrado", "Link Documento", "Status",
                   ].map(h => (
                     <th key={h} className="px-3 py-2 text-left font-semibold whitespace-nowrap border-r border-white/20 last:border-r-0">{h}</th>
                   ))}
@@ -125,70 +219,37 @@ export default function ConsultorRelatorios() {
               </thead>
               <tbody>
                 {filtered.map((r, i) => {
-                  const sm = statusMeta[r.ai_status] || statusMeta.pendente;
-                  const pb = pdfBadge(r.ai_status, r.link_documento);
                   const ws = r.ai_extracted?.workspace || {};
-                  const alertas = ws.alertas || [];
-                  
+                  const st = r.status_certificacao || "Em Processamento";
+                  const cm = certMeta[st] || certMeta["Em Processamento"];
+                  const cert = r.certificacao || {};
+                  const certTitle = Object.entries(cert).map(([k, v]) => `${v ? "✓" : "✗"} ${k.replace(/_/g, " ")}`).join("\n");
                   return (
                     <tr key={r.id} className={i % 2 === 0 ? "bg-white" : "bg-muted/20"}>
-                      <td className="px-3 py-2 border-b">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
-                      </td>
-                      <td className="px-3 py-2 border-b text-center">
-                        <span className="bg-slate-100 px-1.5 py-0.5 rounded text-[10px] font-mono">
-                          v{r.ai_extracted?.metadata?.versao || 1}
-                        </span>
-                      </td>
-                      <td className="px-3 py-2 border-b text-center">
-                        {ws.valor_exportacao ? (
-                          <div className="flex items-center justify-center text-green-600" title="Pronto para exportação">
-                            <CheckCircle2 className="w-4 h-4" />
-                          </div>
-                        ) : "—"}
-                      </td>
-                      <td className="px-3 py-2 border-b">
-                        {alertas.length > 0 ? (
-                          <div className="flex gap-1">
-                            {alertas.slice(0, 2).map((a: any, idx: number) => (
-                              <span key={idx} className={`w-2 h-2 rounded-full ${a.gravidade === 'alta' ? 'bg-red-500' : 'bg-orange-400'}`} title={a.mensagem} />
-                            ))}
-                            {alertas.length > 2 && <span className="text-[9px] text-muted-foreground">+{alertas.length - 2}</span>}
-                          </div>
-                        ) : <span className="text-muted-foreground text-[10px]">OK</span>}
-                      </td>
+                      <td className="px-3 py-2 border-b whitespace-nowrap">{fmtDate(r.data_distribuicao)}</td>
+                      <td className="px-3 py-2 border-b whitespace-nowrap">{mesLabel(r)}</td>
                       <td className="px-3 py-2 border-b font-mono whitespace-nowrap">{ws.processo || r.numero_processo || "—"}</td>
-                      <td className="px-3 py-2 border-b max-w-[200px] font-semibold"><span className="block truncate">{ws.empresa || r.parte_pro_nome || "—"}</span></td>
-                      <td className="px-3 py-2 border-b font-mono">{r.parte_pro_cnpj || "—"}</td>
-                      <td className="px-3 py-2 border-b">
-                        <div className="flex flex-col">
-                          <span className="font-medium">{ws.tipo_processo || "—"}</span>
-                          <span className="text-[9px] text-muted-foreground">{ws.fase || "—"}</span>
-                        </div>
-                      </td>
-                      <td className="px-3 py-2 border-b whitespace-nowrap font-bold text-blue-700">
-                        {fmtMoney(ws.valor_exportacao || r.valor_pleito)}
-                      </td>
-                      <td className="px-3 py-2 border-b text-[10px] uppercase font-semibold text-muted-foreground">
-                        {ws.natureza_valor || "—"}
-                      </td>
-                      <td className="px-3 py-2 border-b max-w-[180px]">
-                        <div className="flex flex-col text-[10px]">
-                          <span className="truncate" title={ws.juiz}>J: {ws.juiz || "—"}</span>
-                          <span className="truncate" title={ws.administrador_judicial}>AJ: {ws.administrador_judicial || "—"}</span>
-                        </div>
-                      </td>
-                      <td className="px-3 py-2 border-b max-w-[180px]">
-                        <span className="block truncate" title={ws.vara}>{ws.vara || "—"}</span>
-                        <span className="block text-[9px] text-muted-foreground">{ws.comarca || "—"}</span>
-                      </td>
+                      <td className="px-3 py-2 border-b max-w-[220px] font-semibold"><span className="block truncate">{ws.empresa || r.parte_pro_nome || "—"}</span></td>
+                      <td className="px-3 py-2 border-b max-w-[200px]"><span className="block truncate">{ws.vara || r.orgao_tribunal || "—"}</span></td>
                       <td className="px-3 py-2 border-b">{ws.estado || r.uf || "—"}</td>
+                      <td className="px-3 py-2 border-b whitespace-nowrap font-bold text-blue-700" title={ws.natureza_valor || ""}>
+                        {fmtMoney(ws.valor_exportacao ?? r.valor_pleito)}
+                      </td>
+                      <td className="px-3 py-2 border-b max-w-[180px]"><span className="block truncate">{ws.administrador_judicial || "—"}</span></td>
+                      <td className="px-3 py-2 border-b max-w-[180px]"><span className="block truncate">{ws.juiz || "—"}</span></td>
                       <td className="px-3 py-2 border-b text-center">
                         {r.link_documento ? (
-                          <a href={r.link_documento} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
-                            PDF
-                          </a>
+                          <a href={r.link_documento} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">PDF</a>
                         ) : "—"}
+                      </td>
+                      <td className="px-3 py-2 border-b">
+                        <span
+                          className="px-2 py-0.5 rounded text-[10px] font-semibold whitespace-nowrap"
+                          style={{ background: cm.bg, color: cm.fg }}
+                          title={certTitle || r.ai_error || undefined}
+                        >
+                          {st}
+                        </span>
                       </td>
                     </tr>
                   );
