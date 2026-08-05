@@ -155,20 +155,24 @@ Deno.serve(async (req) => {
         });
       }
 
-      const profileUpdates: any = { role, full_name, ...metadata };
-      
-      // Map legacy/spreadsheet fields to profile columns
-      if (metadata.nome && !full_name) profileUpdates.full_name = metadata.nome;
-      if (metadata.treatment_sigla) profileUpdates.treatment_sigla = metadata.treatment_sigla;
-      if (metadata.contato_principal) profileUpdates.contato_principal = metadata.contato_principal;
-      if (metadata.endereco) profileUpdates.endereco = metadata.endereco;
-      if (metadata.numero) profileUpdates.numero = metadata.numero;
-      if (metadata.complemento) profileUpdates.complemento = metadata.complemento;
-      if (metadata.bairro) profileUpdates.bairro = metadata.bairro;
-      if (metadata.cidade) profileUpdates.cidade = metadata.cidade;
-      if (metadata.uf) profileUpdates.uf = metadata.uf;
-      if (metadata.cep) profileUpdates.cep = metadata.cep;
-      if (metadata.telefone) profileUpdates.telefone = metadata.telefone;
+      // Somente colunas existentes em public.profiles podem ser gravadas.
+      const PROFILE_COLUMNS = [
+        "full_name", "email", "active", "treatment_sigla", "contato_principal",
+        "endereco", "numero", "complemento", "bairro", "cidade", "uf", "cep", "telefone",
+      ];
+
+      const profileUpdates: any = { role, full_name: full_name || metadata.nome, email };
+      for (const key of PROFILE_COLUMNS) {
+        const v = (metadata as any)[key];
+        if (v !== undefined && v !== null && v !== "") profileUpdates[key] = v;
+      }
+      if (!profileUpdates.full_name && metadata.nome) profileUpdates.full_name = metadata.nome;
+      if (!profileUpdates.contato_principal && metadata.contato) profileUpdates.contato_principal = metadata.contato;
+      if (!profileUpdates.contato_principal && metadata.responsavel_legal) {
+        profileUpdates.contato_principal = metadata.responsavel_legal;
+      }
+      profileUpdates.email = email;
+
 
       if (role === "recuperanda") {
         const companyPayload = {
