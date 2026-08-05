@@ -4554,6 +4554,103 @@ export type Database = {
         }
         Relationships: []
       }
+      prospeccao_workspace: {
+        Row: {
+          administrador_judicial: string | null
+          alertas: Json | null
+          business_facts: Json | null
+          comarca: string | null
+          created_at: string | null
+          created_by: string | null
+          empresa_principal: string | null
+          empresas_relacionadas: Json | null
+          estado: string | null
+          evidencias: Json | null
+          fase: string | null
+          id: string
+          juiz: string | null
+          linha_id: string | null
+          natureza_valor: string | null
+          numero_processo: string | null
+          raw_response: Json | null
+          score_confianca: number | null
+          tipo_processo: string | null
+          valor_exportacao: number | null
+          vara: string | null
+          versao: number
+        }
+        Insert: {
+          administrador_judicial?: string | null
+          alertas?: Json | null
+          business_facts?: Json | null
+          comarca?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          empresa_principal?: string | null
+          empresas_relacionadas?: Json | null
+          estado?: string | null
+          evidencias?: Json | null
+          fase?: string | null
+          id?: string
+          juiz?: string | null
+          linha_id?: string | null
+          natureza_valor?: string | null
+          numero_processo?: string | null
+          raw_response?: Json | null
+          score_confianca?: number | null
+          tipo_processo?: string | null
+          valor_exportacao?: number | null
+          vara?: string | null
+          versao?: number
+        }
+        Update: {
+          administrador_judicial?: string | null
+          alertas?: Json | null
+          business_facts?: Json | null
+          comarca?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          empresa_principal?: string | null
+          empresas_relacionadas?: Json | null
+          estado?: string | null
+          evidencias?: Json | null
+          fase?: string | null
+          id?: string
+          juiz?: string | null
+          linha_id?: string | null
+          natureza_valor?: string | null
+          numero_processo?: string | null
+          raw_response?: Json | null
+          score_confianca?: number | null
+          tipo_processo?: string | null
+          valor_exportacao?: number | null
+          vara?: string | null
+          versao?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_workspace_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "prospeccao_linhas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prospeccao_workspace_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_agcs_realizadas"
+            referencedColumns: ["source_id"]
+          },
+          {
+            foreignKeyName: "prospeccao_workspace_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_aj_nomeados"
+            referencedColumns: ["source_id"]
+          },
+        ]
+      }
       rate_limit_buckets: {
         Row: {
           blocked_until: string | null
