@@ -17,7 +17,7 @@ const statusMeta: Record<string, { bg: string; fg: string }> = {
 export default function MagProcessos() {
   return (
     <ConsultorPageShell
-      title="Processos" subtitle="Recuperações judiciais sob sua jurisdição."
+      title="Processos" subtitle="Processos sob sua jurisdição."
       kpis={[
         { label: "Total Ativos", value: 33, hint: "Em curso",          icon: Gavel,        tone: "blue" },
         { label: "Empresas Prospecção",  value: 18, hint: "Empresas",         icon: Building2,    tone: "purple" },
