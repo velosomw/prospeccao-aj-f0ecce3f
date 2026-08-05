@@ -25,7 +25,7 @@ function fmtDate(s: string | null) {
   return m ? `${m[3]}/${m[2]}/${m[1]}` : s;
 }
 
-export default function ProspeccaoUploadCard() {
+export default function ProspeccaoUploadCard({ companyId, onComplete }: { companyId?: string; onComplete?: () => void }) {
   const [items, setItems] = useState<Item[]>([]);
   const [stats, setStats] = useState({ total: 0, pendentes: 0, extraidos: 0, erros: 0 });
   const [linhas, setLinhas] = useState<ProspeccaoLinha[]>([]);
@@ -49,6 +49,7 @@ export default function ProspeccaoUploadCard() {
       try {
         const r = await uploadFile(file);
         setItems(prev => prev.map(i => i === item ? { ...i, status: "ok", rows: r.rows } : i));
+        if (onComplete) onComplete();
       } catch (e) {
         const msg = String((e as Error).message ?? e);
         setItems(prev => prev.map(i => i === item ? { ...i, status: "erro", error: msg } : i));

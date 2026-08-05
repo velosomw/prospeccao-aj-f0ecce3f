@@ -31,6 +31,7 @@ export interface ProspeccaoLinha {
   data_protocolo: string | null;
   pedidos_principais: string | null;
   ai_status: "pendente" | "baixado" | "extraido" | "erro" | "sem_link";
+  ai_extracted: any | null;
   ai_error: string | null;
   created_at: string;
 }

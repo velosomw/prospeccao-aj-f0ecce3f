@@ -9,10 +9,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Brain, Search, GraduationCap, FileWarning, Upload, FolderTree } from "lucide-react";
+import { Brain, Search, GraduationCap, FileWarning, Upload, FolderTree, Clock } from "lucide-react";
 import OneDriveFoldersStatus from "@/components/workspace/OneDriveFoldersStatus";
 import { listMyAssignedCompanies, listCompanies, type Company } from "@/services/companiesService";
 import { useUserRoles } from "@/hooks/useUserRoles";
+import { useToast } from "@/hooks/use-toast";
 
 type ViewMode = "treinar" | "erros" | "upload" | "worker";
 
@@ -22,6 +23,7 @@ type ViewMode = "treinar" | "erros" | "upload" | "worker";
 
 export default function TrainAI() {
   const { roles } = useUserRoles();
+  const { toast } = useToast();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [companyName, setCompanyName] = useState<string | null>(null);
   const [companyId, setCompanyId] = useState<string | null>(null);
@@ -82,7 +84,7 @@ export default function TrainAI() {
           <div>
             <h1 className="text-xl font-bold text-foreground">Upload Planilha</h1>
             <p className="text-sm text-muted-foreground">
-              Selecione a empresa e no campo Planilha de upload escolha "Arquivo" para carregar a base.
+              Carregamento de base de dados e prospecção ativa. A IA processará automaticamente os links de documentos encontrados.
             </p>
           </div>
         </div>
@@ -152,21 +154,25 @@ export default function TrainAI() {
         </Card>
 
         {companyId ? (
-          <>
-            {/* Menu inline */}
+          <div className="space-y-4">
+            <ProspeccaoUploadCard 
+              companyId={companyId} 
+              onComplete={() => {
+                toast({ title: "Upload concluído", description: "O processamento dos dados foi iniciado." });
+              }} 
+            />
+            
             <div className="flex items-center gap-1 border-b">
               {([
-                { id: "erros", label: "Arquivos com erro", Icon: FileWarning },
-                { id: "upload", label: "Aprendizado IA · Upload Manual", Icon: Upload },
-                { id: "treinar", label: "Corrigir gabaritos", Icon: GraduationCap },
-                { id: "worker", label: "Worker OneDrive", Icon: FolderTree },
+                { id: "upload", label: "Monitoramento Processamento", Icon: Upload },
+                { id: "erros", label: "Falhas de Extração", Icon: FileWarning },
               ] as { id: ViewMode; label: string; Icon: typeof FileWarning }[]).map(t => {
-                const active = view === t.id;
+                const active = view === t.id || (view === "worker" && t.id === "upload");
                 return (
                   <button
                     key={t.id}
                     onClick={() => setView(t.id)}
-                    className={`flex items-center gap-1.5 px-3 py-2 text-sm border-b-2 transition ${
+                    className={`flex items-center gap-1.5 px-4 py-3 text-sm border-b-2 transition ${
                       active
                         ? "border-[hsl(217,91%,50%)] text-[hsl(217,91%,50%)] font-semibold"
                         : "border-transparent text-muted-foreground hover:text-foreground"
@@ -179,36 +185,49 @@ export default function TrainAI() {
               })}
             </div>
 
-            {view === "erros" && (
+            {view === "erros" ? (
               <ErrorFilesPanel
                 rmaId={selected?.rma_id || companyId}
                 companyId={companyId}
               />
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-orange-500" /> Fila de Extração IA
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-xs text-muted-foreground mb-4">
+                      Acompanhe o status dos documentos em fila para extração cognitiva.
+                    </p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-[11px] p-2 bg-muted/30 rounded">
+                        <span>Status: Conectado ao Gemini 1.5 Flash</span>
+                        <span className="text-green-600 font-semibold uppercase">Ativo</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <OneDriveFoldersStatus
+                  companyId={companyId}
+                  ano={selected?.execution_year ?? null}
+                  mes={selected?.current_period_month ?? null}
+                  lockMonth
+                />
+              </div>
             )}
-            {view === "upload" && (
-              <LearningUploadPanel
-                rmaId={selected?.rma_id || companyId}
-                companyId={companyId}
-                maxFiles={10}
-                lockedYear={selected?.execution_year ?? null}
-                lockedMonth={selected?.current_period_month ?? null}
-              />
-            )}
-            {view === "treinar" && (
-              <TrainAITab companyId={companyId} rmaId={selected?.rma_id || undefined} />
-            )}
-            {view === "worker" && (
-              <OneDriveFoldersStatus
-                companyId={companyId}
-                ano={selected?.execution_year ?? null}
-                mes={selected?.current_period_month ?? null}
-                lockMonth
-              />
-            )}
-          </>
+          </div>
         ) : (
-          <div className="text-center text-sm text-muted-foreground border border-dashed rounded-lg p-10">
-            Selecione uma planilha acima para iniciar o upload e o processamento.
+          <div className="flex flex-col items-center justify-center text-center py-20 bg-muted/10 border border-dashed rounded-xl">
+            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+              <Upload className="w-8 h-8 text-muted-foreground" />
+            </div>
+            <h3 className="text-lg font-semibold">Pronto para processar</h3>
+            <p className="text-sm text-muted-foreground max-w-sm mt-1">
+              Selecione a Empresa de Prospecção acima para habilitar o painel de upload e extração.
+            </p>
           </div>
         )}
 

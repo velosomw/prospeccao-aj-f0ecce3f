@@ -114,13 +114,11 @@ export default function ConsultorRelatorios() {
               <thead className="bg-[hsl(217,91%,50%)] text-white">
                 <tr>
                   {[
-                    "Status IA","ID Serviço","Nº Processo",
-                    "Parte CON - Nome","Parte CON - CPF/CNPJ","Parte CON - Qualificação",
-                    "Parte PRO - Nome","Parte PRO - CPF/CNPJ",
-                    "Denominação","Órgão/Tribunal","Esfera","Instância","UF","Município",
-                    "Área Judicial","Assunto Judicial","Ação Judicial",
-                    "Valor Pleito","Status do Processo","Dt. Início","Dt. Cad. Causa",
-                    "Processo Eletrônico?","Link Documento",
+                    "Status IA","Evidência","Nº Processo",
+                    "Parte PRO - Nome","CNPJ","Tipo de Ação",
+                    "Valor da Causa / Passivo", "Magistrado / AJ",
+                    "Órgão/Tribunal","UF","Município",
+                    "Link Documento",
                   ].map(h => (
                     <th key={h} className="px-3 py-2 text-left font-semibold whitespace-nowrap border-r border-white/20 last:border-r-0">{h}</th>
                   ))}
@@ -135,27 +133,26 @@ export default function ConsultorRelatorios() {
                       <td className="px-3 py-2 border-b">
                         <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
                       </td>
-                      <td className="px-3 py-2 border-b font-mono">{r.id_servico || "—"}</td>
+                      <td className="px-3 py-2 border-b">
+                        {r.ai_extracted?.evidencia ? (
+                          <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded" title={`Pág: ${r.ai_extracted.evidencia.pagina} | Bloco: ${r.ai_extracted.evidencia.bloco}`}>
+                            Pág {r.ai_extracted.evidencia.pagina} ({(r.ai_extracted.evidencia.confianca * 100).toFixed(0)}%)
+                          </span>
+                        ) : "—"}
+                      </td>
                       <td className="px-3 py-2 border-b font-mono whitespace-nowrap">{r.numero_processo || "—"}</td>
-                      <td className="px-3 py-2 border-b max-w-[220px]"><span className="block truncate">{r.parte_con_nome || "—"}</span></td>
-                      <td className="px-3 py-2 border-b font-mono">{r.parte_con_cnpj || "—"}</td>
-                      <td className="px-3 py-2 border-b">{r.parte_con_qualif || "—"}</td>
-                      <td className="px-3 py-2 border-b max-w-[220px]"><span className="block truncate">{r.parte_pro_nome || "—"}</span></td>
+                      <td className="px-3 py-2 border-b max-w-[220px] font-semibold"><span className="block truncate">{r.parte_pro_nome || "—"}</span></td>
                       <td className="px-3 py-2 border-b font-mono">{r.parte_pro_cnpj || "—"}</td>
-                      <td className="px-3 py-2 border-b max-w-[200px]"><span className="block truncate">{r.denominacao || "—"}</span></td>
+                      <td className="px-3 py-2 border-b">{r.acao_judicial || r.ai_extracted?.tipo_acao || "—"}</td>
+                      <td className="px-3 py-2 border-b whitespace-nowrap font-medium">{fmtMoney(r.valor_pleito)}</td>
+                      <td className="px-3 py-2 border-b max-w-[200px]">
+                        <span className="block truncate" title={r.pedidos_principais}>
+                          {r.pedidos_principais || "—"}
+                        </span>
+                      </td>
                       <td className="px-3 py-2 border-b max-w-[240px]"><span className="block truncate">{r.orgao_tribunal || "—"}</span></td>
-                      <td className="px-3 py-2 border-b">{r.esfera || "—"}</td>
-                      <td className="px-3 py-2 border-b">{r.instancia || "—"}</td>
                       <td className="px-3 py-2 border-b">{r.uf || "—"}</td>
                       <td className="px-3 py-2 border-b">{r.municipio || "—"}</td>
-                      <td className="px-3 py-2 border-b">{r.area_judicial || "—"}</td>
-                      <td className="px-3 py-2 border-b max-w-[240px]"><span className="block truncate">{r.assunto_judicial || "—"}</span></td>
-                      <td className="px-3 py-2 border-b max-w-[240px]"><span className="block truncate">{r.acao_judicial || "—"}</span></td>
-                      <td className="px-3 py-2 border-b whitespace-nowrap">{fmtMoney(r.valor_pleito)}</td>
-                      <td className="px-3 py-2 border-b">{r.status_processo || "—"}</td>
-                      <td className="px-3 py-2 border-b whitespace-nowrap">{fmtDate(r.dt_inicio)}</td>
-                      <td className="px-3 py-2 border-b whitespace-nowrap">{fmtDate(r.dt_cad_causa)}</td>
-                      <td className="px-3 py-2 border-b">{r.processo_eletronico == null ? "—" : r.processo_eletronico ? "SIM" : "NÃO"}</td>
                       <td className="px-3 py-2 border-b">
                         {r.link_documento ? (
                           <a
