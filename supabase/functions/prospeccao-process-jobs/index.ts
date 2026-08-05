@@ -7,60 +7,56 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
 
-const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais de Recuperação Judicial ou Falência conforme o MD - PARTE 3.
+const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais conforme o MD - PARTE 4.
 
-OBJETIVO: Transformar o PDF em uma estrutura jurídica organizada, identificando blocos e extraindo entidades para prospecção.
+OBJETIVO: Interpretar todos os valores jurídicos e gerar um modelo único de dados (Workspace).
 
-DIRETRIZES DE SEGMENTAÇÃO (Identifique estes blocos):
-- Capa Processual, Petição Inicial, Dos Fatos, Dos Fundamentos, Dos Pedidos, Decisões, Sentenças, Editais, Relação de Credores, Plano de Recuperação, Contrato Social, Procuração, Certidões, Memória de Cálculo.
+DIRETRIZES DE EXTRAÇÃO DE VALORES (Identifique separadamente):
+- Valor da causa
+- Valor do crédito
+- Valor atualizado
+- Passivo Concursal (Prioridade 1 RJ)
+- Passivo Extraconcursal
+- Passivo Total Declarado (Prioridade 2 RJ)
+- Passivo Total Calculado
+- Créditos Trabalhistas, Quirografários, ME/EPP
+- Garantias
+- Restrição REFIN/PEFIN, Protestos
 
-ENTIDADES OBRIGATÓRIAS:
-1. PROCESSO: Número CNJ (CNJ format), Classe, Assunto, Vara, Comarca, Tribunal, Estado, Data da Distribuição.
-2. EMPRESAS: Identifique e classifique (Recuperanda, Devedora, Credora, Requerente, Grupo Econômico, Sucessora). Extraia Razão Social e CNPJ.
-3. PESSOAS: Magistrado, Administrador Judicial, Advogados, Sócios, Representantes Legais. Atribua o papel processual.
+NUNCA substitua um valor por outro.
 
-REGRAS CRÍTICAS:
-- NUNCA use nomes citados em jurisprudência.
-- NUNCA use sócios para preencher campos da empresa.
-- NUNCA confunda AJ solicitado com AJ nomeado.
-- NUNCA preencha AJ com nome de advogado.
+CRITÉRIO DE EXPORTAÇÃO (Campo valor_exportacao):
+1. Recuperação Judicial: 1º Passivo Concursal, 2º Passivo Declarado, 3º Valor da Causa.
+2. Falência: 1º Valor da Causa, 2º Crédito Atualizado, 3º Crédito Original.
+3. Autofalência: 1º Passivo Declarado, 2º Valor da Causa.
+
+BUSINESS FACTS (Gere um objeto para cada valor encontrado):
+Campos: { "tipo": string, "valor": number, "moeda": "BRL", "origem": string, "pagina": number, "confianca": number }
+
+ALERTAS AUTOMÁTICOS:
+Gere alerta se: valores divergentes, mais de um passivo, passivo calculado, valor por extenso diferente, documento incompleto.
 
 SCHEMA DE RESPOSTA (JSON APENAS):
 {
-  "classificacao": {
-    "tipo_documento": string,
-    "tipo_processo": "Recuperação Judicial" | "Falência" | "Outro",
-    "fase_processual": string,
-    "prioridade": "Máxima" | "Muito Alta" | "Alta" | "Média" | "Baixa",
-    "nivel_confianca": number (0-100)
+  "workspace": {
+    "processo": string (CNJ),
+    "empresa": string (Razão Social),
+    "empresas_relacionadas": [{ "nome": string, "cnpj": string, "papel": string }],
+    "tipo_processo": "Recuperação Judicial" | "Falência" | "Autofalência" | "Outro",
+    "fase": string,
+    "vara": string,
+    "comarca": string,
+    "estado": string (UF),
+    "valor_exportacao": number,
+    "natureza_valor": string,
+    "administrador_judicial": string,
+    "juiz": string,
+    "alertas": [{ "tipo": string, "mensagem": string, "gravidade": "alta"|"media"|"baixa" }],
+    "business_facts": [ ... ],
+    "evidencias": [{ "campo": string, "pagina": number, "trecho": string }],
+    "score_confianca": number (0-100)
   },
-  "blocos": [
-    { "tipo": string, "pagina_inicio": number, "resumo": string }
-  ],
-  "entidades": {
-    "processo": {
-      "numero_cnj": string,
-      "classe": string,
-      "assunto": string,
-      "vara": string,
-      "comarca": string,
-      "tribunal": string,
-      "estado": string,
-      "data_distribuicao": string
-    },
-    "empresas": [
-      { "razao_social": string, "cnpj": string, "papel": string }
-    ],
-    "pessoas": [
-      { "nome": string, "papel": string }
-    ]
-  },
-  "evidencia": {
-    "pagina": number,
-    "bloco_documental": string,
-    "trecho_chave": string,
-    "confianca": number
-  }
+  "classificacao": { "tipo_documento": string, "fase_processual": string, "prioridade": string }
 }
 
 Responda APENAS com o JSON válido.`;
@@ -134,59 +130,64 @@ Deno.serve(async (req) => {
         const aiJson = JSON.parse(aiText);
         const content = aiJson?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
         const extracted = extractJson(content);
-
-        const linhaUpdate: Record<string, unknown> = { ai_status: "extraido", ai_extracted: extracted };
-        const entidades = extracted.entidades || {};
-        const processo = entidades.processo || {};
-        const empresas = entidades.empresas || [];
-        const pessoas = entidades.pessoas || [];
+        const ws = extracted.workspace || {};
         
-        // Mapeamento para as colunas da tabela prospeccao_linhas
-        const principalEmpresa = empresas.find((e: any) => 
-          ["Recuperanda", "Devedora", "Falida"].includes(e.papel)
-        ) || empresas[0] || {};
-        
-        const aj = pessoas.find((p: any) => p.papel === "Administrador Judicial");
-        const magistrado = pessoas.find((p: any) => p.papel === "Magistrado");
-
-        for (const k of [
-          "orgao_tribunal", "uf", "municipio",
-          "parte_pro_nome", "parte_pro_cnpj",
-          "advogado_nome", "valor_pleito", "status_processo", "pedidos_principais",
-        ]) {
-          // Fallback para campos antigos se existirem no JSON
-          const v = (extracted.dados?.[k]) ?? null;
-          if (v != null && v !== "") linhaUpdate[k] = v;
-        }
-
-        // Novos campos MD Parte 3
-        if (processo.numero_cnj) linhaUpdate["numero_processo"] = processo.numero_cnj;
-        if (processo.tribunal) linhaUpdate["orgao_tribunal"] = processo.tribunal + (processo.vara ? ` - ${processo.vara}` : "");
-        if (processo.estado) linhaUpdate["uf"] = processo.estado;
-        if (processo.comarca) linhaUpdate["municipio"] = processo.comarca;
-        
-        if (principalEmpresa.razao_social) linhaUpdate["parte_pro_nome"] = principalEmpresa.razao_social;
-        if (principalEmpresa.cnpj) linhaUpdate["parte_pro_cnpj"] = principalEmpresa.cnpj;
-        
-        const advs = pessoas.filter((p: any) => p.papel === "Advogado").map((p: any) => p.nome).join(", ");
-        if (advs) linhaUpdate["advogado_nome"] = advs;
-
-        // Pedidos principais agora contém Magistrado e AJ se extraídos
-        let extraInfo = "";
-        if (magistrado) extraInfo += `Magistrado: ${magistrado.nome} | `;
-        if (aj) extraInfo += `AJ: ${aj.nome}`;
-        if (extraInfo) linhaUpdate["pedidos_principais"] = extraInfo;
-
-        if (extracted.classificacao?.tipo_processo) {
-          linhaUpdate["tipo_acao"] = extracted.classificacao.tipo_processo;
-        }
+        // 1. Atualizar a linha principal (Legacy/Sync)
+        const linhaUpdate: Record<string, unknown> = { 
+          ai_status: "extraido", 
+          ai_extracted: extracted,
+          numero_processo: ws.processo || null,
+          parte_pro_nome: ws.empresa || null,
+          orgao_tribunal: ws.vara ? `${ws.vara} - ${ws.comarca}` : ws.comarca,
+          uf: ws.estado || null,
+          municipio: ws.comarca || null,
+          valor_pleito: ws.valor_exportacao || null,
+          tipo_acao: ws.tipo_processo || null,
+          pedidos_principais: `Juiz: ${ws.juiz || 'N/A'} | AJ: ${ws.administrador_judicial || 'N/A'}`
+        };
 
         await admin.from("prospeccao_linhas").update(linhaUpdate).eq("id", job.linha_id);
+
+        // 2. Gerenciar Versionamento no Workspace
+        const { data: latestVersao } = await admin
+          .from("prospeccao_workspace")
+          .select("versao")
+          .eq("linha_id", job.linha_id)
+          .order("versao", { ascending: false })
+          .limit(1)
+          .single();
+        
+        const proximaVersao = (latestVersao?.versao || 0) + 1;
+
+        await admin.from("prospeccao_workspace").insert({
+          linha_id: job.linha_id,
+          versao: proximaVersao,
+          numero_processo: ws.processo,
+          empresa_principal: ws.empresa,
+          empresas_relacionadas: ws.empresas_relacionadas || [],
+          tipo_processo: ws.tipo_processo,
+          fase: ws.fase,
+          vara: ws.vara,
+          comarca: ws.comarca,
+          estado: ws.estado,
+          valor_exportacao: ws.valor_exportacao,
+          natureza_valor: ws.natureza_valor,
+          administrador_judicial: ws.administrador_judicial,
+          juiz: ws.juiz,
+          alertas: ws.alertas || [],
+          business_facts: ws.business_facts || [],
+          evidencias: ws.evidencias || [],
+          score_confianca: ws.score_confianca,
+          raw_response: extracted,
+          created_by: job.user_id
+        });
+
+        // 3. Finalizar Job
         await admin.from("prospeccao_pdf_jobs").update({
           status: "extraido", 
           extracted_json: extracted,
           metadata: {
-            evidencia: extracted.evidencia,
+            versao: proximaVersao,
             processed_at: new Date().toISOString()
           }
         }).eq("id", job.id);
