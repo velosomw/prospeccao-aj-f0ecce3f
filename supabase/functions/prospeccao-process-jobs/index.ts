@@ -287,6 +287,45 @@ function base64Encode(bytes: Uint8Array): string {
   return btoa(bin);
 }
 
+async function sha256Hex(bytes: Uint8Array): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+function normalizeDate(v: unknown): string | null {
+  if (!v) return null;
+  const s = String(v).trim();
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  m = s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (m) return `${m[3]}-${m[2]}-${m[1]}`;
+  return null;
+}
+
+async function logEvent(
+  admin: any,
+  job: any,
+  modelo: string,
+  tempoMs: number,
+  resultado: string,
+  detalhes: Record<string, unknown>,
+) {
+  try {
+    await admin.from("prospeccao_logs").insert({
+      linha_id: job.linha_id,
+      job_id: job.id,
+      user_id: job.user_id,
+      modelo_gemini: modelo,
+      tempo_ms: tempoMs,
+      documento: job.link,
+      resultado,
+      detalhes,
+    });
+  } catch (e) {
+    console.error("log falhou:", e);
+  }
+}
+
 function extractJson(text: string): Record<string, any> {
   const m = text.match(/```json\s*([\s\S]*?)```/i) || text.match(/\{[\s\S]*\}/);
   const raw = m ? (m[1] || m[0]) : text;
