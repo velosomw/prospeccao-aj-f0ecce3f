@@ -30,7 +30,7 @@ const roleLabels: Record<string, string> = {
   coordenador: "Coordenador",
   consultor: "Consultor",
   magistrado: "Magistrado",
-  recuperanda: "Recuperanda (AJ)",
+  recuperanda: "Empresa de Prospecção",
   gestor_ia: "Gestor IA",
 };
 
@@ -121,7 +121,7 @@ const buildNav = (role: string | null): NavGroup[] => {
 
   if (role === "recuperanda") {
     groups.push({
-      label: "Minha Recuperação",
+      label: "Minha Prospecção",
       items: [
         { label: "Documentos",   to: "/recuperanda/documentos",  icon: FolderOpen },
         { label: "Pendências",   to: "/recuperanda/pendencias",  icon: AlertTriangle, badge: 14 },

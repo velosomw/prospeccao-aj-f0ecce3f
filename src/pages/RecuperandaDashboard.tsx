@@ -20,7 +20,7 @@ export default function RecuperandaDashboard() {
         { label: "Score Saúde",     value: 72,   icon: Award,         tone: "green"  },
         { label: "Documentos",      value: 60,   icon: FileText,      tone: "blue"   },
         { label: "Pendências",      value: 14,   icon: AlertTriangle, tone: "orange", to: "/recuperanda/pendencias" },
-        { label: "Próximo Prazo",   value: "8d", icon: Calendar,      tone: "red"    },
+        { label: "Próximo Prazo",   value: "8d", icon: Calendar,      tone: "blue"    },
         { label: "Prospecções AJ Publicados", value: "04", icon: CheckCircle2,  tone: "green"  },
         { label: "Uploads (30d)",   value: 47,   icon: Upload,        tone: "purple" },
       ]}

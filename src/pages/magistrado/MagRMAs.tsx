@@ -86,7 +86,7 @@ export default function MagRMAs() {
 
   return (
     <ConsultorPageShell
-      title="Prospecções AJ Recebidos" subtitle="Relatórios de Monitoramento das recuperandas para análise judicial."
+      title="Prospecções AJ Recebidos" subtitle="Relatórios de Monitoramento das empresas de prospecção para análise judicial."
       search={search} onSearch={(s) => { setSearch(s); setPage(1); }}
       kpis={[
         { label: "Prospecções AJ (30d)",    value: total, hint: "Recebidos",    icon: FileText,     tone: "blue" },
