@@ -7,17 +7,23 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
 
-const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais de Recuperação Judicial ou Falência conforme o MD-GEMINI-EXTRACAO-PROSPECCAO-ADMINISTRADOR-JUDICIAL-001 Parte 2.
+const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais de Recuperação Judicial ou Falência conforme o MD - PARTE 3.
 
-ETAPAS DE CLASSIFICAÇÃO:
-1. IDENTIFICAÇÃO: Determine o tipo documental (Petição Inicial, Decisão Nomeando AJ, Sentença, etc.).
-2. FASE PROCESSUAL: Identifique em qual etapa o processo se encontra (Distribuição, Processamento, Assembleia, etc.).
-3. PRIORIDADE: Atribua prioridade Jurídica (Máxima para Decisões de AJ/Sentenças).
+OBJETIVO: Transformar o PDF em uma estrutura jurídica organizada, identificando blocos e extraindo entidades para prospecção.
 
-DIRETRIZES DE ANÁLISE:
-- NÃO SEJA APENAS UM OCR: Interprete a função jurídica.
-- RECONHECIMENTO DE ESTRUTURA: Identifique padrões como "EXCELENTÍSSIMO", "DOS FATOS", "Nomeio", "Cumpra-se".
-- SEGMENTAÇÃO: O PDF deve ser visto como uma coleção de blocos jurídicos.
+DIRETRIZES DE SEGMENTAÇÃO (Identifique estes blocos):
+- Capa Processual, Petição Inicial, Dos Fatos, Dos Fundamentos, Dos Pedidos, Decisões, Sentenças, Editais, Relação de Credores, Plano de Recuperação, Contrato Social, Procuração, Certidões, Memória de Cálculo.
+
+ENTIDADES OBRIGATÓRIAS:
+1. PROCESSO: Número CNJ (CNJ format), Classe, Assunto, Vara, Comarca, Tribunal, Estado, Data da Distribuição.
+2. EMPRESAS: Identifique e classifique (Recuperanda, Devedora, Credora, Requerente, Grupo Econômico, Sucessora). Extraia Razão Social e CNPJ.
+3. PESSOAS: Magistrado, Administrador Judicial, Advogados, Sócios, Representantes Legais. Atribua o papel processual.
+
+REGRAS CRÍTICAS:
+- NUNCA use nomes citados em jurisprudência.
+- NUNCA use sócios para preencher campos da empresa.
+- NUNCA confunda AJ solicitado com AJ nomeado.
+- NUNCA preencha AJ com nome de advogado.
 
 SCHEMA DE RESPOSTA (JSON APENAS):
 {
@@ -26,25 +32,34 @@ SCHEMA DE RESPOSTA (JSON APENAS):
     "tipo_processo": "Recuperação Judicial" | "Falência" | "Outro",
     "fase_processual": string,
     "prioridade": "Máxima" | "Muito Alta" | "Alta" | "Média" | "Baixa",
-    "nivel_confianca": number,
-    "ocr_utilizado": boolean
+    "nivel_confianca": number (0-100)
   },
-  "dados": {
-    "numero_processo": string|null,
-    "orgao_tribunal": string|null,
-    "uf": string|null,
-    "municipio": string|null,
-    "parte_pro_nome": string|null,
-    "parte_pro_cnpj": string|null,
-    "advogado_nome": string|null,
-    "valor_pleito": number|null,
-    "status_processo": string|null,
-    "pedidos_principais": string|null
+  "blocos": [
+    { "tipo": string, "pagina_inicio": number, "resumo": string }
+  ],
+  "entidades": {
+    "processo": {
+      "numero_cnj": string,
+      "classe": string,
+      "assunto": string,
+      "vara": string,
+      "comarca": string,
+      "tribunal": string,
+      "estado": string,
+      "data_distribuicao": string
+    },
+    "empresas": [
+      { "razao_social": string, "cnpj": string, "papel": string }
+    ],
+    "pessoas": [
+      { "nome": string, "papel": string }
+    ]
   },
   "evidencia": {
     "pagina": number,
-    "bloco": string,
-    "trecho_chave": string
+    "bloco_documental": string,
+    "trecho_chave": string,
+    "confianca": number
   }
 }
 
@@ -121,15 +136,47 @@ Deno.serve(async (req) => {
         const extracted = extractJson(content);
 
         const linhaUpdate: Record<string, unknown> = { ai_status: "extraido", ai_extracted: extracted };
-        const dados = extracted.dados || {};
+        const entidades = extracted.entidades || {};
+        const processo = entidades.processo || {};
+        const empresas = entidades.empresas || [];
+        const pessoas = entidades.pessoas || [];
+        
+        // Mapeamento para as colunas da tabela prospeccao_linhas
+        const principalEmpresa = empresas.find((e: any) => 
+          ["Recuperanda", "Devedora", "Falida"].includes(e.papel)
+        ) || empresas[0] || {};
+        
+        const aj = pessoas.find((p: any) => p.papel === "Administrador Judicial");
+        const magistrado = pessoas.find((p: any) => p.papel === "Magistrado");
+
         for (const k of [
-          "numero_processo", "orgao_tribunal", "uf", "municipio",
+          "orgao_tribunal", "uf", "municipio",
           "parte_pro_nome", "parte_pro_cnpj",
           "advogado_nome", "valor_pleito", "status_processo", "pedidos_principais",
         ]) {
-          const v = dados[k];
+          // Fallback para campos antigos se existirem no JSON
+          const v = (extracted.dados?.[k]) ?? null;
           if (v != null && v !== "") linhaUpdate[k] = v;
         }
+
+        // Novos campos MD Parte 3
+        if (processo.numero_cnj) linhaUpdate["numero_processo"] = processo.numero_cnj;
+        if (processo.tribunal) linhaUpdate["orgao_tribunal"] = processo.tribunal + (processo.vara ? ` - ${processo.vara}` : "");
+        if (processo.estado) linhaUpdate["uf"] = processo.estado;
+        if (processo.comarca) linhaUpdate["municipio"] = processo.comarca;
+        
+        if (principalEmpresa.razao_social) linhaUpdate["parte_pro_nome"] = principalEmpresa.razao_social;
+        if (principalEmpresa.cnpj) linhaUpdate["parte_pro_cnpj"] = principalEmpresa.cnpj;
+        
+        const advs = pessoas.filter((p: any) => p.papel === "Advogado").map((p: any) => p.nome).join(", ");
+        if (advs) linhaUpdate["advogado_nome"] = advs;
+
+        // Pedidos principais agora contém Magistrado e AJ se extraídos
+        let extraInfo = "";
+        if (magistrado) extraInfo += `Magistrado: ${magistrado.nome} | `;
+        if (aj) extraInfo += `AJ: ${aj.nome}`;
+        if (extraInfo) linhaUpdate["pedidos_principais"] = extraInfo;
+
         if (extracted.classificacao?.tipo_processo) {
           linhaUpdate["tipo_acao"] = extracted.classificacao.tipo_processo;
         }
