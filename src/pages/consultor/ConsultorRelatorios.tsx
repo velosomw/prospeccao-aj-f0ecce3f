@@ -114,11 +114,10 @@ export default function ConsultorRelatorios() {
               <thead className="bg-[hsl(217,91%,50%)] text-white">
                 <tr>
                   {[
-                    "Status IA","Classificação","Evidência","Nº Processo",
-                    "Parte PRO - Nome","CNPJ","Tipo de Ação",
-                    "Valor da Causa / Passivo", "Magistrado / AJ",
-                    "Órgão/Tribunal","UF","Município",
-                    "Link Documento",
+                    "Status IA", "Versão", "Exportação", "Alertas", "Nº Processo",
+                    "Empresa Principal", "CNPJ", "Tipo / Fase",
+                    "Passivo Exportado", "Natureza", "Magistrado / AJ",
+                    "Tribunal / Comarca", "UF", "Link"
                   ].map(h => (
                     <th key={h} className="px-3 py-2 text-left font-semibold whitespace-nowrap border-r border-white/20 last:border-r-0">{h}</th>
                   ))}
@@ -128,58 +127,68 @@ export default function ConsultorRelatorios() {
                 {filtered.map((r, i) => {
                   const sm = statusMeta[r.ai_status] || statusMeta.pendente;
                   const pb = pdfBadge(r.ai_status, r.link_documento);
+                  const ws = r.ai_extracted?.workspace || {};
+                  const alertas = ws.alertas || [];
+                  
                   return (
                     <tr key={r.id} className={i % 2 === 0 ? "bg-white" : "bg-muted/20"}>
                       <td className="px-3 py-2 border-b">
                         <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
                       </td>
-                      <td className="px-3 py-2 border-b">
-                        {r.ai_extracted?.classificacao ? (
-                          <div className="flex flex-col gap-1">
-                            <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded whitespace-nowrap">
-                              {r.ai_extracted.classificacao.tipo_documento}
-                            </span>
-                            <span className="text-[9px] text-muted-foreground italic">
-                              {r.ai_extracted.classificacao.fase_processual}
-                            </span>
+                      <td className="px-3 py-2 border-b text-center">
+                        <span className="bg-slate-100 px-1.5 py-0.5 rounded text-[10px] font-mono">
+                          v{r.ai_extracted?.metadata?.versao || 1}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 border-b text-center">
+                        {ws.valor_exportacao ? (
+                          <div className="flex items-center justify-center text-green-600" title="Pronto para exportação">
+                            <CheckCircle2 className="w-4 h-4" />
                           </div>
                         ) : "—"}
                       </td>
                       <td className="px-3 py-2 border-b">
-                        {r.ai_extracted?.evidencia ? (
-                          <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded" title={r.ai_extracted.evidencia.trecho_chave}>
-                            Pág {r.ai_extracted.evidencia.pagina || r.ai_extracted.evidencia.pagina_inicio} ({r.ai_extracted.evidencia.confianca || r.ai_extracted.classificacao?.nivel_confianca || 0}%)
-                          </span>
-                        ) : "—"}
+                        {alertas.length > 0 ? (
+                          <div className="flex gap-1">
+                            {alertas.slice(0, 2).map((a: any, idx: number) => (
+                              <span key={idx} className={`w-2 h-2 rounded-full ${a.gravidade === 'alta' ? 'bg-red-500' : 'bg-orange-400'}`} title={a.mensagem} />
+                            ))}
+                            {alertas.length > 2 && <span className="text-[9px] text-muted-foreground">+{alertas.length - 2}</span>}
+                          </div>
+                        ) : <span className="text-muted-foreground text-[10px]">OK</span>}
                       </td>
-                      <td className="px-3 py-2 border-b font-mono whitespace-nowrap">{r.numero_processo || "—"}</td>
-                      <td className="px-3 py-2 border-b max-w-[220px] font-semibold"><span className="block truncate">{r.parte_pro_nome || "—"}</span></td>
-                      <td className="px-3 py-2 border-b font-mono">{r.parte_pro_cnpj || r.ai_extracted?.dados?.parte_pro_cnpj || "—"}</td>
-                      <td className="px-3 py-2 border-b">{r.acao_judicial || r.ai_extracted?.classificacao?.tipo_processo || "—"}</td>
-                      <td className="px-3 py-2 border-b whitespace-nowrap font-medium">{fmtMoney(r.valor_pleito)}</td>
-                      <td className="px-3 py-2 border-b max-w-[200px]">
-                        <span className="block truncate" title={r.pedidos_principais}>
-                          {r.pedidos_principais || "—"}
-                        </span>
-                      </td>
-                      <td className="px-3 py-2 border-b max-w-[240px]"><span className="block truncate">{r.orgao_tribunal || "—"}</span></td>
-                      <td className="px-3 py-2 border-b">{r.uf || "—"}</td>
-                      <td className="px-3 py-2 border-b">{r.municipio || "—"}</td>
+                      <td className="px-3 py-2 border-b font-mono whitespace-nowrap">{ws.processo || r.numero_processo || "—"}</td>
+                      <td className="px-3 py-2 border-b max-w-[200px] font-semibold"><span className="block truncate">{ws.empresa || r.parte_pro_nome || "—"}</span></td>
+                      <td className="px-3 py-2 border-b font-mono">{r.parte_pro_cnpj || "—"}</td>
                       <td className="px-3 py-2 border-b">
+                        <div className="flex flex-col">
+                          <span className="font-medium">{ws.tipo_processo || "—"}</span>
+                          <span className="text-[9px] text-muted-foreground">{ws.fase || "—"}</span>
+                        </div>
+                      </td>
+                      <td className="px-3 py-2 border-b whitespace-nowrap font-bold text-blue-700">
+                        {fmtMoney(ws.valor_exportacao || r.valor_pleito)}
+                      </td>
+                      <td className="px-3 py-2 border-b text-[10px] uppercase font-semibold text-muted-foreground">
+                        {ws.natureza_valor || "—"}
+                      </td>
+                      <td className="px-3 py-2 border-b max-w-[180px]">
+                        <div className="flex flex-col text-[10px]">
+                          <span className="truncate" title={ws.juiz}>J: {ws.juiz || "—"}</span>
+                          <span className="truncate" title={ws.administrador_judicial}>AJ: {ws.administrador_judicial || "—"}</span>
+                        </div>
+                      </td>
+                      <td className="px-3 py-2 border-b max-w-[180px]">
+                        <span className="block truncate" title={ws.vara}>{ws.vara || "—"}</span>
+                        <span className="block text-[9px] text-muted-foreground">{ws.comarca || "—"}</span>
+                      </td>
+                      <td className="px-3 py-2 border-b">{ws.estado || r.uf || "—"}</td>
+                      <td className="px-3 py-2 border-b text-center">
                         {r.link_documento ? (
-                          <a
-                            href={r.link_documento}
-                            target="_blank"
-                            rel="noreferrer"
-                            title={r.ai_error || r.link_documento}
-                            className="px-2 py-0.5 rounded text-[10px] font-semibold hover:opacity-80"
-                            style={{ background: pb.bg, color: pb.fg }}
-                          >
-                            {pb.label}
+                          <a href={r.link_documento} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
+                            PDF
                           </a>
-                        ) : (
-                          <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: pb.bg, color: pb.fg }}>{pb.label}</span>
-                        )}
+                        ) : "—"}
                       </td>
                     </tr>
                   );
