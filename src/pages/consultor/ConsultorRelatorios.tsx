@@ -148,7 +148,7 @@ export default function ConsultorRelatorios() {
                       <td className="px-3 py-2 border-b">
                         {r.ai_extracted?.evidencia ? (
                           <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded" title={r.ai_extracted.evidencia.trecho_chave}>
-                            Pág {r.ai_extracted.evidencia.pagina} ({(r.ai_extracted.classificacao?.nivel_confianca * 100 || 0).toFixed(0)}%)
+                            Pág {r.ai_extracted.evidencia.pagina || r.ai_extracted.evidencia.pagina_inicio} ({r.ai_extracted.evidencia.confianca || r.ai_extracted.classificacao?.nivel_confianca || 0}%)
                           </span>
                         ) : "—"}
                       </td>
