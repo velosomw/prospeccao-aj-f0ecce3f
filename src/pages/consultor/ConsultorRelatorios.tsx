@@ -114,7 +114,7 @@ export default function ConsultorRelatorios() {
               <thead className="bg-[hsl(217,91%,50%)] text-white">
                 <tr>
                   {[
-                    "Status IA","Evidência","Nº Processo",
+                    "Status IA","Classificação","Evidência","Nº Processo",
                     "Parte PRO - Nome","CNPJ","Tipo de Ação",
                     "Valor da Causa / Passivo", "Magistrado / AJ",
                     "Órgão/Tribunal","UF","Município",
@@ -134,16 +134,28 @@ export default function ConsultorRelatorios() {
                         <span className="px-2 py-0.5 rounded text-[10px] font-semibold" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
                       </td>
                       <td className="px-3 py-2 border-b">
+                        {r.ai_extracted?.classificacao ? (
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded whitespace-nowrap">
+                              {r.ai_extracted.classificacao.tipo_documento}
+                            </span>
+                            <span className="text-[9px] text-muted-foreground italic">
+                              {r.ai_extracted.classificacao.fase_processual}
+                            </span>
+                          </div>
+                        ) : "—"}
+                      </td>
+                      <td className="px-3 py-2 border-b">
                         {r.ai_extracted?.evidencia ? (
-                          <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded" title={`Pág: ${r.ai_extracted.evidencia.pagina} | Bloco: ${r.ai_extracted.evidencia.bloco}`}>
-                            Pág {r.ai_extracted.evidencia.pagina} ({(r.ai_extracted.evidencia.confianca * 100).toFixed(0)}%)
+                          <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded" title={r.ai_extracted.evidencia.trecho_chave}>
+                            Pág {r.ai_extracted.evidencia.pagina} ({(r.ai_extracted.classificacao?.nivel_confianca * 100 || 0).toFixed(0)}%)
                           </span>
                         ) : "—"}
                       </td>
                       <td className="px-3 py-2 border-b font-mono whitespace-nowrap">{r.numero_processo || "—"}</td>
                       <td className="px-3 py-2 border-b max-w-[220px] font-semibold"><span className="block truncate">{r.parte_pro_nome || "—"}</span></td>
-                      <td className="px-3 py-2 border-b font-mono">{r.parte_pro_cnpj || "—"}</td>
-                      <td className="px-3 py-2 border-b">{r.acao_judicial || r.ai_extracted?.tipo_acao || "—"}</td>
+                      <td className="px-3 py-2 border-b font-mono">{r.parte_pro_cnpj || r.ai_extracted?.dados?.parte_pro_cnpj || "—"}</td>
+                      <td className="px-3 py-2 border-b">{r.acao_judicial || r.ai_extracted?.classificacao?.tipo_processo || "—"}</td>
                       <td className="px-3 py-2 border-b whitespace-nowrap font-medium">{fmtMoney(r.valor_pleito)}</td>
                       <td className="px-3 py-2 border-b max-w-[200px]">
                         <span className="block truncate" title={r.pedidos_principais}>
