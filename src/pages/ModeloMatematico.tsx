@@ -865,39 +865,37 @@ const TabRiskEngine = () => {
 
 // ─── Main Page ───────────────────────────────────────────────
 const ModeloMatematico = () => {
-  const [selectedYear, setSelectedYear] = useState("2023");
-  const years = Object.keys(defaultEntityData).sort();
-  const d = defaultEntityData[selectedYear];
-  const ind = defaultFinancialAnalysis.indicators[selectedYear];
+  const [selectedYear, setSelectedYear] = useState("—");
+  
+  // Real entity data placeholder
+  const d = {
+    ativoCirculante: 0,
+    ativoNaoCirculante: 0,
+    passivoCirculante: 0,
+    passivoNaoCirculante: 0,
+    patrimonioLiquido: 0,
+    receitaLiquida: 0,
+    lucroLiquido: 0,
+    custoMercadoriasVendidas: 0,
+    resultadoOperacional: 0
+  };
+  const ind = {
+    liquidezCorrente: 0,
+    endividamentoGeral: 0,
+    rentabilidadeAtivo: 0,
+    margemLiquida: 0,
+    giroAtivo: 0
+  };
 
-  const at = d.ativoCirculante + d.ativoNaoCirculante;
-  const pt = d.passivoCirculante + d.passivoNaoCirculante;
+  const at = 0;
+  const pt = 0;
+  const dBase = d;
+  const atBase = 0;
+  const ptBase = 0;
 
-  const baseYear = years[0];
-  const dBase = defaultEntityData[baseYear];
-  const atBase = dBase.ativoCirculante + dBase.ativoNaoCirculante;
-  const ptBase = dBase.passivoCirculante + dBase.passivoNaoCirculante;
-
-  const ahItems = [
-    { label: "Receita Líquida", base: dBase.receitaLiquida, current: d.receitaLiquida },
-    { label: "Lucro Líquido", base: dBase.lucroLiquido, current: d.lucroLiquido },
-    { label: "Ativo Total", base: atBase, current: at },
-    { label: "Passivo Total", base: ptBase, current: pt },
-    { label: "Patrimônio Líquido", base: dBase.patrimonioLiquido, current: d.patrimonioLiquido },
-  ].map((i) => ({ ...i, variation: i.base ? (i.current - i.base) / i.base : 0 }));
-
-  const avBalanco = [
-    { label: "Ativo Circulante", value: d.ativoCirculante },
-    { label: "Ativo Não Circulante", value: d.ativoNaoCirculante },
-    { label: "Passivo Circulante", value: d.passivoCirculante },
-    { label: "Passivo Não Circulante", value: d.passivoNaoCirculante },
-    { label: "Patrimônio Líquido", value: d.patrimonioLiquido },
-  ].map((i) => ({ ...i, pct: at ? i.value / at : 0 }));
-
-  const avDre = [
-    { label: "CMV", value: d.custoMercadoriasVendidas },
-    { label: "Resultado Operacional", value: d.resultadoOperacional },
-    { label: "Lucro Líquido", value: d.lucroLiquido },
+  const ahItems: any[] = [];
+  const avBalanco: any[] = [];
+  const avDre: any[] = [];
   ].map((i) => ({ ...i, pct: d.receitaLiquida ? i.value / d.receitaLiquida : 0 }));
 
   const lg = ind.liquidezGeral;
