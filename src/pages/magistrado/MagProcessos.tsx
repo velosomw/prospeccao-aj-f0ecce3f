@@ -17,7 +17,7 @@ const statusMeta: Record<string, { bg: string; fg: string }> = {
 export default function MagProcessos() {
   return (
     <ConsultorPageShell
-      title="Processos" subtitle="Recuperações judiciais sob sua jurisdição."
+      title="Processos" subtitle="Processos sob sua jurisdição."
       kpis={[
         { label: "Total Ativos", value: 33, hint: "Em curso",          icon: Gavel,        tone: "blue" },
         { label: "Empresas Prospecção",  value: 18, hint: "Empresas",         icon: Building2,    tone: "purple" },
@@ -33,7 +33,7 @@ export default function MagProcessos() {
           <thead className="bg-muted/40 text-xs text-muted-foreground uppercase tracking-wider">
             <tr>
               <th className="text-left px-4 py-2.5">Processo</th>
-              <th className="text-left px-4 py-2.5">Recuperanda</th>
+              <th className="text-left px-4 py-2.5">Empresa de Prospecção</th>
               <th className="text-left px-4 py-2.5">Fase</th>
               <th className="text-left px-4 py-2.5">Início</th>
               <th className="text-left px-4 py-2.5">Status</th>

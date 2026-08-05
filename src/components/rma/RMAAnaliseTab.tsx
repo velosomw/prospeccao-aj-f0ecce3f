@@ -230,7 +230,7 @@ const RMAAnaliseTab = ({ rma }: Props) => {
             </div>
             <p className="text-3xl font-bold text-foreground">{emails}</p>
             <p className="text-xs text-muted-foreground mt-1">
-              E-mails enviados à recuperanda
+              E-mails enviados à empresa de prospecção
             </p>
             <p className="text-[10px] text-muted-foreground mt-2">
               Taxa de resposta:{" "}
@@ -256,7 +256,7 @@ const RMAAnaliseTab = ({ rma }: Props) => {
             </div>
             <p className="text-3xl font-bold text-foreground">{anexos}</p>
             <p className="text-xs text-muted-foreground mt-1">
-              Vezes que a recuperanda anexou documentos
+              Vezes que a empresa de prospecção anexou documentos
             </p>
             <p className="text-[10px] text-muted-foreground mt-2">
               Último envio: <span className="font-semibold text-foreground">{ultimoAnexo}</span>
@@ -443,7 +443,7 @@ const RMAAnaliseTab = ({ rma }: Props) => {
             {/* Bloco RECUPERANDA / RMA / EMISSÃO */}
             <div className="grid grid-cols-3 gap-8 mt-12 max-w-[600px] w-full">
               <div className="text-center">
-                <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Recuperanda</p>
+                <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Empresa de Prospecção</p>
                 <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{rma.empresa}</p>
               </div>
               <div className="text-center">
