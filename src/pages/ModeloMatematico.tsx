@@ -910,7 +910,7 @@ const ModeloMatematico = () => {
   const pt = 0;
   const dBase = d;
   const atBase = 0;
-  const ptBase = 0;
+  const baseYear = "—";
 
   const ahItems: any[] = [];
   const avBalanco: any[] = [];
