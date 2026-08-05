@@ -42,7 +42,7 @@ export default function ConsultorHome() {
         </header>
 
         {/* Quick access cards */}
-        <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
           {cards.map(c => {
             const t = tones[c.tone];
             const Icon = c.icon;
