@@ -47,48 +47,12 @@ const pipelineStages = [
   { name: "Insights pós-extração", desc: "Gemini 2.5 Pro com few-shot RAG", icon: Zap, color: "hsl(258,90%,66%)" },
 ];
 
-const recentDocs = [
-  { name: "balanco_2024_acme.xlsx", status: "completed", duration: "12.4s", score: 0.97 },
-  { name: "dre_q3_lumina.pdf", status: "completed", duration: "28.1s", score: 0.94 },
-  { name: "balancete_zenit.csv", status: "processing", duration: "—", score: null },
-  { name: "demonstrativo_aurora.pdf", status: "failed", duration: "45.0s", score: null },
-];
-
-const validationScores = [
-  { name: "ocr_score", desc: "Confiança OCR (Document AI) ou 0.99 quando parser estrutural", value: 0.99, color: "hsl(258,90%,66%)" },
-  { name: "quality_score", desc: "% linhas com valor numérico válido / total", value: 0.95, color: "hsl(152,70%,45%)" },
-  { name: "validation_score", desc: "Σ Ativo = Σ Passivo+PL ; DRE coerente", value: 0.92, color: "hsl(200,80%,55%)" },
-  { name: "mapping_score", desc: "% contas mapeadas (fast-path + dict + LLM)", value: 0.88, color: "hsl(38,90%,55%)" },
-];
-
-const fraudAlerts = [
-  { type: "outlier", severity: "high", msg: "Caixa cresceu 312% mês a mês — z-score 4.2", doc: "balanco_2024_acme.xlsx" },
-  { type: "duplicate", severity: "medium", msg: "Documento com hash idêntico já processado em 12/03", doc: "dre_q3_lumina.pdf" },
-  { type: "missing", severity: "low", msg: "Conta 1.1.1 ausente em 3 períodos consecutivos", doc: "balancete_zenit.csv" },
-];
-
-const accuracyDistribution = [
-  { name: "Excelente ≥90%", value: 68, color: "hsl(152,70%,45%)" },
-  { name: "Bom 75–90%", value: 22, color: "hsl(200,80%,55%)" },
-  { name: "Regular 50–75%", value: 8, color: "hsl(38,90%,55%)" },
-  { name: "Baixo <50%", value: 2, color: "hsl(0,80%,55%)" },
-];
-
-const learningEvolution = [
-  { month: "Jul", acc: 78, examples: 12 },
-  { month: "Ago", acc: 82, examples: 28 },
-  { month: "Set", acc: 86, examples: 47 },
-  { month: "Out", acc: 89, examples: 71 },
-  { month: "Nov", acc: 92, examples: 98 },
-  { month: "Dez", acc: 95, examples: 134 },
-];
-
-const datasetItems = [
-  { id: "ds-001", classe: "balanco", agent: "Auditor", validatedBy: "gestor@bex.com", date: "2024-12-18", weight: 1.2 },
-  { id: "ds-002", classe: "dre", agent: "Financeiro", validatedBy: "coord@bex.com", date: "2024-12-15", weight: 1.0 },
-  { id: "ds-003", classe: "balancete", agent: "Auditor", validatedBy: "gestor@bex.com", date: "2024-12-10", weight: 1.5 },
-  { id: "ds-004", classe: "dfc", agent: "Financeiro", validatedBy: "gestor@bex.com", date: "2024-12-08", weight: 1.0 },
-];
+const recentDocs: any[] = [];
+const validationScores: any[] = [];
+const fraudAlerts: any[] = [];
+const accuracyDistribution: any[] = [];
+const learningEvolution: any[] = [];
+const datasetItems: any[] = [];
 
 const performanceStages = [
   { step: "Parser estrutural",  p50: 1.2,  p95: 3.4,  p99: 5.1 },

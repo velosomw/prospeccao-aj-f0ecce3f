@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Slider } from "@/components/ui/slider";
 import { Calculator, TrendingUp, TrendingDown, AlertTriangle, Shield, BarChart3, Activity, PieChart, ArrowRight, Info, Bot, Brain, FileText, DollarSign, Gauge, SlidersHorizontal } from "lucide-react";
-import { defaultEntityData, defaultFinancialAnalysis } from "@/data/auditMockData";
+
 import PlatformLayout from "@/components/PlatformLayout";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -409,7 +409,7 @@ const TabAgenteRelatorio = () => {
   const ctBase = 50;
   const gamma = 30;
   const ct = ctBase + persona.Fl * gamma;
-  const irc = 0.72; // mock
+  const irc = 0; // será integrado com dados reais
   const alertLevel = irc * (persona.Ap + persona.Cr);
 
   return (
@@ -440,7 +440,7 @@ const TabAgenteRelatorio = () => {
             <h4 className="text-sm font-semibold text-foreground">Intensidade de Alerta no Relatório</h4>
             <FormulaBlock formula="AlertLevel = IRC × (Aₚ + Cᵣ)" description="Persona agressiva → mais destaque visual de risco" />
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">IRC (mock)</span><span className="font-mono">{irc}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">IRC</span><span className="font-mono">{irc}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Aₚ + Cᵣ</span><span className="font-mono">{fmt(persona.Ap + persona.Cr, 1)}</span></div>
               <hr className="border-border" />
               <div className="flex justify-between p-2 rounded-lg bg-[hsl(258,90%,66%)]/5">
@@ -464,16 +464,16 @@ const TabRiskEngine = () => {
   const [weights, setWeights] = useState({ wA: 0.40, wF: 0.35, wR: 0.25 });
   const [lambda, setLambda] = useState(0.15);
 
-  // Mock base scores (would come from real agent outputs)
-  const mockIRC = 0.72;
-  const mockInconsistencias = 0.45;
-  const mockMaterialidade = 0.38;
-  const mockVARAdj = 0.65;
-  const mockSFStress = 0.58;
-  const mockAlavancagem = 0.71;
-  const mockAlertLevel = 0.62;
-  const mockComplexidadeRisco = 0.55;
-  const mockFreqDesvios = 0.48;
+  // Real agent scores placeholder
+  const mockIRC = 0;
+  const mockInconsistencias = 0;
+  const mockMaterialidade = 0;
+  const mockVARAdj = 0;
+  const mockSFStress = 0;
+  const mockAlavancagem = 0;
+  const mockAlertLevel = 0;
+  const mockComplexidadeRisco = 0;
+  const mockFreqDesvios = 0;
 
   // 2.1 Score Auditor (SA)
   const SA = (mockIRC + mockInconsistencias + mockMaterialidade) / 3;
@@ -527,15 +527,8 @@ const TabRiskEngine = () => {
 
   const classification = getClassification(ECRSNorm);
 
-  // Histórico mock
-  const historicalData = [
-    { month: "Set", ecrs: 0.42, sa: 0.45, sf: 0.38, sr: 0.35 },
-    { month: "Out", ecrs: 0.48, sa: 0.50, sf: 0.42, sr: 0.40 },
-    { month: "Nov", ecrs: 0.52, sa: 0.48, sf: 0.55, sr: 0.45 },
-    { month: "Dez", ecrs: 0.58, sa: 0.52, sf: 0.60, sr: 0.50 },
-    { month: "Jan", ecrs: 0.55, sa: 0.50, sf: 0.58, sr: 0.48 },
-    { month: "Fev", ecrs: ECRSNorm, sa: SA, sf: SF, sr: SR },
-  ];
+  // Historical data placeholder
+  const historicalData: any[] = [];
 
   return (
     <div className="space-y-6">
@@ -872,56 +865,72 @@ const TabRiskEngine = () => {
 
 // ─── Main Page ───────────────────────────────────────────────
 const ModeloMatematico = () => {
-  const [selectedYear, setSelectedYear] = useState("2023");
-  const years = Object.keys(defaultEntityData).sort();
-  const d = defaultEntityData[selectedYear];
-  const ind = defaultFinancialAnalysis.indicators[selectedYear];
+  const [selectedYear, setSelectedYear] = useState("—");
+  
+  // Real entity data placeholder
+  const d: any = {
+    ativoCirculante: 0,
+    ativoNaoCirculante: 0,
+    passivoCirculante: 0,
+    passivoNaoCirculante: 0,
+    patrimonioLiquido: 0,
+    receitaLiquida: 0,
+    lucroLiquido: 0,
+    custoMercadoriasVendidas: 0,
+    resultadoOperacional: 0,
+    estoques: 0,
+    contasReceber: 0,
+    fornecedores: 0,
+    caixaEquivalentes: 0,
+    duplicatasDescontadas: 0,
+    despesasFinanceiras: 0
+  };
+  const ind: any = {
+    liquidezCorrente: 0,
+    endividamentoGeral: 0,
+    rentabilidadeAtivo: 0,
+    margemLiquida: 0,
+    giroAtivo: 0,
+    liquidezSeca: 0,
+    liquidezImediata: 0,
+    composicaoEndividamento: 0,
+    imobilizacaoPL: 0,
+    pmr: 0,
+    pmp: 0,
+    idadeMediaEstoque: 0,
+    cicloOperacional: 0,
+    cicloCaixa: 0,
+    margemOperacional: 0,
+    roa: 0,
+    roe: 0,
+    coberturaJuros: 0
+  };
 
-  const at = d.ativoCirculante + d.ativoNaoCirculante;
-  const pt = d.passivoCirculante + d.passivoNaoCirculante;
+  const at = 0;
+  const pt = 0;
+  const dBase = d;
+  const atBase = 0;
+  const baseYear = "—";
 
-  const baseYear = years[0];
-  const dBase = defaultEntityData[baseYear];
-  const atBase = dBase.ativoCirculante + dBase.ativoNaoCirculante;
-  const ptBase = dBase.passivoCirculante + dBase.passivoNaoCirculante;
+  const ahItems: any[] = [];
+  const avBalanco: any[] = [];
+  const avDre: any[] = [];
 
-  const ahItems = [
-    { label: "Receita Líquida", base: dBase.receitaLiquida, current: d.receitaLiquida },
-    { label: "Lucro Líquido", base: dBase.lucroLiquido, current: d.lucroLiquido },
-    { label: "Ativo Total", base: atBase, current: at },
-    { label: "Passivo Total", base: ptBase, current: pt },
-    { label: "Patrimônio Líquido", base: dBase.patrimonioLiquido, current: d.patrimonioLiquido },
-  ].map((i) => ({ ...i, variation: i.base ? (i.current - i.base) / i.base : 0 }));
-
-  const avBalanco = [
-    { label: "Ativo Circulante", value: d.ativoCirculante },
-    { label: "Ativo Não Circulante", value: d.ativoNaoCirculante },
-    { label: "Passivo Circulante", value: d.passivoCirculante },
-    { label: "Passivo Não Circulante", value: d.passivoNaoCirculante },
-    { label: "Patrimônio Líquido", value: d.patrimonioLiquido },
-  ].map((i) => ({ ...i, pct: at ? i.value / at : 0 }));
-
-  const avDre = [
-    { label: "CMV", value: d.custoMercadoriasVendidas },
-    { label: "Resultado Operacional", value: d.resultadoOperacional },
-    { label: "Lucro Líquido", value: d.lucroLiquido },
-  ].map((i) => ({ ...i, pct: d.receitaLiquida ? i.value / d.receitaLiquida : 0 }));
-
-  const lg = ind.liquidezGeral;
-  const roa = ind.roa;
+  const lg = ind.liquidezCorrente; // Adjusted to match new object
+  const roa = ind.rentabilidadeAtivo; // Adjusted to match new object
   const eg = ind.endividamentoGeral;
   const insolvencyScore = lg * 0.4 + roa * 0.3 - eg * 0.3;
   const insolvencyClass = insolvencyScore < 0 ? "Insolvência" : insolvencyScore <= 1 ? "Atenção" : "Solidez";
 
   // Modelo Kanitz — Planilha Giannini
   const x1 = d.patrimonioLiquido ? d.lucroLiquido / d.patrimonioLiquido : 0;  // RPL
-  const x2 = pt ? (d.ativoCirculante + (d.ativoNaoCirculante * 0.1)) / pt : 0; // LG
-  const x3 = d.passivoCirculante ? (d.ativoCirculante - d.estoques) / d.passivoCirculante : 0; // LS
-  const x4 = d.passivoCirculante ? d.ativoCirculante / d.passivoCirculante : 0; // LC
+  const x2 = 0; // LG base
+  const x3 = 0; // LS
+  const x4 = 0; // LC
   const x5 = d.patrimonioLiquido ? -((d.passivoCirculante + d.passivoNaoCirculante) / d.patrimonioLiquido) : 0; // GE (negativo)
-  const kanitz = 0.05 * x1 + 1.65 * x2 + 3.55 * x3 - 1.06 * x4 - 0.33 * x5;
+  const kanitz = 0;
 
-  const ptAdj = pt + d.duplicatasDescontadas;
+  const ptAdj = 0;
   const egAdj = at ? ptAdj / at : 0;
   const plAdj = at - ptAdj;
 
@@ -947,19 +956,7 @@ const ModeloMatematico = () => {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">Ano:</span>
-            {years.map((y) => (
-              <button
-                key={y}
-                onClick={() => setSelectedYear(y)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  selectedYear === y
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
-                }`}
-              >
-                {y}
-              </button>
-            ))}
+            {/* years mapping placeholder */}
           </div>
         </div>
 

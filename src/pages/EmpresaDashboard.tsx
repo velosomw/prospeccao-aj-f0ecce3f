@@ -35,7 +35,7 @@ const EmpresaDashboard = () => {
   const { userName } = useUser();
   const { toast } = useToast();
   const firstName = userName?.split(" ")[0] || null;
-  const [rmas] = useState<RMAEntry[]>(mockRMAs);
+  const [rmas] = useState<RMAEntry[]>([]);
 
   // RMAs atribuídos pelo Coordenador, aguardando ativação
   const [pendingCompanies, setPendingCompanies] = useState<Company[]>([]);

@@ -16,14 +16,6 @@ import { useUserRoles } from "@/hooks/useUserRoles";
 
 type ViewMode = "treinar" | "erros" | "upload" | "worker";
 
-// Empresa demo cadastrada localmente (E-XYON) com planilha fixa.
-const DEMO_COMPANY: Company = {
-  id: "demo-exyon",
-  name: "E-XYON",
-  rma_id: "Arquivo E-XYON-JUNHO-2026",
-  execution_year: 2026,
-  current_period_month: 6,
-} as unknown as Company;
 
 
 
@@ -45,7 +37,7 @@ export default function TrainAI() {
       try {
         const isAdmin = roles.includes("gestor_ia") || roles.includes("coordenador");
         const data = isAdmin ? await listCompanies() : await listMyAssignedCompanies();
-        const merged = [DEMO_COMPANY, ...(data || [])];
+        const merged = data || [];
         if (!cancelled) setCompanies(merged);
       } finally {
         if (!cancelled) setLoading(false);
@@ -159,9 +151,7 @@ export default function TrainAI() {
           </CardContent>
         </Card>
 
-        {companyId === DEMO_COMPANY.id ? (
-          <ProspeccaoUploadCard />
-        ) : companyId ? (
+        {companyId ? (
           <>
             {/* Menu inline */}
             <div className="flex items-center gap-1 border-b">

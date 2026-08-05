@@ -26,16 +26,7 @@ interface EmailRow {
   linhasExtraidas: number | null;
 }
 
-const MOCK: EmailRow[] = [
-  { id: "1", hora: "08:12", remetente: "prospeccao@e-xuon.com.br",     empresa: "E-Xuon",           assunto: "Planilha diária RJ - 07/07/2026",           anexo: "prospeccao_20260707.xlsx", emailStatus: "lido",     extracaoStatus: "extraido",    linhasExtraidas: 48 },
-  { id: "2", hora: "08:31", remetente: "monitor@juridico-brasil.com",  empresa: "Jurídico Brasil",  assunto: "Recuperações Judiciais - Diário",           anexo: "rj_diario.xlsx",           emailStatus: "lido",     extracaoStatus: "extraido",    linhasExtraidas: 22 },
-  { id: "3", hora: "09:05", remetente: "envios@datalaw.com.br",        empresa: "DataLaw",          assunto: "Planilha Padrão AJ - lote 07/07",           anexo: "aj_padrao_lote.xlsx",      emailStatus: "lido",     extracaoStatus: "processando", linhasExtraidas: null },
-  { id: "4", hora: "10:22", remetente: "alertas@e-xuon.com.br",        empresa: "E-Xuon",           assunto: "Complemento — novos processos SP",          anexo: "complemento_sp.xlsx",      emailStatus: "lido",     extracaoStatus: "falha",       linhasExtraidas: null },
-  { id: "5", hora: "11:47", remetente: "no-reply@tribunais-br.com",    empresa: "Tribunais BR",     assunto: "Distribuições da semana",                   anexo: null,                       emailStatus: "lido",     extracaoStatus: "pendente",    linhasExtraidas: null },
-  { id: "6", hora: "13:03", remetente: "boletim@lexpro.com.br",        empresa: "LexPro",           assunto: "Boletim RJ 07/07",                          anexo: "boletim.xlsx",             emailStatus: "nao_lido", extracaoStatus: "pendente",    linhasExtraidas: null },
-  { id: "7", hora: "14:19", remetente: "envios@e-xuon.com.br",         empresa: "E-Xuon",           assunto: "Retificação planilha manhã",                anexo: "retificacao.xlsx",         emailStatus: "lido",     extracaoStatus: "extraido",    linhasExtraidas: 12 },
-  { id: "8", hora: "15:44", remetente: "corporativo@aj-monitor.com",   empresa: "AJ Monitor",       assunto: "Novos processos - região Sul",              anexo: "sul.xlsx",                 emailStatus: "falha",    extracaoStatus: "falha",       linhasExtraidas: null },
-];
+const MOCK: EmailRow[] = [];
 
 const emailBadge: Record<EmailStatus, { label: string; bg: string; fg: string; Icon: any }> = {
   lido:     { label: "Lido",       bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)", Icon: MailOpen },
@@ -85,7 +76,7 @@ export default function ProcessoProspeccao() {
   return (
     <ConsultorPageShell
       title="Processamento IA"
-      subtitle={`Acompanhamento diário de e-mails recebidos e extração de planilhas por IA — ${hoje}. (mockup — dados fictícios)`}
+      subtitle={`Acompanhamento diário de e-mails recebidos e extração de planilhas por IA — ${hoje}.`}
       search={search}
       onSearch={setSearch}
       kpis={[
@@ -209,15 +200,6 @@ export default function ProcessoProspeccao() {
         )}
       </div>
 
-      {/* Aviso mockup */}
-      <div className="mt-4 rounded-xl border border-dashed p-4 bg-[hsl(38,92%,98%)] text-[hsl(38,92%,30%)] text-xs flex items-start gap-2">
-        <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-        <div>
-          <strong>Mockup para validação de conceito.</strong> A próxima etapa será conectar a caixa
-          de e-mail (E-Xuon e outras), automatizar a leitura via IA, extrair as planilhas anexas e
-          alimentar a base <em>Planilha Padrão Prospecção</em>.
-        </div>
-      </div>
     </ConsultorPageShell>
   );
 }
