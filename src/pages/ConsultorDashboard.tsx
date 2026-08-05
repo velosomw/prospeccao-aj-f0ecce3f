@@ -162,21 +162,9 @@ export default function ConsultorDashboard() {
     if (companyId) navigate(`/consultor/clientes`);
   };
 
-  const topPendencias = [
-    { titulo: "PDF não localizado no Link Documento", rma: "CARTA-002", tempo: "Há 2h" },
-    { titulo: "Endereço do AJ incompleto",            rma: "CARTA-006", tempo: "Há 4h" },
-    { titulo: "Carta vencida há mais de 150 dias",     rma: "CARTA-002", tempo: "Há 1h" },
-  ];
-  const ativIA = [
-    { hora: "14:32", titulo: "Carta gerada",      sub: "CARTA-002 — PDF montado e pronto para envio" },
-    { hora: "14:29", titulo: "Upload processado",  sub: "CARTA-002 — Planilha lida e dados extraídos" },
-    { hora: "14:25", titulo: "Falha de PDF",       sub: "CARTA-007 — Link Documento indisponível" },
-  ];
-  const recomendadas = [
-    { icon: Lightbulb,     color: "hsl(258,90%,56%)", text: `Resolver ${criticas} uploads críticos pode elevar a taxa de envio em até 18 pontos.` },
-    { icon: RefreshCw,     color: "hsl(38,92%,50%)",  text: "CARTA-002 está com reenvio vencido há mais de 150 dias." },
-    { icon: FileWarning,   color: "hsl(0,84%,60%)",  text: "2 cartas com falha de PDF precisam ser reprocessadas." },
-  ];
+  const topPendencias: any[] = [];
+  const ativIA: any[] = [];
+  const recomendadas: any[] = [];
 
   type Row = typeof filteredRows[number];
 
