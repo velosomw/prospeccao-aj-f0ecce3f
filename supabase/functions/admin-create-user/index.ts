@@ -131,7 +131,6 @@ Deno.serve(async (req) => {
         coordenador: ["consultor", "magistrado", "recuperanda", "admjudicial"],
         admjudicial: ["recuperanda"],
         consultor: ["admjudicial", "recuperanda", "magistrado", "consultor"],
-        gestor_ia: ["coordenador", "admjudicial", "consultor", "magistrado", "recuperanda"],
       };
 
       const callerRole = isGestor ? "gestor_ia" : isCoordenador ? "coordenador" : isAdmjudicial ? "admjudicial" : "consultor";
