@@ -7,26 +7,39 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY")!;
 
-const EXTRACTION_PROMPT = `Você é um assistente jurídico. Extraia do documento PDF os campos da petição/processo de Recuperação Judicial ou Falência. Responda APENAS com JSON válido, sem texto extra, no schema:
+const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais de Recuperação Judicial ou Falência conforme o MD-GEMINI-EXTRACAO-PROSPECCAO-ADMINISTRADOR-JUDICIAL-001.
+
+DIRETRIZES DE ANÁLISE:
+1. NÃO SEJA APENAS UM OCR: Interprete a função jurídica de cada informação.
+2. NÍVEIS DE COMPREENSÃO: Realize leitura física, compreensão estrutural, jurídica e semântica para produzir conhecimento estruturado.
+3. CONCEITO DE EVIDÊNCIA: Identifique o bloco jurídico (Petição Inicial, Decisão, etc.) e a página de origem.
+4. BUSINESS FACTS: Identifique quem é a Recuperanda/Empresa Prospectada, o Administrador Judicial nomeado, o Magistrado e os valores financeiros (Passivo/Valor da Causa).
+
+SCHEMA DE RESPOSTA (JSON APENAS):
 {
   "numero_processo": string|null,
-  "tipo_acao": string|null,
-  "orgao_tribunal": string|null,
+  "tipo_acao": "Recuperação Judicial" | "Falência" | "Outro",
+  "orgao_tribunal": string|null, (Ex: 1ª Vara Cível de Curitiba)
   "uf": string|null,
   "municipio": string|null,
-  "parte_con_nome": string|null,
-  "parte_con_cnpj": string|null,
-  "parte_pro_nome": string|null,
+  "parte_con_nome": string|null, (Credor/Requerente se aplicável)
+  "parte_pro_nome": string|null, (Empresa em Recuperação / Falida)
   "parte_pro_cnpj": string|null,
   "endereco_requerente": string|null,
   "advogado_nome": string|null,
   "advogado_oab": string|null,
-  "data_protocolo": string|null,
-  "valor_pleito": number|null,
+  "data_protocolo": string|null, (YYYY-MM-DD)
+  "valor_pleito": number|null, (Passivo Total ou Valor da Causa)
   "status_processo": string|null,
-  "pedidos_principais": string|null
+  "pedidos_principais": string|null, (Ex: Nome do Magistrado, Resumo do Pedido)
+  "evidencia": {
+    "pagina": number,
+    "bloco": string,
+    "confianca": number (0-1)
+  }
 }
-Datas em formato YYYY-MM-DD. CNPJ apenas dígitos. Valores monetários em número (sem R$ ou pontuação).`;
+
+Responda APENAS com o JSON válido.`;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
