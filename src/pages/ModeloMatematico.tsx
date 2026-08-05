@@ -868,7 +868,7 @@ const ModeloMatematico = () => {
   const [selectedYear, setSelectedYear] = useState("—");
   
   // Real entity data placeholder
-  const d = {
+  const d: any = {
     ativoCirculante: 0,
     ativoNaoCirculante: 0,
     passivoCirculante: 0,
@@ -877,14 +877,33 @@ const ModeloMatematico = () => {
     receitaLiquida: 0,
     lucroLiquido: 0,
     custoMercadoriasVendidas: 0,
-    resultadoOperacional: 0
+    resultadoOperacional: 0,
+    estoques: 0,
+    contasReceber: 0,
+    fornecedores: 0,
+    caixaEquivalentes: 0,
+    duplicatasDescontadas: 0,
+    despesasFinanceiras: 0
   };
-  const ind = {
+  const ind: any = {
     liquidezCorrente: 0,
     endividamentoGeral: 0,
     rentabilidadeAtivo: 0,
     margemLiquida: 0,
-    giroAtivo: 0
+    giroAtivo: 0,
+    liquidezSeca: 0,
+    liquidezImediata: 0,
+    composicaoEndividamento: 0,
+    imobilizacaoPL: 0,
+    pmr: 0,
+    pmp: 0,
+    idadeMediaEstoque: 0,
+    cicloOperacional: 0,
+    cicloCaixa: 0,
+    margemOperacional: 0,
+    roa: 0,
+    roe: 0,
+    coberturaJuros: 0
   };
 
   const at = 0;
