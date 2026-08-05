@@ -938,18 +938,6 @@ const ModeloMatematico = () => {
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">Ano:</span>
             {/* years mapping placeholder */}
-              <button
-                key={y}
-                onClick={() => setSelectedYear(y)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  selectedYear === y
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
-                }`}
-              >
-                {y}
-              </button>
-            ))}
           </div>
         </div>
 
