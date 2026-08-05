@@ -4327,9 +4327,12 @@ export type Database = {
           ai_status: string
           area_judicial: string | null
           assunto_judicial: string | null
+          certificacao: Json | null
           created_at: string
+          data_distribuicao: string | null
           data_protocolo: string | null
           denominacao: string | null
+          doc_hash: string | null
           dt_cad_causa: string | null
           dt_inicio: string | null
           endereco_requerente: string | null
@@ -4338,6 +4341,7 @@ export type Database = {
           id_servico: string | null
           instancia: string | null
           link_documento: string | null
+          mes_referencia: string | null
           municipio: string | null
           numero_processo: string | null
           orgao_tribunal: string | null
@@ -4348,6 +4352,7 @@ export type Database = {
           parte_pro_nome: string | null
           pedidos_principais: string | null
           processo_eletronico: boolean | null
+          status_certificacao: string
           status_processo: string | null
           tipo_acao: string | null
           uf: string | null
@@ -4365,9 +4370,12 @@ export type Database = {
           ai_status?: string
           area_judicial?: string | null
           assunto_judicial?: string | null
+          certificacao?: Json | null
           created_at?: string
+          data_distribuicao?: string | null
           data_protocolo?: string | null
           denominacao?: string | null
+          doc_hash?: string | null
           dt_cad_causa?: string | null
           dt_inicio?: string | null
           endereco_requerente?: string | null
@@ -4376,6 +4384,7 @@ export type Database = {
           id_servico?: string | null
           instancia?: string | null
           link_documento?: string | null
+          mes_referencia?: string | null
           municipio?: string | null
           numero_processo?: string | null
           orgao_tribunal?: string | null
@@ -4386,6 +4395,7 @@ export type Database = {
           parte_pro_nome?: string | null
           pedidos_principais?: string | null
           processo_eletronico?: boolean | null
+          status_certificacao?: string
           status_processo?: string | null
           tipo_acao?: string | null
           uf?: string | null
@@ -4403,9 +4413,12 @@ export type Database = {
           ai_status?: string
           area_judicial?: string | null
           assunto_judicial?: string | null
+          certificacao?: Json | null
           created_at?: string
+          data_distribuicao?: string | null
           data_protocolo?: string | null
           denominacao?: string | null
+          doc_hash?: string | null
           dt_cad_causa?: string | null
           dt_inicio?: string | null
           endereco_requerente?: string | null
@@ -4414,6 +4427,7 @@ export type Database = {
           id_servico?: string | null
           instancia?: string | null
           link_documento?: string | null
+          mes_referencia?: string | null
           municipio?: string | null
           numero_processo?: string | null
           orgao_tribunal?: string | null
@@ -4424,6 +4438,7 @@ export type Database = {
           parte_pro_nome?: string | null
           pedidos_principais?: string | null
           processo_eletronico?: boolean | null
+          status_certificacao?: string
           status_processo?: string | null
           tipo_acao?: string | null
           uf?: string | null
@@ -4439,6 +4454,67 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "prospeccao_uploads"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      prospeccao_logs: {
+        Row: {
+          created_at: string
+          detalhes: Json | null
+          documento: string | null
+          id: string
+          job_id: string | null
+          linha_id: string | null
+          modelo_gemini: string | null
+          resultado: string | null
+          tempo_ms: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          detalhes?: Json | null
+          documento?: string | null
+          id?: string
+          job_id?: string | null
+          linha_id?: string | null
+          modelo_gemini?: string | null
+          resultado?: string | null
+          tempo_ms?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          detalhes?: Json | null
+          documento?: string | null
+          id?: string
+          job_id?: string | null
+          linha_id?: string | null
+          modelo_gemini?: string | null
+          resultado?: string | null
+          tempo_ms?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_logs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "prospeccao_linhas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prospeccao_logs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_agcs_realizadas"
+            referencedColumns: ["source_id"]
+          },
+          {
+            foreignKeyName: "prospeccao_logs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_aj_nomeados"
+            referencedColumns: ["source_id"]
           },
         ]
       }
