@@ -159,6 +159,7 @@ Deno.serve(async (req) => {
       const PROFILE_COLUMNS = [
         "full_name", "email", "active", "treatment_sigla", "contato_principal",
         "endereco", "numero", "complemento", "bairro", "cidade", "uf", "cep", "telefone",
+        "cnpj", "vara", "orgao", "esfera", "registro", "especialidade", "site", "responsavel_legal",
       ];
 
       const profileUpdates: any = { role, full_name: full_name || metadata.nome, email };
@@ -173,7 +174,6 @@ Deno.serve(async (req) => {
       }
       profileUpdates.email = email;
 
-
       if (role === "recuperanda") {
         const companyPayload = {
           name: metadata.nome || full_name,
@@ -183,12 +183,21 @@ Deno.serve(async (req) => {
           email: email,
           phone: metadata.telefone || null,
           address: metadata.endereco || null,
+          contact_name: metadata.contato || metadata.responsavel_legal || null,
           created_by: caller.id,
           status: "ativa",
-          source: "prospeccao"
+          source: "prospeccao",
         };
-        await adminClient.from("companies").insert(companyPayload);
+        const { error: companyError } = await adminClient.from("companies").insert(companyPayload);
+        if (companyError) {
+          console.error("Falha ao criar empresa:", companyError);
+          return new Response(JSON.stringify({ error: `Falha ao salvar empresa: ${companyError.message}` }), {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
       }
+
 
       const { error: profileError } = await adminClient
         .from("profiles")
