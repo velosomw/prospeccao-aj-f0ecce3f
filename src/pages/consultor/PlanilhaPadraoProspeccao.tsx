@@ -16,20 +16,7 @@ type Linha = {
 };
 
 // Dados extraídos da planilha padrão "BEx_Planilha_Padrão_Prospecção_Administrador_Judicial"
-const LINHAS: Linha[] = [
-  {
-    data_distribuicao: "2026-02-27",
-    mes: null,
-    numero_processo: "4000060-42.2026.8.26.0373",
-    empresa: "Rp Liquido - Comercio, Logistica, Servicos E Transportes Ltda",
-    vara_comarca:
-      "Vara Reg. Comp. Empresarial E Conflitos A Arbitragem Foro Espec. 3ª e 6ª Rajs",
-    estado: "SP",
-    valor_passivo: 10404818.49,
-    aj_nomeado: null,
-    juiz: "Carina Roselino Biagi",
-  },
-];
+const LINHAS: Linha[] = [];
 
 const MESES_PT = [
   "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
@@ -80,7 +67,7 @@ export default function PlanilhaPadraoProspeccao() {
         }));
         
         // Combina com mock se vazio, ou apenas usa os do DB
-        setDbLinhas(mapped.length > 0 ? mapped : LINHAS);
+        setDbLinhas(mapped);
       } catch (err) {
         console.error("Erro ao carregar linhas:", err);
         setDbLinhas(LINHAS);

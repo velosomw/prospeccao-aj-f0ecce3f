@@ -45,7 +45,7 @@ export default function TrainAI() {
       try {
         const isAdmin = roles.includes("gestor_ia") || roles.includes("coordenador");
         const data = isAdmin ? await listCompanies() : await listMyAssignedCompanies();
-        const merged = [DEMO_COMPANY, ...(data || [])];
+        const merged = data || [];
         if (!cancelled) setCompanies(merged);
       } finally {
         if (!cancelled) setLoading(false);
@@ -159,9 +159,7 @@ export default function TrainAI() {
           </CardContent>
         </Card>
 
-        {companyId === DEMO_COMPANY.id ? (
-          <ProspeccaoUploadCard />
-        ) : companyId ? (
+        {companyId ? (
           <>
             {/* Menu inline */}
             <div className="flex items-center gap-1 border-b">

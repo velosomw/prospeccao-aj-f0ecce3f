@@ -27,64 +27,7 @@ interface LinhaCarta {
 }
 
 // Mockup: linhas derivadas das recuperações judiciais da Planilha Padrão Prospecção
-const LINHAS: LinhaCarta[] = [
-  {
-    id: "1",
-    empresa: "Rp Liquido - Comercio, Logistica, Servicos E Transportes Ltda",
-    processo: "4000060-42.2026.8.26.0373",
-    aj: "João Nunes",
-    endereco: "Av. Paulista, 1842 — Conj. 91 — Bela Vista, São Paulo/SP",
-    dataAtivacao: "15/06/2026",
-    carta: "Enviada",
-    reenvio: "90 dias",
-    ultimoEnvio: "15/06/2026",
-    proximoEnvio: "13/09/2026",
-    diasParaEnvio: -27,
-    impressa: true,
-    historico: [
-      { data: "15/06/2026 14:02", evento: "Carta enviada (1º envio)", canal: "Correios / AR", status: "ok" },
-      { data: "15/06/2026 13:40", evento: "Carta impressa", canal: "Impressão local", status: "ok" },
-      { data: "14/06/2026 09:15", evento: "Carta gerada pela IA", canal: "Automático", status: "ok" },
-    ],
-  },
-  {
-    id: "2",
-    empresa: "E-XYON Industria e Comercio S/A",
-    processo: "0019765-83.2026.8.16.0014",
-    aj: "Marina Belchior",
-    endereco: "Rua XV de Novembro, 340 — Centro, Curitiba/PR",
-    dataAtivacao: "02/07/2026",
-    carta: "Em elaboração",
-    reenvio: "120 dias",
-    ultimoEnvio: null,
-    proximoEnvio: "30/10/2026",
-    diasParaEnvio: 88,
-    impressa: false,
-    historico: [
-      { data: "02/07/2026 10:22", evento: "Dados extraídos do processo", canal: "IA / OCR", status: "ok" },
-      { data: "02/07/2026 10:25", evento: "Carta em elaboração", canal: "Automático", status: "pendente" },
-    ],
-  },
-  {
-    id: "3",
-    empresa: "DataLaw Serviços Empresariais Ltda",
-    processo: "1002345-11.2026.8.26.0100",
-    aj: "Carlos Ferreira",
-    endereco: "Rua Boa Vista, 254 — Centro, São Paulo/SP",
-    dataAtivacao: "20/05/2026",
-    carta: "Enviada",
-    reenvio: "150 dias",
-    ultimoEnvio: "20/05/2026",
-    proximoEnvio: "17/10/2026",
-    diasParaEnvio: 75,
-    impressa: false,
-    historico: [
-      { data: "20/05/2026 16:48", evento: "Carta enviada (1º envio)", canal: "E-mail registrado", status: "ok" },
-      { data: "19/05/2026 11:03", evento: "Falha na impressão", canal: "Impressão local", status: "falha" },
-      { data: "18/05/2026 08:30", evento: "Carta gerada pela IA", canal: "Automático", status: "ok" },
-    ],
-  },
-];
+const LINHAS: LinhaCarta[] = [];
 
 const statusPill = (s: CartaStatus) =>
   s === "Enviada"
