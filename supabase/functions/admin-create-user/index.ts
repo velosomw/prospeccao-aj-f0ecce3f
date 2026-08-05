@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
     const { action } = body;
 
     // Consultor e Magistrado podem apenas listar (para selecionar consultores em atribuições ou ver processos)
-    if (!isGestor && !isCoordenador && !isAdmjudicial && !isMagistrado && !(isConsultor && action === "list")) {
+    if (!isGestor && !isCoordenador && !isAdmjudicial && !isMagistrado && !isConsultor) {
       return new Response(JSON.stringify({ error: "Sem permissão para gerenciar usuários" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -131,6 +131,7 @@ Deno.serve(async (req) => {
         coordenador: ["consultor", "magistrado", "recuperanda", "admjudicial"],
         admjudicial: ["recuperanda"],
         consultor: ["admjudicial", "recuperanda", "magistrado", "consultor"],
+        gestor_ia: ["coordenador", "admjudicial", "consultor", "magistrado", "recuperanda"],
       };
 
       const callerRole = isGestor ? "gestor_ia" : isCoordenador ? "coordenador" : isAdmjudicial ? "admjudicial" : "consultor";
@@ -179,21 +180,25 @@ Deno.serve(async (req) => {
           email: email,
           phone: metadata.telefone || null,
           address: metadata.endereco || null,
-          created_by: newUser.user.id,
+          created_by: caller.id,
           status: "ativa",
           source: "prospeccao"
         };
         await adminClient.from("companies").insert(companyPayload);
       }
 
-      await adminClient
+      const { error: profileError } = await adminClient
         .from("profiles")
         .update(profileUpdates)
         .eq("user_id", newUser.user.id);
+      
+      if (profileError) throw profileError;
 
-      await adminClient
+      const { error: roleInsertError } = await adminClient
         .from("user_roles")
         .insert({ user_id: newUser.user.id, role });
+
+      if (roleInsertError) throw roleInsertError;
 
       // Auto-vincula Recuperanda ao Admjudicial criador
       if (isAdmjudicial && role === "recuperanda") {
