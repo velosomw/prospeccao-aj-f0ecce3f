@@ -7,13 +7,13 @@ import ProfileHome from "@/components/shell/ProfileHome";
 export default function RecuperandaDashboard() {
   return (
     <ProfileHome
-      defaultName="Recuperanda"
-      subtitle="Acompanhe seu plano de recuperação e envio de documentos."
+      defaultName="Empresa de Prospecção"
+      subtitle="Acompanhe seu processo e envio de documentos."
       cards={[
         { label: "Documentos",  desc: "Acervo de documentos enviados.",         icon: FolderOpen,    to: "/recuperanda/documentos",  tone: "blue"   },
         { label: "Pendências",  desc: "Documentos que faltam enviar.",          icon: AlertTriangle, to: "/recuperanda/pendencias",  tone: "red"    },
-        { label: "Relatórios",  desc: "RMAs publicados sobre sua empresa.",     icon: FileBarChart,  to: "/recuperanda/relatorios",  tone: "green"  },
-        { label: "Cronograma",  desc: "Prazos do plano de recuperação.",        icon: Calendar,      to: "/recuperanda/cronograma",  tone: "purple" },
+        { label: "Relatórios",  desc: "Prospecções AJ publicadas sobre sua empresa.",     icon: FileBarChart,  to: "/recuperanda/relatorios",  tone: "green"  },
+        { label: "Cronograma",  desc: "Prazos do processo de prospecção.",        icon: Calendar,      to: "/recuperanda/cronograma",  tone: "purple" },
         { label: "Upload",      desc: "Envie novos documentos agora.",          icon: Upload,        to: "/recuperanda/documentos",  tone: "teal"   },
       ]}
       summary={[
