@@ -81,7 +81,11 @@ const UserManagementDialog = ({ open, onOpenChange, allowedRoles, title }: UserM
         body: { action: "create", ...formData },
       });
       if (error) throw error;
-      if (data.error) throw new Error(data.error);
+      if (data?.error || error) {
+        const msg = error?.message || data?.error || JSON.stringify(error || data);
+        console.error("Erro detalhado no UserManagementDialog:", msg);
+        throw new Error(msg);
+      }
       toast.success("Usuário cadastrado com sucesso!");
       setShowForm(false);
       setFormData({ email: "", password: "", full_name: "", role: "" });
@@ -107,7 +111,11 @@ const UserManagementDialog = ({ open, onOpenChange, allowedRoles, title }: UserM
         },
       });
       if (error) throw error;
-      if (data.error) throw new Error(data.error);
+      if (data?.error || error) {
+        const msg = error?.message || data?.error || JSON.stringify(error || data);
+        console.error("Erro detalhado no Update UserManagementDialog:", msg);
+        throw new Error(msg);
+      }
       toast.success("Usuário atualizado!");
       setEditingUser(null);
       setShowForm(false);

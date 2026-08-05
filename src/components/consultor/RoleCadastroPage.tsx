@@ -83,7 +83,8 @@ export default function RoleCadastroPage({
     try {
       const { data, error } = await invokeAuthed<{ profiles: ProfileRow[] }>("admin-create-user", { action: "list" });
       if (error) {
-        toast.error(`Falha ao carregar usuários: ${error.message ?? error}`);
+        console.error("Erro detalhado do servidor:", error);
+        toast.error(`Falha ao carregar usuários: ${error.message || JSON.stringify(error)}`);
       } else {
         const all = data?.profiles ?? [];
         setRows(all.filter((p) => (p.user_roles ?? []).some((r) => r.role === role)));
@@ -126,7 +127,11 @@ export default function RoleCadastroPage({
     setSaving(true);
     const { error } = await invokeAuthed("admin-create-user", { action: "create", ...form, role });
     setSaving(false);
-    if (error) { toast.error(`Erro ao criar: ${error.message ?? error}`); return; }
+    if (error) { 
+      console.error("Erro detalhado ao criar:", error);
+      toast.error(`Erro ao criar: ${error.message || JSON.stringify(error)}`); 
+      return; 
+    }
     toast.success(`${singular} cadastrado com sucesso`);
     setStarted(false);
     setForm({ full_name: "", email: "", password: "" });
@@ -192,7 +197,11 @@ export default function RoleCadastroPage({
               ...data
             });
             setSaving(false);
-            if (error) { toast.error(`Erro ao cadastrar: ${error.message ?? error}`); return; }
+            if (error) { 
+              console.error("Erro detalhado ao cadastrar:", error);
+              toast.error(`Erro ao cadastrar: ${error.message || JSON.stringify(error)}`); 
+              return; 
+            }
             toast.success(`${singular} cadastrado com sucesso`);
             setStarted(false);
             load();
