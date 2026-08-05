@@ -7,35 +7,44 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
 
-const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais de Recuperação Judicial ou Falência conforme o MD-GEMINI-EXTRACAO-PROSPECCAO-ADMINISTRADOR-JUDICIAL-001.
+const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais de Recuperação Judicial ou Falência conforme o MD-GEMINI-EXTRACAO-PROSPECCAO-ADMINISTRADOR-JUDICIAL-001 Parte 2.
+
+ETAPAS DE CLASSIFICAÇÃO:
+1. IDENTIFICAÇÃO: Determine o tipo documental (Petição Inicial, Decisão Nomeando AJ, Sentença, etc.).
+2. FASE PROCESSUAL: Identifique em qual etapa o processo se encontra (Distribuição, Processamento, Assembleia, etc.).
+3. PRIORIDADE: Atribua prioridade Jurídica (Máxima para Decisões de AJ/Sentenças).
 
 DIRETRIZES DE ANÁLISE:
-1. NÃO SEJA APENAS UM OCR: Interprete a função jurídica de cada informação.
-2. NÍVEIS DE COMPREENSÃO: Realize leitura física, compreensão estrutural, jurídica e semântica para produzir conhecimento estruturado.
-3. CONCEITO DE EVIDÊNCIA: Identifique o bloco jurídico (Petição Inicial, Decisão, etc.) e a página de origem.
-4. BUSINESS FACTS: Identifique quem é a Recuperanda/Empresa Prospectada, o Administrador Judicial nomeado, o Magistrado e os valores financeiros (Passivo/Valor da Causa).
+- NÃO SEJA APENAS UM OCR: Interprete a função jurídica.
+- RECONHECIMENTO DE ESTRUTURA: Identifique padrões como "EXCELENTÍSSIMO", "DOS FATOS", "Nomeio", "Cumpra-se".
+- SEGMENTAÇÃO: O PDF deve ser visto como uma coleção de blocos jurídicos.
 
 SCHEMA DE RESPOSTA (JSON APENAS):
 {
-  "numero_processo": string|null,
-  "tipo_acao": "Recuperação Judicial" | "Falência" | "Outro",
-  "orgao_tribunal": string|null,
-  "uf": string|null,
-  "municipio": string|null,
-  "parte_con_nome": string|null,
-  "parte_pro_nome": string|null,
-  "parte_pro_cnpj": string|null,
-  "endereco_requerente": string|null,
-  "advogado_nome": string|null,
-  "advogado_oab": string|null,
-  "data_protocolo": string|null,
-  "valor_pleito": number|null,
-  "status_processo": string|null,
-  "pedidos_principais": string|null,
+  "classificacao": {
+    "tipo_documento": string,
+    "tipo_processo": "Recuperação Judicial" | "Falência" | "Outro",
+    "fase_processual": string,
+    "prioridade": "Máxima" | "Muito Alta" | "Alta" | "Média" | "Baixa",
+    "nivel_confianca": number,
+    "ocr_utilizado": boolean
+  },
+  "dados": {
+    "numero_processo": string|null,
+    "orgao_tribunal": string|null,
+    "uf": string|null,
+    "municipio": string|null,
+    "parte_pro_nome": string|null,
+    "parte_pro_cnpj": string|null,
+    "advogado_nome": string|null,
+    "valor_pleito": number|null,
+    "status_processo": string|null,
+    "pedidos_principais": string|null
+  },
   "evidencia": {
     "pagina": number,
     "bloco": string,
-    "confianca": number
+    "trecho_chave": string
   }
 }
 
@@ -112,14 +121,17 @@ Deno.serve(async (req) => {
         const extracted = extractJson(content);
 
         const linhaUpdate: Record<string, unknown> = { ai_status: "extraido", ai_extracted: extracted };
+        const dados = extracted.dados || {};
         for (const k of [
-          "numero_processo", "tipo_acao", "orgao_tribunal", "uf", "municipio",
-          "parte_con_nome", "parte_pro_nome", "parte_pro_cnpj",
-          "endereco_requerente", "advogado_nome", "advogado_oab",
-          "data_protocolo", "valor_pleito", "status_processo", "pedidos_principais",
+          "numero_processo", "orgao_tribunal", "uf", "municipio",
+          "parte_pro_nome", "parte_pro_cnpj",
+          "advogado_nome", "valor_pleito", "status_processo", "pedidos_principais",
         ]) {
-          const v = extracted?.[k];
+          const v = dados[k];
           if (v != null && v !== "") linhaUpdate[k] = v;
+        }
+        if (extracted.classificacao?.tipo_processo) {
+          linhaUpdate["tipo_acao"] = extracted.classificacao.tipo_processo;
         }
 
         await admin.from("prospeccao_linhas").update(linhaUpdate).eq("id", job.linha_id);
