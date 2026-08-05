@@ -170,6 +170,22 @@ Deno.serve(async (req) => {
       if (metadata.cep) profileUpdates.cep = metadata.cep;
       if (metadata.telefone) profileUpdates.telefone = metadata.telefone;
 
+      if (role === "recuperanda") {
+        const companyPayload = {
+          name: metadata.nome || full_name,
+          cnpj: metadata.cnpj || null,
+          city: metadata.cidade || null,
+          uf: metadata.uf || null,
+          email: email,
+          phone: metadata.telefone || null,
+          address: metadata.endereco || null,
+          created_by: newUser.user.id,
+          status: "ativa",
+          source: "prospeccao"
+        };
+        await adminClient.from("companies").insert(companyPayload);
+      }
+
       await adminClient
         .from("profiles")
         .update(profileUpdates)
