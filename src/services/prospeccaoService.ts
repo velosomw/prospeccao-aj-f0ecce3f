@@ -33,6 +33,38 @@ export interface ProspeccaoLinha {
   ai_status: "pendente" | "baixado" | "extraido" | "erro" | "sem_link";
   ai_extracted: any | null;
   ai_error: string | null;
+  // PARTE 5 — certificação e integração
+  status_certificacao: StatusCertificacao;
+  certificacao: Record<string, boolean> | null;
+  mes_referencia: string | null;
+  data_distribuicao: string | null;
+  created_at: string;
+}
+
+export type StatusCertificacao =
+  | "Em Processamento"
+  | "Concluído"
+  | "Revisão Manual"
+  | "Erro OCR"
+  | "Documento Duplicado"
+  | "Documento Inválido";
+
+export const STATUS_CERTIFICACAO: StatusCertificacao[] = [
+  "Em Processamento",
+  "Concluído",
+  "Revisão Manual",
+  "Erro OCR",
+  "Documento Duplicado",
+  "Documento Inválido",
+];
+
+export interface ProspeccaoLog {
+  id: string;
+  linha_id: string | null;
+  modelo_gemini: string | null;
+  tempo_ms: number | null;
+  documento: string | null;
+  resultado: string | null;
   created_at: string;
 }
 
@@ -44,6 +76,16 @@ export async function listLinhas(): Promise<ProspeccaoLinha[]> {
     .limit(500);
   if (error) throw error;
   return (data as ProspeccaoLinha[]) || [];
+}
+
+export async function listLogs(limit = 50): Promise<ProspeccaoLog[]> {
+  const { data, error } = await supabase
+    .from("prospeccao_logs" as never)
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return (data as ProspeccaoLog[]) || [];
 }
 
 export async function countByStatus(): Promise<{ total: number; pendentes: number; extraidos: number; erros: number }> {
