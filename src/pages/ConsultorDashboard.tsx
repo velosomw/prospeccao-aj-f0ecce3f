@@ -113,16 +113,16 @@ export default function ConsultorDashboard() {
   }, [rows, filter]);
 
   const hasStats = !!stats;
-  const total = hasStats ? companiesTotal : (companiesTotal || 24);
-  const emProcessamento = hasStats ? (countAnalise + countRevisao) : (rows.filter(r => r.stage === "em_analise" || r.stage === "em_revisao").length || 9);
-  const enviadas = hasStats ? countConcluido : (rows.filter(r => r.stage === "concluido").length || 15);
-  const falhaPdf = hasStats ? countPausado : (rows.filter(r => r.stage === "pausado").length || 2);
+  const total = hasStats ? companiesTotal : (companiesTotal || 0);
+  const emProcessamento = hasStats ? (countAnalise + countRevisao) : (rows.filter(r => r.stage === "em_analise" || r.stage === "em_revisao").length || 0);
+  const enviadas = hasStats ? countConcluido : (rows.filter(r => r.stage === "concluido").length || 0);
+  const falhaPdf = hasStats ? countPausado : (rows.filter(r => r.stage === "pausado").length || 0);
 
-  const uploadsPendentes = rows.reduce((s, r) => s + r.pendencias, 0) || 17;
-  const criticas = rows.reduce((s, r) => s + r.criticas, 0) || 6;
+  const uploadsPendentes = rows.reduce((s, r) => s + r.pendencias, 0) || 0;
+  const criticas = rows.reduce((s, r) => s + r.criticas, 0) || 0;
   const taxaEnvio = rows.length
     ? Math.round(rows.filter(r => r.envio >= 81).length / rows.length * 100)
-    : 62;
+    : 0;
   const empresasComCarta = total;
 
   const safePct = (n: number) => total > 0 ? Math.round((n / total) * 100) : 0;
@@ -137,18 +137,18 @@ export default function ConsultorDashboard() {
   ];
 
   const statusData = [
-    { name: "Em Processamento IA", value: hasStats ? countAnalise : (rows.filter(r => r.stage === "em_analise").length || 9), color: "hsl(258,90%,56%)" },
-    { name: "Em Elaboração",        value: hasStats ? countRevisao : (rows.filter(r => r.stage === "em_revisao").length || 6), color: "hsl(38,92%,50%)"  },
+    { name: "Em Processamento IA", value: hasStats ? countAnalise : (rows.filter(r => r.stage === "em_analise").length || 0), color: "hsl(258,90%,56%)" },
+    { name: "Em Elaboração",        value: hasStats ? countRevisao : (rows.filter(r => r.stage === "em_revisao").length || 0), color: "hsl(38,92%,50%)"  },
     { name: "Cartas Enviadas",      value: enviadas,  color: "hsl(142,76%,36%)" },
     { name: "Falha PDF",            value: falhaPdf,  color: "hsl(0,84%,60%)"   },
   ];
   const totalStatus = statusData.reduce((s, x) => s + x.value, 0);
 
   const reenvioBuckets = [
-    { faixa: "90 dias",  cls: "Em prazo",  count: rows.filter(r => r.envio >= 81).length || 8,            color: "hsl(142,76%,36%)" },
-    { faixa: "120 dias", cls: "Próximo",  count: rows.filter(r => r.envio >= 61 && r.envio < 81).length || 6, color: "hsl(48,96%,53%)" },
-    { faixa: "150 dias", cls: "Atrasado", count: rows.filter(r => r.envio >= 31 && r.envio < 61).length || 5, color: "hsl(38,92%,50%)" },
-    { faixa: "Vencidas", cls: "Vencida",  count: rows.filter(r => r.envio < 31).length || 2,            color: "hsl(0,84%,60%)"   },
+    { faixa: "90 dias",  cls: "Em prazo",  count: rows.filter(r => r.envio >= 81).length || 0,            color: "hsl(142,76%,36%)" },
+    { faixa: "120 dias", cls: "Próximo",  count: rows.filter(r => r.envio >= 61 && r.envio < 81).length || 0, color: "hsl(48,96%,53%)" },
+    { faixa: "150 dias", cls: "Atrasado", count: rows.filter(r => r.envio >= 31 && r.envio < 61).length || 0, color: "hsl(38,92%,50%)" },
+    { faixa: "Vencidas", cls: "Vencida",  count: rows.filter(r => r.envio < 31).length || 0,            color: "hsl(0,84%,60%)"   },
   ];
 
   const evolucao = [
