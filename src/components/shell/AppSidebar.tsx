@@ -61,7 +61,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Aprovações",  to: "/dashboard/aprovacoes",  icon: CheckCircle2, badge: 9 },
         { label: "Equipe",      to: "/dashboard/equipe",      icon: Users },
         { label: "Histórico",   to: "/dashboard/historico",   icon: History },
-        { label: "Configurações", to: "/dashboard/configuracoes", icon: Settings },
+        
       ],
     });
   }
@@ -87,7 +87,7 @@ const buildNav = (role: string | null): NavGroup[] => {
           { label: "Técnicos",                to: "/consultor/cadastro/tecnicos" },
         ] },
         { label: "Relatórios & Cartas", to: "/relatorios-contabeis", icon: FileBarChart },
-        { label: "Configurações", to: "/consultor/configuracoes", icon: Settings },
+        
       ],
     });
   }
