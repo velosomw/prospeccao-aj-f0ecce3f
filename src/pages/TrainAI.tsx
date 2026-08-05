@@ -16,14 +16,6 @@ import { useUserRoles } from "@/hooks/useUserRoles";
 
 type ViewMode = "treinar" | "erros" | "upload" | "worker";
 
-// Empresa demo cadastrada localmente (E-XYON) com planilha fixa.
-const DEMO_COMPANY: Company = {
-  id: "demo-exyon",
-  name: "E-XYON",
-  rma_id: "Arquivo E-XYON-JUNHO-2026",
-  execution_year: 2026,
-  current_period_month: 6,
-} as unknown as Company;
 
 
 
