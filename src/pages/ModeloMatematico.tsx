@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Slider } from "@/components/ui/slider";
 import { Calculator, TrendingUp, TrendingDown, AlertTriangle, Shield, BarChart3, Activity, PieChart, ArrowRight, Info, Bot, Brain, FileText, DollarSign, Gauge, SlidersHorizontal } from "lucide-react";
-import { defaultEntityData, defaultFinancialAnalysis } from "@/data/auditMockData";
+
 import PlatformLayout from "@/components/PlatformLayout";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -409,7 +409,7 @@ const TabAgenteRelatorio = () => {
   const ctBase = 50;
   const gamma = 30;
   const ct = ctBase + persona.Fl * gamma;
-  const irc = 0.72; // mock
+  const irc = 0; // será integrado com dados reais
   const alertLevel = irc * (persona.Ap + persona.Cr);
 
   return (
@@ -440,7 +440,7 @@ const TabAgenteRelatorio = () => {
             <h4 className="text-sm font-semibold text-foreground">Intensidade de Alerta no Relatório</h4>
             <FormulaBlock formula="AlertLevel = IRC × (Aₚ + Cᵣ)" description="Persona agressiva → mais destaque visual de risco" />
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">IRC (mock)</span><span className="font-mono">{irc}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">IRC</span><span className="font-mono">{irc}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Aₚ + Cᵣ</span><span className="font-mono">{fmt(persona.Ap + persona.Cr, 1)}</span></div>
               <hr className="border-border" />
               <div className="flex justify-between p-2 rounded-lg bg-[hsl(258,90%,66%)]/5">
@@ -464,16 +464,16 @@ const TabRiskEngine = () => {
   const [weights, setWeights] = useState({ wA: 0.40, wF: 0.35, wR: 0.25 });
   const [lambda, setLambda] = useState(0.15);
 
-  // Mock base scores (would come from real agent outputs)
-  const mockIRC = 0.72;
-  const mockInconsistencias = 0.45;
-  const mockMaterialidade = 0.38;
-  const mockVARAdj = 0.65;
-  const mockSFStress = 0.58;
-  const mockAlavancagem = 0.71;
-  const mockAlertLevel = 0.62;
-  const mockComplexidadeRisco = 0.55;
-  const mockFreqDesvios = 0.48;
+  // Real agent scores placeholder
+  const mockIRC = 0;
+  const mockInconsistencias = 0;
+  const mockMaterialidade = 0;
+  const mockVARAdj = 0;
+  const mockSFStress = 0;
+  const mockAlavancagem = 0;
+  const mockAlertLevel = 0;
+  const mockComplexidadeRisco = 0;
+  const mockFreqDesvios = 0;
 
   // 2.1 Score Auditor (SA)
   const SA = (mockIRC + mockInconsistencias + mockMaterialidade) / 3;
@@ -527,15 +527,8 @@ const TabRiskEngine = () => {
 
   const classification = getClassification(ECRSNorm);
 
-  // Histórico mock
-  const historicalData = [
-    { month: "Set", ecrs: 0.42, sa: 0.45, sf: 0.38, sr: 0.35 },
-    { month: "Out", ecrs: 0.48, sa: 0.50, sf: 0.42, sr: 0.40 },
-    { month: "Nov", ecrs: 0.52, sa: 0.48, sf: 0.55, sr: 0.45 },
-    { month: "Dez", ecrs: 0.58, sa: 0.52, sf: 0.60, sr: 0.50 },
-    { month: "Jan", ecrs: 0.55, sa: 0.50, sf: 0.58, sr: 0.48 },
-    { month: "Fev", ecrs: ECRSNorm, sa: SA, sf: SF, sr: SR },
-  ];
+  // Historical data placeholder
+  const historicalData: any[] = [];
 
   return (
     <div className="space-y-6">
