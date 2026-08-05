@@ -4039,60 +4039,84 @@ export type Database = {
           bairro: string | null
           cep: string | null
           cidade: string | null
+          cnpj: string | null
           complemento: string | null
           contato_principal: string | null
           created_at: string
           email: string
           endereco: string | null
+          esfera: string | null
+          especialidade: string | null
           full_name: string
           id: string
           numero: string | null
+          orgao: string | null
+          registro: string | null
+          responsavel_legal: string | null
           role: Database["public"]["Enums"]["app_role"]
+          site: string | null
           telefone: string | null
           treatment_sigla: string | null
           uf: string | null
           updated_at: string
           user_id: string
+          vara: string | null
         }
         Insert: {
           active?: boolean
           bairro?: string | null
           cep?: string | null
           cidade?: string | null
+          cnpj?: string | null
           complemento?: string | null
           contato_principal?: string | null
           created_at?: string
           email: string
           endereco?: string | null
+          esfera?: string | null
+          especialidade?: string | null
           full_name?: string
           id?: string
           numero?: string | null
+          orgao?: string | null
+          registro?: string | null
+          responsavel_legal?: string | null
           role?: Database["public"]["Enums"]["app_role"]
+          site?: string | null
           telefone?: string | null
           treatment_sigla?: string | null
           uf?: string | null
           updated_at?: string
           user_id: string
+          vara?: string | null
         }
         Update: {
           active?: boolean
           bairro?: string | null
           cep?: string | null
           cidade?: string | null
+          cnpj?: string | null
           complemento?: string | null
           contato_principal?: string | null
           created_at?: string
           email?: string
           endereco?: string | null
+          esfera?: string | null
+          especialidade?: string | null
           full_name?: string
           id?: string
           numero?: string | null
+          orgao?: string | null
+          registro?: string | null
+          responsavel_legal?: string | null
           role?: Database["public"]["Enums"]["app_role"]
+          site?: string | null
           telefone?: string | null
           treatment_sigla?: string | null
           uf?: string | null
           updated_at?: string
           user_id?: string
+          vara?: string | null
         }
         Relationships: []
       }
