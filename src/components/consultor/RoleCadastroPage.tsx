@@ -237,34 +237,6 @@ export default function RoleCadastroPage({
                     >
                       <Plus className="w-4 h-4" /> Cadastrar {singular}
                     </button>
-                    {role === "admjudicial" && (
-                      <button
-                        onClick={async () => {
-                          const confirm = window.confirm("Deseja processar os dados da planilha de teste 'Administrador Judicial'?");
-                          if (!confirm) return;
-                          
-                          setLoading(true);
-                          const { importAJs } = await import("@/services/importService");
-                          
-                          // Dados extraídos da planilha de teste fornecida
-                          const mockData = [
-                            { nome: "2C CONSULTORIA", contato: "CAINAN RETHONDIN", endereco: "Rua Nagib Miguel", numero: "4105", complemento: "Sala 15C", bairro: "Jardim Recanto do Bosque", cidade: "São João da Boa Vista", uf: "SP", cep: "13874-439", telefone: "(11) 3797-6888", email: "contato@s2consultoria.com.br" },
-                            { nome: "360 ASSESSORIA EMPRESARIAL", contato: "AGENOR PEDRO DA SILVA JÚNIOR", endereco: "Avenida 09", numero: "SN", complemento: "Qd 26, Lt 03", bairro: "Reverendo Archibald", cidade: "Anápolis", uf: "GO", cep: "75063-320", telefone: "(62)99227-9497", email: "agenor.junior@360aj.com.br" },
-                            { nome: "A SANTOS ADVOGADOS ASSOCIADOS", contato: "RODOLFO GARCIA SALMAZO", endereco: "Rua Bela Cintra", numero: "768", complemento: "Conjunto 82", bairro: "Consolação", cidade: "São Paulo", uf: "SP", cep: "01415-000", email: "esantosadv@esantosadv.com.br" },
-                            { nome: "A&S PARTNERS", contato: "JOÃO RICARDO UCHÔA VIANA", endereco: "Rua Funchal", numero: "203", bairro: "Vila Oímpia", cidade: "São Paulo", uf: "SP", cep: "04455-904", telefone: "(11) 2293-0507", email: "contato@aespartners.com.br" },
-                            { nome: "ACR AJ", contato: "ALEXANDRE CORRÊA REZENDE", endereco: "Rua Treze de Maio", numero: "1150", complemento: "Sala 402", bairro: "Centro", cidade: "Curitiba", uf: "PR", cep: "80410-180", telefone: "(41) 3042-4444", email: "alexandre@acraj.com.br" },
-                            { nome: "ADJUD AJ", contato: "MARCIO HENRIQUE DA SILVA", endereco: "Rua Marechal Deodoro", numero: "630", complemento: "Sala 1104", bairro: "Centro", cidade: "Curitiba", uf: "PR", cep: "80010-010", telefone: "(41) 3014-9999", email: "marcio@adjud.com.br" }
-                          ];
-                          
-                          const results = await importAJs(mockData);
-                          toast.success(`Importação concluída: ${results.success} sucessos, ${results.errors} erros.`);
-                          load();
-                        }}
-                        className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-xl border border-[hsl(217,91%,40%)] text-[hsl(217,91%,40%)] hover:bg-[hsl(217,91%,96%)] text-sm font-bold transition whitespace-nowrap"
-                      >
-                        <Upload className="w-4 h-4" /> Importar Planilha
-                      </button>
-                    )}
                   </div>
                 )}
               </div>
