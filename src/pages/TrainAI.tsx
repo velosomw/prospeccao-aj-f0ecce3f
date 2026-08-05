@@ -9,10 +9,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Brain, Search, GraduationCap, FileWarning, Upload, FolderTree } from "lucide-react";
+import { Brain, Search, GraduationCap, FileWarning, Upload, FolderTree, Clock } from "lucide-react";
 import OneDriveFoldersStatus from "@/components/workspace/OneDriveFoldersStatus";
 import { listMyAssignedCompanies, listCompanies, type Company } from "@/services/companiesService";
 import { useUserRoles } from "@/hooks/useUserRoles";
+import { useToast } from "@/hooks/use-toast";
 
 type ViewMode = "treinar" | "erros" | "upload" | "worker";
 
@@ -22,6 +23,7 @@ type ViewMode = "treinar" | "erros" | "upload" | "worker";
 
 export default function TrainAI() {
   const { roles } = useUserRoles();
+  const { toast } = useToast();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [companyName, setCompanyName] = useState<string | null>(null);
   const [companyId, setCompanyId] = useState<string | null>(null);
