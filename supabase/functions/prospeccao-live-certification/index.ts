@@ -156,20 +156,41 @@ Deno.serve(async (req) => {
           },
         });
         const content = aiResult.text || "";
-        extracted = extractJson(content);
+        const rawExtracted = extractJson(content);
+        const validation = validateCanonical(rawExtracted);
+        schemaValido = validation.valid;
+        schemaIssues = validation.issues;
+        if (!validation.valid) {
+          throw new Error(
+            `JSON canônico inválido (schema ${CANONICAL_SCHEMA_VERSION}): ${formatIssues(validation.issues)}`,
+          );
+        }
+        extracted = validation.normalized as Record<string, any>;
         ws = extracted.workspace || {};
         gemini = {
           modelo: MODELO_GEMINI,
           tempo_ms: Date.now() - t1,
-          tokens_entrada: (aiResult as any).usage?.prompt_tokens ?? estimateTokens(EXTRACTION_PROMPT),
-          tokens_saida: (aiResult as any).usage?.completion_tokens ?? estimateTokens(content),
+          tokens_entrada: aiResult.tokens?.input ?? estimateTokens(EXTRACTION_PROMPT),
+          tokens_saida: aiResult.tokens?.output ?? estimateTokens(content),
           ocr: content.length > 0,
           idioma: extracted.classificacao?.idioma ?? "pt-BR",
           tipo_documento: extracted.classificacao?.tipo_documento ?? ws.tipo_processo ?? null,
           fase_processual: extracted.classificacao?.fase_processual ?? ws.fase ?? null,
           confiabilidade: ws.score_confianca ?? null,
+          schema_version: CANONICAL_SCHEMA_VERSION,
         };
+        logStage({
+          document_id: (download as any).document_id ?? null,
+          stage: "extraction",
+          duration_ms: Date.now() - t1,
+          tokens_input: aiResult.tokens?.input ?? 0,
+          tokens_output: aiResult.tokens?.output ?? 0,
+          model: MODELO_GEMINI,
+          provider: "gemini",
+          metadata: { certificacao_live: true },
+        });
         etapas.push(step("gemini", t1));
+
       } catch (e) {
         motivo = String((e as Error).message ?? e);
         download = { ...download, url: entrada.link, status: "erro", erro: motivo };
