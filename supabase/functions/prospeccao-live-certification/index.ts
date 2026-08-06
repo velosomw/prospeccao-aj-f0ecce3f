@@ -16,7 +16,9 @@ import { logStage } from "../_shared/processing-telemetry.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
-const MODELO_GEMINI = "gemini-3.6-flash";
+const MODELO_PADRAO = "gemini-3.6-flash";
+const MODELO_FALLBACK = "gemini-3.6-flash"; // melhor Gemini 3.X para raciocínio jurídico-contábil
+const MODELOS_PERMITIDOS = ["gemini-3.1-pro-preview", "gemini-3-pro-preview", "gemini-3.6-flash", "gemini-3.5-flash"];
 const FASES = [1, 5, 20, 100];
 
 const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx executando a CERTIFICAÇÃO OPERACIONAL do Motor Gemini.
@@ -69,6 +71,11 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({} as Record<string, unknown>));
     const fase = FASES.includes(Number(body.fase)) ? Number(body.fase) : 1;
     const manualLinks: string[] = Array.isArray(body.links) ? (body.links as string[]).filter(Boolean) : [];
+    const modelo = MODELOS_PERMITIDOS.includes(String(body.model)) ? String(body.model) : MODELO_PADRAO;
+    // Amostragem: permite certificar fases grandes (5/20/100) em lotes, sem executá-las integralmente
+    const offset = Math.max(0, Number(body.offset) || 0);
+    const max = Math.min(fase, Math.max(1, Number(body.max) || fase));
+    const amostra = max < fase || offset > 0;
 
     // Fase encadeada: só inicia se a fase anterior estiver aprovada
     const idx = FASES.indexOf(fase);
@@ -84,13 +91,13 @@ Deno.serve(async (req) => {
     // Entrada: planilha real (primeiro processo → próximos) ou links informados
     let entradas: { id?: string | null; link: string; empresa?: string | null; processo?: string | null }[] = [];
     if (manualLinks.length) {
-      entradas = manualLinks.slice(0, fase).map((l) => ({ link: l }));
+      entradas = manualLinks.slice(offset, offset + max).map((l) => ({ link: l }));
     } else {
       const { data: linhas } = await admin.from("prospeccao_linhas")
         .select("id,link_documento,parte_pro_nome,numero_processo,created_at")
         .not("link_documento", "is", null)
         .order("created_at", { ascending: true })
-        .limit(fase);
+        .range(offset, offset + max - 1);
       entradas = (linhas || []).map((l: any) => ({
         id: l.id, link: l.link_documento, empresa: l.parte_pro_nome, processo: l.numero_processo,
       }));
@@ -121,6 +128,7 @@ Deno.serve(async (req) => {
       let motivo: string | null = null;
       let schemaValido = false;
       let schemaIssues: any[] = [];
+      let modeloUsado = modelo;
 
 
       try {
@@ -156,11 +164,11 @@ Deno.serve(async (req) => {
         const fileUri = await uploadGeminiFile(acq.bytes, "application/pdf", acq.nome_arquivo);
         console.log(`[cert] upload gemini ok em ${Date.now() - t1}ms`);
         const { callLLM } = await import("../_shared/llm-service.ts");
-        const aiResult = await callLLM({
+        const chamarGemini = (m: string) => callLLM({
           prompt: EXTRACTION_PROMPT,
           system: "Auditor Sênior BEx — Certificação Operacional do Motor Gemini.",
           provider: "gemini",
-          model: MODELO_GEMINI,
+          model: m,
           useCache: false,
           customBody: {
             contents: [{
@@ -173,6 +181,17 @@ Deno.serve(async (req) => {
             generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8192 },
           },
         });
+        // Degradação controlada: se o modelo escolhido estiver sem cota (429), cai para o Gemini 3.x disponível
+        let aiResult;
+        try {
+          aiResult = await chamarGemini(modelo);
+        } catch (err) {
+          const msg = String((err as Error)?.message ?? err);
+          if (!msg.includes("429") || modelo === MODELO_FALLBACK) throw err;
+          console.warn(`[cert] ${modelo} sem cota (429) → fallback ${MODELO_FALLBACK}`);
+          modeloUsado = MODELO_FALLBACK;
+          aiResult = await chamarGemini(MODELO_FALLBACK);
+        }
 
         const content = aiResult.text || "";
         const rawExtracted = extractJson(content);
@@ -187,7 +206,7 @@ Deno.serve(async (req) => {
         extracted = validation.normalized as Record<string, any>;
         ws = extracted.workspace || {};
         gemini = {
-          modelo: MODELO_GEMINI,
+          modelo: modeloUsado,
           tempo_ms: Date.now() - t1,
           tokens_entrada: aiResult.tokens?.input ?? estimateTokens(EXTRACTION_PROMPT),
           tokens_saida: aiResult.tokens?.output ?? estimateTokens(content),
@@ -206,7 +225,7 @@ Deno.serve(async (req) => {
           duration_ms: Date.now() - t1,
           tokens_input: aiResult.tokens?.input ?? 0,
           tokens_output: aiResult.tokens?.output ?? 0,
-          model: MODELO_GEMINI,
+          model: modeloUsado,
           provider: "gemini",
           metadata: { certificacao_live: true },
         });
@@ -265,7 +284,7 @@ Deno.serve(async (req) => {
         stage: "total",
         status: aprovado ? "success" : "error",
         duration_ms: Date.now() - tProc,
-        model: MODELO_GEMINI,
+        model: modeloUsado,
         provider: "gemini",
         error_message: aprovado ? null : motivo,
         metadata: { certificacao_live: true, fase, ordem: i + 1 },
@@ -303,6 +322,10 @@ Deno.serve(async (req) => {
     const tempoTotal = Date.now() - tRun;
     const scores = processos.map((p) => p.painel?.score).filter((s: any) => typeof s === "number");
     const consolidado = {
+      modelo,
+      amostra,
+      amostra_offset: offset,
+      fase_alvo: fase,
       total_processos: processos.length,
       processados: processos.length,
       falhas: processos.length - aprovados,
@@ -332,7 +355,7 @@ Deno.serve(async (req) => {
     }).eq("id", run.id).select("*").single();
 
     return json({
-      ok: true, modo: "LIVE_CERTIFICATION", fase, status,
+      ok: true, modo: amostra ? "LIVE_CERTIFICATION_AMOSTRA" : "LIVE_CERTIFICATION", fase, modelo, amostra, offset, status,
       run: finalRun ?? run, consolidado, processos,
       proxima_fase: status === "aprovado" ? (FASES[idx + 1] ?? null) : null,
     });
