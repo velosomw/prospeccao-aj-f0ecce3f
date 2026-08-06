@@ -5,6 +5,8 @@
 //
 // Body: { fase?: 1|5|20|100, links?: string[] }
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { acquireDocument } from "../_shared/document-acquisition.ts";
 import { validateCanonical, formatIssues, CANONICAL_SCHEMA_VERSION } from "../_shared/canonical-schema.ts";
