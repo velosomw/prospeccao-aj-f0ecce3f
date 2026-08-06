@@ -282,7 +282,17 @@ Deno.serve(async (req) => {
       };
 
       await admin.from("certificacao_processos").insert(proc);
+
+      // Evidência canônica: persiste os fatos EAV extraídos nesta execução real
+      if (factsCanonicos.length > 0) {
+        const { error: factsErr } = await admin
+          .from("prospeccao_business_facts")
+          .insert(factsCanonicos.map((f) => ({ ...f, linha_id: entrada.id ?? null })));
+        if (factsErr) console.error("[cert] falha ao persistir business_facts:", factsErr.message);
+      }
+
       processos.push(proc);
+
     }
 
     const aprovados = processos.filter((p) => p.aprovado).length;
