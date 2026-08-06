@@ -76,7 +76,7 @@ export default function HomologacaoIA() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Modo Homologação: Motor Gemini</h1>
-              <p className="text-muted-foreground text-sm">ambiente onde foi publicado o relatório a partir da extração dos arquivos pdf</p>
+              <p className="text-muted-foreground text-sm">analise o documento via modo homologação motor gemini extraindo os dados pdf através do acesso do link documento na planilha</p>
             </div>
           </div>
           <div className="flex gap-2">
