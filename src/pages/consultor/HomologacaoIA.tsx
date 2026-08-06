@@ -82,15 +82,21 @@ export default function HomologacaoIA() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Modo Homologação: Motor Gemini</h1>
-              <p className="text-muted-foreground text-sm whitespace-pre-wrap">aplique e configure o MD-ENTERPRISE-DOCUMENT-ACQUISITION-AND-REGISTRY-ENGINE-001
+              <p className="text-muted-foreground text-sm whitespace-pre-wrap">aplique e configure o MD-ENTERPRISE-KNOWLEDGE-REGISTRY-001
 
 Versão: 1.0
 
-Status: FOUNDATION CORPORATIVO
+Status:
+
+FOUNDATION CORPORATIVO
 
 Projeto:
 
 Orange AI Platform
+
+Categoria:
+
+Enterprise Knowledge Layer
 
 Aplicações:
 
@@ -102,713 +108,39 @@ Aplicações:
 
 • Auditoria Digital
 
-• Futuras Plataformas Orange
-
-Categoria
-
-Enterprise Shared Service
+• Demais Plataformas Orange
 
 ---
 
 # 1. Objetivo
 
-Criar uma camada corporativa responsável por toda aquisição, autenticação, download, certificação, registro, versionamento e disponibilização de documentos para qualquer motor de Inteligência Artificial da Plataforma.
+Criar uma camada corporativa responsável por transformar informações extraídas pelos motores de Inteligência Artificial em conhecimento reutilizável.
 
-Nenhum motor IA deverá acessar diretamente:
+Esta camada representa a memória corporativa da Plataforma.
 
-- websites;
-
-- APIs externas;
-
-- links;
-
-- cookies;
-
-- tokens;
-
-- sessões;
-
-- autenticação.
-
-Toda comunicação ocorrerá através deste serviço.
+Enquanto o Document Registry armazena documentos e o Business Facts armazena fatos, o Knowledge Registry armazena conhecimento consolidado.
 
 ---
 
 # 2. Filosofia
 
-Os motores IA interpretam documentos.
+Documentos não são conhecimento.
 
-A Plataforma obtém documentos.
+Business Facts também não.
 
-O documento certificado torna-se patrimônio digital da Plataforma.
+Conhecimento surge da consolidação, relacionamento, evolução temporal e reutilização dos Business Facts produzidos.
 
-Todo documento baixado passa a existir independentemente da origem.
+A plataforma deverá aprender continuamente.
 
 ---
 
 # 3. Arquitetura
 
-                       Plataforma
-
-                            │
-
-                            ▼
-
-Enterprise Document Acquisition
-
-        and Registry Engine
-
-        ┌───────────┼────────────┐
-
-        ▼           ▼            ▼
-
- Gestor Jurídico  OneDrive   SharePoint
-
-        ▼           ▼            ▼
-
-      Download + Certificação
-
-                 ▼
-
-      Document Registry
-
-                 ▼
-
-      Storage Corporativo
-
-                 ▼
-
-Document ID Corporativo
-
-                 ▼
-
-Gemini
-
-GPT
-
-Claude
-
-Motores IA
-
----
-
-# 4. Responsabilidades
-
-Este serviço será responsável por:
-
-✓ aquisição documental
-
-✓ autenticação
-
-✓ gerenciamento de sessões
-
-✓ download
-
-✓ validação
-
-✓ OCR opcional
-
-✓ certificação
-
-✓ geração HASH
-
-✓ registro documental
-
-✓ versionamento
-
-✓ metadados
-
-✓ auditoria
-
-✓ disponibilização para IA
-
----
-
-# 5. Fontes
-
-Permitir integração com:
-
-Gestor Jurídico
-
-OneDrive
-
-SharePoint
-
-Google Drive
-
-Azure Blob
-
-Amazon S3
-
-Supabase Storage
-
-FTP
-
-SFTP
-
-API REST
-
-Links HTTPS
-
-WebDAV
-
-Repositórios Proprietários
-
-A arquitetura deverá permitir novos conectores sem alterar os motores IA.
-
----
-
-# 6. Conceito de Conector
-
-Cada origem possuirá um Connector.
-
-Exemplo.
-
-ConnectorGestorJuridico
-
-ConnectorOneDrive
-
-ConnectorSharePoint
-
-ConnectorGoogleDrive
-
-ConnectorSupabase
-
-Todos implementando a mesma interface.
-
----
-
-# 7. Pipeline Oficial
-
-Receber URL
-
-↓
-
-Selecionar Connector
-
-↓
-
-Autenticar
-
-↓
-
-Abrir Sessão
-
-↓
-
-Download
-
-↓
-
-Validação
-
-↓
-
-Hash SHA-256
-
-↓
-
-Certificação
-
-↓
-
-Registro
-
-↓
-
-Storage
-
-↓
-
-Document ID
-
-↓
-
-Motores IA
-
----
-
-# 8. Autenticação
-
-Permitir.
-
-Cookie
-
-Bearer
-
-JWT
-
-OAuth
-
-API Key
-
-Sessão
-
-Renovação automática
-
-Expiração controlada
-
-Nunca armazenar credenciais permanentes.
-
----
-
-# 9. Download
-
-Executar HTTP GET.
-
-Validar.
-
-Status HTTP
-
-Content-Type
-
-application/pdf
-
-application/octet-stream
-
-docx
-
-xlsx
-
-pptx
-
-csv
-
-txt
-
-zip
-
-imagem
-
-Registrar falhas.
-
----
-
-# 10. Certificação
-
-Todo documento deverá ser certificado.
-
-Validar.
-
-Integridade
-
-Hash
-
-Formato
-
-Quantidade páginas
-
-OCR necessário
-
-Idioma
-
-Assinaturas digitais
-
-Corrupção
-
-Duplicidade
-
----
-
-# 11. Registro Corporativo
-
-Criar um registro permanente.
-
-Document_ID
-
-Origem
-
-URL Original
-
-Hash
-
-Nome
-
-Extensão
-
-Tipo
-
-Tamanho
-
-Quantidade páginas
-
-Idioma
-
-Data Download
-
-Versão
-
-Status
-
-Projeto
-
-Empresa
-
-Processo
-
-Usuário
-
----
-
-# 12. Document ID
-
-Cada documento receberá um identificador único.
-
-Exemplo.
-
-DOC-20260805-0000001458
-
-Este ID será utilizado por toda a Plataforma.
-
-Nunca utilizar URL como referência.
-
----
-
-# 13. Versionamento
-
-Caso o mesmo documento seja atualizado.
-
-Criar.
-
-Versão 1
-
-Versão 2
-
-Versão 3
-
-...
-
-Preservar histórico completo.
-
----
-
-# 14. Duplicidade
-
-Comparar.
-
-Hash
-
-Nome
-
-Quantidade páginas
-
-Processo
-
-Documento
-
-Origem
-
-Caso idêntico.
-
-Não baixar novamente.
-
-Reutilizar Document_ID existente.
-
----
-
-# 15. Storage
-
-Estrutura.
-
-storage/
-
-documentos/
-
-ano/
-
-mês/
-
-origem/
-
-empresa/
-
-processo/
-
-document_id/
-
-Todas as IAs utilizarão apenas o Storage Corporativo.
-
----
-
-# 16. Metadados
-
-Registrar.
-
-Origem
-
-Conector
-
-Servidor
-
-Hash
-
-Download
-
-Tempo
-
-Status
-
-Tipo
-
-OCR
-
-Idioma
-
-Versão
-
-Último acesso
-
----
-
-# 17. Auditoria
-
-Registrar.
-
-Quem baixou
-
-Quando
-
-Qual projeto
-
-Qual IA utilizou
-
-Tempo
-
-Resultado
-
-Hash
-
-Versão
-
-Document ID
-
----
-
-# 18. API Corporativa
-
-Disponibilizar.
-
-authenticate()
-
-download()
-
-validate()
-
-certify()
-
-register()
-
-getDocument()
-
-getMetadata()
-
-renewSession()
-
-invalidateSession()
-
-Todas as aplicações utilizarão esta API.
-
----
-
-# 19. Integração IA
-
-Nenhum motor IA poderá receber URL.
-
-Fluxo.
-
-Document_ID
-
-↓
-
-Storage
-
-↓
-
-Documento Certificado
+Document Registry
 
 ↓
 
 Gemini
-
-↓
-
-Business Facts
-
-↓
-
-JSON
-
-↓
-
-Painéis
-
----
-
-# 20. Document Registry
-
-Criar um Catálogo Corporativo.
-
-Permitir localizar documentos por.
-
-Document_ID
-
-Empresa
-
-Processo
-
-Hash
-
-Projeto
-
-Origem
-
-Data
-
-Tipo
-
-Usuário
-
-Versão
-
----
-
-# 21. Reutilização
-
-Caso um documento já exista.
-
-RMA
-
-↓
-
-BEx
-
-↓
-
-Kanitz
-
-↓
-
-Auditoria
-
-Todos utilizarão o mesmo Document_ID.
-
-Nenhum novo download será realizado.
-
----
-
-# 22. Segurança
-
-Nunca armazenar.
-
-Cookies permanentes
-
-Bearer permanente
-
-Credenciais
-
-Sessões permanentes
-
-Todo acesso deverá ser auditável.
-
----
-
-# 23. Performance
-
-Download
-
-30 segundos
-
-Validação
-
-5 segundos
-
-Hash
-
-2 segundos
-
-Registro
-
-1 segundo
-
-Entrega ao Gemini
-
-1 segundo
-
----
-
-# 24. Critérios de Aprovação
-
-A implementação será considerada aprovada quando.
-
-✓ Todos os conectores funcionarem.
-
-✓ Documentos certificados.
-
-✓ Registro criado.
-
-✓ Hash calculado.
-
-✓ Versionamento funcionando.
-
-✓ Cache funcionando.
-
-✓ Reutilização funcionando.
-
-✓ Auditoria completa.
-
-✓ Motores IA recebendo exclusivamente Document_ID.
-
----
-
-# 25. Roadmap
-
-Fase 1
-
-Gestor Jurídico
-
-OneDrive
-
-SharePoint
-
-Google Drive
-
-Supabase
-
-Fase 2
-
-Microsoft Graph
-
-Amazon S3
-
-Azure Blob
-
-FTP
-
-API REST
-
-Fase 3
-
-WebDAV
-
-SOAP
-
-Conectores Proprietários
-
----
-
-# 26. Integração com o Motor Cognitivo
-
-Após a certificação.
-
-Document_ID
-
-↓
-
-PDF Certificado
-
-↓
-
-MD-GEMINI-EXTRACAO-PROSPECCAO-ADMINISTRADOR-JUDICIAL-001
 
 ↓
 
@@ -820,7 +152,7 @@ JSON Canônico
 
 ↓
 
-Painel Inteligente
+Enterprise Knowledge Registry
 
 ↓
 
@@ -828,39 +160,543 @@ Dashboards
 
 ↓
 
-Exportação
+Pesquisa
 
-Nenhum componente posterior acessará URLs diretamente.
+↓
+
+Assistentes IA
+
+↓
+
+Motores Analíticos
 
 ---
 
-# 27. Resultado Esperado
+# 4. Objetivos
 
-Ao término da implementação, a Orange AI Platform possuirá uma camada corporativa única de aquisição e registro documental.
+O Knowledge Registry deverá:
 
-Essa camada será compartilhada por todos os projetos da empresa, garantindo:
+✓ consolidar conhecimento
 
-• desacoplamento entre infraestrutura e IA;
+✓ eliminar duplicidades
 
-• reutilização de documentos;
+✓ relacionar entidades
 
-• eliminação de downloads redundantes;
+✓ manter histórico
 
-• rastreabilidade completa;
+✓ permitir consultas inteligentes
 
-• governança documental;
+✓ alimentar dashboards
 
-• segurança;
+✓ suportar futuras IAs
 
-• versionamento;
+✓ preservar rastreabilidade
 
-• escalabilidade;
+---
 
-• redução do custo computacional;
+# 5. Objetos de Conhecimento
 
-• maior estabilidade operacional.
+Registrar.
 
-O Document Registry passará a ser o repositório oficial de documentos corporativos certificados, enquanto os motores de Inteligência Artificial atuarão exclusivamente sobre documentos previamente adquiridos, registrados e certificados pela plataforma.</p>
+Empresas
+
+Administradores Judiciais
+
+Magistrados
+
+Advogados
+
+Credores
+
+Recuperandas
+
+Grupos Econômicos
+
+Processos
+
+Comarcas
+
+Varas
+
+Tribunais
+
+Eventos Processuais
+
+Indicadores Comerciais
+
+Documentos
+
+---
+
+# 6. Modelo de Relacionamento
+
+Empresa
+
+↓
+
+Participa
+
+↓
+
+Processo
+
+↓
+
+Possui
+
+↓
+
+Administrador Judicial
+
+↓
+
+Possui
+
+↓
+
+Magistrado
+
+↓
+
+Possui
+
+↓
+
+Business Facts
+
+↓
+
+Origem Documental
+
+Toda informação deverá possuir relacionamento.
+
+---
+
+# 7. Registro de Empresas
+
+Para cada empresa registrar.
+
+Razão Social
+
+Razões Anteriores
+
+Nome Fantasia
+
+CNPJ
+
+Estado
+
+Cidade
+
+Segmento
+
+Grupo Econômico
+
+Situação
+
+Quantidade de Processos
+
+Última Atualização
+
+Histórico
+
+---
+
+# 8. Registro de Pessoas
+
+Para cada pessoa.
+
+Nome
+
+Tipo
+
+Administrador Judicial
+
+Magistrado
+
+Advogado
+
+Representante
+
+Empresa
+
+Quantidade Processos
+
+Histórico
+
+Documentos
+
+---
+
+# 9. Registro de Processos
+
+Número CNJ
+
+Classe
+
+Tipo
+
+Situação
+
+Fase
+
+Empresa
+
+Valor
+
+AJ
+
+Magistrado
+
+Data Distribuição
+
+Último Evento
+
+Histórico
+
+---
+
+# 10. Registro de Eventos
+
+Cada processo possuirá histórico.
+
+Distribuição
+
+Petição
+
+Despacho
+
+Processamento
+
+Nomeação AJ
+
+Plano
+
+Assembleia
+
+Sentença
+
+Encerramento
+
+Todos cronológicos.
+
+---
+
+# 11. Registro Comercial
+
+Criar indicadores.
+
+Prioridade
+
+Complexidade
+
+Potencial Econômico
+
+Probabilidade AJ
+
+Interesse BEx
+
+Situação Comercial
+
+Histórico
+
+---
+
+# 12. Aprendizado Contínuo
+
+Sempre que um processo for reprocessado.
+
+Atualizar.
+
+Conhecimento.
+
+Nunca apagar histórico.
+
+Criar nova versão.
+
+---
+
+# 13. Relacionamentos
+
+Permitir consultas.
+
+Empresa
+
+↓
+
+Todos Processos
+
+↓
+
+Todos Magistrados
+
+↓
+
+Todos AJ
+
+↓
+
+Todos Credores
+
+↓
+
+Todos Valores
+
+↓
+
+Histórico
+
+---
+
+# 14. Pesquisa Inteligente
+
+Permitir localizar.
+
+Empresa
+
+Pessoa
+
+AJ
+
+Magistrado
+
+Grupo Econômico
+
+Valor
+
+Documento
+
+Business Fact
+
+Evento
+
+Cidade
+
+Estado
+
+Tribunal
+
+---
+
+# 15. Histórico Temporal
+
+Registrar.
+
+Primeira Aparição
+
+Última Atualização
+
+Quantidade Atualizações
+
+Versões
+
+Mudanças
+
+Nunca perder histórico.
+
+---
+
+# 16. Conhecimento Compartilhado
+
+O mesmo conhecimento poderá ser utilizado por.
+
+Prospecção
+
+↓
+
+RMA
+
+↓
+
+Kanitz
+
+↓
+
+Auditoria
+
+↓
+
+Assistentes IA
+
+↓
+
+Dashboards
+
+Nenhum módulo criará conhecimento isoladamente.
+
+---
+
+# 17. Integração IA
+
+Os motores IA poderão consultar.
+
+Empresa
+
+↓
+
+Knowledge Registry
+
+↓
+
+Histórico
+
+↓
+
+Relacionamentos
+
+↓
+
+Contexto
+
+↓
+
+Novo Processo
+
+A IA deixará de analisar documentos isoladamente.
+
+Passará a analisar conhecimento acumulado.
+
+---
+
+# 18. Indicadores
+
+Calcular automaticamente.
+
+Quantidade Empresas
+
+Quantidade Processos
+
+AJ
+
+Magistrados
+
+Grupos Econômicos
+
+Empresas por Estado
+
+Empresas por Tribunal
+
+Histórico Comercial
+
+Ranking AJ
+
+Ranking Magistrados
+
+---
+
+# 19. API Corporativa
+
+Disponibilizar.
+
+getCompany()
+
+getProcess()
+
+getAJ()
+
+getJudge()
+
+getKnowledge()
+
+searchKnowledge()
+
+getTimeline()
+
+getBusinessHistory()
+
+Todos os módulos utilizarão esta API.
+
+---
+
+# 20. Governança
+
+Todo conhecimento deverá possuir.
+
+Origem
+
+Business Facts
+
+Documento
+
+Hash
+
+Data
+
+Versão
+
+Motor IA
+
+Confiabilidade
+
+Usuário
+
+Rastreabilidade obrigatória.
+
+---
+
+# 21. Segurança
+
+Nunca permitir.
+
+Alteração manual do conhecimento consolidado.
+
+Toda alteração deverá ocorrer por novo processamento certificado.
+
+---
+
+# 22. Certificação
+
+A implementação será considerada aprovada quando.
+
+✓ Empresas consolidadas.
+
+✓ Pessoas relacionadas.
+
+✓ Processos relacionados.
+
+✓ Histórico funcionando.
+
+✓ Pesquisa inteligente funcionando.
+
+✓ Dashboards alimentados.
+
+✓ APIs disponíveis.
+
+✓ Histórico preservado.
+
+---
+
+# 23. Evolução
+
+Este componente será a base para:
+
+Assistentes Jurídicos
+
+Copilotos
+
+Pesquisa Semântica
+
+Knowledge Graph
+
+Business Intelligence
+
+Analytics
+
+Motores Preditivos
+
+Sem necessidade de reprocessar documentos.
+
+---
+
+# 24. Resultado Esperado
+
+Ao final da implementação, a Orange AI Platform deixará de ser uma plataforma que apenas interpreta documentos.
+
+Passará a possuir uma Base Corporativa de Conhecimento Jurídico.
+
+Essa base consolidará todo o aprendizado produzido pelos motores de IA, permitindo reutilização entre projetos, evolução contínua do conhecimento, consultas inteligentes, indicadores estratégicos e suporte à tomada de decisão.
+
+O Enterprise Knowledge Registry será a memória institucional da plataforma, conectando documentos, Business Facts, entidades, eventos processuais e inteligência comercial em um único repositório governado, rastreável e reutilizável.</p>
             </div>
           </div>
           <div className="flex gap-2">
