@@ -479,11 +479,34 @@ Deno.serve(async (req) => {
           p_tem_aj: Boolean(ws.administrador_judicial)
         }).catch(e => console.error("Metrics update failed:", e));
 
+        logStage({
+          linha_id: job.linha_id ?? null,
+          document_id: documentId,
+          stage: "total",
+          duration_ms: Date.now() - t0,
+          model: MODELO_GEMINI,
+          provider: "gemini",
+          metadata: { status_certificacao: statusCert },
+        });
+
         results.push({ job: job.id, ok: true, status: statusCert });
       } catch (e) {
         const msg = String((e as Error).message ?? e);
-        const statusErro = /gemini|download|http|pdf/i.test(msg) ? "Erro OCR" : "Revisão Manual";
+        const isSchemaError = /JSON canônico inválido/i.test(msg);
+        const statusErro = isSchemaError
+          ? "Schema Inválido"
+          : (/gemini|download|http|pdf/i.test(msg) ? "Erro OCR" : "Revisão Manual");
+        logStage({
+          linha_id: job.linha_id ?? null,
+          stage: "total",
+          status: "error",
+          error_message: msg,
+          model: MODELO_GEMINI,
+          provider: "gemini",
+          metadata: { status_certificacao: statusErro, homologacao: isHomologation },
+        });
         if (isHomologation) {
+
           homologationResults.push({
             processo: "Não identificado", empresa: "Não identificado", link: job.link,
             status: statusErro, resumo_executivo: `Falha no processamento: ${msg}`,
