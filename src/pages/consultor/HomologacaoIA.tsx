@@ -82,133 +82,151 @@ export default function HomologacaoIA() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Modo Homologação: Motor Gemini</h1>
-              <p className="text-muted-foreground text-sm whitespace-pre-wrap">aplique e configure o MD-DOCUMENT-FETCH-ENTERPRISE-ENGINE-001
+              <p className="text-muted-foreground text-sm whitespace-pre-wrap">aplique e configure o MD-ENTERPRISE-DOCUMENT-ACQUISITION-AND-REGISTRY-ENGINE-001
 
 Versão: 1.0
 
-Status:
-
-FOUNDATION
-
-Categoria:
-
-Enterprise Service
+Status: FOUNDATION CORPORATIVO
 
 Projeto:
 
 Orange AI Platform
 
-Aplicação Inicial:
+Aplicações:
 
-Plataforma Prospecção BEx
+• Plataforma Prospecção BEx
 
-Serviço:
+• Plataforma RMA
 
-Enterprise Document Fetch Engine
+• Plataforma Kanitz
+
+• Auditoria Digital
+
+• Futuras Plataformas Orange
+
+Categoria
+
+Enterprise Shared Service
 
 ---
 
 # 1. Objetivo
 
-Criar um serviço corporativo responsável pela aquisição, autenticação, download, validação, armazenamento temporário e disponibilização de documentos digitais para qualquer motor de Inteligência Artificial da Plataforma.
+Criar uma camada corporativa responsável por toda aquisição, autenticação, download, certificação, registro, versionamento e disponibilização de documentos para qualquer motor de Inteligência Artificial da Plataforma.
 
-Este serviço deverá eliminar qualquer responsabilidade dos motores IA sobre:
+Nenhum motor IA deverá acessar diretamente:
 
-• acesso HTTP;
+- websites;
 
-• autenticação;
+- APIs externas;
 
-• download;
+- links;
 
-• cookies;
+- cookies;
 
-• tokens;
+- tokens;
 
-• sessões;
+- sessões;
 
-• validação documental.
+- autenticação.
 
-Os motores IA trabalharão exclusivamente com documentos certificados.
+Toda comunicação ocorrerá através deste serviço.
 
 ---
 
 # 2. Filosofia
 
-Motores IA interpretam documentos.
+Os motores IA interpretam documentos.
 
-Motores IA não fazem download.
+A Plataforma obtém documentos.
 
-Motores IA não autenticam.
+O documento certificado torna-se patrimônio digital da Plataforma.
 
-Motores IA não acessam websites.
-
-Motores IA nunca recebem URLs.
-
-Recebem apenas documentos.
+Todo documento baixado passa a existir independentemente da origem.
 
 ---
 
-# 3. Arquitetura Corporativa
+# 3. Arquitetura
 
-                Plataforma
+                       Plataforma
 
-                     │
+                            │
 
-                     ▼
+                            ▼
 
-      Enterprise Document Fetch Engine
+Enterprise Document Acquisition
 
-                     │
+        and Registry Engine
 
-      ┌──────────────┼──────────────┐
+        ┌───────────┼────────────┐
 
-      ▼              ▼              ▼
+        ▼           ▼            ▼
 
-  Gestor Jurídico   OneDrive     SharePoint
+ Gestor Jurídico  OneDrive   SharePoint
 
-      ▼              ▼              ▼
+        ▼           ▼            ▼
 
-          Documento Certificado
+      Download + Certificação
 
-                     │
+                 ▼
 
-      ┌──────────────┼──────────────┐
+      Document Registry
 
-      ▼              ▼              ▼
+                 ▼
 
- Gemini          GPT           Outros Motores IA
+      Storage Corporativo
 
----
+                 ▼
 
-# 4. Objetivos
+Document ID Corporativo
 
-O serviço deverá:
+                 ▼
 
-✓ acessar documentos externos;
+Gemini
 
-✓ autenticar;
+GPT
 
-✓ controlar sessões;
+Claude
 
-✓ baixar arquivos;
-
-✓ validar conteúdo;
-
-✓ identificar formato;
-
-✓ gerar HASH;
-
-✓ armazenar temporariamente;
-
-✓ detectar duplicidade;
-
-✓ fornecer documento certificado.
+Motores IA
 
 ---
 
-# 5. Fontes Suportadas
+# 4. Responsabilidades
 
-Inicialmente.
+Este serviço será responsável por:
+
+✓ aquisição documental
+
+✓ autenticação
+
+✓ gerenciamento de sessões
+
+✓ download
+
+✓ validação
+
+✓ OCR opcional
+
+✓ certificação
+
+✓ geração HASH
+
+✓ registro documental
+
+✓ versionamento
+
+✓ metadados
+
+✓ auditoria
+
+✓ disponibilização para IA
+
+---
+
+# 5. Fontes
+
+Permitir integração com:
 
 Gestor Jurídico
 
@@ -220,19 +238,29 @@ Google Drive
 
 Azure Blob
 
-Supabase Storage
-
 Amazon S3
 
-Links Públicos HTTPS
+Supabase Storage
 
-A arquitetura deverá permitir inclusão de novos conectores.
+FTP
+
+SFTP
+
+API REST
+
+Links HTTPS
+
+WebDAV
+
+Repositórios Proprietários
+
+A arquitetura deverá permitir novos conectores sem alterar os motores IA.
 
 ---
 
 # 6. Conceito de Conector
 
-Cada origem possuirá um conector.
+Cada origem possuirá um Connector.
 
 Exemplo.
 
@@ -244,35 +272,19 @@ ConnectorSharePoint
 
 ConnectorGoogleDrive
 
-Todos deverão implementar a mesma interface.
+ConnectorSupabase
+
+Todos implementando a mesma interface.
 
 ---
 
-# 7. Interface Única
-
-Todos os módulos deverão consumir apenas:
-
-DocumentFetchService.fetch()
-
-Entrada.
-
-URL
-
-↓
-
-Saída.
-
-Documento Certificado
-
----
-
-# 8. Pipeline
+# 7. Pipeline Oficial
 
 Receber URL
 
 ↓
 
-Selecionar Conector
+Selecionar Connector
 
 ↓
 
@@ -292,317 +304,323 @@ Validação
 
 ↓
 
-HASH
+Hash SHA-256
 
 ↓
 
-Storage Temporário
+Certificação
 
 ↓
 
-Documento Certificado
+Registro
 
 ↓
 
-Disponibilizar ao Motor IA
+Storage
+
+↓
+
+Document ID
+
+↓
+
+Motores IA
 
 ---
 
-# 9. Conector Gestor Jurídico
+# 8. Autenticação
 
-Implementar.
+Permitir.
 
-HTTP GET
-
-HTTPS
-
-Headers configuráveis
-
-Cookies
+Cookie
 
 Bearer
 
 JWT
 
-Sessão autenticada
+OAuth
 
-Renovação automática
-
----
-
-# 10. Configuração
-
-Todos os parâmetros deverão ser externos.
-
-Domínio
-
-Headers
-
-Cookies
-
-Timeout
-
-Quantidade Tentativas
-
-User-Agent
-
-Não permitir valores fixos no código.
-
----
-
-# 11. Sessões
-
-Permitir.
-
-Login
-
-↓
+API Key
 
 Sessão
 
-↓
+Renovação automática
 
-Cookie
+Expiração controlada
 
-↓
-
-Download
-
-↓
-
-Renovação
-
-↓
-
-Logout
-
-Expiração automática.
+Nunca armazenar credenciais permanentes.
 
 ---
 
-# 12. Download
+# 9. Download
 
-Executar somente após autenticação válida.
+Executar HTTP GET.
 
-Aceitar.
+Validar.
 
-HTTP 200
+Status HTTP
+
+Content-Type
 
 application/pdf
 
 application/octet-stream
 
-Caso contrário.
+docx
 
-Registrar erro.
+xlsx
 
----
+pptx
 
-# 13. Tipos Aceitos
+csv
 
-PDF
+txt
 
-DOCX
+zip
 
-XLSX
+imagem
 
-PPTX
-
-CSV
-
-TXT
-
-ZIP
-
-Imagem
-
-Arquivos adicionais poderão ser registrados futuramente.
+Registrar falhas.
 
 ---
 
-# 14. Certificação
+# 10. Certificação
 
-Após download.
+Todo documento deverá ser certificado.
 
 Validar.
 
-Arquivo existente
+Integridade
 
-Tamanho
+Hash
 
 Formato
 
-Integridade
-
 Quantidade páginas
 
-Hash SHA-256
+OCR necessário
 
-Sem corrupção
+Idioma
+
+Assinaturas digitais
+
+Corrupção
+
+Duplicidade
 
 ---
 
-# 15. Storage Temporário
+# 11. Registro Corporativo
 
-Criar estrutura.
+Criar um registro permanente.
 
-temp/
+Document_ID
+
+Origem
+
+URL Original
+
+Hash
+
+Nome
+
+Extensão
+
+Tipo
+
+Tamanho
+
+Quantidade páginas
+
+Idioma
+
+Data Download
+
+Versão
+
+Status
+
+Projeto
+
+Empresa
+
+Processo
+
+Usuário
+
+---
+
+# 12. Document ID
+
+Cada documento receberá um identificador único.
+
+Exemplo.
+
+DOC-20260805-0000001458
+
+Este ID será utilizado por toda a Plataforma.
+
+Nunca utilizar URL como referência.
+
+---
+
+# 13. Versionamento
+
+Caso o mesmo documento seja atualizado.
+
+Criar.
+
+Versão 1
+
+Versão 2
+
+Versão 3
+
+...
+
+Preservar histórico completo.
+
+---
+
+# 14. Duplicidade
+
+Comparar.
+
+Hash
+
+Nome
+
+Quantidade páginas
+
+Processo
+
+Documento
+
+Origem
+
+Caso idêntico.
+
+Não baixar novamente.
+
+Reutilizar Document_ID existente.
+
+---
+
+# 15. Storage
+
+Estrutura.
+
+storage/
+
+documentos/
 
 ano/
 
 mês/
 
-dia/
-
 origem/
+
+empresa/
 
 processo/
 
-arquivo
+document_id/
 
-Todos os documentos deverão possuir tempo de expiração configurável.
-
----
-
-# 16. Cache Inteligente
-
-Caso.
-
-Mesmo HASH
-
-Mesmo Documento
-
-Mesmo Processo
-
-Mesmo Link
-
-↓
-
-Não baixar novamente.
-
-Reutilizar documento certificado.
+Todas as IAs utilizarão apenas o Storage Corporativo.
 
 ---
 
-# 17. Metadados
+# 16. Metadados
 
 Registrar.
 
 Origem
 
-URL
-
-Nome
-
-Hash
-
-Tamanho
-
-Tipo
-
-Data Download
-
-Tempo Download
-
-Status
-
-Conector
-
-Versão
-
----
-
-# 18. Tratamento de Erros
-
-Padronizar.
-
-DOWNLOAD_TIMEOUT
-
-DOWNLOAD_FORBIDDEN
-
-DOWNLOAD_NOT_FOUND
-
-CONTENT_TYPE_INVALIDO
-
-PDF_CORROMPIDO
-
-COOKIE_EXPIRADO
-
-TOKEN_INVALIDO
-
-ERRO_AUTENTICACAO
-
-ERRO_CONECTOR
-
----
-
-# 19. Auditoria
-
-Registrar.
-
-Usuário
-
-Data
-
-Hora
-
 Conector
 
 Servidor
+
+Hash
+
+Download
 
 Tempo
 
 Status
 
+Tipo
+
+OCR
+
+Idioma
+
+Versão
+
+Último acesso
+
+---
+
+# 17. Auditoria
+
+Registrar.
+
+Quem baixou
+
+Quando
+
+Qual projeto
+
+Qual IA utilizou
+
+Tempo
+
+Resultado
+
 Hash
 
-Código HTTP
+Versão
+
+Document ID
 
 ---
 
-# 20. Segurança
-
-Nunca armazenar.
-
-Senhas
-
-Cookies permanentes
-
-Bearer permanente
-
-Sessões permanentes
-
-Todos os tokens deverão possuir ciclo de vida controlado.
-
----
-
-# 21. API Corporativa
+# 18. API Corporativa
 
 Disponibilizar.
 
-fetch()
+authenticate()
+
+download()
 
 validate()
 
-authenticate()
+certify()
+
+register()
+
+getDocument()
+
+getMetadata()
 
 renewSession()
 
 invalidateSession()
 
-getMetadata()
-
-download()
-
-Todos os motores IA utilizarão apenas esta API.
+Todas as aplicações utilizarão esta API.
 
 ---
 
-# 22. Integração com Motores IA
+# 19. Integração IA
+
+Nenhum motor IA poderá receber URL.
 
 Fluxo.
 
-DocumentFetchEngine
+Document_ID
+
+↓
+
+Storage
 
 ↓
 
@@ -614,73 +632,137 @@ Gemini
 
 ↓
 
-GPT
+Business Facts
 
 ↓
 
-Claude
+JSON
 
 ↓
 
-Outros
-
-Nenhum motor IA poderá acessar sistemas externos diretamente.
+Painéis
 
 ---
 
-# 23. Escalabilidade
+# 20. Document Registry
 
-Permitir.
+Criar um Catálogo Corporativo.
 
-Novos conectores
+Permitir localizar documentos por.
 
-Novos formatos
+Document_ID
 
-Novos protocolos
+Empresa
 
-Novos mecanismos de autenticação
+Processo
 
-Sem alteração nos motores IA.
+Hash
+
+Projeto
+
+Origem
+
+Data
+
+Tipo
+
+Usuário
+
+Versão
 
 ---
 
-# 24. Certificação
+# 21. Reutilização
+
+Caso um documento já exista.
+
+RMA
+
+↓
+
+BEx
+
+↓
+
+Kanitz
+
+↓
+
+Auditoria
+
+Todos utilizarão o mesmo Document_ID.
+
+Nenhum novo download será realizado.
+
+---
+
+# 22. Segurança
+
+Nunca armazenar.
+
+Cookies permanentes
+
+Bearer permanente
+
+Credenciais
+
+Sessões permanentes
+
+Todo acesso deverá ser auditável.
+
+---
+
+# 23. Performance
+
+Download
+
+30 segundos
+
+Validação
+
+5 segundos
+
+Hash
+
+2 segundos
+
+Registro
+
+1 segundo
+
+Entrega ao Gemini
+
+1 segundo
+
+---
+
+# 24. Critérios de Aprovação
 
 A implementação será considerada aprovada quando.
 
 ✓ Todos os conectores funcionarem.
 
-✓ Downloads certificados.
+✓ Documentos certificados.
 
-✓ Sessões controladas.
+✓ Registro criado.
+
+✓ Hash calculado.
+
+✓ Versionamento funcionando.
 
 ✓ Cache funcionando.
 
-✓ Duplicidade funcionando.
-
-✓ Storage temporário funcionando.
+✓ Reutilização funcionando.
 
 ✓ Auditoria completa.
 
-✓ Motores IA recebendo apenas documentos.
+✓ Motores IA recebendo exclusivamente Document_ID.
 
 ---
 
-# 25. Critério Final
+# 25. Roadmap
 
-A Plataforma Orange deverá possuir uma camada única de aquisição documental.
-
-Todos os projetos corporativos utilizarão este serviço.
-
-Os motores IA deixarão de conhecer URLs, autenticações, sessões e protocolos de download.
-
-A arquitetura permanecerá desacoplada, reutilizável, escalável e preparada para integração com qualquer repositório documental futuro.
-
----
-
-# Roadmap de Evolução
-
-FASE 1
+Fase 1
 
 Gestor Jurídico
 
@@ -690,51 +772,95 @@ SharePoint
 
 Google Drive
 
-FASE 2
+Supabase
+
+Fase 2
 
 Microsoft Graph
-
-Supabase Storage
 
 Amazon S3
 
 Azure Blob
 
-FASE 3
-
-WebDAV
-
-FTP/SFTP
+FTP
 
 API REST
 
+Fase 3
+
+WebDAV
+
 SOAP
 
-Repositórios corporativos proprietários
+Conectores Proprietários
 
 ---
 
-# Resultado Esperado
+# 26. Integração com o Motor Cognitivo
 
-Ao final da implementação, a Plataforma Orange passará a possuir um serviço corporativo de aquisição documental reutilizável por todos os projetos.
+Após a certificação.
 
-O Enterprise Document Fetch Engine será a única camada autorizada a acessar documentos externos, garantindo:
+Document_ID
 
-• desacoplamento entre IA e infraestrutura;
+↓
 
-• reutilização entre projetos;
+PDF Certificado
+
+↓
+
+MD-GEMINI-EXTRACAO-PROSPECCAO-ADMINISTRADOR-JUDICIAL-001
+
+↓
+
+Business Facts
+
+↓
+
+JSON Canônico
+
+↓
+
+Painel Inteligente
+
+↓
+
+Dashboards
+
+↓
+
+Exportação
+
+Nenhum componente posterior acessará URLs diretamente.
+
+---
+
+# 27. Resultado Esperado
+
+Ao término da implementação, a Orange AI Platform possuirá uma camada corporativa única de aquisição e registro documental.
+
+Essa camada será compartilhada por todos os projetos da empresa, garantindo:
+
+• desacoplamento entre infraestrutura e IA;
+
+• reutilização de documentos;
+
+• eliminação de downloads redundantes;
 
 • rastreabilidade completa;
 
+• governança documental;
+
 • segurança;
 
-• governança;
+• versionamento;
 
-• maior estabilidade operacional;
+• escalabilidade;
 
-• facilidade de manutenção;
+• redução do custo computacional;
 
-• escalabilidade para futuras integrações.</p>
+• maior estabilidade operacional.
+
+O Document Registry passará a ser o repositório oficial de documentos corporativos certificados, enquanto os motores de Inteligência Artificial atuarão exclusivamente sobre documentos previamente adquiridos, registrados e certificados pela plataforma.</p>
             </div>
           </div>
           <div className="flex gap-2">
