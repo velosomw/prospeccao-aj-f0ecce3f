@@ -147,128 +147,60 @@ Deno.serve(async (req) => {
       try {
         let pdfBytes: Uint8Array | null = null;
         let storagePath = job.storage_path as string | null;
+        let documentId: string | null = job.fetch_metadata?.document_id ?? null;
+        let registryId: string | null = job.registry_id ?? null;
 
-        if (job.status === "pendente") {
-          const link = job.link as string;
-          const tDown0 = Date.now();
-          
-          try {
-            if (link.startsWith("storage://")) {
-              storagePath = link.replace("storage://", "");
-              const { data: file, error } = await admin.storage.from("prospeccao-uploads").download(storagePath);
-              if (error) throw error;
-              pdfBytes = new Uint8Array(await file.arrayBuffer());
-            } else {
-              // MD-ENTERPRISE-DOCUMENT-ACQUISITION-AND-REGISTRY-ENGINE-001: Validação e Download Seguro
-              const url = new URL(link);
-              if (url.protocol !== "https:") throw new Error("URL_INVALIDA: Apenas HTTPS permitido");
-              
-              const resp = await fetch(link, { 
-                redirect: "follow",
-                headers: {
-                  "User-Agent": "BEx-Document-Fetch-Engine/1.0",
-                  "Accept": "application/pdf"
-                }
-              });
-              
-              if (!resp.ok) throw new Error(`DOWNLOAD_${resp.status}: HTTP ${resp.status}`);
-              
-              const contentType = resp.headers.get("content-type") || "";
-              if (!contentType.includes("application/pdf")) {
-                console.warn(`Aviso: Content-Type inesperado: ${contentType}`);
-              }
+        if (documentId && !isHomologation) {
+          // Documento já certificado no Registro Corporativo — IA recebe Document_ID
+          const { bytes } = await getDocument(documentId, {
+            motor_ia: MODELO_GEMINI, projeto: "prospeccao_bex",
+          });
+          pdfBytes = bytes;
+        } else if (job.status === "pendente" || !storagePath) {
+          // MD-ENTERPRISE-DOCUMENT-ACQUISITION-AND-REGISTRY-ENGINE-001
+          // Toda aquisição passa exclusivamente pela camada corporativa.
+          const acq = await acquireDocument({
+            url: job.link as string,
+            projeto: "prospeccao_bex",
+            user_id: job.user_id ?? null,
+            dryRun: isHomologation,
+          });
+          pdfBytes = acq.bytes;
+          storagePath = acq.storage_path;
+          documentId = acq.document_id;
+          registryId = acq.registry_id;
 
-              pdfBytes = new Uint8Array(await resp.arrayBuffer());
-              
-              if (pdfBytes.length === 0) throw new Error("PDF_INVALIDO: Arquivo vazio");
+          if (!isHomologation) {
+            await admin.from("prospeccao_document_fetch_logs")
+              .update({ linha_id: job.linha_id, job_id: job.id })
+              .eq("registry_id", registryId)
+              .is("job_id", null);
 
-              if (!isHomologation) {
-                storagePath = `${job.user_id}/temp/${job.id}.pdf`;
-                const { error: upErr } = await admin.storage.from("prospeccao-uploads")
-                  .upload(storagePath, pdfBytes, { contentType: "application/pdf", upsert: true });
-                if (upErr) throw upErr;
-              }
-            }
-
-            const downloadTime = Date.now() - tDown0;
-            const hash = await sha256Hex(pdfBytes);
-
-            // PARTE 11 — Registro Corporativo (MD-001)
-            let registryId: string | null = null;
-            let docId: string | null = null;
-
-            if (!isHomologation) {
-              // Verificar se já existe no Registro Corporativo por HASH
-              const { data: existingReg } = await admin
-                .from("prospeccao_document_registry")
-                .select("id, document_id, storage_path")
-                .eq("hash_sha256", hash)
-                .maybeSingle();
-
-              if (existingReg) {
-                registryId = existingReg.id;
-                docId = existingReg.document_id;
-                storagePath = existingReg.storage_path;
-              } else {
-                // Gerar Document ID Corporativo
-                const { data: newDocId } = await admin.rpc('generate_document_id');
-                docId = newDocId;
-
-                // Registrar no Catálogo Corporativo
-                const { data: reg, error: regErr } = await admin.from("prospeccao_document_registry").insert({
-                  document_id: docId,
-                  hash_sha256: hash,
-                  nome_arquivo: job.id + ".pdf",
-                  tamanho_bytes: pdfBytes.length,
-                  storage_path: storagePath,
-                  url_original: link,
-                  origem: url.hostname,
-                  versao: 1
-                }).select("id").single();
-                
-                if (regErr) throw regErr;
-                registryId = reg.id;
-              }
-
-              // Log de Auditoria do Acquisition Engine
-              await admin.from("prospeccao_document_fetch_logs").insert({
-                linha_id: job.linha_id,
-                job_id: job.id,
-                registry_id: registryId,
-                url: link,
-                status_code: 200,
-                file_size: pdfBytes.length,
-                hash_sha256: hash,
-                tempo_download_ms: downloadTime
-              });
-
-              await admin.from("prospeccao_pdf_jobs").update({
-                status: "baixado", 
-                storage_path: storagePath,
-                doc_hash: hash,
-                registry_id: registryId,
-                fetch_metadata: { download_ms: downloadTime, size: pdfBytes.length, document_id: docId }
-              }).eq("id", job.id);
-            }
-          } catch (fetchErr) {
-            const errorMsg = String(fetchErr.message || fetchErr);
-            if (!isHomologation) {
-              await admin.from("prospeccao_document_fetch_logs").insert({
-                linha_id: job.linha_id,
-                job_id: job.id,
-                url: link,
-                error_code: errorMsg.split(":")[0],
-                status_code: errorMsg.includes("HTTP") ? parseInt(errorMsg.match(/\d+/)?.[0] || "500") : 500
-              });
-            }
-            throw fetchErr;
+            await admin.from("prospeccao_pdf_jobs").update({
+              status: "baixado",
+              storage_path: storagePath,
+              doc_hash: acq.hash_sha256,
+              registry_id: registryId,
+              fetch_metadata: {
+                document_id: documentId,
+                versao: acq.versao,
+                conector: acq.conector,
+                origem: acq.origem,
+                paginas: acq.paginas,
+                certificado: acq.certificado,
+                reused: acq.reused,
+                tempos: acq.tempos,
+                size: acq.tamanho_bytes,
+              },
+            }).eq("id", job.id);
           }
         } else {
-          if (!storagePath) throw new Error("Job baixado sem storage_path");
+          // Legado: documento já baixado no bucket de uploads
           const { data: file, error } = await admin.storage.from("prospeccao-uploads").download(storagePath);
           if (error) throw error;
           pdfBytes = new Uint8Array(await file.arrayBuffer());
         }
+
 
         const t0 = Date.now();
         const docHash = await sha256Hex(pdfBytes);
