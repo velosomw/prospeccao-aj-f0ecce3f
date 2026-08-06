@@ -159,7 +159,7 @@ Deno.serve(async (req) => {
               if (error) throw error;
               pdfBytes = new Uint8Array(await file.arrayBuffer());
             } else {
-              // MD-DOCUMENT-FETCH-ENTERPRISE-ENGINE-001: Validação e Download Seguro
+              // MD-ENTERPRISE-DOCUMENT-ACQUISITION-AND-REGISTRY-ENGINE-001: Validação e Download Seguro
               const url = new URL(link);
               if (url.protocol !== "https:") throw new Error("URL_INVALIDA: Apenas HTTPS permitido");
               
