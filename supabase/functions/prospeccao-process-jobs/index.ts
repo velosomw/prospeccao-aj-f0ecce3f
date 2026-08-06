@@ -366,6 +366,16 @@ Deno.serve(async (req) => {
       } catch (e) {
         const msg = String((e as Error).message ?? e);
         const statusErro = /gemini|download|http|pdf/i.test(msg) ? "Erro OCR" : "Revisão Manual";
+        if (isHomologation) {
+          homologationResults.push({
+            processo: "Não identificado", empresa: "Não identificado", link: job.link,
+            status: statusErro, resumo_executivo: `Falha no processamento: ${msg}`,
+            oportunidade_bex: "-", score_comercial: 0, evidencias: [], comparativo: [],
+            json_resumido: {}, checklist: {}, analise_ia: {},
+          });
+          results.push({ job: job.id, ok: false, error: msg });
+          continue;
+        }
         await admin.from("prospeccao_pdf_jobs").update({
           status: "erro", error: msg, attempts: (job.attempts || 0) + 1,
         }).eq("id", job.id);
@@ -375,6 +385,7 @@ Deno.serve(async (req) => {
         await logEvent(admin, job, MODELO_GEMINI, 0, statusErro, { erro: msg });
         results.push({ job: job.id, ok: false, error: msg });
       }
+
     }
 
     if (isHomologation) {
