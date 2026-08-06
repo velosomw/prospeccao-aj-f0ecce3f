@@ -343,7 +343,12 @@ export default function AppSidebar() {
                               <SidebarMenuSubItem key={c.to}>
                                 <SidebarMenuSubButton asChild isActive={cActive}
                                   className={`${txtSubtle} ${hoverBg} ${hoverTxt} data-[active=true]:bg-transparent data-[active=true]:text-[hsl(217,91%,50%)] data-[active=true]:font-semibold`}>
-                                  <Link to={c.to}>
+                                  <Link
+                                    to={c.to}
+                                    onMouseEnter={() => prefetchRoute(c.to)}
+                                    onFocus={() => prefetchRoute(c.to)}
+                                    onTouchStart={() => prefetchRoute(c.to)}
+                                  >
                                     <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
                                     <span className="text-xs">{c.label}</span>
                                   </Link>
