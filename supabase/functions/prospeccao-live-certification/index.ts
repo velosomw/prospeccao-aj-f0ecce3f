@@ -7,6 +7,10 @@
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { acquireDocument } from "../_shared/document-acquisition.ts";
+import { validateCanonical, formatIssues, CANONICAL_SCHEMA_VERSION } from "../_shared/canonical-schema.ts";
+import { buildFactRows } from "../_shared/business-facts.ts";
+import { logStage } from "../_shared/processing-telemetry.ts";
+
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -114,6 +118,9 @@ Deno.serve(async (req) => {
       let ws: any = {};
       let extracted: any = {};
       let motivo: string | null = null;
+      let schemaValido = false;
+      let schemaIssues: any[] = [];
+
 
       try {
         // 1) Enterprise Document Acquisition (dryRun → storage temporário, sem registro definitivo)
