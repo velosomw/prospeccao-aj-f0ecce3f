@@ -34,7 +34,7 @@ export interface LLMResult {
   tokens?: { input?: number; output?: number };
 }
 
-const DEFAULT_MODEL = "google/gemini-3-flash-preview";
+const DEFAULT_MODEL = "gemini-2.5-flash";
 
 function sb() {
   return createClient(

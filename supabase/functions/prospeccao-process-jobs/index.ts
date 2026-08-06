@@ -4,6 +4,10 @@ import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { acquireDocument, getDocument, logAccess } from "../_shared/document-acquisition.ts";
 import { ingestWorkspace } from "../_shared/knowledge-registry.ts";
+import { validateCanonical, formatIssues, CANONICAL_SCHEMA_VERSION } from "../_shared/canonical-schema.ts";
+import { persistBusinessFacts } from "../_shared/business-facts.ts";
+import { logStage } from "../_shared/processing-telemetry.ts";
+
 
 
 
