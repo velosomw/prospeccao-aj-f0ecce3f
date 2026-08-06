@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useUser } from "@/contexts/UserContext";
-import { prefetchRoute } from "@/lib/routePrefetch";
+import { prefetchRoute, prefetchRoutesIdle } from "@/lib/routePrefetch";
 
 const roleHome: Record<string, string> = {
   coordenador: "/dashboard",
