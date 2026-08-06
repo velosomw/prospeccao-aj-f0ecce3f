@@ -392,7 +392,7 @@ Deno.serve(async (req) => {
 
         const proximaVersao = (latestVersao?.versao || 0) + 1;
 
-        await admin.from("prospeccao_workspace").insert({
+        const { data: wsRow } = await admin.from("prospeccao_workspace").insert({
           linha_id: job.linha_id,
           versao: proximaVersao,
           numero_processo: ws.processo,
@@ -418,7 +418,26 @@ Deno.serve(async (req) => {
           resumo_comercial: ws.resumo_comercial,
           raw_response: extracted,
           created_by: job.user_id
+        }).select("id").maybeSingle();
+
+        // 2.0 Business Facts canônicos (EAV tipado)
+        const tFacts = Date.now();
+        const factsSaved = await persistBusinessFacts(admin, ws, {
+          linha_id: job.linha_id,
+          workspace_id: wsRow?.id ?? null,
+          document_id: documentId,
+          numero_processo: ws.processo ?? null,
+          source: "gemini_extraction",
         });
+        logStage({
+          linha_id: job.linha_id ?? null,
+          document_id: documentId,
+          stage: "persistence",
+          duration_ms: Date.now() - tFacts,
+          metadata: { business_facts: factsSaved, versao: proximaVersao },
+        });
+
+
 
         // 2.1 MD-ENTERPRISE-KNOWLEDGE-REGISTRY-001 — consolidar conhecimento corporativo
         await ingestWorkspace(ws, {
