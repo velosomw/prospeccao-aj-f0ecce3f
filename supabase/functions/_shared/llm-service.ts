@@ -221,7 +221,7 @@ function normalizeForCache(s: string): string {
 }
 
 export async function callLLM(opts: LLMOptions): Promise<LLMResult> {
-  const provider: LLMProvider = opts.provider ?? "lovable";
+  const provider: LLMProvider = opts.provider ?? (Deno.env.get("GOOGLE_AI_API_KEY") ? "gemini" : "lovable");
   const model = opts.model ?? DEFAULT_MODEL;
   const useCache = opts.useCache !== false;
   const ttl = opts.cacheTtlHours ?? 720;

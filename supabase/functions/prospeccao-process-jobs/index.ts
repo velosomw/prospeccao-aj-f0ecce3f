@@ -175,7 +175,7 @@ Deno.serve(async (req) => {
         const aiResult = await callLLM({
           prompt: EXTRACTION_PROMPT,
           system: "Você é um Auditor Sênior especializado em prospecção de Administração Judicial.",
-          provider: "gemini",
+          provider: GOOGLE_AI_API_KEY ? "gemini" : "lovable",
           model: MODELO_GEMINI,
           useCache: true,
           // Support multimodal by adding the PDF data to the prompt
