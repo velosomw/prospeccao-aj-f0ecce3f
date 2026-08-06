@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Building2, Gavel, MapPin, Calendar, User, TrendingUp, AlertCircle, FileText, ChevronRight } from "lucide-react";
 import { type ProspeccaoLinha } from "@/services/prospeccaoService";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface InteligenciaExecutivaPanelProps {
   linha: ProspeccaoLinha;
@@ -116,21 +117,68 @@ export function InteligenciaExecutivaPanel({ linha }: InteligenciaExecutivaPanel
 
           {/* Evidências */}
           <section className="bg-white p-5 rounded-xl border shadow-sm">
-            <h3 className="text-base font-bold text-slate-800 mb-3">Evidências</h3>
+            <h3 className="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+              <FileText className="w-4 h-4 text-slate-400" />
+              Evidências
+            </h3>
             <div className="space-y-2">
               {ws.evidencias?.map((e: any, idx: number) => (
-                <div key={idx} className="p-3 bg-slate-50 rounded-lg text-xs border border-slate-100 flex justify-between items-center group">
+                <div key={idx} className="p-3 bg-slate-50 rounded-lg text-xs border border-slate-100 flex justify-between items-center group hover:border-blue-200 transition-colors">
                   <div className="flex flex-col gap-1">
                     <span className="font-bold text-slate-700 uppercase">{e.campo}</span>
                     <span className="text-slate-500 italic">" {e.trecho} "</span>
                   </div>
-                  <div className="text-right">
-                    <span className="px-2 py-1 bg-white border rounded font-bold text-blue-600">Pág. {e.pagina}</span>
-                  </div>
+                  {linha.link_documento && (
+                    <a 
+                      href={`${linha.link_documento}#page=${e.pagina}`} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="text-right flex items-center gap-1 text-blue-600 hover:text-blue-800 font-bold"
+                    >
+                      <span className="px-2 py-1 bg-white border rounded">Pág. {e.pagina}</span>
+                      <ChevronRight className="w-3 h-3" />
+                    </a>
+                  )}
                 </div>
               ))}
             </div>
           </section>
+
+          {/* Por que este processo interessa à BEx? */}
+          <section className="bg-slate-800 text-white p-6 rounded-xl border shadow-xl">
+            <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-blue-400" />
+              Por que este processo interessa à BEx?
+            </h3>
+            <div className="space-y-4">
+              <p className="text-slate-300 text-sm leading-relaxed italic border-l-2 border-blue-500 pl-4">
+                {ws.interesse_bex || "O motor IA está analisando a aderência deste caso ao perfil comercial da BEx..."}
+              </p>
+              
+              {ws.proximos_eventos && ws.proximos_eventos.length > 0 && (
+                <div className="mt-4 pt-4 border-t border-slate-700">
+                  <h4 className="text-[10px] uppercase font-bold text-slate-500 mb-3 tracking-widest">Próximos Eventos Esperados</h4>
+                  <div className="flex flex-col gap-3">
+                    {ws.proximos_eventos.map((evt: string, i: number) => (
+                      <div key={i} className="flex items-center gap-3">
+                        <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-400 border border-slate-600">
+                          {i + 1}
+                        </div>
+                        <span className="text-xs text-slate-300">{evt}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Confiabilidade da Análise */}
+          <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-4 border-t px-2">
+            <div>Motor: {linha.ai_extracted?.motor || "Gemini 1.5 Flash"}</div>
+            <div>Versão da Análise: {ws.versao || "2.0"}</div>
+            <div>Último Processamento: {new Date().toLocaleDateString("pt-BR")}</div>
+          </div>
         </div>
       </SheetContent>
     </Sheet>
