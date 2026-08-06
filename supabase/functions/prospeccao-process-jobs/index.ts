@@ -8,7 +8,7 @@ const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
 const MODELO_GEMINI = "gemini-1.5-flash";
 
-const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais conforme o MD - PARTE 4, MD-GEMINI-PROCESS-INTELLIGENCE-PANEL-001 e MD-GEMINI-DOCUMENT-FETCH-ENGINE-001.
+const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais conforme o MD - PARTE 4, MD-GEMINI-PROCESS-INTELLIGENCE-PANEL-001 e MD-DOCUMENT-FETCH-ENTERPRISE-ENGINE-001.
 
 OBJETIVO: Interpretar todos os valores jurídicos, gerar um modelo único de dados (Workspace) e produzir uma Análise Inteligente Executiva.
 
@@ -159,7 +159,7 @@ Deno.serve(async (req) => {
               if (error) throw error;
               pdfBytes = new Uint8Array(await file.arrayBuffer());
             } else {
-              // MD-GEMINI-DOCUMENT-FETCH-ENGINE-001: Validação e Download Seguro
+              // MD-DOCUMENT-FETCH-ENTERPRISE-ENGINE-001: Validação e Download Seguro
               const url = new URL(link);
               if (url.protocol !== "https:") throw new Error("URL_INVALIDA: Apenas HTTPS permitido");
               

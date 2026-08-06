@@ -82,35 +82,205 @@ export default function HomologacaoIA() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Modo Homologação: Motor Gemini</h1>
-              <p className="text-muted-foreground text-sm whitespace-pre-wrap">aplique e configure o MD-GEMINI-DOCUMENT-FETCH-ENGINE-001
+              <p className="text-muted-foreground text-sm whitespace-pre-wrap">aplique e configure o MD-DOCUMENT-FETCH-ENTERPRISE-ENGINE-001
 
 Versão: 1.0
 
-Status: Foundation
+Status:
 
-Projeto: Plataforma de Prospecção BEx
+FOUNDATION
 
-Módulo:
+Categoria:
 
-Document Fetch Engine
+Enterprise Service
 
-Objetivo:
+Projeto:
 
-Implementar um motor responsável pela aquisição, validação e preparação dos documentos PDF antes do processamento pelo Gemini.
+Orange AI Platform
 
-Este módulo é obrigatório e antecede qualquer execução do Motor Cognitivo de Extração.
+Aplicação Inicial:
+
+Plataforma Prospecção BEx
+
+Serviço:
+
+Enterprise Document Fetch Engine
 
 ---
 
-# 1. Objetivo da Arquitetura
+# 1. Objetivo
 
-O Gemini nunca deverá acessar URLs diretamente.
+Criar um serviço corporativo responsável pela aquisição, autenticação, download, validação, armazenamento temporário e disponibilização de documentos digitais para qualquer motor de Inteligência Artificial da Plataforma.
 
-O Gemini receberá exclusivamente arquivos PDF já obtidos pela Plataforma.
+Este serviço deverá eliminar qualquer responsabilidade dos motores IA sobre:
 
-Separação de responsabilidades.
+• acesso HTTP;
 
-Document Fetch Engine
+• autenticação;
+
+• download;
+
+• cookies;
+
+• tokens;
+
+• sessões;
+
+• validação documental.
+
+Os motores IA trabalharão exclusivamente com documentos certificados.
+
+---
+
+# 2. Filosofia
+
+Motores IA interpretam documentos.
+
+Motores IA não fazem download.
+
+Motores IA não autenticam.
+
+Motores IA não acessam websites.
+
+Motores IA nunca recebem URLs.
+
+Recebem apenas documentos.
+
+---
+
+# 3. Arquitetura Corporativa
+
+                Plataforma
+
+                     │
+
+                     ▼
+
+      Enterprise Document Fetch Engine
+
+                     │
+
+      ┌──────────────┼──────────────┐
+
+      ▼              ▼              ▼
+
+  Gestor Jurídico   OneDrive     SharePoint
+
+      ▼              ▼              ▼
+
+          Documento Certificado
+
+                     │
+
+      ┌──────────────┼──────────────┐
+
+      ▼              ▼              ▼
+
+ Gemini          GPT           Outros Motores IA
+
+---
+
+# 4. Objetivos
+
+O serviço deverá:
+
+✓ acessar documentos externos;
+
+✓ autenticar;
+
+✓ controlar sessões;
+
+✓ baixar arquivos;
+
+✓ validar conteúdo;
+
+✓ identificar formato;
+
+✓ gerar HASH;
+
+✓ armazenar temporariamente;
+
+✓ detectar duplicidade;
+
+✓ fornecer documento certificado.
+
+---
+
+# 5. Fontes Suportadas
+
+Inicialmente.
+
+Gestor Jurídico
+
+OneDrive
+
+SharePoint
+
+Google Drive
+
+Azure Blob
+
+Supabase Storage
+
+Amazon S3
+
+Links Públicos HTTPS
+
+A arquitetura deverá permitir inclusão de novos conectores.
+
+---
+
+# 6. Conceito de Conector
+
+Cada origem possuirá um conector.
+
+Exemplo.
+
+ConnectorGestorJuridico
+
+ConnectorOneDrive
+
+ConnectorSharePoint
+
+ConnectorGoogleDrive
+
+Todos deverão implementar a mesma interface.
+
+---
+
+# 7. Interface Única
+
+Todos os módulos deverão consumir apenas:
+
+DocumentFetchService.fetch()
+
+Entrada.
+
+URL
+
+↓
+
+Saída.
+
+Documento Certificado
+
+---
+
+# 8. Pipeline
+
+Receber URL
+
+↓
+
+Selecionar Conector
+
+↓
+
+Autenticar
+
+↓
+
+Abrir Sessão
 
 ↓
 
@@ -122,429 +292,251 @@ Validação
 
 ↓
 
+HASH
+
+↓
+
 Storage Temporário
 
 ↓
 
-Gemini
+Documento Certificado
+
+↓
+
+Disponibilizar ao Motor IA
 
 ---
 
-# 2. Responsabilidades
+# 9. Conector Gestor Jurídico
 
-O Document Fetch Engine será responsável por:
-
-✓ Ler Link_Documento
-
-✓ Validar URL
-
-✓ Abrir conexão HTTP
-
-✓ Autenticar (quando necessário)
-
-✓ Realizar Download
-
-✓ Validar retorno
-
-✓ Validar Content-Type
-
-✓ Validar tamanho
-
-✓ Validar integridade
-
-✓ Calcular HASH
-
-✓ Detectar duplicidade
-
-✓ Salvar documento temporário
-
-✓ Disponibilizar PDF ao Gemini
-
----
-
-# 3. Fluxo Oficial
-
-Planilha
-
-↓
-
-Registro
-
-↓
-
-Link_Documento
-
-↓
-
-Document Fetch Engine
-
-↓
+Implementar.
 
 HTTP GET
 
-↓
-
-Validação
-
-↓
-
-PDF
-
-↓
-
-Storage Temporário
-
-↓
-
-Gemini
-
-↓
-
-Extração Cognitiva
-
----
-
-# 4. Entrada
-
-Receber.
-
-document_id
-
-empresa
-
-processo
-
-link_documento
-
-Exemplo.
-
-https://docs.gestorjuridico.com.br/Documento/Download?idDoc=231535&causa=&sigla=REJ&V=46326
-
----
-
-# 5. Validação Inicial
-
-Antes do download.
-
-Validar.
-
-URL válida
-
 HTTPS
 
-Domínio permitido
+Headers configuráveis
 
-Formato esperado
+Cookies
 
-Caso inválido.
-
-Encerrar processamento.
-
-Registrar erro.
-
----
-
-# 6. Lista Branca
-
-Permitir apenas domínios autorizados.
-
-Inicialmente.
-
-docs.gestorjuridico.com.br
-
-Permitir expansão futura.
-
----
-
-# 7. Download
-
-Executar HTTP GET.
-
-Não utilizar navegador.
-
-Não utilizar OCR.
-
-Não utilizar Gemini.
-
-Somente cliente HTTP.
-
----
-
-# 8. Cabeçalhos HTTP
-
-Permitir configuração.
-
-User-Agent
-
-Accept
-
-Accept-Language
-
-Referer
-
-Authorization
-
-Cookie
-
-Origin
-
-Todos configuráveis.
-
-Nunca fixos.
-
----
-
-# 9. Sessão
-
-Caso o servidor exija autenticação.
-
-Permitir.
-
-Cookie
-
-Bearer Token
+Bearer
 
 JWT
 
-API Key
-
 Sessão autenticada
 
-Todos deverão ser armazenados temporariamente.
-
-Nunca dentro do Gemini.
+Renovação automática
 
 ---
 
-# 10. Timeout
+# 10. Configuração
 
-Tempo máximo.
+Todos os parâmetros deverão ser externos.
 
-30 segundos.
+Domínio
 
-Após.
+Headers
 
-Nova tentativa.
+Cookies
 
-Máximo.
+Timeout
 
-3 tentativas.
+Quantidade Tentativas
 
-Backoff exponencial.
+User-Agent
+
+Não permitir valores fixos no código.
 
 ---
 
-# 11. Validação da Resposta
+# 11. Sessões
+
+Permitir.
+
+Login
+
+↓
+
+Sessão
+
+↓
+
+Cookie
+
+↓
+
+Download
+
+↓
+
+Renovação
+
+↓
+
+Logout
+
+Expiração automática.
+
+---
+
+# 12. Download
+
+Executar somente após autenticação válida.
 
 Aceitar.
 
 HTTP 200
 
-Content-Type
-
 application/pdf
 
-Caso diferente.
+application/octet-stream
 
-Registrar.
+Caso contrário.
 
-401
-
-403
-
-404
-
-429
-
-500
-
-503
-
-Timeout
+Registrar erro.
 
 ---
 
-# 12. Verificação do Documento
+# 13. Tipos Aceitos
+
+PDF
+
+DOCX
+
+XLSX
+
+PPTX
+
+CSV
+
+TXT
+
+ZIP
+
+Imagem
+
+Arquivos adicionais poderão ser registrados futuramente.
+
+---
+
+# 14. Certificação
 
 Após download.
 
 Validar.
 
-Arquivo existe
+Arquivo existente
 
-Arquivo maior que zero
+Tamanho
 
-PDF válido
+Formato
+
+Integridade
 
 Quantidade páginas
+
+Hash SHA-256
 
 Sem corrupção
-
-Caso inválido.
-
-Interromper.
-
----
-
-# 13. Hash
-
-Calcular.
-
-SHA-256
-
-Salvar.
-
-Utilizar para:
-
-Duplicidade
-
-Versionamento
-
-Auditoria
-
----
-
-# 14. Duplicidade
-
-Antes de enviar ao Gemini.
-
-Comparar.
-
-Hash
-
-Quantidade páginas
-
-Processo
-
-Documento
-
-Caso igual.
-
-Não baixar novamente.
-
-Reutilizar documento.
 
 ---
 
 # 15. Storage Temporário
 
-Salvar.
+Criar estrutura.
 
-storage/temp/
+temp/
 
-Estrutura.
+ano/
 
-Ano
+mês/
 
-↓
+dia/
 
-Mês
+origem/
 
-↓
+processo/
 
-Dia
+arquivo
 
-↓
-
-Processo
-
-↓
-
-Documento
-
-Nunca utilizar armazenamento definitivo.
+Todos os documentos deverão possuir tempo de expiração configurável.
 
 ---
 
-# 16. Metadados
+# 16. Cache Inteligente
+
+Caso.
+
+Mesmo HASH
+
+Mesmo Documento
+
+Mesmo Processo
+
+Mesmo Link
+
+↓
+
+Não baixar novamente.
+
+Reutilizar documento certificado.
+
+---
+
+# 17. Metadados
 
 Registrar.
 
-Nome arquivo
+Origem
 
-Tamanho
+URL
+
+Nome
 
 Hash
 
-Quantidade páginas
+Tamanho
 
-Data download
+Tipo
 
-Tempo download
+Data Download
+
+Tempo Download
 
 Status
 
----
+Conector
 
-# 17. Envio ao Gemini
-
-O Gemini receberá apenas.
-
-documento.pdf
-
-Nunca URL.
-
-Nunca Cookie.
-
-Nunca Token.
-
-Nunca Sessão.
+Versão
 
 ---
 
 # 18. Tratamento de Erros
 
-Criar mensagens padronizadas.
+Padronizar.
 
 DOWNLOAD_TIMEOUT
 
-DOWNLOAD_404
+DOWNLOAD_FORBIDDEN
 
-DOWNLOAD_403
-
-PDF_INVALIDO
-
-PDF_CORROMPIDO
-
-URL_INVALIDA
-
-SESSAO_EXPIRADA
-
-COOKIE_INVALIDO
+DOWNLOAD_NOT_FOUND
 
 CONTENT_TYPE_INVALIDO
 
----
+PDF_CORROMPIDO
 
-# 19. Reprocessamento
+COOKIE_EXPIRADO
 
-Caso falha.
+TOKEN_INVALIDO
 
-Permitir.
+ERRO_AUTENTICACAO
 
-Reexecutar download.
-
-Sem reiniciar toda análise.
+ERRO_CONECTOR
 
 ---
 
-# 20. Cache
-
-Caso mesmo documento.
-
-Mesmo Hash.
-
-Mesmo Processo.
-
-Mesmo Link.
-
-Utilizar documento existente.
-
-Não realizar novo download.
-
----
-
-# 21. Auditoria
+# 19. Auditoria
 
 Registrar.
 
@@ -554,7 +546,9 @@ Data
 
 Hora
 
-Link
+Conector
+
+Servidor
 
 Tempo
 
@@ -562,61 +556,57 @@ Status
 
 Hash
 
-Servidor
-
 Código HTTP
 
 ---
 
-# 22. Segurança
+# 20. Segurança
 
 Nunca armazenar.
 
-Senha
+Senhas
 
-Cookie permanente
+Cookies permanentes
 
-Bearer definitivo
+Bearer permanente
 
-Sessão permanente
+Sessões permanentes
 
-Todos deverão expirar automaticamente.
-
----
-
-# 23. API Interna
-
-Disponibilizar interface única.
-
-fetchDocument()
-
-Entrada.
-
-Link_Documento
-
-Saída.
-
-PDF
-
-Hash
-
-Quantidade páginas
-
-Status
-
-Storage Path
-
-Metadados
+Todos os tokens deverão possuir ciclo de vida controlado.
 
 ---
 
-# 24. Integração
+# 21. API Corporativa
 
-Ao concluir.
+Disponibilizar.
 
-Enviar.
+fetch()
 
-PDF
+validate()
+
+authenticate()
+
+renewSession()
+
+invalidateSession()
+
+getMetadata()
+
+download()
+
+Todos os motores IA utilizarão apenas esta API.
+
+---
+
+# 22. Integração com Motores IA
+
+Fluxo.
+
+DocumentFetchEngine
+
+↓
+
+Documento Certificado
 
 ↓
 
@@ -624,87 +614,127 @@ Gemini
 
 ↓
 
-MD-GEMINI-EXTRACAO-PROSPECCAO-ADMINISTRADOR-JUDICIAL-001
+GPT
 
-Nenhum outro módulo poderá acessar URLs diretamente.
+↓
+
+Claude
+
+↓
+
+Outros
+
+Nenhum motor IA poderá acessar sistemas externos diretamente.
 
 ---
 
-# 25. Certificação
+# 23. Escalabilidade
 
-A implementação somente será aprovada quando.
+Permitir.
 
-✓ Todos os links válidos forem baixados.
+Novos conectores
 
-✓ PDFs íntegros.
+Novos formatos
 
-✓ Hash calculado.
+Novos protocolos
 
-✓ Storage criado.
+Novos mecanismos de autenticação
+
+Sem alteração nos motores IA.
+
+---
+
+# 24. Certificação
+
+A implementação será considerada aprovada quando.
+
+✓ Todos os conectores funcionarem.
+
+✓ Downloads certificados.
+
+✓ Sessões controladas.
+
+✓ Cache funcionando.
 
 ✓ Duplicidade funcionando.
 
-✓ Reprocessamento funcionando.
+✓ Storage temporário funcionando.
 
-✓ Sessões autenticadas funcionando.
+✓ Auditoria completa.
 
-✓ Gemini recebendo apenas PDFs.
+✓ Motores IA recebendo apenas documentos.
 
 ---
 
-# 26. Critério de Homologação
+# 25. Critério Final
 
-Executar os links da planilha de homologação.
+A Plataforma Orange deverá possuir uma camada única de aquisição documental.
 
-Para cada documento.
+Todos os projetos corporativos utilizarão este serviço.
 
-Confirmar.
+Os motores IA deixarão de conhecer URLs, autenticações, sessões e protocolos de download.
 
-Download
+A arquitetura permanecerá desacoplada, reutilizável, escalável e preparada para integração com qualquer repositório documental futuro.
 
-↓
+---
 
-Hash
+# Roadmap de Evolução
 
-↓
+FASE 1
 
-Storage
+Gestor Jurídico
 
-↓
+OneDrive
 
-PDF
+SharePoint
 
-↓
+Google Drive
 
-Gemini
+FASE 2
 
-↓
+Microsoft Graph
 
-Extração
+Supabase Storage
 
-↓
+Amazon S3
 
-Business Facts
+Azure Blob
 
-↓
+FASE 3
 
-JSON
+WebDAV
 
-↓
+FTP/SFTP
 
-Painel IA
+API REST
 
-Sem qualquer acesso HTTP realizado pelo Gemini.
+SOAP
+
+Repositórios corporativos proprietários
 
 ---
 
 # Resultado Esperado
 
-Ao final da implementação, a Plataforma BEx possuirá uma camada de aquisição documental totalmente desacoplada do Motor Cognitivo.
+Ao final da implementação, a Plataforma Orange passará a possuir um serviço corporativo de aquisição documental reutilizável por todos os projetos.
 
-O Document Fetch Engine será o único responsável pela comunicação com sistemas externos, autenticação, download e validação dos arquivos.
+O Enterprise Document Fetch Engine será a única camada autorizada a acessar documentos externos, garantindo:
 
-O Gemini passará a atuar exclusivamente como motor de interpretação documental, recebendo sempre documentos PDF íntegros, rastreáveis e certificados, garantindo maior estabilidade, segurança, desempenho e facilidade de manutenção da arquitetura.</p>
+• desacoplamento entre IA e infraestrutura;
+
+• reutilização entre projetos;
+
+• rastreabilidade completa;
+
+• segurança;
+
+• governança;
+
+• maior estabilidade operacional;
+
+• facilidade de manutenção;
+
+• escalabilidade para futuras integrações.</p>
             </div>
           </div>
           <div className="flex gap-2">
