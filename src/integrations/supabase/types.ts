@@ -993,6 +993,152 @@ export type Database = {
         }
         Relationships: []
       }
+      certificacao_processos: {
+        Row: {
+          aprovado: boolean
+          business_facts: Json
+          checklist: Json
+          created_at: string
+          document_id: string | null
+          download: Json
+          empresa: string | null
+          etapas: Json
+          evidencias: Json
+          gemini: Json
+          id: string
+          json_canonico: Json
+          link: string | null
+          motivo_reprovacao: string | null
+          numero_processo: string | null
+          ordem: number
+          painel: Json
+          run_id: string
+          status: string
+          tempo_total_ms: number
+          user_id: string | null
+        }
+        Insert: {
+          aprovado?: boolean
+          business_facts?: Json
+          checklist?: Json
+          created_at?: string
+          document_id?: string | null
+          download?: Json
+          empresa?: string | null
+          etapas?: Json
+          evidencias?: Json
+          gemini?: Json
+          id?: string
+          json_canonico?: Json
+          link?: string | null
+          motivo_reprovacao?: string | null
+          numero_processo?: string | null
+          ordem?: number
+          painel?: Json
+          run_id: string
+          status?: string
+          tempo_total_ms?: number
+          user_id?: string | null
+        }
+        Update: {
+          aprovado?: boolean
+          business_facts?: Json
+          checklist?: Json
+          created_at?: string
+          document_id?: string | null
+          download?: Json
+          empresa?: string | null
+          etapas?: Json
+          evidencias?: Json
+          gemini?: Json
+          id?: string
+          json_canonico?: Json
+          link?: string | null
+          motivo_reprovacao?: string | null
+          numero_processo?: string | null
+          ordem?: number
+          painel?: Json
+          run_id?: string
+          status?: string
+          tempo_total_ms?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificacao_processos_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "certificacao_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      certificacao_runs: {
+        Row: {
+          aprovados: number
+          business_facts_total: number
+          consolidado: Json
+          created_at: string
+          downloads_ok: number
+          fase: number
+          id: string
+          json_validos: number
+          modo: string
+          ocr_ok: number
+          paineis_gerados: number
+          reprovados: number
+          score_medio: number | null
+          status: string
+          tempo_medio_ms: number
+          tempo_total_ms: number
+          total_processos: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          aprovados?: number
+          business_facts_total?: number
+          consolidado?: Json
+          created_at?: string
+          downloads_ok?: number
+          fase?: number
+          id?: string
+          json_validos?: number
+          modo?: string
+          ocr_ok?: number
+          paineis_gerados?: number
+          reprovados?: number
+          score_medio?: number | null
+          status?: string
+          tempo_medio_ms?: number
+          tempo_total_ms?: number
+          total_processos?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          aprovados?: number
+          business_facts_total?: number
+          consolidado?: Json
+          created_at?: string
+          downloads_ok?: number
+          fase?: number
+          id?: string
+          json_validos?: number
+          modo?: string
+          ocr_ok?: number
+          paineis_gerados?: number
+          reprovados?: number
+          score_medio?: number | null
+          status?: string
+          tempo_medio_ms?: number
+          tempo_total_ms?: number
+          total_processos?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       chart_of_accounts: {
         Row: {
           active: boolean
