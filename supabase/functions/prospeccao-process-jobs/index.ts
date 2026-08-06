@@ -3,6 +3,8 @@
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { acquireDocument, getDocument, logAccess } from "../_shared/document-acquisition.ts";
+import { ingestWorkspace } from "../_shared/knowledge-registry.ts";
+
 
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
