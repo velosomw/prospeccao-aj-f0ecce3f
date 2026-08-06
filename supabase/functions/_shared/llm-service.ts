@@ -22,6 +22,7 @@ export interface LLMOptions {
   useCache?: boolean;      // default: true
   cacheTtlHours?: number;  // default: 720 (30 days) — aumentado para reduzir MISS
   toolSchema?: any;        // optional structured-output tool
+  customBody?: any;        // full control over the provider payload
 }
 
 export interface LLMResult {
@@ -190,7 +191,7 @@ async function callGemini(opts: LLMOptions, model: string): Promise<LLMResult> {
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+      body: JSON.stringify(opts.customBody || {
         contents: [{ role: "user", parts }],
         ...(opts.system ? { systemInstruction: { parts: [{ text: opts.system }] } } : {}),
       }),

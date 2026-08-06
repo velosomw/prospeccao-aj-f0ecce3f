@@ -132,9 +132,8 @@ Deno.serve(async (req) => {
           pdfBytes = new Uint8Array(await file.arrayBuffer());
         }
 
-        const base64 = base64Encode(pdfBytes);
-        const docHash = await sha256Hex(pdfBytes);
         const t0 = Date.now();
+        const docHash = await sha256Hex(pdfBytes);
 
         // PARTE 5 — Documento Duplicado: mesmo hash já certificado para o usuário
         const { data: dup } = await admin
@@ -158,23 +157,28 @@ Deno.serve(async (req) => {
           continue;
         }
 
-        const aiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODELO_GEMINI}:generateContent?key=${GOOGLE_AI_API_KEY}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+        const { callLLM } = await import("../_shared/llm-service.ts");
+        const base64 = base64Encode(pdfBytes);
+        
+        const aiResult = await callLLM({
+          prompt: EXTRACTION_PROMPT,
+          system: "Você é um Auditor Sênior especializado em prospecção de Administração Judicial.",
+          provider: "gemini",
+          model: MODELO_GEMINI,
+          useCache: true,
+          // Support multimodal by adding the PDF data to the prompt
+          // We manually craft the Gemini multimodal payload here since llm-service callGemini is basic
+          customBody: {
             contents: [{
               parts: [
                 { text: EXTRACTION_PROMPT },
                 { inlineData: { mimeType: "application/pdf", data: base64 } }
               ]
-            }],
-            generationConfig: { responseMimeType: "application/json" }
-          }),
+            }]
+          }
         });
-        const aiText = await aiResp.text();
-        if (!aiResp.ok) throw new Error(`Gemini ${aiResp.status}: ${aiText.slice(0, 300)}`);
-        const aiJson = JSON.parse(aiText);
-        const content = aiJson?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+
+        const content = aiResult.text || "";
         const extracted = extractJson(content);
         const ws = extracted.workspace || {};
 
@@ -251,6 +255,11 @@ Deno.serve(async (req) => {
           business_facts: ws.business_facts || [],
           evidencias: ws.evidencias || [],
           score_confianca: ws.score_confianca,
+          resumo_executivo: ws.resumo_executivo,
+          interesse_bex: ws.interesse_bex,
+          recomendacao_ia: ws.recomendacao_ia,
+          score_comercial: ws.score_comercial,
+          resumo_comercial: ws.resumo_comercial,
           raw_response: extracted,
           created_by: job.user_id
         });
