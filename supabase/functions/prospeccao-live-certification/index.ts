@@ -5,6 +5,7 @@
 //
 // Body: { fase?: 1|5|20|100, links?: string[] }
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { acquireDocument } from "../_shared/document-acquisition.ts";
 import { validateCanonical, formatIssues, CANONICAL_SCHEMA_VERSION } from "../_shared/canonical-schema.ts";
@@ -15,7 +16,7 @@ import { logStage } from "../_shared/processing-telemetry.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
-const MODELO_GEMINI = "gemini-1.5-flash";
+const MODELO_GEMINI = "gemini-3.6-flash";
 const FASES = [1, 5, 20, 100];
 
 const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx executando a CERTIFICAÇÃO OPERACIONAL do Motor Gemini.
@@ -81,7 +82,7 @@ Deno.serve(async (req) => {
     }
 
     // Entrada: planilha real (primeiro processo → próximos) ou links informados
-    let entradas: { link: string; empresa?: string | null; processo?: string | null }[] = [];
+    let entradas: { id?: string | null; link: string; empresa?: string | null; processo?: string | null }[] = [];
     if (manualLinks.length) {
       entradas = manualLinks.slice(0, fase).map((l) => ({ link: l }));
     } else {
@@ -91,7 +92,7 @@ Deno.serve(async (req) => {
         .order("created_at", { ascending: true })
         .limit(fase);
       entradas = (linhas || []).map((l: any) => ({
-        link: l.link_documento, empresa: l.parte_pro_nome, processo: l.numero_processo,
+        id: l.id, link: l.link_documento, empresa: l.parte_pro_nome, processo: l.numero_processo,
       }));
     }
 
@@ -128,7 +129,10 @@ Deno.serve(async (req) => {
         const acq = await acquireDocument({
           url: entrada.link, projeto: "certificacao_live", user_id: userId, dryRun: true,
         });
+        console.log(`[cert] download ok em ${Date.now() - t0}ms, bytes=${acq.bytes.length}`);
+        const tHash = Date.now();
         const hash = await sha256Hex(acq.bytes);
+        console.log(`[cert] hash em ${Date.now() - tHash}ms`);
         download = {
           url: entrada.link,
           http_status: 200,
@@ -144,8 +148,13 @@ Deno.serve(async (req) => {
         };
         etapas.push(step("download", t0));
 
+
         // 2) Gemini — OCR + classificação + segmentação + extração
+        // PDFs reais podem passar de 20 MB: usamos a Files API (upload binário),
+        // evitando o base64 inline que estoura a memória do worker.
         const t1 = Date.now();
+        const fileUri = await uploadGeminiFile(acq.bytes, "application/pdf", acq.nome_arquivo);
+        console.log(`[cert] upload gemini ok em ${Date.now() - t1}ms`);
         const { callLLM } = await import("../_shared/llm-service.ts");
         const aiResult = await callLLM({
           prompt: EXTRACTION_PROMPT,
@@ -155,13 +164,16 @@ Deno.serve(async (req) => {
           useCache: false,
           customBody: {
             contents: [{
+              role: "user",
               parts: [
                 { text: EXTRACTION_PROMPT },
-                { inlineData: { mimeType: "application/pdf", data: base64Encode(acq.bytes) } },
+                { fileData: { mimeType: "application/pdf", fileUri } },
               ],
             }],
+            generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8192 },
           },
         });
+
         const content = aiResult.text || "";
         const rawExtracted = extractJson(content);
         const validation = validateCanonical(rawExtracted);
@@ -187,6 +199,8 @@ Deno.serve(async (req) => {
           schema_version: CANONICAL_SCHEMA_VERSION,
         };
         logStage({
+          run_id: run.id,
+          linha_id: entrada.id ?? null,
           document_id: (download as any).document_id ?? null,
           stage: "extraction",
           duration_ms: Date.now() - t1,
@@ -245,6 +259,8 @@ Deno.serve(async (req) => {
       }
 
       logStage({
+        run_id: run.id,
+        linha_id: entrada.id ?? null,
         document_id: (download as any).document_id ?? null,
         stage: "total",
         status: aprovado ? "success" : "error",
@@ -270,7 +286,17 @@ Deno.serve(async (req) => {
       };
 
       await admin.from("certificacao_processos").insert(proc);
+
+      // Evidência canônica: persiste os fatos EAV extraídos nesta execução real
+      if (factsCanonicos.length > 0) {
+        const { error: factsErr } = await admin
+          .from("prospeccao_business_facts")
+          .insert(factsCanonicos.map((f) => ({ ...f, linha_id: entrada.id ?? null })));
+        if (factsErr) console.error("[cert] falha ao persistir business_facts:", factsErr.message);
+      }
+
       processos.push(proc);
+
     }
 
     const aprovados = processos.filter((p) => p.aprovado).length;
@@ -322,20 +348,55 @@ function step(nome: string, t0: number) {
 function json(b: unknown, status = 200) {
   return new Response(JSON.stringify(b), { headers: { ...corsHeaders, "Content-Type": "application/json" }, status });
 }
-function base64Encode(bytes: Uint8Array): string {
-  let bin = "";
-  const chunk = 0x8000;
-  for (let i = 0; i < bytes.length; i += chunk) bin += String.fromCharCode(...bytes.subarray(i, i + chunk));
-  return btoa(bin);
+/** Upload binário para a Gemini Files API (protocolo resumable) → fileUri. */
+async function uploadGeminiFile(bytes: Uint8Array, mime: string, displayName: string): Promise<string> {
+  const base = "https://generativelanguage.googleapis.com";
+  const start = await fetch(`${base}/upload/v1beta/files?key=${GOOGLE_AI_API_KEY}`, {
+    method: "POST",
+    headers: {
+      "X-Goog-Upload-Protocol": "resumable",
+      "X-Goog-Upload-Command": "start",
+      "X-Goog-Upload-Header-Content-Length": String(bytes.length),
+      "X-Goog-Upload-Header-Content-Type": mime,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ file: { display_name: displayName || "documento.pdf" } }),
+  });
+  if (!start.ok) throw new Error(`GEMINI_UPLOAD_START_${start.status}: ${await start.text()}`);
+  const uploadUrl = start.headers.get("x-goog-upload-url");
+  if (!uploadUrl) throw new Error("GEMINI_UPLOAD_SEM_URL");
+
+  const up = await fetch(uploadUrl, {
+    method: "POST",
+    headers: {
+      "Content-Length": String(bytes.length),
+      "X-Goog-Upload-Offset": "0",
+      "X-Goog-Upload-Command": "upload, finalize",
+    },
+    body: bytes,
+  });
+  if (!up.ok) throw new Error(`GEMINI_UPLOAD_${up.status}: ${await up.text()}`);
+  const info = await up.json();
+  let file = info.file ?? info;
+  // Aguarda o processamento do arquivo (state ACTIVE)
+  for (let i = 0; i < 30 && file.state && file.state !== "ACTIVE"; i++) {
+    await new Promise((r) => setTimeout(r, 1500));
+    const r = await fetch(`${base}/v1beta/${file.name}?key=${GOOGLE_AI_API_KEY}`);
+    file = await r.json();
+    if (file.state === "FAILED") throw new Error("GEMINI_UPLOAD_FALHOU");
+  }
+  return file.uri as string;
 }
+
 async function sha256Hex(bytes: Uint8Array): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-256", bytes as unknown as ArrayBuffer);
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 function countPages(bytes: Uint8Array): number {
-  const txt = new TextDecoder("latin1").decode(bytes.subarray(0, Math.min(bytes.length, 4_000_000)));
+  const txt = new TextDecoder("latin1").decode(bytes.subarray(0, Math.min(bytes.length, 1_000_000)));
   return (txt.match(/\/Type\s*\/Page[^s]/g) || []).length || 1;
 }
+
 function estimateTokens(t: string) { return t ? Math.ceil(t.length / 4) : 0; }
 function extractJson(text: string): Record<string, any> {
   const m = text.match(/```json\s*([\s\S]*?)```/i) || text.match(/\{[\s\S]*\}/);
