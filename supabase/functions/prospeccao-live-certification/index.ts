@@ -70,6 +70,11 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({} as Record<string, unknown>));
     const fase = FASES.includes(Number(body.fase)) ? Number(body.fase) : 1;
     const manualLinks: string[] = Array.isArray(body.links) ? (body.links as string[]).filter(Boolean) : [];
+    const modelo = MODELOS_PERMITIDOS.includes(String(body.model)) ? String(body.model) : MODELO_PADRAO;
+    // Amostragem: permite certificar fases grandes (5/20/100) em lotes, sem executá-las integralmente
+    const offset = Math.max(0, Number(body.offset) || 0);
+    const max = Math.min(fase, Math.max(1, Number(body.max) || fase));
+    const amostra = max < fase || offset > 0;
 
     // Fase encadeada: só inicia se a fase anterior estiver aprovada
     const idx = FASES.indexOf(fase);
@@ -85,13 +90,13 @@ Deno.serve(async (req) => {
     // Entrada: planilha real (primeiro processo → próximos) ou links informados
     let entradas: { id?: string | null; link: string; empresa?: string | null; processo?: string | null }[] = [];
     if (manualLinks.length) {
-      entradas = manualLinks.slice(0, fase).map((l) => ({ link: l }));
+      entradas = manualLinks.slice(offset, offset + max).map((l) => ({ link: l }));
     } else {
       const { data: linhas } = await admin.from("prospeccao_linhas")
         .select("id,link_documento,parte_pro_nome,numero_processo,created_at")
         .not("link_documento", "is", null)
         .order("created_at", { ascending: true })
-        .limit(fase);
+        .range(offset, offset + max - 1);
       entradas = (linhas || []).map((l: any) => ({
         id: l.id, link: l.link_documento, empresa: l.parte_pro_nome, processo: l.numero_processo,
       }));
