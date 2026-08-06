@@ -8,9 +8,18 @@ const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
 const MODELO_GEMINI = "gemini-1.5-flash";
 
-const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais conforme o MD - PARTE 4.
+const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais conforme o MD - PARTE 4 e MD-GEMINI-PROCESS-INTELLIGENCE-PANEL-001.
 
-OBJETIVO: Interpretar todos os valores jurídicos e gerar um modelo único de dados (Workspace).
+OBJETIVO: Interpretar todos os valores jurídicos, gerar um modelo único de dados (Workspace) e produzir uma Análise Inteligente Executiva.
+
+DIRETRIZES DE ANÁLISE INTELIGENTE (MD-001):
+1. Resumo Executivo: Texto exclusivo em linguagem natural explicando natureza, objetivo, fase e conclusão.
+2. Por que interessa à BEx?: Explique por que representa oportunidade, fase atual e possibilidade de nomeação de AJ.
+3. Próximos Eventos: Sequência lógica esperada para a fase identificada.
+4. Recomendação IA: Ação comercial sugerida (ex: priorizar contato, monitorar).
+5. Score Comercial: Calcule de 0-100 considerando prioridade, potencial econômico, complexidade e maturidade.
+6. Resumo Comercial: SIM, MÉDIO ou NÃO com justificativa.
+7. Alertas: Documentos duplicados, grupo econômico, divergência de valores, etc.
 
 DIRETRIZES DE EXTRAÇÃO DE VALORES (Identifique separadamente):
 - Valor da causa
@@ -52,6 +61,18 @@ SCHEMA DE RESPOSTA (JSON APENAS):
     "natureza_valor": string,
     "administrador_judicial": string,
     "juiz": string,
+    "resumo_executivo": string,
+    "interesse_bex": string,
+    "proximos_eventos": string[],
+    "recomendacao_ia": string,
+    "score_comercial": {
+      "prioridade": number,
+      "potencial": number,
+      "complexidade": number,
+      "probabilidade_aj": number,
+      "score_geral": number
+    },
+    "resumo_comercial": { "status": "SIM" | "MÉDIO" | "NÃO", "justificativa": string },
     "alertas": [{ "tipo": string, "mensagem": string, "gravidade": "alta"|"media"|"baixa" }],
     "business_facts": [ ... ],
     "evidencias": [{ "campo": string, "pagina": number, "trecho": string }],
