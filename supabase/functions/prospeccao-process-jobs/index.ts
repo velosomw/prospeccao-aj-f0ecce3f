@@ -238,11 +238,12 @@ Deno.serve(async (req) => {
 
         const { callLLM } = await import("../_shared/llm-service.ts");
         const base64 = base64Encode(pdfBytes);
-        
+
+        const tExtract = Date.now();
         const aiResult = await callLLM({
           prompt: EXTRACTION_PROMPT,
           system: "Você é um Auditor Sênior especializado em prospecção de Administração Judicial.",
-          provider: GOOGLE_AI_API_KEY ? "gemini" : "lovable",
+          provider: "gemini", // motor exclusivo Gemini — sem fallback
           model: MODELO_GEMINI,
           useCache: true,
           // Support multimodal by adding the PDF data to the prompt
@@ -258,8 +259,44 @@ Deno.serve(async (req) => {
         });
 
         const content = aiResult.text || "";
-        const extracted = extractJson(content);
+
+        logStage({
+          linha_id: job.linha_id ?? null,
+          document_id: documentId,
+          stage: "extraction",
+          duration_ms: Date.now() - tExtract,
+          bytes: pdfBytes?.length ?? 0,
+          tokens_input: aiResult.tokens?.input ?? 0,
+          tokens_output: aiResult.tokens?.output ?? 0,
+          model: MODELO_GEMINI,
+          provider: aiResult.provider,
+          metadata: { cached: aiResult.cached, homologacao: isHomologation },
+        });
+
+        const rawExtracted = extractJson(content);
+
+        // JSON Canônico — validação estrita (rejeita e marca erro quando inválido)
+        const tValid = Date.now();
+        const validation = validateCanonical(rawExtracted);
+        logStage({
+          linha_id: job.linha_id ?? null,
+          document_id: documentId,
+          stage: "validation",
+          status: validation.valid ? "success" : "error",
+          duration_ms: Date.now() - tValid,
+          error_message: validation.valid ? null : formatIssues(validation.issues),
+          metadata: { schema_version: CANONICAL_SCHEMA_VERSION, issues: validation.issues },
+        });
+
+        if (!validation.valid) {
+          throw new Error(
+            `JSON canônico inválido (schema ${CANONICAL_SCHEMA_VERSION}): ${formatIssues(validation.issues)}`,
+          );
+        }
+
+        const extracted = validation.normalized as Record<string, any>;
         const ws = extracted.workspace || {};
+
 
         if (!isHomologation && documentId) {
           await logAccess({
