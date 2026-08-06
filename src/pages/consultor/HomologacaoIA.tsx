@@ -98,6 +98,34 @@ export default function HomologacaoIA() {
           </div>
         </div>
 
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">Links de documentos (opcional)</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <textarea
+              value={links}
+              onChange={(e) => setLinks(e.target.value)}
+              rows={3}
+              placeholder="Cole aqui um ou mais links de PDF (um por linha). Se deixar vazio, a homologação usa os links da planilha carregada."
+              className="w-full text-xs font-mono rounded-md border border-border bg-background p-3 outline-none focus:ring-1 focus:ring-ring"
+            />
+            <p className="text-[11px] text-muted-foreground">
+              Nenhum dado é gravado no banco durante a homologação.
+            </p>
+          </CardContent>
+        </Card>
+
+        {erro && (
+          <Card className="border-red-200 bg-red-50/40">
+            <CardContent className="py-4 flex items-start gap-2 text-sm text-red-700">
+              <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+              <span>{erro}</span>
+            </CardContent>
+          </Card>
+        )}
+
+
         {loading && (
           <Card className="border-orange-200 bg-orange-50/30">
             <CardContent className="py-10 flex flex-col items-center justify-center space-y-4">
