@@ -7,6 +7,10 @@
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { acquireDocument } from "../_shared/document-acquisition.ts";
+import { validateCanonical, formatIssues, CANONICAL_SCHEMA_VERSION } from "../_shared/canonical-schema.ts";
+import { buildFactRows } from "../_shared/business-facts.ts";
+import { logStage } from "../_shared/processing-telemetry.ts";
+
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -114,6 +118,9 @@ Deno.serve(async (req) => {
       let ws: any = {};
       let extracted: any = {};
       let motivo: string | null = null;
+      let schemaValido = false;
+      let schemaIssues: any[] = [];
+
 
       try {
         // 1) Enterprise Document Acquisition (dryRun → storage temporário, sem registro definitivo)
@@ -156,20 +163,41 @@ Deno.serve(async (req) => {
           },
         });
         const content = aiResult.text || "";
-        extracted = extractJson(content);
+        const rawExtracted = extractJson(content);
+        const validation = validateCanonical(rawExtracted);
+        schemaValido = validation.valid;
+        schemaIssues = validation.issues;
+        if (!validation.valid) {
+          throw new Error(
+            `JSON canônico inválido (schema ${CANONICAL_SCHEMA_VERSION}): ${formatIssues(validation.issues)}`,
+          );
+        }
+        extracted = validation.normalized as Record<string, any>;
         ws = extracted.workspace || {};
         gemini = {
           modelo: MODELO_GEMINI,
           tempo_ms: Date.now() - t1,
-          tokens_entrada: (aiResult as any).usage?.prompt_tokens ?? estimateTokens(EXTRACTION_PROMPT),
-          tokens_saida: (aiResult as any).usage?.completion_tokens ?? estimateTokens(content),
+          tokens_entrada: aiResult.tokens?.input ?? estimateTokens(EXTRACTION_PROMPT),
+          tokens_saida: aiResult.tokens?.output ?? estimateTokens(content),
           ocr: content.length > 0,
           idioma: extracted.classificacao?.idioma ?? "pt-BR",
           tipo_documento: extracted.classificacao?.tipo_documento ?? ws.tipo_processo ?? null,
           fase_processual: extracted.classificacao?.fase_processual ?? ws.fase ?? null,
           confiabilidade: ws.score_confianca ?? null,
+          schema_version: CANONICAL_SCHEMA_VERSION,
         };
+        logStage({
+          document_id: (download as any).document_id ?? null,
+          stage: "extraction",
+          duration_ms: Date.now() - t1,
+          tokens_input: aiResult.tokens?.input ?? 0,
+          tokens_output: aiResult.tokens?.output ?? 0,
+          model: MODELO_GEMINI,
+          provider: "gemini",
+          metadata: { certificacao_live: true },
+        });
         etapas.push(step("gemini", t1));
+
       } catch (e) {
         motivo = String((e as Error).message ?? e);
         download = { ...download, url: entrada.link, status: "erro", erro: motivo };
@@ -191,6 +219,11 @@ Deno.serve(async (req) => {
         evidencias,
       };
 
+      // Fatos canônicos (EAV) — dry-run: gerados como evidência, sem persistir em produção
+      const factsCanonicos = Object.keys(ws).length > 0
+        ? buildFactRows(ws, { document_id: (download as any).document_id ?? null, numero_processo: ws.processo ?? null, source: "certificacao_live" })
+        : [];
+
       const checklist = {
         download_realizado: (download as any).status === "ok",
         documento_certificado: Boolean((download as any).hash_sha256),
@@ -199,7 +232,9 @@ Deno.serve(async (req) => {
         empresas_identificadas: Boolean(ws.empresa),
         valores_interpretados: Number(ws.valor_exportacao ?? 0) > 0 || businessFacts.length > 0,
         business_facts_gerados: businessFacts.length > 0,
+        business_facts_canonicos: factsCanonicos.length > 0,
         json_produzido: Object.keys(ws).length > 0,
+        json_schema_valido: schemaValido,
         painel_gerado: Boolean(painel.resumo_executivo),
         resumo_coerente: Boolean(ws.resumo_executivo && ws.interesse_bex && ws.recomendacao_ia),
         evidencias_registradas: evidencias.length > 0,
@@ -208,6 +243,17 @@ Deno.serve(async (req) => {
       if (!aprovado && !motivo) {
         motivo = Object.entries(checklist).filter(([, v]) => !v).map(([k]) => k).join(", ");
       }
+
+      logStage({
+        document_id: (download as any).document_id ?? null,
+        stage: "total",
+        status: aprovado ? "success" : "error",
+        duration_ms: Date.now() - tProc,
+        model: MODELO_GEMINI,
+        provider: "gemini",
+        error_message: aprovado ? null : motivo,
+        metadata: { certificacao_live: true, fase, ordem: i + 1 },
+      });
 
       const proc = {
         run_id: run.id, user_id: userId, ordem: i + 1,
@@ -218,9 +264,11 @@ Deno.serve(async (req) => {
         status: aprovado ? "aprovado" : "reprovado",
         aprovado, motivo_reprovacao: aprovado ? null : motivo,
         download, gemini, business_facts: businessFacts,
-        json_canonico: extracted, painel, checklist, evidencias,
+        json_canonico: { ...extracted, schema_version: CANONICAL_SCHEMA_VERSION, schema_valido: schemaValido, schema_issues: schemaIssues },
+        painel, checklist, evidencias,
         etapas, tempo_total_ms: Date.now() - tProc,
       };
+
       await admin.from("certificacao_processos").insert(proc);
       processos.push(proc);
     }

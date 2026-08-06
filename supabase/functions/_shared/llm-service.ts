@@ -34,7 +34,7 @@ export interface LLMResult {
   tokens?: { input?: number; output?: number };
 }
 
-const DEFAULT_MODEL = "google/gemini-3-flash-preview";
+const DEFAULT_MODEL = "gemini-2.5-flash";
 
 function sb() {
   return createClient(
@@ -221,10 +221,21 @@ function normalizeForCache(s: string): string {
 }
 
 export async function callLLM(opts: LLMOptions): Promise<LLMResult> {
-  const provider: LLMProvider = opts.provider ?? (Deno.env.get("GOOGLE_AI_API_KEY") ? "gemini" : "lovable");
+  // MD-GEMINI-LIVE-PROCESSING-CERTIFICATION-001: motor exclusivo Gemini.
+  // Nenhum fallback para Lovable AI / gateway é permitido no pipeline de prospecção.
+  const requested: LLMProvider = opts.provider ?? "gemini";
+  if (requested !== "gemini" && !Deno.env.get("ALLOW_NON_GEMINI_LLM")) {
+    console.warn(`[llm-service] provider '${requested}' bloqueado — forçando Gemini (política MD-001)`);
+  }
+  const provider: LLMProvider =
+    requested === "gemini" || !Deno.env.get("ALLOW_NON_GEMINI_LLM") ? "gemini" : requested;
+  if (provider === "gemini" && !Deno.env.get("GOOGLE_AI_API_KEY")) {
+    throw new Error("GOOGLE_AI_API_KEY ausente — motor Gemini é obrigatório (sem fallback)");
+  }
   const model = opts.model ?? DEFAULT_MODEL;
   const useCache = opts.useCache !== false;
   const ttl = opts.cacheTtlHours ?? 720;
+
 
   const cacheKeyRaw = JSON.stringify({
     provider,

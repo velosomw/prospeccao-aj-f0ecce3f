@@ -4558,6 +4558,66 @@ export type Database = {
         }
         Relationships: []
       }
+      processing_telemetry: {
+        Row: {
+          bytes: number | null
+          cost_usd: number | null
+          created_at: string
+          document_id: string | null
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          linha_id: string | null
+          metadata: Json
+          model: string | null
+          pages: number | null
+          provider: string | null
+          run_id: string | null
+          stage: string
+          status: string
+          tokens_input: number | null
+          tokens_output: number | null
+        }
+        Insert: {
+          bytes?: number | null
+          cost_usd?: number | null
+          created_at?: string
+          document_id?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          linha_id?: string | null
+          metadata?: Json
+          model?: string | null
+          pages?: number | null
+          provider?: string | null
+          run_id?: string | null
+          stage: string
+          status?: string
+          tokens_input?: number | null
+          tokens_output?: number | null
+        }
+        Update: {
+          bytes?: number | null
+          cost_usd?: number | null
+          created_at?: string
+          document_id?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          linha_id?: string | null
+          metadata?: Json
+          model?: string | null
+          pages?: number | null
+          provider?: string | null
+          run_id?: string | null
+          stage?: string
+          status?: string
+          tokens_input?: number | null
+          tokens_output?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           active: boolean
@@ -4889,6 +4949,101 @@ export type Database = {
           total_processos?: number | null
         }
         Relationships: []
+      }
+      prospeccao_business_facts: {
+        Row: {
+          cnpj: string | null
+          confidence: number | null
+          created_at: string
+          document_id: string | null
+          evidence_snippet: string | null
+          fact_key: string
+          fact_type: string
+          id: string
+          linha_id: string | null
+          numero_processo: string | null
+          schema_version: string
+          source: string | null
+          unit: string | null
+          updated_at: string
+          value_date: string | null
+          value_json: Json | null
+          value_numeric: number | null
+          value_text: string | null
+          workspace_id: string | null
+        }
+        Insert: {
+          cnpj?: string | null
+          confidence?: number | null
+          created_at?: string
+          document_id?: string | null
+          evidence_snippet?: string | null
+          fact_key: string
+          fact_type?: string
+          id?: string
+          linha_id?: string | null
+          numero_processo?: string | null
+          schema_version?: string
+          source?: string | null
+          unit?: string | null
+          updated_at?: string
+          value_date?: string | null
+          value_json?: Json | null
+          value_numeric?: number | null
+          value_text?: string | null
+          workspace_id?: string | null
+        }
+        Update: {
+          cnpj?: string | null
+          confidence?: number | null
+          created_at?: string
+          document_id?: string | null
+          evidence_snippet?: string | null
+          fact_key?: string
+          fact_type?: string
+          id?: string
+          linha_id?: string | null
+          numero_processo?: string | null
+          schema_version?: string
+          source?: string | null
+          unit?: string | null
+          updated_at?: string
+          value_date?: string | null
+          value_json?: Json | null
+          value_numeric?: number | null
+          value_text?: string | null
+          workspace_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_business_facts_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "prospeccao_linhas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prospeccao_business_facts_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_agcs_realizadas"
+            referencedColumns: ["source_id"]
+          },
+          {
+            foreignKeyName: "prospeccao_business_facts_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_aj_nomeados"
+            referencedColumns: ["source_id"]
+          },
+          {
+            foreignKeyName: "prospeccao_business_facts_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_prospeccao_certification_status"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       prospeccao_document_fetch_logs: {
         Row: {

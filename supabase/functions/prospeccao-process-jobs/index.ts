@@ -4,6 +4,10 @@ import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { acquireDocument, getDocument, logAccess } from "../_shared/document-acquisition.ts";
 import { ingestWorkspace } from "../_shared/knowledge-registry.ts";
+import { validateCanonical, formatIssues, CANONICAL_SCHEMA_VERSION } from "../_shared/canonical-schema.ts";
+import { persistBusinessFacts } from "../_shared/business-facts.ts";
+import { logStage } from "../_shared/processing-telemetry.ts";
+
 
 
 
@@ -234,11 +238,12 @@ Deno.serve(async (req) => {
 
         const { callLLM } = await import("../_shared/llm-service.ts");
         const base64 = base64Encode(pdfBytes);
-        
+
+        const tExtract = Date.now();
         const aiResult = await callLLM({
           prompt: EXTRACTION_PROMPT,
           system: "Você é um Auditor Sênior especializado em prospecção de Administração Judicial.",
-          provider: GOOGLE_AI_API_KEY ? "gemini" : "lovable",
+          provider: "gemini", // motor exclusivo Gemini — sem fallback
           model: MODELO_GEMINI,
           useCache: true,
           // Support multimodal by adding the PDF data to the prompt
@@ -254,8 +259,44 @@ Deno.serve(async (req) => {
         });
 
         const content = aiResult.text || "";
-        const extracted = extractJson(content);
+
+        logStage({
+          linha_id: job.linha_id ?? null,
+          document_id: documentId,
+          stage: "extraction",
+          duration_ms: Date.now() - tExtract,
+          bytes: pdfBytes?.length ?? 0,
+          tokens_input: aiResult.tokens?.input ?? 0,
+          tokens_output: aiResult.tokens?.output ?? 0,
+          model: MODELO_GEMINI,
+          provider: aiResult.provider,
+          metadata: { cached: aiResult.cached, homologacao: isHomologation },
+        });
+
+        const rawExtracted = extractJson(content);
+
+        // JSON Canônico — validação estrita (rejeita e marca erro quando inválido)
+        const tValid = Date.now();
+        const validation = validateCanonical(rawExtracted);
+        logStage({
+          linha_id: job.linha_id ?? null,
+          document_id: documentId,
+          stage: "validation",
+          status: validation.valid ? "success" : "error",
+          duration_ms: Date.now() - tValid,
+          error_message: validation.valid ? null : formatIssues(validation.issues),
+          metadata: { schema_version: CANONICAL_SCHEMA_VERSION, issues: validation.issues },
+        });
+
+        if (!validation.valid) {
+          throw new Error(
+            `JSON canônico inválido (schema ${CANONICAL_SCHEMA_VERSION}): ${formatIssues(validation.issues)}`,
+          );
+        }
+
+        const extracted = validation.normalized as Record<string, any>;
         const ws = extracted.workspace || {};
+
 
         if (!isHomologation && documentId) {
           await logAccess({
@@ -351,7 +392,7 @@ Deno.serve(async (req) => {
 
         const proximaVersao = (latestVersao?.versao || 0) + 1;
 
-        await admin.from("prospeccao_workspace").insert({
+        const { data: wsRow } = await admin.from("prospeccao_workspace").insert({
           linha_id: job.linha_id,
           versao: proximaVersao,
           numero_processo: ws.processo,
@@ -377,7 +418,26 @@ Deno.serve(async (req) => {
           resumo_comercial: ws.resumo_comercial,
           raw_response: extracted,
           created_by: job.user_id
+        }).select("id").maybeSingle();
+
+        // 2.0 Business Facts canônicos (EAV tipado)
+        const tFacts = Date.now();
+        const factsSaved = await persistBusinessFacts(admin, ws, {
+          linha_id: job.linha_id,
+          workspace_id: wsRow?.id ?? null,
+          document_id: documentId,
+          numero_processo: ws.processo ?? null,
+          source: "gemini_extraction",
         });
+        logStage({
+          linha_id: job.linha_id ?? null,
+          document_id: documentId,
+          stage: "persistence",
+          duration_ms: Date.now() - tFacts,
+          metadata: { business_facts: factsSaved, versao: proximaVersao },
+        });
+
+
 
         // 2.1 MD-ENTERPRISE-KNOWLEDGE-REGISTRY-001 — consolidar conhecimento corporativo
         await ingestWorkspace(ws, {
@@ -414,16 +474,42 @@ Deno.serve(async (req) => {
         });
 
         // 5. Atualizar Indicadores (MD-001 Parte 16)
-        await admin.rpc('increment_prospeccao_metrics', {
-          p_prioridade: (ws.score_comercial?.prioridade || 0) > 70 ? 'alta' : (ws.score_comercial?.prioridade || 0) > 30 ? 'media' : 'baixa',
-          p_tem_aj: Boolean(ws.administrador_judicial)
-        }).catch(e => console.error("Metrics update failed:", e));
+        try {
+          await admin.rpc('increment_prospeccao_metrics', {
+            p_prioridade: (ws.score_comercial?.prioridade || 0) > 70 ? 'alta' : (ws.score_comercial?.prioridade || 0) > 30 ? 'media' : 'baixa',
+            p_tem_aj: Boolean(ws.administrador_judicial)
+          });
+        } catch (e) { console.error("Metrics update failed:", e); }
+
+
+        logStage({
+          linha_id: job.linha_id ?? null,
+          document_id: documentId,
+          stage: "total",
+          duration_ms: Date.now() - t0,
+          model: MODELO_GEMINI,
+          provider: "gemini",
+          metadata: { status_certificacao: statusCert },
+        });
 
         results.push({ job: job.id, ok: true, status: statusCert });
       } catch (e) {
         const msg = String((e as Error).message ?? e);
-        const statusErro = /gemini|download|http|pdf/i.test(msg) ? "Erro OCR" : "Revisão Manual";
+        const isSchemaError = /JSON canônico inválido/i.test(msg);
+        const statusErro = isSchemaError
+          ? "Schema Inválido"
+          : (/gemini|download|http|pdf/i.test(msg) ? "Erro OCR" : "Revisão Manual");
+        logStage({
+          linha_id: job.linha_id ?? null,
+          stage: "total",
+          status: "error",
+          error_message: msg,
+          model: MODELO_GEMINI,
+          provider: "gemini",
+          metadata: { status_certificacao: statusErro, homologacao: isHomologation },
+        });
         if (isHomologation) {
+
           homologationResults.push({
             processo: "Não identificado", empresa: "Não identificado", link: job.link,
             status: statusErro, resumo_executivo: `Falha no processamento: ${msg}`,
@@ -482,7 +568,7 @@ function base64Encode(bytes: Uint8Array): string {
 }
 
 async function sha256Hex(bytes: Uint8Array): Promise<string> {
-  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  const digest = await crypto.subtle.digest("SHA-256", bytes as unknown as BufferSource);
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
