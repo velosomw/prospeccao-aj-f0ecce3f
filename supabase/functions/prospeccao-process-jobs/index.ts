@@ -237,26 +237,41 @@ Deno.serve(async (req) => {
 
 
         const { callLLM } = await import("../_shared/llm-service.ts");
-        const base64 = base64Encode(pdfBytes);
 
         const tExtract = Date.now();
-        const aiResult = await callLLM({
+        // Upload binário via Files API (sem base64 inline) — suporta PDFs grandes sem estourar memória
+        const fileUri = await uploadGeminiFile(pdfBytes, "application/pdf", `job-${job.id}.pdf`);
+
+        const chamarGemini = (m: string) => callLLM({
           prompt: EXTRACTION_PROMPT,
           system: "Você é um Auditor Sênior especializado em prospecção de Administração Judicial.",
-          provider: "gemini", // motor exclusivo Gemini — sem fallback
-          model: MODELO_GEMINI,
+          provider: "gemini", // motor exclusivo Gemini — sem fallback de provedor
+          model: m,
           useCache: true,
-          // Support multimodal by adding the PDF data to the prompt
-          // We manually craft the Gemini multimodal payload here since llm-service callGemini is basic
           customBody: {
             contents: [{
+              role: "user",
               parts: [
                 { text: EXTRACTION_PROMPT },
-                { inlineData: { mimeType: "application/pdf", data: base64 } }
-              ]
-            }]
-          }
+                { fileData: { mimeType: "application/pdf", fileUri } },
+              ],
+            }],
+            generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8192 },
+          },
         });
+
+        // Degradação controlada: modelo sem cota (429) cai para o Gemini 3.x disponível
+        let modeloUsado = MODELO_GEMINI;
+        let aiResult;
+        try {
+          aiResult = await chamarGemini(MODELO_GEMINI);
+        } catch (err) {
+          const msg = String((err as Error)?.message ?? err);
+          if (!msg.includes("429") || MODELO_GEMINI === MODELO_FALLBACK) throw err;
+          console.warn(`[worker] ${MODELO_GEMINI} sem cota (429) → fallback ${MODELO_FALLBACK}`);
+          modeloUsado = MODELO_FALLBACK;
+          aiResult = await chamarGemini(MODELO_FALLBACK);
+        }
 
         const content = aiResult.text || "";
 
@@ -268,9 +283,9 @@ Deno.serve(async (req) => {
           bytes: pdfBytes?.length ?? 0,
           tokens_input: aiResult.tokens?.input ?? 0,
           tokens_output: aiResult.tokens?.output ?? 0,
-          model: MODELO_GEMINI,
+          model: modeloUsado,
           provider: aiResult.provider,
-          metadata: { cached: aiResult.cached, homologacao: isHomologation },
+          metadata: { cached: aiResult.cached, homologacao: isHomologation, file_api: true },
         });
 
         const rawExtracted = extractJson(content);
