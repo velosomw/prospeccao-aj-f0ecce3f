@@ -403,13 +403,14 @@ Deno.serve(async (req) => {
           doc_hash: docHash,
           ai_error: null,
           // Vincular Document ID Corporativo (motores IA nunca usam URL)
-          metadata: {
+          certification_details: {
             ...(job.fetch_metadata || {}),
             document_id: documentId,
             registry_id: registryId,
-          }
-
+            modelo: modeloUsado,
+          },
         };
+
 
         await admin.from("prospeccao_linhas").update(linhaUpdate).eq("id", job.linha_id);
 
