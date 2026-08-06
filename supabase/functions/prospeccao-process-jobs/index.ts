@@ -7,6 +7,7 @@ import { ingestWorkspace } from "../_shared/knowledge-registry.ts";
 import { validateCanonical, formatIssues, CANONICAL_SCHEMA_VERSION } from "../_shared/canonical-schema.ts";
 import { persistBusinessFacts } from "../_shared/business-facts.ts";
 import { logStage } from "../_shared/processing-telemetry.ts";
+import { uploadGeminiFile } from "../_shared/gemini-files.ts";
 
 
 
