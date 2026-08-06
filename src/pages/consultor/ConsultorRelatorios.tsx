@@ -212,7 +212,7 @@ export default function ConsultorRelatorios() {
                 <tr>
                   {[
                     "Data Distribuição", "Mês", "Processo", "Empresa", "Vara", "Estado",
-                    "Passivo", "AJ", "Magistrado", "Link Documento", "IA", "Status",
+                    "Passivo", "AJ", "Magistrado", "Doc.", "IA", "Status",
                   ].map(h => (
                     <th key={h} className="px-3 py-2 text-left font-semibold whitespace-nowrap border-r border-white/20 last:border-r-0">{h}</th>
                   ))}
