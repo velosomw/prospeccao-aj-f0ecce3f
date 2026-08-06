@@ -4,7 +4,7 @@ import PlatformLayout from "@/components/PlatformLayout";
 import {
   ClipboardList, FileBarChart, MonitorPlay, MessageSquareText,
   Bell, Users, ArrowRight, FileText, AlertCircle, CheckCircle2,
-  FolderOpen, ChevronDown, MessageCircle,
+  FolderOpen, ChevronDown, MessageCircle, Brain,
 } from "lucide-react";
 
 type Tone = { ring: string; bg: string; fg: string; arrow: string };

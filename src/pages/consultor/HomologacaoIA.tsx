@@ -7,6 +7,11 @@ import { Brain, FileText, CheckCircle2, AlertTriangle, Loader2, Download, Scroll
 import { useToast } from "@/hooks/use-toast";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { UserOptions } from "jspdf-autotable";
+
+interface jsPDFWithPlugin extends jsPDF {
+  autoTable: (options: UserOptions) => jsPDF;
+}
 
 export default function HomologacaoIA() {
   const [loading, setLoading] = useState(false);
@@ -29,7 +34,7 @@ export default function HomologacaoIA() {
 
   const generatePDF = () => {
     if (!report) return;
-    const doc = new jsPDF() as any;
+    const doc = new jsPDF() as jsPDFWithPlugin;
     
     // Capa
     doc.setFontSize(22);
