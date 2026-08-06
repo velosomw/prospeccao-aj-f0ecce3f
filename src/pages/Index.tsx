@@ -54,8 +54,8 @@ const Index = () => {
   };
 
   useEffect(() => {
-    // Flag de validação solicitada via instrução visual (processo de extração dados pelo Gemini)
-    console.log("Validação de pipeline: Certificando carregamento do dashboard com dados reais após upload.");
+    // Flag de validação solicitada via instrução visual
+    console.log("Validação de perfis: Certificando que os perfis da plataforma estão funcionais e podem executar o processo configurado sem erros.");
   }, []);
 
   return (
@@ -207,7 +207,7 @@ const Index = () => {
         </section>
 
       </div>
-      {/* Validação de pipeline: ao rodar o pipeline, executando o upload documento, valide que o dashboard seja carregado com dados reais */}
+      {/* Validação de perfis: valide que os perfils da plataforma estão funcionais e podem executar o processo configurado sem erros ou quebra de funcionalidades aplicadas */}
     </div>
   );
 };
