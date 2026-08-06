@@ -5,7 +5,6 @@
 //
 // Body: { fase?: 1|5|20|100, links?: string[] }
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { acquireDocument } from "../_shared/document-acquisition.ts";
@@ -17,7 +16,7 @@ import { logStage } from "../_shared/processing-telemetry.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
-const MODELO_GEMINI = "gemini-1.5-flash";
+const MODELO_GEMINI = "gemini-2.5-flash";
 const FASES = [1, 5, 20, 100];
 
 const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx executando a CERTIFICAÇÃO OPERACIONAL do Motor Gemini.
