@@ -486,16 +486,20 @@ Deno.serve(async (req) => {
 
         // 3. Finalizar Job
 
-        await admin.from("prospeccao_pdf_jobs").update({
+        const { error: jobErr } = await admin.from("prospeccao_pdf_jobs").update({
           status: "extraido",
           extracted_json: extracted,
-          metadata: {
+          doc_hash: docHash,
+          fetch_metadata: {
+            ...(job.fetch_metadata || {}),
             versao: proximaVersao,
             certificacao,
             status_certificacao: statusCert,
-            processed_at: new Date().toISOString()
-          }
+            modelo: modeloUsado,
+            processed_at: new Date().toISOString(),
+          },
         }).eq("id", job.id);
+        if (jobErr) throw new Error(`FALHA_UPDATE_JOB: ${jobErr.message}`);
 
         // 4. Log de execução detalhado (MD-001 Parte 14)
         await logEvent(admin, job, MODELO_GEMINI, Date.now() - t0, statusCert, { 
