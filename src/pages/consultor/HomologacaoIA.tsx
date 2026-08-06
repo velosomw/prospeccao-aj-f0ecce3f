@@ -16,17 +16,23 @@ interface jsPDFWithPlugin extends jsPDF {
 export default function HomologacaoIA() {
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<HomologationReport | null>(null);
+  const [links, setLinks] = useState("");
+  const [erro, setErro] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleRun = async () => {
     setLoading(true);
     setReport(null);
+    setErro(null);
     try {
-      const res = await runHomologation(2); // Limite baixo para homologação
+      const list = links.split(/[\n,;]+/).map(s => s.trim()).filter(Boolean);
+      const res = await runHomologation(list.length ? list.length : 2, list);
       setReport(res);
       toast({ title: "Homologação Concluída", description: "O relatório foi gerado com sucesso." });
     } catch (e) {
-      toast({ title: "Erro na Homologação", description: String(e), variant: "destructive" });
+      const msg = (e as Error)?.message ?? String(e);
+      setErro(msg);
+      toast({ title: "Erro na Homologação", description: msg, variant: "destructive" });
     } finally {
       setLoading(false);
     }
