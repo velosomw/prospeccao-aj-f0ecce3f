@@ -82,61 +82,55 @@ export default function HomologacaoIA() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Modo Homologação: Motor Gemini</h1>
-              <p className="text-muted-foreground text-sm whitespace-pre-wrap">aplique e configure o MD-ENTERPRISE-KNOWLEDGE-GOVERNANCE-AND-LEARNING-001 sem alterar a UX e UI da plataforma.
+              <p className="text-muted-foreground text-sm whitespace-pre-wrap">aplique e configure o MD-ENTERPRISE-KNOWLEDGE-REGISTRY-001
 
-Versão
+Versão: 1.0
 
-1.0
-
-Status
+Status:
 
 FOUNDATION CORPORATIVO
 
-Projeto
+Projeto:
 
 Orange AI Platform
 
-Categoria
+Categoria:
 
-Enterprise Knowledge Governance
+Enterprise Knowledge Layer
 
-Aplicações
+Aplicações:
 
-• Plataforma BEx
+• Plataforma Prospecção BEx
 
 • Plataforma RMA
 
 • Plataforma Kanitz
 
-• Auditoria
+• Auditoria Digital
 
-• Todos os Motores IA
+• Demais Plataformas Orange
 
 ---
 
 # 1. Objetivo
 
-Criar uma camada corporativa responsável pela governança, qualidade, evolução e aprendizado contínuo do conhecimento produzido pela Plataforma.
+Criar uma camada corporativa responsável por transformar informações extraídas pelos motores de Inteligência Artificial em conhecimento reutilizável.
 
-Este módulo não interpreta documentos.
+Esta camada representa a memória corporativa da Plataforma.
 
-Não executa OCR.
-
-Não realiza extração.
-
-Sua responsabilidade é garantir que o conhecimento institucional permaneça consistente ao longo do tempo.
+Enquanto o Document Registry armazena documentos e o Business Facts armazena fatos, o Knowledge Registry armazena conhecimento consolidado.
 
 ---
 
 # 2. Filosofia
 
-A Plataforma não deve aprender apenas documentos.
+Documentos não são conhecimento.
 
-Ela deve aprender decisões.
+Business Facts também não.
 
-Cada validação humana deverá tornar toda a Plataforma melhor.
+Conhecimento surge da consolidação, relacionamento, evolução temporal e reutilização dos Business Facts produzidos.
 
-Todo conhecimento aprovado passa a integrar a memória corporativa.
+A plataforma deverá aprender continuamente.
 
 ---
 
@@ -154,407 +148,555 @@ Business Facts
 
 ↓
 
-JSON
+JSON Canônico
 
 ↓
 
-Knowledge Registry
+Enterprise Knowledge Registry
 
 ↓
 
-Knowledge Governance
+Dashboards
 
 ↓
 
-Motores IA
+Pesquisa
 
 ↓
 
-Usuários
+Assistentes IA
+
+↓
+
+Motores Analíticos
 
 ---
 
 # 4. Objetivos
 
-O módulo deverá.
-
-✓ controlar qualidade
-
-✓ registrar revisões
+O Knowledge Registry deverá:
 
 ✓ consolidar conhecimento
 
-✓ evitar regressões
+✓ eliminar duplicidades
 
-✓ registrar aprendizado
+✓ relacionar entidades
 
-✓ controlar versões
+✓ manter histórico
 
-✓ medir confiabilidade
+✓ permitir consultas inteligentes
 
-✓ permitir auditoria
+✓ alimentar dashboards
 
----
+✓ suportar futuras IAs
 
-# 5. Aprendizado
-
-Sempre que um usuário.
-
-Corrigir empresa
-
-↓
-
-Corrigir AJ
-
-↓
-
-Corrigir magistrado
-
-↓
-
-Corrigir valor
-
-↓
-
-Corrigir fase
-
-↓
-
-Corrigir classificação
-
-↓
-
-Aprovar resumo
-
-↓
-
-Aprovar recomendação
-
-↓
-
-Registrar aprendizado.
+✓ preservar rastreabilidade
 
 ---
 
-# 6. Tipos de Aprendizado
+# 5. Objetos de Conhecimento
 
-Aprendizado documental
+Registrar.
 
-Aprendizado jurídico
+Empresas
 
-Aprendizado financeiro
+Administradores Judiciais
 
-Aprendizado comercial
+Magistrados
 
-Aprendizado editorial
+Advogados
 
-Aprendizado operacional
+Credores
 
----
+Recuperandas
 
-# 7. Registro
+Grupos Econômicos
 
-Para cada aprendizado registrar.
+Processos
 
-ID
+Comarcas
 
-Projeto
+Varas
 
-Documento
+Tribunais
 
-Business Fact
+Eventos Processuais
 
-Campo
+Indicadores Comerciais
 
-Valor anterior
-
-Novo valor
-
-Justificativa
-
-Usuário
-
-Data
-
-Motor IA
-
-Versão
+Documentos
 
 ---
 
-# 8. Governança
-
-Todo conhecimento deverá possuir.
-
-Status
-
-Em análise
-
-↓
-
-Validado
-
-↓
-
-Publicado
-
-↓
-
-Obsoleto
-
-↓
-
-Arquivado
-
----
-
-# 9. Regras
-
-Nenhum conhecimento será sobrescrito.
-
-Sempre criar nova versão.
-
-Todo histórico deverá permanecer disponível.
-
----
-
-# 10. Aprovação
-
-Permitir aprovação por níveis.
-
-Analista
-
-↓
-
-Supervisor
-
-↓
-
-Administrador
-
-↓
-
-Publicado
-
-Configuração parametrizável.
-
----
-
-# 11. Confiabilidade
-
-Cada entidade possuirá score.
+# 6. Modelo de Relacionamento
 
 Empresa
+
+↓
+
+Participa
+
+↓
+
+Processo
+
+↓
+
+Possui
+
+↓
+
+Administrador Judicial
+
+↓
+
+Possui
+
+↓
+
+Magistrado
+
+↓
+
+Possui
+
+↓
+
+Business Facts
+
+↓
+
+Origem Documental
+
+Toda informação deverá possuir relacionamento.
+
+---
+
+# 7. Registro de Empresas
+
+Para cada empresa registrar.
+
+Razão Social
+
+Razões Anteriores
+
+Nome Fantasia
+
+CNPJ
+
+Estado
+
+Cidade
+
+Segmento
+
+Grupo Econômico
+
+Situação
+
+Quantidade de Processos
+
+Última Atualização
+
+Histórico
+
+---
+
+# 8. Registro de Pessoas
+
+Para cada pessoa.
+
+Nome
+
+Tipo
 
 Administrador Judicial
 
 Magistrado
 
-Valor
+Advogado
 
-Grupo Econômico
+Representante
 
-Resumo
+Empresa
 
-Recomendação
+Quantidade Processos
 
-Confiabilidade calculada continuamente.
+Histórico
+
+Documentos
 
 ---
 
-# 12. Base de Conhecimento
+# 9. Registro de Processos
 
-Criar uma biblioteca corporativa.
+Número CNJ
 
-Empresas
+Classe
+
+Tipo
+
+Situação
+
+Fase
+
+Empresa
+
+Valor
 
 AJ
 
-Magistrados
+Magistrado
 
-Tribunais
+Data Distribuição
 
-Varas
+Último Evento
 
-Comarcas
-
-Modelos
-
-Glossário
-
-Jurisprudência institucional
-
-Padrões internos
+Histórico
 
 ---
 
-# 13. Motor de Evolução
+# 10. Registro de Eventos
 
-Sempre que novas análises forem executadas.
+Cada processo possuirá histórico.
 
-Comparar.
+Distribuição
 
-Conhecimento atual
+Petição
 
-↓
+Despacho
 
-Novo conhecimento
+Processamento
 
-↓
+Nomeação AJ
 
-Diferenças
+Plano
 
-↓
+Assembleia
 
-Atualizações
+Sentença
 
-↓
+Encerramento
 
-Aprendizado
-
----
-
-# 14. Detecção de Regressão
-
-Caso um novo processamento produza resultado pior.
-
-Bloquear atualização.
-
-Registrar regressão.
-
-Solicitar revisão.
+Todos cronológicos.
 
 ---
 
-# 15. Indicadores
+# 11. Registro Comercial
 
-Calcular.
+Criar indicadores.
 
-Precisão
+Prioridade
 
-Cobertura
+Complexidade
 
-Confiabilidade
+Potencial Econômico
 
-Correções
+Probabilidade AJ
 
-Aprendizados
+Interesse BEx
 
-Regressões
+Situação Comercial
 
-Aprovações
-
-Tempo médio
+Histórico
 
 ---
 
-# 16. Auditoria
+# 12. Aprendizado Contínuo
+
+Sempre que um processo for reprocessado.
+
+Atualizar.
+
+Conhecimento.
+
+Nunca apagar histórico.
+
+Criar nova versão.
+
+---
+
+# 13. Relacionamentos
+
+Permitir consultas.
+
+Empresa
+
+↓
+
+Todos Processos
+
+↓
+
+Todos Magistrados
+
+↓
+
+Todos AJ
+
+↓
+
+Todos Credores
+
+↓
+
+Todos Valores
+
+↓
+
+Histórico
+
+---
+
+# 14. Pesquisa Inteligente
+
+Permitir localizar.
+
+Empresa
+
+Pessoa
+
+AJ
+
+Magistrado
+
+Grupo Econômico
+
+Valor
+
+Documento
+
+Business Fact
+
+Evento
+
+Cidade
+
+Estado
+
+Tribunal
+
+---
+
+# 15. Histórico Temporal
 
 Registrar.
 
-Quem aprovou
+Primeira Aparição
 
-Quem alterou
+Última Atualização
 
-Quando
+Quantidade Atualizações
 
-Por quê
+Versões
 
-Documento origem
+Mudanças
 
-Business Facts
-
-Versão
-
-Nunca perder rastreabilidade.
+Nunca perder histórico.
 
 ---
 
-# 17. APIs
+# 16. Conhecimento Compartilhado
 
-Disponibilizar.
+O mesmo conhecimento poderá ser utilizado por.
 
-approveKnowledge()
+Prospecção
 
-rejectKnowledge()
+↓
 
-publishKnowledge()
+RMA
 
-compareVersions()
+↓
 
-registerLearning()
+Kanitz
 
-getHistory()
+↓
 
-getConfidence()
+Auditoria
 
----
+↓
 
-# 18. Dashboards
+Assistentes IA
 
-Disponibilizar.
+↓
 
-Conhecimento publicado
+Dashboards
 
-Conhecimento pendente
-
-Correções
-
-Precisão IA
-
-Precisão humana
-
-Aprendizado mensal
-
-Ranking de melhorias
+Nenhum módulo criará conhecimento isoladamente.
 
 ---
 
-# 19. Integração
+# 17. Integração IA
 
-Todos os motores IA deverão consultar.
+Os motores IA poderão consultar.
+
+Empresa
+
+↓
 
 Knowledge Registry
 
 ↓
 
-Knowledge Governance
+Histórico
 
 ↓
 
-Conhecimento Publicado
+Relacionamentos
 
-Nunca utilizar conhecimento pendente.
+↓
 
----
+Contexto
 
-# 20. Critérios de Aprovação
+↓
 
-A implementação será considerada homologada quando.
+Novo Processo
 
-✓ Todo aprendizado gerar histórico.
+A IA deixará de analisar documentos isoladamente.
 
-✓ Nenhuma informação for perdida.
-
-✓ Regressões forem detectadas.
-
-✓ Versionamento funcionar.
-
-✓ Aprovações forem auditáveis.
-
-✓ Score de confiança evoluir continuamente.
-
-✓ Todos os motores IA utilizarem apenas conhecimento publicado.
+Passará a analisar conhecimento acumulado.
 
 ---
 
-# 21. Resultado Esperado
+# 18. Indicadores
 
-Ao final da implementação, a Orange AI Platform deixará de depender exclusivamente dos modelos de IA para evoluir.
+Calcular automaticamente.
 
-A plataforma passará a construir uma memória institucional própria, onde cada validação humana melhora permanentemente a qualidade das análises futuras.
+Quantidade Empresas
 
-Esse componente transformará a Plataforma em um sistema corporativo de conhecimento governado, auditável e evolutivo, reduzindo retrabalho, aumentando a precisão das análises e preservando todo o histórico de decisões técnicas e jurídicas.</p>
+Quantidade Processos
+
+AJ
+
+Magistrados
+
+Grupos Econômicos
+
+Empresas por Estado
+
+Empresas por Tribunal
+
+Histórico Comercial
+
+Ranking AJ
+
+Ranking Magistrados
+
+---
+
+# 19. API Corporativa
+
+Disponibilizar.
+
+getCompany()
+
+getProcess()
+
+getAJ()
+
+getJudge()
+
+getKnowledge()
+
+searchKnowledge()
+
+getTimeline()
+
+getBusinessHistory()
+
+Todos os módulos utilizarão esta API.
+
+---
+
+# 20. Governança
+
+Todo conhecimento deverá possuir.
+
+Origem
+
+Business Facts
+
+Documento
+
+Hash
+
+Data
+
+Versão
+
+Motor IA
+
+Confiabilidade
+
+Usuário
+
+Rastreabilidade obrigatória.
+
+---
+
+# 21. Segurança
+
+Nunca permitir.
+
+Alteração manual do conhecimento consolidado.
+
+Toda alteração deverá ocorrer por novo processamento certificado.
+
+---
+
+# 22. Certificação
+
+A implementação será considerada aprovada quando.
+
+✓ Empresas consolidadas.
+
+✓ Pessoas relacionadas.
+
+✓ Processos relacionados.
+
+✓ Histórico funcionando.
+
+✓ Pesquisa inteligente funcionando.
+
+✓ Dashboards alimentados.
+
+✓ APIs disponíveis.
+
+✓ Histórico preservado.
+
+---
+
+# 23. Evolução
+
+Este componente será a base para:
+
+Assistentes Jurídicos
+
+Copilotos
+
+Pesquisa Semântica
+
+Knowledge Graph
+
+Business Intelligence
+
+Analytics
+
+Motores Preditivos
+
+Sem necessidade de reprocessar documentos.
+
+---
+
+# 24. Resultado Esperado
+
+Ao final da implementação, a Orange AI Platform deixará de ser uma plataforma que apenas interpreta documentos.
+
+Passará a possuir uma Base Corporativa de Conhecimento Jurídico.
+
+Essa base consolidará todo o aprendizado produzido pelos motores de IA, permitindo reutilização entre projetos, evolução contínua do conhecimento, consultas inteligentes, indicadores estratégicos e suporte à tomada de decisão.
+
+O Enterprise Knowledge Registry será a memória institucional da plataforma, conectando documentos, Business Facts, entidades, eventos processuais e inteligência comercial em um único repositório governado, rastreável e reutilizável.</p>
             </div>
           </div>
           <div className="flex gap-2">
