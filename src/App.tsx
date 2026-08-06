@@ -38,6 +38,7 @@ const CoordCadastroPerfilPage = lazy(() => import("./pages/coordenador/CoordCada
 const ConsultorConfiguracoes = lazy(() => import("./pages/consultor/ConsultorConfiguracoes"));
 const BaseDeDados = lazy(() => import("./pages/consultor/BaseDeDados"));
 const HomologacaoIA = lazy(() => import("./pages/consultor/HomologacaoIA"));
+const CertificacaoLive = lazy(() => import("./pages/consultor/CertificacaoLive"));
 const CoordEquipe = lazy(() => import("./pages/coordenador/CoordEquipe"));
 const CoordDashboardAnalitico = lazy(() => import("./pages/coordenador/CoordDashboardAnalitico"));
 const CoordAprovacoes = lazy(() => import("./pages/coordenador/CoordAprovacoes"));
