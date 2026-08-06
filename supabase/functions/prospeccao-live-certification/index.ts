@@ -16,7 +16,8 @@ import { logStage } from "../_shared/processing-telemetry.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
-const MODELO_GEMINI = "gemini-3.6-flash";
+const MODELO_PADRAO = "gemini-3.1-pro-preview"; // melhor Gemini 3.X para raciocínio jurídico-contábil
+const MODELOS_PERMITIDOS = ["gemini-3.1-pro-preview", "gemini-3-pro-preview", "gemini-3.6-flash", "gemini-3.5-flash"];
 const FASES = [1, 5, 20, 100];
 
 const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx executando a CERTIFICAÇÃO OPERACIONAL do Motor Gemini.
@@ -160,7 +161,7 @@ Deno.serve(async (req) => {
           prompt: EXTRACTION_PROMPT,
           system: "Auditor Sênior BEx — Certificação Operacional do Motor Gemini.",
           provider: "gemini",
-          model: MODELO_GEMINI,
+          model: modelo,
           useCache: false,
           customBody: {
             contents: [{
@@ -187,7 +188,7 @@ Deno.serve(async (req) => {
         extracted = validation.normalized as Record<string, any>;
         ws = extracted.workspace || {};
         gemini = {
-          modelo: MODELO_GEMINI,
+          modelo: modelo,
           tempo_ms: Date.now() - t1,
           tokens_entrada: aiResult.tokens?.input ?? estimateTokens(EXTRACTION_PROMPT),
           tokens_saida: aiResult.tokens?.output ?? estimateTokens(content),
@@ -206,7 +207,7 @@ Deno.serve(async (req) => {
           duration_ms: Date.now() - t1,
           tokens_input: aiResult.tokens?.input ?? 0,
           tokens_output: aiResult.tokens?.output ?? 0,
-          model: MODELO_GEMINI,
+          model: modelo,
           provider: "gemini",
           metadata: { certificacao_live: true },
         });
@@ -265,7 +266,7 @@ Deno.serve(async (req) => {
         stage: "total",
         status: aprovado ? "success" : "error",
         duration_ms: Date.now() - tProc,
-        model: MODELO_GEMINI,
+        model: modelo,
         provider: "gemini",
         error_message: aprovado ? null : motivo,
         metadata: { certificacao_live: true, fase, ordem: i + 1 },
