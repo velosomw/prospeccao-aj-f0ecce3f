@@ -1,3 +1,4 @@
+import { InteligenciaExecutivaPanel } from "@/components/prospeccao/InteligenciaExecutivaPanel";
 import { useEffect, useRef, useState } from "react";
 import * as XLSX from "xlsx";
 import ConsultorPageShell from "@/components/consultor/PageShell";
@@ -133,8 +134,8 @@ export default function ConsultorRelatorios() {
 
   return (
     <ConsultorPageShell
-      title="Planilha"
-      subtitle="Planilha atualizada automaticamente a partir da certificação da análise de IA dos documentos."
+      title="Inteligência Executiva de Processos"
+      subtitle="Ambiente de Inteligência Executiva fundamentado nas evidências produzidas pelo motor cognitivo."
       search={search}
       onSearch={setSearch}
       kpis={[
@@ -149,7 +150,7 @@ export default function ConsultorRelatorios() {
           <div>
             <h3 className="text-sm font-semibold">Planilha carregada &amp; status</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Campos certificados a partir do JSON canônico gerado pela IA — nenhum dado é preenchido sem evidência.
+              Campos certificados a partir do <b>JSON Canônico</b> gerado pela IA — toda análise é baseada exclusivamente em evidências extraídas dos documentos.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -211,7 +212,7 @@ export default function ConsultorRelatorios() {
                 <tr>
                   {[
                     "Data Distribuição", "Mês", "Processo", "Empresa", "Vara", "Estado",
-                    "Passivo", "AJ", "Magistrado", "Link Documento", "Status",
+                    "Passivo", "AJ", "Magistrado", "Doc.", "IA", "Status",
                   ].map(h => (
                     <th key={h} className="px-3 py-2 text-left font-semibold whitespace-nowrap border-r border-white/20 last:border-r-0">{h}</th>
                   ))}
@@ -241,6 +242,9 @@ export default function ConsultorRelatorios() {
                         {r.link_documento ? (
                           <a href={r.link_documento} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">PDF</a>
                         ) : "—"}
+                      </td>
+                      <td className="px-3 py-2 border-b text-center">
+                        <InteligenciaExecutivaPanel linha={r} />
                       </td>
                       <td className="px-3 py-2 border-b">
                         <span

@@ -214,7 +214,7 @@ export default function AppSidebar() {
             </div>
             {!collapsed && (
               <div className="leading-tight">
-                <div className={`text-base font-bold tracking-wide ${txtStrong}`}>Prospecção AJ</div>
+                <div className={`text-base font-bold tracking-wide ${txtStrong}`}>Plataforma de Prospecção BEx</div>
               </div>
             )}
           </div>
