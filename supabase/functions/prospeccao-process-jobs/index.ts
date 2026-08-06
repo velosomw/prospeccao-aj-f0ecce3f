@@ -8,7 +8,7 @@ const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
 const MODELO_GEMINI = "gemini-1.5-flash";
 
-const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais conforme o MD - PARTE 4 e MD-GEMINI-PROCESS-INTELLIGENCE-PANEL-001.
+const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais conforme o MD - PARTE 4, MD-GEMINI-PROCESS-INTELLIGENCE-PANEL-001 e MD-GEMINI-DOCUMENT-FETCH-ENGINE-001.
 
 OBJETIVO: Interpretar todos os valores jurídicos, gerar um modelo único de dados (Workspace) e produzir uma Análise Inteligente Executiva.
 
@@ -150,26 +150,80 @@ Deno.serve(async (req) => {
 
         if (job.status === "pendente") {
           const link = job.link as string;
-          if (link.startsWith("storage://")) {
-            storagePath = link.replace("storage://", "");
-            const { data: file, error } = await admin.storage.from("prospeccao-uploads").download(storagePath);
-            if (error) throw error;
-            pdfBytes = new Uint8Array(await file.arrayBuffer());
-          } else {
-            const resp = await fetch(link, { redirect: "follow" });
-            if (!resp.ok) throw new Error(`Download falhou: HTTP ${resp.status}`);
-            pdfBytes = new Uint8Array(await resp.arrayBuffer());
-            if (!isHomologation) {
-              storagePath = `${job.user_id}/temp/${job.id}.pdf`;
-              const { error: upErr } = await admin.storage.from("prospeccao-uploads")
-                .upload(storagePath, pdfBytes, { contentType: "application/pdf", upsert: true });
-              if (upErr) throw upErr;
+          const tDown0 = Date.now();
+          
+          try {
+            if (link.startsWith("storage://")) {
+              storagePath = link.replace("storage://", "");
+              const { data: file, error } = await admin.storage.from("prospeccao-uploads").download(storagePath);
+              if (error) throw error;
+              pdfBytes = new Uint8Array(await file.arrayBuffer());
+            } else {
+              // MD-GEMINI-DOCUMENT-FETCH-ENGINE-001: Validação e Download Seguro
+              const url = new URL(link);
+              if (url.protocol !== "https:") throw new Error("URL_INVALIDA: Apenas HTTPS permitido");
+              
+              const resp = await fetch(link, { 
+                redirect: "follow",
+                headers: {
+                  "User-Agent": "BEx-Document-Fetch-Engine/1.0",
+                  "Accept": "application/pdf"
+                }
+              });
+              
+              if (!resp.ok) throw new Error(`DOWNLOAD_${resp.status}: HTTP ${resp.status}`);
+              
+              const contentType = resp.headers.get("content-type") || "";
+              if (!contentType.includes("application/pdf")) {
+                console.warn(`Aviso: Content-Type inesperado: ${contentType}`);
+              }
+
+              pdfBytes = new Uint8Array(await resp.arrayBuffer());
+              
+              if (pdfBytes.length === 0) throw new Error("PDF_INVALIDO: Arquivo vazio");
+
+              if (!isHomologation) {
+                storagePath = `${job.user_id}/temp/${job.id}.pdf`;
+                const { error: upErr } = await admin.storage.from("prospeccao-uploads")
+                  .upload(storagePath, pdfBytes, { contentType: "application/pdf", upsert: true });
+                if (upErr) throw upErr;
+              }
             }
-          }
-          if (!isHomologation) {
-            await admin.from("prospeccao_pdf_jobs").update({
-              status: "baixado", storage_path: storagePath,
-            }).eq("id", job.id);
+
+            const downloadTime = Date.now() - tDown0;
+            const hash = await sha256Hex(pdfBytes);
+
+            // Log de Auditoria do Fetch Engine (MD-001 Parte 21)
+            if (!isHomologation) {
+              await admin.from("prospeccao_document_fetch_logs").insert({
+                linha_id: job.linha_id,
+                job_id: job.id,
+                url: link,
+                status_code: 200,
+                file_size: pdfBytes.length,
+                hash_sha256: hash,
+                tempo_download_ms: downloadTime
+              });
+
+              await admin.from("prospeccao_pdf_jobs").update({
+                status: "baixado", 
+                storage_path: storagePath,
+                doc_hash: hash,
+                fetch_metadata: { download_ms: downloadTime, size: pdfBytes.length }
+              }).eq("id", job.id);
+            }
+          } catch (fetchErr) {
+            const errorMsg = String(fetchErr.message || fetchErr);
+            if (!isHomologation) {
+              await admin.from("prospeccao_document_fetch_logs").insert({
+                linha_id: job.linha_id,
+                job_id: job.id,
+                url: link,
+                error_code: errorMsg.split(":")[0],
+                status_code: errorMsg.includes("HTTP") ? parseInt(errorMsg.match(/\d+/)?.[0] || "500") : 500
+              });
+            }
+            throw fetchErr;
           }
         } else {
           if (!storagePath) throw new Error("Job baixado sem storage_path");

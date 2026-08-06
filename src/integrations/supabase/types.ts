@@ -4365,6 +4365,80 @@ export type Database = {
         }
         Relationships: []
       }
+      prospeccao_document_fetch_logs: {
+        Row: {
+          attempts: number | null
+          content_type: string | null
+          created_at: string | null
+          error_code: string | null
+          file_size: number | null
+          hash_sha256: string | null
+          id: string
+          job_id: string | null
+          linha_id: string | null
+          status_code: number | null
+          tempo_download_ms: number | null
+          url: string
+        }
+        Insert: {
+          attempts?: number | null
+          content_type?: string | null
+          created_at?: string | null
+          error_code?: string | null
+          file_size?: number | null
+          hash_sha256?: string | null
+          id?: string
+          job_id?: string | null
+          linha_id?: string | null
+          status_code?: number | null
+          tempo_download_ms?: number | null
+          url: string
+        }
+        Update: {
+          attempts?: number | null
+          content_type?: string | null
+          created_at?: string | null
+          error_code?: string | null
+          file_size?: number | null
+          hash_sha256?: string | null
+          id?: string
+          job_id?: string | null
+          linha_id?: string | null
+          status_code?: number | null
+          tempo_download_ms?: number | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_document_fetch_logs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "prospeccao_linhas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prospeccao_document_fetch_logs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_agcs_realizadas"
+            referencedColumns: ["source_id"]
+          },
+          {
+            foreignKeyName: "prospeccao_document_fetch_logs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_export_aj_nomeados"
+            referencedColumns: ["source_id"]
+          },
+          {
+            foreignKeyName: "prospeccao_document_fetch_logs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_prospeccao_certification_status"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       prospeccao_linhas: {
         Row: {
           acao_judicial: string | null
@@ -4583,8 +4657,10 @@ export type Database = {
         Row: {
           attempts: number
           created_at: string
+          doc_hash: string | null
           error: string | null
           extracted_json: Json | null
+          fetch_metadata: Json | null
           id: string
           linha_id: string
           link: string
@@ -4598,8 +4674,10 @@ export type Database = {
         Insert: {
           attempts?: number
           created_at?: string
+          doc_hash?: string | null
           error?: string | null
           extracted_json?: Json | null
+          fetch_metadata?: Json | null
           id?: string
           linha_id: string
           link: string
@@ -4613,8 +4691,10 @@ export type Database = {
         Update: {
           attempts?: number
           created_at?: string
+          doc_hash?: string | null
           error?: string | null
           extracted_json?: Json | null
+          fetch_metadata?: Json | null
           id?: string
           linha_id?: string
           link?: string
