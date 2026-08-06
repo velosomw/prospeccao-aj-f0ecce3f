@@ -383,6 +383,11 @@ Deno.serve(async (req) => {
           mes_referencia: mesRef,
           doc_hash: docHash,
           ai_error: null,
+          // Vincular Document ID Corporativo se disponível
+          metadata: { 
+            ...(job.fetch_metadata || {}), 
+            document_id: job.fetch_metadata?.document_id 
+          }
         };
 
         await admin.from("prospeccao_linhas").update(linhaUpdate).eq("id", job.linha_id);
