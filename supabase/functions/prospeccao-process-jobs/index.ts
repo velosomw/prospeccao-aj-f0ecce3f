@@ -95,7 +95,7 @@ Deno.serve(async (req) => {
     const onlyJob = body.job_id as string | undefined;
     const isHomologation = body.mode === "homologacao";
 
-    let jobs = [];
+    let jobs: any[] = [];
     if (onlyJob) {
       const { data: job, error: qErr } = await admin.from("prospeccao_pdf_jobs").select("*").eq("id", onlyJob).single();
       if (qErr) throw qErr;
@@ -107,6 +107,36 @@ Deno.serve(async (req) => {
         .limit(limit);
       if (qErr) throw qErr;
       jobs = j || [];
+    }
+
+    // Modo homologação: nunca depende da fila. Aceita links avulsos (body.links)
+    // ou lê direto das linhas da planilha que possuem link_documento.
+    if (isHomologation) {
+      const manualLinks: string[] = Array.isArray(body.links) ? body.links.filter(Boolean) : [];
+      if (manualLinks.length > 0) {
+        jobs = manualLinks.slice(0, limit).map((link, i) => ({
+          id: `homolog-${i}`, link, status: "pendente", linha_id: null, user_id: null, attempts: 0,
+        }));
+      } else if (jobs.length === 0) {
+        const { data: linhas } = await admin
+          .from("prospeccao_linhas")
+          .select("id,user_id,link_documento")
+          .not("link_documento", "is", null)
+          .limit(limit);
+        jobs = (linhas || []).map((l: any) => ({
+          id: `homolog-${l.id}`, link: l.link_documento, status: "pendente",
+          linha_id: l.id, user_id: l.user_id, attempts: 0,
+        }));
+      }
+      if (jobs.length === 0) {
+        return json({
+          ok: false,
+          mode: "homologacao",
+          error: "Nenhum documento disponível para homologação. Faça o upload de uma planilha com a coluna Link_Documento (ou envie 'links' no corpo da requisição).",
+          timestamp: new Date().toISOString(),
+          total_processos: 0, total_pdfs: 0, ocr_executados: 0, tempo_total_ms: 0, processos: [],
+        }, 200);
+      }
     }
 
     const tStart = Date.now();
@@ -129,14 +159,18 @@ Deno.serve(async (req) => {
             const resp = await fetch(link, { redirect: "follow" });
             if (!resp.ok) throw new Error(`Download falhou: HTTP ${resp.status}`);
             pdfBytes = new Uint8Array(await resp.arrayBuffer());
-            storagePath = `${job.user_id}/temp/${job.id}.pdf`;
-            const { error: upErr } = await admin.storage.from("prospeccao-uploads")
-              .upload(storagePath, pdfBytes, { contentType: "application/pdf", upsert: true });
-            if (upErr) throw upErr;
+            if (!isHomologation) {
+              storagePath = `${job.user_id}/temp/${job.id}.pdf`;
+              const { error: upErr } = await admin.storage.from("prospeccao-uploads")
+                .upload(storagePath, pdfBytes, { contentType: "application/pdf", upsert: true });
+              if (upErr) throw upErr;
+            }
           }
-          await admin.from("prospeccao_pdf_jobs").update({
-            status: "baixado", storage_path: storagePath,
-          }).eq("id", job.id);
+          if (!isHomologation) {
+            await admin.from("prospeccao_pdf_jobs").update({
+              status: "baixado", storage_path: storagePath,
+            }).eq("id", job.id);
+          }
         } else {
           if (!storagePath) throw new Error("Job baixado sem storage_path");
           const { data: file, error } = await admin.storage.from("prospeccao-uploads").download(storagePath);
@@ -148,14 +182,14 @@ Deno.serve(async (req) => {
         const docHash = await sha256Hex(pdfBytes);
 
         // PARTE 5 — Documento Duplicado: mesmo hash já certificado para o usuário
-        const { data: dup } = await admin
+        const dup = isHomologation ? null : (await admin
           .from("prospeccao_linhas")
           .select("id")
           .eq("user_id", job.user_id)
           .eq("doc_hash", docHash)
           .neq("id", job.linha_id)
           .limit(1)
-          .maybeSingle();
+          .maybeSingle()).data;
 
         if (dup) {
           await admin.from("prospeccao_linhas").update({
@@ -168,6 +202,7 @@ Deno.serve(async (req) => {
           results.push({ job: job.id, ok: true, status: "Documento Duplicado" });
           continue;
         }
+
 
         const { callLLM } = await import("../_shared/llm-service.ts");
         const base64 = base64Encode(pdfBytes);
@@ -331,6 +366,16 @@ Deno.serve(async (req) => {
       } catch (e) {
         const msg = String((e as Error).message ?? e);
         const statusErro = /gemini|download|http|pdf/i.test(msg) ? "Erro OCR" : "Revisão Manual";
+        if (isHomologation) {
+          homologationResults.push({
+            processo: "Não identificado", empresa: "Não identificado", link: job.link,
+            status: statusErro, resumo_executivo: `Falha no processamento: ${msg}`,
+            oportunidade_bex: "-", score_comercial: 0, evidencias: [], comparativo: [],
+            json_resumido: {}, checklist: {}, analise_ia: {},
+          });
+          results.push({ job: job.id, ok: false, error: msg });
+          continue;
+        }
         await admin.from("prospeccao_pdf_jobs").update({
           status: "erro", error: msg, attempts: (job.attempts || 0) + 1,
         }).eq("id", job.id);
@@ -340,6 +385,7 @@ Deno.serve(async (req) => {
         await logEvent(admin, job, MODELO_GEMINI, 0, statusErro, { erro: msg });
         results.push({ job: job.id, ok: false, error: msg });
       }
+
     }
 
     if (isHomologation) {

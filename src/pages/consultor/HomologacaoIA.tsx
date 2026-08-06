@@ -16,17 +16,23 @@ interface jsPDFWithPlugin extends jsPDF {
 export default function HomologacaoIA() {
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<HomologationReport | null>(null);
+  const [links, setLinks] = useState("");
+  const [erro, setErro] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleRun = async () => {
     setLoading(true);
     setReport(null);
+    setErro(null);
     try {
-      const res = await runHomologation(2); // Limite baixo para homologação
+      const list = links.split(/[\n,;]+/).map(s => s.trim()).filter(Boolean);
+      const res = await runHomologation(list.length ? list.length : 2, list);
       setReport(res);
       toast({ title: "Homologação Concluída", description: "O relatório foi gerado com sucesso." });
     } catch (e) {
-      toast({ title: "Erro na Homologação", description: String(e), variant: "destructive" });
+      const msg = (e as Error)?.message ?? String(e);
+      setErro(msg);
+      toast({ title: "Erro na Homologação", description: msg, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -91,6 +97,34 @@ export default function HomologacaoIA() {
             )}
           </div>
         </div>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">Links de documentos (opcional)</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <textarea
+              value={links}
+              onChange={(e) => setLinks(e.target.value)}
+              rows={3}
+              placeholder="Cole aqui um ou mais links de PDF (um por linha). Se deixar vazio, a homologação usa os links da planilha carregada."
+              className="w-full text-xs font-mono rounded-md border border-border bg-background p-3 outline-none focus:ring-1 focus:ring-ring"
+            />
+            <p className="text-[11px] text-muted-foreground">
+              Nenhum dado é gravado no banco durante a homologação.
+            </p>
+          </CardContent>
+        </Card>
+
+        {erro && (
+          <Card className="border-red-200 bg-red-50/40">
+            <CardContent className="py-4 flex items-start gap-2 text-sm text-red-700">
+              <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+              <span>{erro}</span>
+            </CardContent>
+          </Card>
+        )}
+
 
         {loading && (
           <Card className="border-orange-200 bg-orange-50/30">
