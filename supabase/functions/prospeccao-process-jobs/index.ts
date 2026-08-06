@@ -14,7 +14,8 @@ import { logStage } from "../_shared/processing-telemetry.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
-const MODELO_GEMINI = "gemini-1.5-flash";
+const MODELO_GEMINI = "gemini-3.6-flash"; // melhor Gemini 3.X disponível
+const MODELO_FALLBACK = "gemini-3.6-flash";
 
 const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais conforme o MD - PARTE 4, MD-GEMINI-PROCESS-INTELLIGENCE-PANEL-001 e MD-ENTERPRISE-DOCUMENT-ACQUISITION-AND-REGISTRY-ENGINE-001.
 
