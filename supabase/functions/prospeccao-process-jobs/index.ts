@@ -2,6 +2,8 @@
 // Body: { limit?: number, job_id?: string }
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { acquireDocument, getDocument, logAccess } from "../_shared/document-acquisition.ts";
+
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
