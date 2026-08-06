@@ -82,7 +82,629 @@ export default function HomologacaoIA() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Modo Homologação: Motor Gemini</h1>
-              <p className="text-muted-foreground text-sm">analise o documento via modo homologação motor gemini extraindo os dados pdf através do acesso do link documento na planilha</p>
+              <p className="text-muted-foreground text-sm whitespace-pre-wrap">aplique e configure o MD-GEMINI-DOCUMENT-FETCH-ENGINE-001
+
+Versão: 1.0
+
+Status: Foundation
+
+Projeto: Plataforma de Prospecção BEx
+
+Módulo:
+
+Document Fetch Engine
+
+Objetivo:
+
+Implementar um motor responsável pela aquisição, validação e preparação dos documentos PDF antes do processamento pelo Gemini.
+
+Este módulo é obrigatório e antecede qualquer execução do Motor Cognitivo de Extração.
+
+---
+
+# 1. Objetivo da Arquitetura
+
+O Gemini nunca deverá acessar URLs diretamente.
+
+O Gemini receberá exclusivamente arquivos PDF já obtidos pela Plataforma.
+
+Separação de responsabilidades.
+
+Document Fetch Engine
+
+↓
+
+Download
+
+↓
+
+Validação
+
+↓
+
+Storage Temporário
+
+↓
+
+Gemini
+
+---
+
+# 2. Responsabilidades
+
+O Document Fetch Engine será responsável por:
+
+✓ Ler Link_Documento
+
+✓ Validar URL
+
+✓ Abrir conexão HTTP
+
+✓ Autenticar (quando necessário)
+
+✓ Realizar Download
+
+✓ Validar retorno
+
+✓ Validar Content-Type
+
+✓ Validar tamanho
+
+✓ Validar integridade
+
+✓ Calcular HASH
+
+✓ Detectar duplicidade
+
+✓ Salvar documento temporário
+
+✓ Disponibilizar PDF ao Gemini
+
+---
+
+# 3. Fluxo Oficial
+
+Planilha
+
+↓
+
+Registro
+
+↓
+
+Link_Documento
+
+↓
+
+Document Fetch Engine
+
+↓
+
+HTTP GET
+
+↓
+
+Validação
+
+↓
+
+PDF
+
+↓
+
+Storage Temporário
+
+↓
+
+Gemini
+
+↓
+
+Extração Cognitiva
+
+---
+
+# 4. Entrada
+
+Receber.
+
+document_id
+
+empresa
+
+processo
+
+link_documento
+
+Exemplo.
+
+https://docs.gestorjuridico.com.br/Documento/Download?idDoc=231535&causa=&sigla=REJ&V=46326
+
+---
+
+# 5. Validação Inicial
+
+Antes do download.
+
+Validar.
+
+URL válida
+
+HTTPS
+
+Domínio permitido
+
+Formato esperado
+
+Caso inválido.
+
+Encerrar processamento.
+
+Registrar erro.
+
+---
+
+# 6. Lista Branca
+
+Permitir apenas domínios autorizados.
+
+Inicialmente.
+
+docs.gestorjuridico.com.br
+
+Permitir expansão futura.
+
+---
+
+# 7. Download
+
+Executar HTTP GET.
+
+Não utilizar navegador.
+
+Não utilizar OCR.
+
+Não utilizar Gemini.
+
+Somente cliente HTTP.
+
+---
+
+# 8. Cabeçalhos HTTP
+
+Permitir configuração.
+
+User-Agent
+
+Accept
+
+Accept-Language
+
+Referer
+
+Authorization
+
+Cookie
+
+Origin
+
+Todos configuráveis.
+
+Nunca fixos.
+
+---
+
+# 9. Sessão
+
+Caso o servidor exija autenticação.
+
+Permitir.
+
+Cookie
+
+Bearer Token
+
+JWT
+
+API Key
+
+Sessão autenticada
+
+Todos deverão ser armazenados temporariamente.
+
+Nunca dentro do Gemini.
+
+---
+
+# 10. Timeout
+
+Tempo máximo.
+
+30 segundos.
+
+Após.
+
+Nova tentativa.
+
+Máximo.
+
+3 tentativas.
+
+Backoff exponencial.
+
+---
+
+# 11. Validação da Resposta
+
+Aceitar.
+
+HTTP 200
+
+Content-Type
+
+application/pdf
+
+Caso diferente.
+
+Registrar.
+
+401
+
+403
+
+404
+
+429
+
+500
+
+503
+
+Timeout
+
+---
+
+# 12. Verificação do Documento
+
+Após download.
+
+Validar.
+
+Arquivo existe
+
+Arquivo maior que zero
+
+PDF válido
+
+Quantidade páginas
+
+Sem corrupção
+
+Caso inválido.
+
+Interromper.
+
+---
+
+# 13. Hash
+
+Calcular.
+
+SHA-256
+
+Salvar.
+
+Utilizar para:
+
+Duplicidade
+
+Versionamento
+
+Auditoria
+
+---
+
+# 14. Duplicidade
+
+Antes de enviar ao Gemini.
+
+Comparar.
+
+Hash
+
+Quantidade páginas
+
+Processo
+
+Documento
+
+Caso igual.
+
+Não baixar novamente.
+
+Reutilizar documento.
+
+---
+
+# 15. Storage Temporário
+
+Salvar.
+
+storage/temp/
+
+Estrutura.
+
+Ano
+
+↓
+
+Mês
+
+↓
+
+Dia
+
+↓
+
+Processo
+
+↓
+
+Documento
+
+Nunca utilizar armazenamento definitivo.
+
+---
+
+# 16. Metadados
+
+Registrar.
+
+Nome arquivo
+
+Tamanho
+
+Hash
+
+Quantidade páginas
+
+Data download
+
+Tempo download
+
+Status
+
+---
+
+# 17. Envio ao Gemini
+
+O Gemini receberá apenas.
+
+documento.pdf
+
+Nunca URL.
+
+Nunca Cookie.
+
+Nunca Token.
+
+Nunca Sessão.
+
+---
+
+# 18. Tratamento de Erros
+
+Criar mensagens padronizadas.
+
+DOWNLOAD_TIMEOUT
+
+DOWNLOAD_404
+
+DOWNLOAD_403
+
+PDF_INVALIDO
+
+PDF_CORROMPIDO
+
+URL_INVALIDA
+
+SESSAO_EXPIRADA
+
+COOKIE_INVALIDO
+
+CONTENT_TYPE_INVALIDO
+
+---
+
+# 19. Reprocessamento
+
+Caso falha.
+
+Permitir.
+
+Reexecutar download.
+
+Sem reiniciar toda análise.
+
+---
+
+# 20. Cache
+
+Caso mesmo documento.
+
+Mesmo Hash.
+
+Mesmo Processo.
+
+Mesmo Link.
+
+Utilizar documento existente.
+
+Não realizar novo download.
+
+---
+
+# 21. Auditoria
+
+Registrar.
+
+Usuário
+
+Data
+
+Hora
+
+Link
+
+Tempo
+
+Status
+
+Hash
+
+Servidor
+
+Código HTTP
+
+---
+
+# 22. Segurança
+
+Nunca armazenar.
+
+Senha
+
+Cookie permanente
+
+Bearer definitivo
+
+Sessão permanente
+
+Todos deverão expirar automaticamente.
+
+---
+
+# 23. API Interna
+
+Disponibilizar interface única.
+
+fetchDocument()
+
+Entrada.
+
+Link_Documento
+
+Saída.
+
+PDF
+
+Hash
+
+Quantidade páginas
+
+Status
+
+Storage Path
+
+Metadados
+
+---
+
+# 24. Integração
+
+Ao concluir.
+
+Enviar.
+
+PDF
+
+↓
+
+Gemini
+
+↓
+
+MD-GEMINI-EXTRACAO-PROSPECCAO-ADMINISTRADOR-JUDICIAL-001
+
+Nenhum outro módulo poderá acessar URLs diretamente.
+
+---
+
+# 25. Certificação
+
+A implementação somente será aprovada quando.
+
+✓ Todos os links válidos forem baixados.
+
+✓ PDFs íntegros.
+
+✓ Hash calculado.
+
+✓ Storage criado.
+
+✓ Duplicidade funcionando.
+
+✓ Reprocessamento funcionando.
+
+✓ Sessões autenticadas funcionando.
+
+✓ Gemini recebendo apenas PDFs.
+
+---
+
+# 26. Critério de Homologação
+
+Executar os links da planilha de homologação.
+
+Para cada documento.
+
+Confirmar.
+
+Download
+
+↓
+
+Hash
+
+↓
+
+Storage
+
+↓
+
+PDF
+
+↓
+
+Gemini
+
+↓
+
+Extração
+
+↓
+
+Business Facts
+
+↓
+
+JSON
+
+↓
+
+Painel IA
+
+Sem qualquer acesso HTTP realizado pelo Gemini.
+
+---
+
+# Resultado Esperado
+
+Ao final da implementação, a Plataforma BEx possuirá uma camada de aquisição documental totalmente desacoplada do Motor Cognitivo.
+
+O Document Fetch Engine será o único responsável pela comunicação com sistemas externos, autenticação, download e validação dos arquivos.
+
+O Gemini passará a atuar exclusivamente como motor de interpretação documental, recebendo sempre documentos PDF íntegros, rastreáveis e certificados, garantindo maior estabilidade, segurança, desempenho e facilidade de manutenção da arquitetura.</p>
             </div>
           </div>
           <div className="flex gap-2">
