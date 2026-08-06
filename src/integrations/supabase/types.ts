@@ -2721,6 +2721,299 @@ export type Database = {
           },
         ]
       }
+      knowledge_commercial: {
+        Row: {
+          complexidade: string | null
+          created_at: string
+          dados: Json
+          entity_id: string
+          id: string
+          interesse_bex: number | null
+          potencial_economico: number | null
+          prioridade: string | null
+          probabilidade_aj: number | null
+          situacao_comercial: string | null
+          updated_at: string
+          versao: number
+        }
+        Insert: {
+          complexidade?: string | null
+          created_at?: string
+          dados?: Json
+          entity_id: string
+          id?: string
+          interesse_bex?: number | null
+          potencial_economico?: number | null
+          prioridade?: string | null
+          probabilidade_aj?: number | null
+          situacao_comercial?: string | null
+          updated_at?: string
+          versao?: number
+        }
+        Update: {
+          complexidade?: string | null
+          created_at?: string
+          dados?: Json
+          entity_id?: string
+          id?: string
+          interesse_bex?: number | null
+          potencial_economico?: number | null
+          prioridade?: string | null
+          probabilidade_aj?: number | null
+          situacao_comercial?: string | null
+          updated_at?: string
+          versao?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_commercial_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_entities: {
+        Row: {
+          chave_natural: string
+          confiabilidade: number | null
+          created_at: string
+          dados: Json
+          id: string
+          municipio: string | null
+          nome: string
+          nome_normalizado: string | null
+          primeira_aparicao: string
+          projeto: string
+          situacao: string | null
+          tipo: string
+          tribunal: string | null
+          uf: string | null
+          ultima_atualizacao: string
+          update_count: number
+          updated_at: string
+          versao: number
+        }
+        Insert: {
+          chave_natural: string
+          confiabilidade?: number | null
+          created_at?: string
+          dados?: Json
+          id?: string
+          municipio?: string | null
+          nome: string
+          nome_normalizado?: string | null
+          primeira_aparicao?: string
+          projeto?: string
+          situacao?: string | null
+          tipo: string
+          tribunal?: string | null
+          uf?: string | null
+          ultima_atualizacao?: string
+          update_count?: number
+          updated_at?: string
+          versao?: number
+        }
+        Update: {
+          chave_natural?: string
+          confiabilidade?: number | null
+          created_at?: string
+          dados?: Json
+          id?: string
+          municipio?: string | null
+          nome?: string
+          nome_normalizado?: string | null
+          primeira_aparicao?: string
+          projeto?: string
+          situacao?: string | null
+          tipo?: string
+          tribunal?: string | null
+          uf?: string | null
+          ultima_atualizacao?: string
+          update_count?: number
+          updated_at?: string
+          versao?: number
+        }
+        Relationships: []
+      }
+      knowledge_entity_versions: {
+        Row: {
+          created_at: string
+          dados: Json
+          entity_id: string
+          id: string
+          mudancas: Json
+          origem: Json
+          versao: number
+        }
+        Insert: {
+          created_at?: string
+          dados: Json
+          entity_id: string
+          id?: string
+          mudancas?: Json
+          origem?: Json
+          versao: number
+        }
+        Update: {
+          created_at?: string
+          dados?: Json
+          entity_id?: string
+          id?: string
+          mudancas?: Json
+          origem?: Json
+          versao?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_entity_versions_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_events: {
+        Row: {
+          created_at: string
+          dados: Json
+          data_evento: string | null
+          descricao: string | null
+          entity_id: string
+          hash_evento: string | null
+          id: string
+          origem: Json
+          tipo: string
+        }
+        Insert: {
+          created_at?: string
+          dados?: Json
+          data_evento?: string | null
+          descricao?: string | null
+          entity_id: string
+          hash_evento?: string | null
+          id?: string
+          origem?: Json
+          tipo: string
+        }
+        Update: {
+          created_at?: string
+          dados?: Json
+          data_evento?: string | null
+          descricao?: string | null
+          entity_id?: string
+          hash_evento?: string | null
+          id?: string
+          origem?: Json
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_events_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_relations: {
+        Row: {
+          atributos: Json
+          created_at: string
+          from_entity_id: string
+          id: string
+          tipo: string
+          to_entity_id: string
+          updated_at: string
+        }
+        Insert: {
+          atributos?: Json
+          created_at?: string
+          from_entity_id: string
+          id?: string
+          tipo: string
+          to_entity_id: string
+          updated_at?: string
+        }
+        Update: {
+          atributos?: Json
+          created_at?: string
+          from_entity_id?: string
+          id?: string
+          tipo?: string
+          to_entity_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_relations_from_entity_id_fkey"
+            columns: ["from_entity_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_relations_to_entity_id_fkey"
+            columns: ["to_entity_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_sources: {
+        Row: {
+          business_fact: Json
+          confiabilidade: number | null
+          created_at: string
+          document_id: string | null
+          entity_id: string
+          hash_sha256: string | null
+          id: string
+          motor_ia: string | null
+          registry_id: string | null
+          user_id: string | null
+          versao: number
+        }
+        Insert: {
+          business_fact?: Json
+          confiabilidade?: number | null
+          created_at?: string
+          document_id?: string | null
+          entity_id: string
+          hash_sha256?: string | null
+          id?: string
+          motor_ia?: string | null
+          registry_id?: string | null
+          user_id?: string | null
+          versao?: number
+        }
+        Update: {
+          business_fact?: Json
+          confiabilidade?: number | null
+          created_at?: string
+          document_id?: string | null
+          entity_id?: string
+          hash_sha256?: string | null
+          id?: string
+          motor_ia?: string | null
+          registry_id?: string | null
+          user_id?: string | null
+          versao?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_sources_entity_id_fkey"
+            columns: ["entity_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lancamentos: {
         Row: {
           ano: number
@@ -6847,6 +7140,52 @@ export type Database = {
       is_conversation_participant: {
         Args: { _conv: string; _user: string }
         Returns: boolean
+      }
+      knowledge_indicators: { Args: never; Returns: Json }
+      knowledge_search: {
+        Args: { p_limit?: number; p_query: string; p_tipo?: string }
+        Returns: {
+          chave_natural: string
+          confiabilidade: number | null
+          created_at: string
+          dados: Json
+          id: string
+          municipio: string | null
+          nome: string
+          nome_normalizado: string | null
+          primeira_aparicao: string
+          projeto: string
+          situacao: string | null
+          tipo: string
+          tribunal: string | null
+          uf: string | null
+          ultima_atualizacao: string
+          update_count: number
+          updated_at: string
+          versao: number
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "knowledge_entities"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      knowledge_upsert_entity: {
+        Args: {
+          p_chave: string
+          p_confiabilidade?: number
+          p_dados?: Json
+          p_municipio?: string
+          p_nome: string
+          p_origem?: Json
+          p_projeto?: string
+          p_situacao?: string
+          p_tipo: string
+          p_tribunal?: string
+          p_uf?: string
+        }
+        Returns: string
       }
       learn_prompt_example: {
         Args: {
