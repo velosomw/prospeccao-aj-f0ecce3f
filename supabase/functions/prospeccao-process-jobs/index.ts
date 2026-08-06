@@ -575,14 +575,6 @@ function json(b: unknown, status = 200) {
   });
 }
 
-function base64Encode(bytes: Uint8Array): string {
-  let bin = "";
-  const chunk = 0x8000;
-  for (let i = 0; i < bytes.length; i += chunk) {
-    bin += String.fromCharCode(...bytes.subarray(i, i + chunk));
-  }
-  return btoa(bin);
-}
 
 async function sha256Hex(bytes: Uint8Array): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-256", bytes as unknown as BufferSource);
