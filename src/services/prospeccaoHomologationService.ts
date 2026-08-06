@@ -23,14 +23,16 @@ export interface HomologationReport {
   ocr_executados: number;
   tempo_total_ms: number;
   processos: HomologationResult[];
+  error?: string;
 }
 
-export async function runHomologation(limit = 3): Promise<HomologationReport> {
-  // Chamada para a Edge Function em modo homologação
+export async function runHomologation(limit = 3, links?: string[]): Promise<HomologationReport> {
   const { data, error } = await supabase.functions.invoke("prospeccao-process-jobs", {
-    body: { limit, mode: "homologacao" },
+    body: { limit, mode: "homologacao", ...(links?.length ? { links } : {}) },
   });
-  
+
   if (error) throw error;
-  return data as HomologationReport;
+  const report = data as HomologationReport;
+  if (report?.error) throw new Error(report.error);
+  return report;
 }
