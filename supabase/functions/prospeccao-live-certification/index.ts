@@ -259,6 +259,8 @@ Deno.serve(async (req) => {
       }
 
       logStage({
+        run_id: run.id,
+        linha_id: entrada.id ?? null,
         document_id: (download as any).document_id ?? null,
         stage: "total",
         status: aprovado ? "success" : "error",
