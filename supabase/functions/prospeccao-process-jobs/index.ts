@@ -255,6 +255,16 @@ Deno.serve(async (req) => {
         const extracted = extractJson(content);
         const ws = extracted.workspace || {};
 
+        if (!isHomologation && documentId) {
+          await logAccess({
+            document_id: documentId, registry_id: registryId, projeto: "prospeccao_bex",
+            motor_ia: MODELO_GEMINI, acao: "ai_extraction", hash_sha256: docHash,
+            resultado: content ? "ok" : "vazio", tempo_ms: Date.now() - t0,
+            user_id: job.user_id ?? null,
+          });
+        }
+
+
         // PARTE 5 & MD-001 — Certificação
         const certificacao = {
           pdf_processado: Boolean(content && content.length > 0),
