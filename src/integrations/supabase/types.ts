@@ -1849,6 +1849,92 @@ export type Database = {
           },
         ]
       }
+      document_access_log: {
+        Row: {
+          acao: string
+          created_at: string
+          document_id: string | null
+          hash_sha256: string | null
+          id: string
+          metadata: Json
+          motor_ia: string | null
+          projeto: string | null
+          registry_id: string | null
+          resultado: string | null
+          tempo_ms: number | null
+          user_id: string | null
+          versao: number | null
+        }
+        Insert: {
+          acao: string
+          created_at?: string
+          document_id?: string | null
+          hash_sha256?: string | null
+          id?: string
+          metadata?: Json
+          motor_ia?: string | null
+          projeto?: string | null
+          registry_id?: string | null
+          resultado?: string | null
+          tempo_ms?: number | null
+          user_id?: string | null
+          versao?: number | null
+        }
+        Update: {
+          acao?: string
+          created_at?: string
+          document_id?: string | null
+          hash_sha256?: string | null
+          id?: string
+          metadata?: Json
+          motor_ia?: string | null
+          projeto?: string | null
+          registry_id?: string | null
+          resultado?: string | null
+          tempo_ms?: number | null
+          user_id?: string | null
+          versao?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_access_log_registry_id_fkey"
+            columns: ["registry_id"]
+            isOneToOne: false
+            referencedRelation: "prospeccao_document_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      document_connector_sessions: {
+        Row: {
+          auth_type: string | null
+          conector: string
+          created_at: string
+          expires_at: string
+          id: string
+          metadata: Json
+          session_key: string
+        }
+        Insert: {
+          auth_type?: string | null
+          conector: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          metadata?: Json
+          session_key: string
+        }
+        Update: {
+          auth_type?: string | null
+          conector?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          session_key?: string
+        }
+        Relationships: []
+      }
       document_embeddings: {
         Row: {
           chunk_index: number
@@ -4451,52 +4537,91 @@ export type Database = {
       }
       prospeccao_document_registry: {
         Row: {
+          acessos: number
+          certificacao: Json | null
+          certificado: boolean | null
+          conector: string | null
           created_at: string | null
+          created_by: string | null
           document_id: string
+          empresa: string | null
           extensao: string | null
           hash_sha256: string
           id: string
+          idioma: string | null
           metadata: Json | null
           mime_type: string | null
           nome_arquivo: string | null
+          ocr_necessario: boolean | null
           origem: string | null
+          paginas: number | null
+          parent_document_id: string | null
+          processo: string | null
+          projeto: string | null
           status: string | null
           storage_path: string
           tamanho_bytes: number | null
+          ultimo_acesso_em: string | null
           updated_at: string | null
           url_original: string | null
           versao: number | null
         }
         Insert: {
+          acessos?: number
+          certificacao?: Json | null
+          certificado?: boolean | null
+          conector?: string | null
           created_at?: string | null
+          created_by?: string | null
           document_id: string
+          empresa?: string | null
           extensao?: string | null
           hash_sha256: string
           id?: string
+          idioma?: string | null
           metadata?: Json | null
           mime_type?: string | null
           nome_arquivo?: string | null
+          ocr_necessario?: boolean | null
           origem?: string | null
+          paginas?: number | null
+          parent_document_id?: string | null
+          processo?: string | null
+          projeto?: string | null
           status?: string | null
           storage_path: string
           tamanho_bytes?: number | null
+          ultimo_acesso_em?: string | null
           updated_at?: string | null
           url_original?: string | null
           versao?: number | null
         }
         Update: {
+          acessos?: number
+          certificacao?: Json | null
+          certificado?: boolean | null
+          conector?: string | null
           created_at?: string | null
+          created_by?: string | null
           document_id?: string
+          empresa?: string | null
           extensao?: string | null
           hash_sha256?: string
           id?: string
+          idioma?: string | null
           metadata?: Json | null
           mime_type?: string | null
           nome_arquivo?: string | null
+          ocr_necessario?: boolean | null
           origem?: string | null
+          paginas?: number | null
+          parent_document_id?: string | null
+          processo?: string | null
+          projeto?: string | null
           status?: string | null
           storage_path?: string
           tamanho_bytes?: number | null
+          ultimo_acesso_em?: string | null
           updated_at?: string | null
           url_original?: string | null
           versao?: number | null
