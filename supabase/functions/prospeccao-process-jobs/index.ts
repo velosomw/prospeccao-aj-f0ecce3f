@@ -159,14 +159,18 @@ Deno.serve(async (req) => {
             const resp = await fetch(link, { redirect: "follow" });
             if (!resp.ok) throw new Error(`Download falhou: HTTP ${resp.status}`);
             pdfBytes = new Uint8Array(await resp.arrayBuffer());
-            storagePath = `${job.user_id}/temp/${job.id}.pdf`;
-            const { error: upErr } = await admin.storage.from("prospeccao-uploads")
-              .upload(storagePath, pdfBytes, { contentType: "application/pdf", upsert: true });
-            if (upErr) throw upErr;
+            if (!isHomologation) {
+              storagePath = `${job.user_id}/temp/${job.id}.pdf`;
+              const { error: upErr } = await admin.storage.from("prospeccao-uploads")
+                .upload(storagePath, pdfBytes, { contentType: "application/pdf", upsert: true });
+              if (upErr) throw upErr;
+            }
           }
-          await admin.from("prospeccao_pdf_jobs").update({
-            status: "baixado", storage_path: storagePath,
-          }).eq("id", job.id);
+          if (!isHomologation) {
+            await admin.from("prospeccao_pdf_jobs").update({
+              status: "baixado", storage_path: storagePath,
+            }).eq("id", job.id);
+          }
         } else {
           if (!storagePath) throw new Error("Job baixado sem storage_path");
           const { data: file, error } = await admin.storage.from("prospeccao-uploads").download(storagePath);
@@ -178,14 +182,14 @@ Deno.serve(async (req) => {
         const docHash = await sha256Hex(pdfBytes);
 
         // PARTE 5 — Documento Duplicado: mesmo hash já certificado para o usuário
-        const { data: dup } = await admin
+        const dup = isHomologation ? null : (await admin
           .from("prospeccao_linhas")
           .select("id")
           .eq("user_id", job.user_id)
           .eq("doc_hash", docHash)
           .neq("id", job.linha_id)
           .limit(1)
-          .maybeSingle();
+          .maybeSingle()).data;
 
         if (dup) {
           await admin.from("prospeccao_linhas").update({
@@ -198,6 +202,7 @@ Deno.serve(async (req) => {
           results.push({ job: job.id, ok: true, status: "Documento Duplicado" });
           continue;
         }
+
 
         const { callLLM } = await import("../_shared/llm-service.ts");
         const base64 = base64Encode(pdfBytes);
