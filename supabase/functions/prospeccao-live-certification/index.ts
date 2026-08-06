@@ -219,6 +219,11 @@ Deno.serve(async (req) => {
         evidencias,
       };
 
+      // Fatos canônicos (EAV) — dry-run: gerados como evidência, sem persistir em produção
+      const factsCanonicos = Object.keys(ws).length > 0
+        ? buildFactRows(ws, { document_id: (download as any).document_id ?? null, numero_processo: ws.processo ?? null, source: "certificacao_live" })
+        : [];
+
       const checklist = {
         download_realizado: (download as any).status === "ok",
         documento_certificado: Boolean((download as any).hash_sha256),
@@ -227,7 +232,9 @@ Deno.serve(async (req) => {
         empresas_identificadas: Boolean(ws.empresa),
         valores_interpretados: Number(ws.valor_exportacao ?? 0) > 0 || businessFacts.length > 0,
         business_facts_gerados: businessFacts.length > 0,
+        business_facts_canonicos: factsCanonicos.length > 0,
         json_produzido: Object.keys(ws).length > 0,
+        json_schema_valido: schemaValido,
         painel_gerado: Boolean(painel.resumo_executivo),
         resumo_coerente: Boolean(ws.resumo_executivo && ws.interesse_bex && ws.recomendacao_ia),
         evidencias_registradas: evidencias.length > 0,
@@ -236,6 +243,17 @@ Deno.serve(async (req) => {
       if (!aprovado && !motivo) {
         motivo = Object.entries(checklist).filter(([, v]) => !v).map(([k]) => k).join(", ");
       }
+
+      logStage({
+        document_id: (download as any).document_id ?? null,
+        stage: "total",
+        status: aprovado ? "success" : "error",
+        duration_ms: Date.now() - tProc,
+        model: MODELO_GEMINI,
+        provider: "gemini",
+        error_message: aprovado ? null : motivo,
+        metadata: { certificacao_live: true, fase, ordem: i + 1 },
+      });
 
       const proc = {
         run_id: run.id, user_id: userId, ordem: i + 1,
@@ -246,9 +264,11 @@ Deno.serve(async (req) => {
         status: aprovado ? "aprovado" : "reprovado",
         aprovado, motivo_reprovacao: aprovado ? null : motivo,
         download, gemini, business_facts: businessFacts,
-        json_canonico: extracted, painel, checklist, evidencias,
+        json_canonico: { ...extracted, schema_version: CANONICAL_SCHEMA_VERSION, schema_valido: schemaValido, schema_issues: schemaIssues },
+        painel, checklist, evidencias,
         etapas, tempo_total_ms: Date.now() - tProc,
       };
+
       await admin.from("certificacao_processos").insert(proc);
       processos.push(proc);
     }
