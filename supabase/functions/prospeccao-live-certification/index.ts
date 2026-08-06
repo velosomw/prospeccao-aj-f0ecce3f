@@ -151,7 +151,11 @@ Deno.serve(async (req) => {
 
 
         // 2) Gemini — OCR + classificação + segmentação + extração
+        // PDFs reais podem passar de 20 MB: usamos a Files API (upload binário),
+        // evitando o base64 inline que estoura a memória do worker.
         const t1 = Date.now();
+        const fileUri = await uploadGeminiFile(acq.bytes, "application/pdf", acq.nome_arquivo);
+        console.log(`[cert] upload gemini ok em ${Date.now() - t1}ms`);
         const { callLLM } = await import("../_shared/llm-service.ts");
         const aiResult = await callLLM({
           prompt: EXTRACTION_PROMPT,
@@ -161,13 +165,16 @@ Deno.serve(async (req) => {
           useCache: false,
           customBody: {
             contents: [{
+              role: "user",
               parts: [
                 { text: EXTRACTION_PROMPT },
-                { inlineData: { mimeType: "application/pdf", data: base64Encode(acq.bytes) } },
+                { fileData: { mimeType: "application/pdf", fileUri } },
               ],
             }],
+            generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8192 },
           },
         });
+
         const content = aiResult.text || "";
         const rawExtracted = extractJson(content);
         const validation = validateCanonical(rawExtracted);
