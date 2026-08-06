@@ -262,18 +262,33 @@ Deno.serve(async (req) => {
           },
         });
 
-        // Degradação controlada: modelo sem cota (429) cai para o Gemini 3.x disponível
+        // Resiliência: 503/500 (modelo sobrecarregado) → retry com backoff exponencial
+        // Degradação controlada: 429 (sem cota) → fallback para o Gemini 3.x disponível
         let modeloUsado = MODELO_GEMINI;
         let aiResult;
-        try {
-          aiResult = await chamarGemini(MODELO_GEMINI);
-        } catch (err) {
-          const msg = String((err as Error)?.message ?? err);
-          if (!msg.includes("429") || MODELO_GEMINI === MODELO_FALLBACK) throw err;
-          console.warn(`[worker] ${MODELO_GEMINI} sem cota (429) → fallback ${MODELO_FALLBACK}`);
-          modeloUsado = MODELO_FALLBACK;
-          aiResult = await chamarGemini(MODELO_FALLBACK);
+        let ultimaFalha: unknown = null;
+        for (let tentativa = 0; tentativa < 4; tentativa++) {
+          try {
+            aiResult = await chamarGemini(modeloUsado);
+            ultimaFalha = null;
+            break;
+          } catch (err) {
+            ultimaFalha = err;
+            const msg = String((err as Error)?.message ?? err);
+            if (msg.includes("429") && modeloUsado !== MODELO_FALLBACK) {
+              console.warn(`[worker] ${modeloUsado} sem cota (429) → fallback ${MODELO_FALLBACK}`);
+              modeloUsado = MODELO_FALLBACK;
+              continue;
+            }
+            const transitorio = /\b(429|500|502|503|504)\b/.test(msg);
+            if (!transitorio || tentativa === 3) throw err;
+            const espera = 2000 * Math.pow(2, tentativa);
+            console.warn(`[worker] Gemini transitório (${msg.slice(0, 80)}) → retry em ${espera}ms`);
+            await new Promise((r) => setTimeout(r, espera));
+          }
         }
+        if (!aiResult) throw ultimaFalha ?? new Error("GEMINI_SEM_RESPOSTA");
+
 
         const content = aiResult.text || "";
 
