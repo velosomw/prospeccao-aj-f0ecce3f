@@ -8,7 +8,7 @@ const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
 const MODELO_GEMINI = "gemini-1.5-flash";
 
-const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais conforme o MD - PARTE 4, MD-GEMINI-PROCESS-INTELLIGENCE-PANEL-001 e MD-DOCUMENT-FETCH-ENTERPRISE-ENGINE-001.
+const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais conforme o MD - PARTE 4, MD-GEMINI-PROCESS-INTELLIGENCE-PANEL-001 e MD-ENTERPRISE-DOCUMENT-ACQUISITION-AND-REGISTRY-ENGINE-001.
 
 OBJETIVO: Interpretar todos os valores jurídicos, gerar um modelo único de dados (Workspace) e produzir uma Análise Inteligente Executiva.
 
@@ -159,7 +159,7 @@ Deno.serve(async (req) => {
               if (error) throw error;
               pdfBytes = new Uint8Array(await file.arrayBuffer());
             } else {
-              // MD-DOCUMENT-FETCH-ENTERPRISE-ENGINE-001: Validação e Download Seguro
+              // MD-ENTERPRISE-DOCUMENT-ACQUISITION-AND-REGISTRY-ENGINE-001: Validação e Download Seguro
               const url = new URL(link);
               if (url.protocol !== "https:") throw new Error("URL_INVALIDA: Apenas HTTPS permitido");
               
@@ -193,11 +193,48 @@ Deno.serve(async (req) => {
             const downloadTime = Date.now() - tDown0;
             const hash = await sha256Hex(pdfBytes);
 
-            // Log de Auditoria do Fetch Engine (MD-001 Parte 21)
+            // PARTE 11 — Registro Corporativo (MD-001)
+            let registryId: string | null = null;
+            let docId: string | null = null;
+
             if (!isHomologation) {
+              // Verificar se já existe no Registro Corporativo por HASH
+              const { data: existingReg } = await admin
+                .from("prospeccao_document_registry")
+                .select("id, document_id, storage_path")
+                .eq("hash_sha256", hash)
+                .maybeSingle();
+
+              if (existingReg) {
+                registryId = existingReg.id;
+                docId = existingReg.document_id;
+                storagePath = existingReg.storage_path;
+              } else {
+                // Gerar Document ID Corporativo
+                const { data: newDocId } = await admin.rpc('generate_document_id');
+                docId = newDocId;
+
+                // Registrar no Catálogo Corporativo
+                const { data: reg, error: regErr } = await admin.from("prospeccao_document_registry").insert({
+                  document_id: docId,
+                  hash_sha256: hash,
+                  nome_arquivo: job.id + ".pdf",
+                  tamanho_bytes: pdfBytes.length,
+                  storage_path: storagePath,
+                  url_original: link,
+                  origem: url.hostname,
+                  versao: 1
+                }).select("id").single();
+                
+                if (regErr) throw regErr;
+                registryId = reg.id;
+              }
+
+              // Log de Auditoria do Acquisition Engine
               await admin.from("prospeccao_document_fetch_logs").insert({
                 linha_id: job.linha_id,
                 job_id: job.id,
+                registry_id: registryId,
                 url: link,
                 status_code: 200,
                 file_size: pdfBytes.length,
@@ -209,7 +246,8 @@ Deno.serve(async (req) => {
                 status: "baixado", 
                 storage_path: storagePath,
                 doc_hash: hash,
-                fetch_metadata: { download_ms: downloadTime, size: pdfBytes.length }
+                registry_id: registryId,
+                fetch_metadata: { download_ms: downloadTime, size: pdfBytes.length, document_id: docId }
               }).eq("id", job.id);
             }
           } catch (fetchErr) {
@@ -345,6 +383,11 @@ Deno.serve(async (req) => {
           mes_referencia: mesRef,
           doc_hash: docHash,
           ai_error: null,
+          // Vincular Document ID Corporativo se disponível
+          metadata: { 
+            ...(job.fetch_metadata || {}), 
+            document_id: job.fetch_metadata?.document_id 
+          }
         };
 
         await admin.from("prospeccao_linhas").update(linhaUpdate).eq("id", job.linha_id);

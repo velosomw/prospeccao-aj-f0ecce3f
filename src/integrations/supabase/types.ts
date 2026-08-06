@@ -4376,6 +4376,7 @@ export type Database = {
           id: string
           job_id: string | null
           linha_id: string | null
+          registry_id: string | null
           status_code: number | null
           tempo_download_ms: number | null
           url: string
@@ -4390,6 +4391,7 @@ export type Database = {
           id?: string
           job_id?: string | null
           linha_id?: string | null
+          registry_id?: string | null
           status_code?: number | null
           tempo_download_ms?: number | null
           url: string
@@ -4404,6 +4406,7 @@ export type Database = {
           id?: string
           job_id?: string | null
           linha_id?: string | null
+          registry_id?: string | null
           status_code?: number | null
           tempo_download_ms?: number | null
           url?: string
@@ -4437,7 +4440,68 @@ export type Database = {
             referencedRelation: "vw_prospeccao_certification_status"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "prospeccao_document_fetch_logs_registry_id_fkey"
+            columns: ["registry_id"]
+            isOneToOne: false
+            referencedRelation: "prospeccao_document_registry"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      prospeccao_document_registry: {
+        Row: {
+          created_at: string | null
+          document_id: string
+          extensao: string | null
+          hash_sha256: string
+          id: string
+          metadata: Json | null
+          mime_type: string | null
+          nome_arquivo: string | null
+          origem: string | null
+          status: string | null
+          storage_path: string
+          tamanho_bytes: number | null
+          updated_at: string | null
+          url_original: string | null
+          versao: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          document_id: string
+          extensao?: string | null
+          hash_sha256: string
+          id?: string
+          metadata?: Json | null
+          mime_type?: string | null
+          nome_arquivo?: string | null
+          origem?: string | null
+          status?: string | null
+          storage_path: string
+          tamanho_bytes?: number | null
+          updated_at?: string | null
+          url_original?: string | null
+          versao?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          document_id?: string
+          extensao?: string | null
+          hash_sha256?: string
+          id?: string
+          metadata?: Json | null
+          mime_type?: string | null
+          nome_arquivo?: string | null
+          origem?: string | null
+          status?: string | null
+          storage_path?: string
+          tamanho_bytes?: number | null
+          updated_at?: string | null
+          url_original?: string | null
+          versao?: number | null
+        }
+        Relationships: []
       }
       prospeccao_linhas: {
         Row: {
@@ -4666,6 +4730,7 @@ export type Database = {
           link: string
           onedrive_path: string | null
           pdf_sha256: string | null
+          registry_id: string | null
           status: string
           storage_path: string | null
           updated_at: string
@@ -4683,6 +4748,7 @@ export type Database = {
           link: string
           onedrive_path?: string | null
           pdf_sha256?: string | null
+          registry_id?: string | null
           status?: string
           storage_path?: string | null
           updated_at?: string
@@ -4700,6 +4766,7 @@ export type Database = {
           link?: string
           onedrive_path?: string | null
           pdf_sha256?: string | null
+          registry_id?: string | null
           status?: string
           storage_path?: string | null
           updated_at?: string
@@ -4732,6 +4799,13 @@ export type Database = {
             columns: ["linha_id"]
             isOneToOne: false
             referencedRelation: "vw_prospeccao_certification_status"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prospeccao_pdf_jobs_registry_id_fkey"
+            columns: ["registry_id"]
+            isOneToOne: false
+            referencedRelation: "prospeccao_document_registry"
             referencedColumns: ["id"]
           },
         ]
@@ -6625,6 +6699,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      generate_document_id: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
