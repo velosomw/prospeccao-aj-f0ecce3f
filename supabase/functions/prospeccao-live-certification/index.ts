@@ -327,19 +327,17 @@ function json(b: unknown, status = 200) {
   return new Response(JSON.stringify(b), { headers: { ...corsHeaders, "Content-Type": "application/json" }, status });
 }
 function base64Encode(bytes: Uint8Array): string {
-  let bin = "";
-  const chunk = 0x8000;
-  for (let i = 0; i < bytes.length; i += chunk) bin += String.fromCharCode(...bytes.subarray(i, i + chunk));
-  return btoa(bin);
+  return encodeBase64(bytes);
 }
 async function sha256Hex(bytes: Uint8Array): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-256", bytes as unknown as ArrayBuffer);
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 function countPages(bytes: Uint8Array): number {
-  const txt = new TextDecoder("latin1").decode(bytes.subarray(0, Math.min(bytes.length, 4_000_000)));
+  const txt = new TextDecoder("latin1").decode(bytes.subarray(0, Math.min(bytes.length, 1_000_000)));
   return (txt.match(/\/Type\s*\/Page[^s]/g) || []).length || 1;
 }
+
 function estimateTokens(t: string) { return t ? Math.ceil(t.length / 4) : 0; }
 function extractJson(text: string): Record<string, any> {
   const m = text.match(/```json\s*([\s\S]*?)```/i) || text.match(/\{[\s\S]*\}/);
