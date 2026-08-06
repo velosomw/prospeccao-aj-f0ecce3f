@@ -73,6 +73,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         { label: "Home",          to: "/consultor",               icon: Home },
         { label: "Dashboard",     to: "/consultor/dashboard",     icon: LayoutDashboard },
         { label: "Processamento IA", to: "/processo-prospeccao",     icon: Briefcase },
+        { label: "Homologação IA",   to: "/consultor/homologacao-ia", icon: Brain },
         { label: "Upload Planilha",  to: "/treinar-ia",              icon: Brain },
         
         { label: "Planilha de Carga",    to: "/consultor/relatorios",    icon: FileBarChart },

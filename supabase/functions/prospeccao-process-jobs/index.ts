@@ -93,12 +93,24 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const limit = Math.min(Number(body.limit ?? 5), 10);
     const onlyJob = body.job_id as string | undefined;
+    const isHomologation = body.mode === "homologacao";
 
-    let query = admin.from("prospeccao_pdf_jobs").select("*").in("status", ["pendente", "baixado"]).limit(limit);
-    if (onlyJob) query = admin.from("prospeccao_pdf_jobs").select("*").eq("id", onlyJob);
-    const { data: jobs, error: qErr } = await query;
-    if (qErr) throw qErr;
+    let jobs = [];
+    if (onlyJob) {
+      const { data: job, error: qErr } = await admin.from("prospeccao_pdf_jobs").select("*").eq("id", onlyJob).single();
+      if (qErr) throw qErr;
+      jobs = [job];
+    } else {
+      const { data: j, error: qErr } = await admin.from("prospeccao_pdf_jobs")
+        .select("*")
+        .in("status", ["pendente", "baixado"])
+        .limit(limit);
+      if (qErr) throw qErr;
+      jobs = j || [];
+    }
 
+    const tStart = Date.now();
+    const homologationResults: any[] = [];
     const results: unknown[] = [];
 
     for (const job of jobs || []) {
@@ -182,7 +194,7 @@ Deno.serve(async (req) => {
         const extracted = extractJson(content);
         const ws = extracted.workspace || {};
 
-        // PARTE 5 & MD-001 — Certificação: só conclui com todos os checks atendidos
+        // PARTE 5 & MD-001 — Certificação
         const certificacao = {
           pdf_processado: Boolean(content && content.length > 0),
           documento_classificado: Boolean(extracted.classificacao?.tipo_documento || ws.tipo_processo),
@@ -199,6 +211,28 @@ Deno.serve(async (req) => {
         let statusCert = "Revisão Manual";
         if (!certificacao.json_produzido || !certificacao.pdf_processado) statusCert = "Documento Inválido";
         else if (certOk) statusCert = "Concluído";
+
+        if (isHomologation) {
+          homologationResults.push({
+            processo: ws.processo || "Não identificado",
+            empresa: ws.empresa || "Não identificado",
+            link: job.link,
+            status: statusCert,
+            resumo_executivo: ws.resumo_executivo,
+            oportunidade_bex: ws.interesse_bex,
+            score_comercial: ws.score_comercial?.score_geral || 0,
+            evidencias: ws.evidencias || [],
+            comparativo: [
+              { campo: "Empresa", valor_gemini: ws.empresa },
+              { campo: "Processo", valor_gemini: ws.processo },
+              { campo: "Valor", valor_gemini: ws.valor_exportacao }
+            ],
+            json_resumido: extracted,
+            checklist: certificacao,
+            analise_ia: ws
+          });
+          continue;
+        }
 
         // Data de distribuição e mês de referência
         const dataDist = normalizeDate(ws.data_distribuicao || extracted.entidades?.processo?.data_distribuicao);
@@ -306,6 +340,19 @@ Deno.serve(async (req) => {
         await logEvent(admin, job, MODELO_GEMINI, 0, statusErro, { erro: msg });
         results.push({ job: job.id, ok: false, error: msg });
       }
+    }
+
+    if (isHomologation) {
+      return json({
+        ok: true,
+        mode: "homologacao",
+        timestamp: new Date().toISOString(),
+        total_processos: homologationResults.length,
+        total_pdfs: homologationResults.length,
+        ocr_executados: homologationResults.length,
+        tempo_total_ms: Date.now() - tStart,
+        processos: homologationResults
+      });
     }
 
     return json({ ok: true, processed: results.length, results });
