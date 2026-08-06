@@ -377,7 +377,19 @@ Deno.serve(async (req) => {
           created_by: job.user_id
         });
 
+        // 2.1 MD-ENTERPRISE-KNOWLEDGE-REGISTRY-001 — consolidar conhecimento corporativo
+        await ingestWorkspace(ws, {
+          document_id: documentId,
+          registry_id: registryId,
+          business_fact: { business_facts: ws.business_facts ?? [], evidencias: ws.evidencias ?? [] },
+          hash_sha256: docHash,
+          motor_ia: MODELO_GEMINI,
+          confiabilidade: ws.score_confianca ?? null,
+          user_id: job.user_id ?? null,
+        });
+
         // 3. Finalizar Job
+
         await admin.from("prospeccao_pdf_jobs").update({
           status: "extraido",
           extracted_json: extracted,
