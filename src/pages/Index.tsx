@@ -82,7 +82,7 @@ const Index = () => {
             <p className="text-base text-muted-foreground mb-1">Bem-vindo ao</p>
             <h1 className="text-4xl lg:text-[2.75rem] font-display font-bold leading-[1.05] text-foreground">
               Gerenciamento<br />
-              <span className="text-[hsl(217,91%,50%)]">Prospecção AJ</span>
+              Prospecção AJ
             </h1>
             <div className="flex gap-1.5 mt-4">
               <span className="block h-1 w-8 rounded-full bg-[hsl(217,91%,50%)]" />

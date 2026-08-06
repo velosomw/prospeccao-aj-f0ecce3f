@@ -23,6 +23,7 @@ const cards = [
   { label: "Dashboard",   desc: "Acompanhe indicadores e métricas em tempo real.",                  icon: MonitorPlay,        to: "/consultor/dashboard",   tone: "purple" },
   { label: "Padrão Prospecção", desc: "Planilha padrão de prospecção do administrador judicial.",       icon: Bell,               to: "/consultor/planilha-padrao-prospeccao", tone: "orange" },
   { label: "Planilha de Carta",    desc: "Gerencie clientes e acompanhe todas as informações.",              icon: Users,              to: "/consultor/clientes",    tone: "teal"   },
+  { label: "Homologação IA",   desc: "Valide o motor cognitivo Gemini em ambiente de testes.",           icon: Brain,              to: "/consultor/homologacao-ia", tone: "amber"  },
 ];
 
 const summary: any[] = [];
@@ -42,7 +43,7 @@ export default function ConsultorHome() {
         </header>
 
         {/* Quick access cards */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
           {cards.map(c => {
             const t = tones[c.tone];
             const Icon = c.icon;
