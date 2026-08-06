@@ -3,6 +3,8 @@
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { acquireDocument, getDocument, logAccess } from "../_shared/document-acquisition.ts";
+import { ingestWorkspace } from "../_shared/knowledge-registry.ts";
+
 
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -377,7 +379,19 @@ Deno.serve(async (req) => {
           created_by: job.user_id
         });
 
+        // 2.1 MD-ENTERPRISE-KNOWLEDGE-REGISTRY-001 — consolidar conhecimento corporativo
+        await ingestWorkspace(ws, {
+          document_id: documentId,
+          registry_id: registryId,
+          business_fact: { business_facts: ws.business_facts ?? [], evidencias: ws.evidencias ?? [] },
+          hash_sha256: docHash,
+          motor_ia: MODELO_GEMINI,
+          confiabilidade: ws.score_confianca ?? null,
+          user_id: job.user_id ?? null,
+        });
+
         // 3. Finalizar Job
+
         await admin.from("prospeccao_pdf_jobs").update({
           status: "extraido",
           extracted_json: extracted,
