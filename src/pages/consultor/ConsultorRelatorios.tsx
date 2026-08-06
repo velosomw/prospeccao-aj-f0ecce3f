@@ -150,7 +150,7 @@ export default function ConsultorRelatorios() {
           <div>
             <h3 className="text-sm font-semibold">Planilha carregada &amp; status</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Campos certificados a partir do <b>JSON Canônico</b> gerado pela IA — toda análise é baseada exclusivamente em evidências extraídas dos documentos.
+              Campos certificados a partir do <b>JSON Canônico</b> gerado pela IA — <b>Certificação End-to-End</b> ativa para rastreabilidade completa.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">

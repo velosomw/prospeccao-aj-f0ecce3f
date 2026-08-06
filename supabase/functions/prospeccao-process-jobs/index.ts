@@ -182,7 +182,7 @@ Deno.serve(async (req) => {
         const extracted = extractJson(content);
         const ws = extracted.workspace || {};
 
-        // PARTE 5 — Certificação: só conclui com todos os checks atendidos
+        // PARTE 5 & MD-001 — Certificação: só conclui com todos os checks atendidos
         const certificacao = {
           pdf_processado: Boolean(content && content.length > 0),
           documento_classificado: Boolean(extracted.classificacao?.tipo_documento || ws.tipo_processo),
@@ -192,6 +192,7 @@ Deno.serve(async (req) => {
           json_produzido: Object.keys(ws).length > 0,
           evidencias_registradas: Array.isArray(ws.evidencias) && ws.evidencias.length > 0,
           score_calculado: ws.score_confianca != null,
+          inteligencia_executiva_ok: Boolean(ws.resumo_executivo && ws.recomendacao_ia && ws.interesse_bex),
         };
         const certOk = Object.values(certificacao).every(Boolean);
 
@@ -276,8 +277,21 @@ Deno.serve(async (req) => {
           }
         }).eq("id", job.id);
 
-        // 4. Log de execução
-        await logEvent(admin, job, MODELO_GEMINI, Date.now() - t0, statusCert, { versao: proximaVersao, certificacao });
+        // 4. Log de execução detalhado (MD-001 Parte 14)
+        await logEvent(admin, job, MODELO_GEMINI, Date.now() - t0, statusCert, { 
+          versao: proximaVersao, 
+          certificacao,
+          performance: {
+            processamento_documento_ms: Date.now() - t0,
+            gemini_version: MODELO_GEMINI
+          }
+        });
+
+        // 5. Atualizar Indicadores (MD-001 Parte 16)
+        await admin.rpc('increment_prospeccao_metrics', {
+          p_prioridade: (ws.score_comercial?.prioridade || 0) > 70 ? 'alta' : (ws.score_comercial?.prioridade || 0) > 30 ? 'media' : 'baixa',
+          p_tem_aj: Boolean(ws.administrador_judicial)
+        }).catch(e => console.error("Metrics update failed:", e));
 
         results.push({ job: job.id, ok: true, status: statusCert });
       } catch (e) {
