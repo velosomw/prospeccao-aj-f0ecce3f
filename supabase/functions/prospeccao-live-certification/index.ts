@@ -82,7 +82,7 @@ Deno.serve(async (req) => {
     }
 
     // Entrada: planilha real (primeiro processo → próximos) ou links informados
-    let entradas: { link: string; empresa?: string | null; processo?: string | null }[] = [];
+    let entradas: { id?: string | null; link: string; empresa?: string | null; processo?: string | null }[] = [];
     if (manualLinks.length) {
       entradas = manualLinks.slice(0, fase).map((l) => ({ link: l }));
     } else {
@@ -92,7 +92,7 @@ Deno.serve(async (req) => {
         .order("created_at", { ascending: true })
         .limit(fase);
       entradas = (linhas || []).map((l: any) => ({
-        link: l.link_documento, empresa: l.parte_pro_nome, processo: l.numero_processo,
+        id: l.id, link: l.link_documento, empresa: l.parte_pro_nome, processo: l.numero_processo,
       }));
     }
 
@@ -199,6 +199,8 @@ Deno.serve(async (req) => {
           schema_version: CANONICAL_SCHEMA_VERSION,
         };
         logStage({
+          run_id: run.id,
+          linha_id: entrada.id ?? null,
           document_id: (download as any).document_id ?? null,
           stage: "extraction",
           duration_ms: Date.now() - t1,
