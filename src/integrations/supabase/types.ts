@@ -4317,6 +4317,54 @@ export type Database = {
         }
         Relationships: []
       }
+      prospeccao_analytics: {
+        Row: {
+          aj_nomeado: number | null
+          created_at: string | null
+          id: string
+          metric_date: string | null
+          ocr_executados: number | null
+          ocr_falhos: number | null
+          prioridade_alta: number | null
+          prioridade_baixa: number | null
+          prioridade_media: number | null
+          sem_aj: number | null
+          tempo_medio_processamento: number | null
+          total_pdfs: number | null
+          total_processos: number | null
+        }
+        Insert: {
+          aj_nomeado?: number | null
+          created_at?: string | null
+          id?: string
+          metric_date?: string | null
+          ocr_executados?: number | null
+          ocr_falhos?: number | null
+          prioridade_alta?: number | null
+          prioridade_baixa?: number | null
+          prioridade_media?: number | null
+          sem_aj?: number | null
+          tempo_medio_processamento?: number | null
+          total_pdfs?: number | null
+          total_processos?: number | null
+        }
+        Update: {
+          aj_nomeado?: number | null
+          created_at?: string | null
+          id?: string
+          metric_date?: string | null
+          ocr_executados?: number | null
+          ocr_falhos?: number | null
+          prioridade_alta?: number | null
+          prioridade_baixa?: number | null
+          prioridade_media?: number | null
+          sem_aj?: number | null
+          tempo_medio_processamento?: number | null
+          total_pdfs?: number | null
+          total_processos?: number | null
+        }
+        Relationships: []
+      }
       prospeccao_linhas: {
         Row: {
           acao_judicial: string | null
@@ -4328,6 +4376,7 @@ export type Database = {
           area_judicial: string | null
           assunto_judicial: string | null
           certificacao: Json | null
+          certification_details: Json | null
           created_at: string
           data_distribuicao: string | null
           data_protocolo: string | null
@@ -4351,6 +4400,7 @@ export type Database = {
           parte_pro_cnpj: string | null
           parte_pro_nome: string | null
           pedidos_principais: string | null
+          performance_metrics: Json | null
           processo_eletronico: boolean | null
           status_certificacao: string
           status_processo: string | null
@@ -4371,6 +4421,7 @@ export type Database = {
           area_judicial?: string | null
           assunto_judicial?: string | null
           certificacao?: Json | null
+          certification_details?: Json | null
           created_at?: string
           data_distribuicao?: string | null
           data_protocolo?: string | null
@@ -4394,6 +4445,7 @@ export type Database = {
           parte_pro_cnpj?: string | null
           parte_pro_nome?: string | null
           pedidos_principais?: string | null
+          performance_metrics?: Json | null
           processo_eletronico?: boolean | null
           status_certificacao?: string
           status_processo?: string | null
@@ -4414,6 +4466,7 @@ export type Database = {
           area_judicial?: string | null
           assunto_judicial?: string | null
           certificacao?: Json | null
+          certification_details?: Json | null
           created_at?: string
           data_distribuicao?: string | null
           data_protocolo?: string | null
@@ -4437,6 +4490,7 @@ export type Database = {
           parte_pro_cnpj?: string | null
           parte_pro_nome?: string | null
           pedidos_principais?: string | null
+          performance_metrics?: Json | null
           processo_eletronico?: boolean | null
           status_certificacao?: string
           status_processo?: string | null
@@ -4516,6 +4570,13 @@ export type Database = {
             referencedRelation: "vw_export_aj_nomeados"
             referencedColumns: ["source_id"]
           },
+          {
+            foreignKeyName: "prospeccao_logs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_prospeccao_certification_status"
+            referencedColumns: ["id"]
+          },
         ]
       }
       prospeccao_pdf_jobs: {
@@ -4585,6 +4646,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "vw_export_aj_nomeados"
             referencedColumns: ["source_id"]
+          },
+          {
+            foreignKeyName: "prospeccao_pdf_jobs_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_prospeccao_certification_status"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -4724,6 +4792,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "vw_export_aj_nomeados"
             referencedColumns: ["source_id"]
+          },
+          {
+            foreignKeyName: "prospeccao_workspace_linha_id_fkey"
+            columns: ["linha_id"]
+            isOneToOne: false
+            referencedRelation: "vw_prospeccao_certification_status"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -6108,6 +6183,39 @@ export type Database = {
         }
         Relationships: []
       }
+      vw_prospeccao_certification_status: {
+        Row: {
+          ai_status: string | null
+          empresa: string | null
+          id: string | null
+          json_ok: boolean | null
+          numero_processo: string | null
+          pdf_ok: boolean | null
+          score_ok: boolean | null
+          status_certificacao: string | null
+        }
+        Insert: {
+          ai_status?: string | null
+          empresa?: string | null
+          id?: string | null
+          json_ok?: never
+          numero_processo?: string | null
+          pdf_ok?: never
+          score_ok?: never
+          status_certificacao?: string | null
+        }
+        Update: {
+          ai_status?: string | null
+          empresa?: string | null
+          id?: string | null
+          json_ok?: never
+          numero_processo?: string | null
+          pdf_ok?: never
+          score_ok?: never
+          status_certificacao?: string | null
+        }
+        Relationships: []
+      }
       vw_training_pending: {
         Row: {
           agent: string | null
@@ -6443,6 +6551,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      increment_prospeccao_metrics: {
+        Args: { p_prioridade: string; p_tem_aj: boolean }
+        Returns: undefined
       }
       is_admjudicial_for_recuperanda: {
         Args: { _recuperanda_user_id: string }
