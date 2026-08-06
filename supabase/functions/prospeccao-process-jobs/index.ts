@@ -7,6 +7,7 @@ import { ingestWorkspace } from "../_shared/knowledge-registry.ts";
 import { validateCanonical, formatIssues, CANONICAL_SCHEMA_VERSION } from "../_shared/canonical-schema.ts";
 import { persistBusinessFacts } from "../_shared/business-facts.ts";
 import { logStage } from "../_shared/processing-telemetry.ts";
+import { uploadGeminiFile } from "../_shared/gemini-files.ts";
 
 
 
@@ -14,7 +15,8 @@ import { logStage } from "../_shared/processing-telemetry.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
-const MODELO_GEMINI = "gemini-1.5-flash";
+const MODELO_GEMINI = "gemini-3.6-flash"; // melhor Gemini 3.X disponível
+const MODELO_FALLBACK = "gemini-3.6-flash";
 
 const EXTRACTION_PROMPT = `Você é um Auditor Contábil e Jurídico Sênior da BEx. Sua missão é realizar a extração cognitiva de dados de processos judiciais conforme o MD - PARTE 4, MD-GEMINI-PROCESS-INTELLIGENCE-PANEL-001 e MD-ENTERPRISE-DOCUMENT-ACQUISITION-AND-REGISTRY-ENGINE-001.
 
@@ -237,26 +239,56 @@ Deno.serve(async (req) => {
 
 
         const { callLLM } = await import("../_shared/llm-service.ts");
-        const base64 = base64Encode(pdfBytes);
 
         const tExtract = Date.now();
-        const aiResult = await callLLM({
+        // Upload binário via Files API (sem base64 inline) — suporta PDFs grandes sem estourar memória
+        const fileUri = await uploadGeminiFile(pdfBytes, "application/pdf", `job-${job.id}.pdf`);
+
+        const chamarGemini = (m: string) => callLLM({
           prompt: EXTRACTION_PROMPT,
           system: "Você é um Auditor Sênior especializado em prospecção de Administração Judicial.",
-          provider: "gemini", // motor exclusivo Gemini — sem fallback
-          model: MODELO_GEMINI,
+          provider: "gemini", // motor exclusivo Gemini — sem fallback de provedor
+          model: m,
           useCache: true,
-          // Support multimodal by adding the PDF data to the prompt
-          // We manually craft the Gemini multimodal payload here since llm-service callGemini is basic
           customBody: {
             contents: [{
+              role: "user",
               parts: [
                 { text: EXTRACTION_PROMPT },
-                { inlineData: { mimeType: "application/pdf", data: base64 } }
-              ]
-            }]
-          }
+                { fileData: { mimeType: "application/pdf", fileUri } },
+              ],
+            }],
+            generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8192 },
+          },
         });
+
+        // Resiliência: 503/500 (modelo sobrecarregado) → retry com backoff exponencial
+        // Degradação controlada: 429 (sem cota) → fallback para o Gemini 3.x disponível
+        let modeloUsado = MODELO_GEMINI;
+        let aiResult;
+        let ultimaFalha: unknown = null;
+        for (let tentativa = 0; tentativa < 4; tentativa++) {
+          try {
+            aiResult = await chamarGemini(modeloUsado);
+            ultimaFalha = null;
+            break;
+          } catch (err) {
+            ultimaFalha = err;
+            const msg = String((err as Error)?.message ?? err);
+            if (msg.includes("429") && modeloUsado !== MODELO_FALLBACK) {
+              console.warn(`[worker] ${modeloUsado} sem cota (429) → fallback ${MODELO_FALLBACK}`);
+              modeloUsado = MODELO_FALLBACK;
+              continue;
+            }
+            const transitorio = /\b(429|500|502|503|504)\b/.test(msg);
+            if (!transitorio || tentativa === 3) throw err;
+            const espera = 2000 * Math.pow(2, tentativa);
+            console.warn(`[worker] Gemini transitório (${msg.slice(0, 80)}) → retry em ${espera}ms`);
+            await new Promise((r) => setTimeout(r, espera));
+          }
+        }
+        if (!aiResult) throw ultimaFalha ?? new Error("GEMINI_SEM_RESPOSTA");
+
 
         const content = aiResult.text || "";
 
@@ -268,9 +300,9 @@ Deno.serve(async (req) => {
           bytes: pdfBytes?.length ?? 0,
           tokens_input: aiResult.tokens?.input ?? 0,
           tokens_output: aiResult.tokens?.output ?? 0,
-          model: MODELO_GEMINI,
+          model: modeloUsado,
           provider: aiResult.provider,
-          metadata: { cached: aiResult.cached, homologacao: isHomologation },
+          metadata: { cached: aiResult.cached, homologacao: isHomologation, file_api: true },
         });
 
         const rawExtracted = extractJson(content);
@@ -371,15 +403,17 @@ Deno.serve(async (req) => {
           doc_hash: docHash,
           ai_error: null,
           // Vincular Document ID Corporativo (motores IA nunca usam URL)
-          metadata: {
+          certification_details: {
             ...(job.fetch_metadata || {}),
             document_id: documentId,
             registry_id: registryId,
-          }
-
+            modelo: modeloUsado,
+          },
         };
 
-        await admin.from("prospeccao_linhas").update(linhaUpdate).eq("id", job.linha_id);
+
+        const { error: linhaErr } = await admin.from("prospeccao_linhas").update(linhaUpdate).eq("id", job.linha_id);
+        if (linhaErr) throw new Error(`FALHA_UPDATE_LINHA: ${linhaErr.message}`);
 
         // 2. Gerenciar Versionamento no Workspace
         const { data: latestVersao } = await admin
@@ -452,16 +486,20 @@ Deno.serve(async (req) => {
 
         // 3. Finalizar Job
 
-        await admin.from("prospeccao_pdf_jobs").update({
+        const { error: jobErr } = await admin.from("prospeccao_pdf_jobs").update({
           status: "extraido",
           extracted_json: extracted,
-          metadata: {
+          doc_hash: docHash,
+          fetch_metadata: {
+            ...(job.fetch_metadata || {}),
             versao: proximaVersao,
             certificacao,
             status_certificacao: statusCert,
-            processed_at: new Date().toISOString()
-          }
+            modelo: modeloUsado,
+            processed_at: new Date().toISOString(),
+          },
         }).eq("id", job.id);
+        if (jobErr) throw new Error(`FALHA_UPDATE_JOB: ${jobErr.message}`);
 
         // 4. Log de execução detalhado (MD-001 Parte 14)
         await logEvent(admin, job, MODELO_GEMINI, Date.now() - t0, statusCert, { 
@@ -558,14 +596,6 @@ function json(b: unknown, status = 200) {
   });
 }
 
-function base64Encode(bytes: Uint8Array): string {
-  let bin = "";
-  const chunk = 0x8000;
-  for (let i = 0; i < bytes.length; i += chunk) {
-    bin += String.fromCharCode(...bytes.subarray(i, i + chunk));
-  }
-  return btoa(bin);
-}
 
 async function sha256Hex(bytes: Uint8Array): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-256", bytes as unknown as BufferSource);
