@@ -17,7 +17,28 @@ export interface CanonicalValidation {
   normalized: Record<string, unknown> | null;
 }
 
-const TIPOS_PROCESSO = ["Recuperação Judicial", "Falência", "Autofalência", "Outro"];
+const TIPOS_PROCESSO = [
+  "Recuperação Judicial",
+  "Recuperação Extrajudicial",
+  "Pedido de Falência",
+  "Falência",
+  "Autofalência",
+  "Execução",
+  "Outro",
+];
+/** Normaliza variações textuais do Gemini para o vocabulário canônico. */
+function normalizeTipoProcesso(v: unknown): string | null {
+  const raw = String(v ?? "").trim();
+  if (!raw) return null;
+  const k = raw.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (k.includes("extrajud")) return "Recuperação Extrajudicial";
+  if (k.includes("recuperacao")) return "Recuperação Judicial";
+  if (k.includes("autofalencia")) return "Autofalência";
+  if (k.includes("pedido") && k.includes("falencia")) return "Pedido de Falência";
+  if (k.includes("falencia")) return "Falência";
+  if (k.includes("execucao")) return "Execução";
+  return TIPOS_PROCESSO.find((t) => t.toLowerCase() === raw.toLowerCase()) ?? "Outro";
+}
 
 function isNonEmptyString(v: unknown): boolean {
   return typeof v === "string" && v.trim().length > 0;
@@ -59,12 +80,8 @@ export function validateCanonical(extracted: unknown): CanonicalValidation {
     });
   }
 
-  if (ws.tipo_processo !== undefined && ws.tipo_processo !== null && !TIPOS_PROCESSO.includes(String(ws.tipo_processo))) {
-    issues.push({
-      path: "workspace.tipo_processo",
-      rule: "enum",
-      message: `tipo_processo inválido: ${ws.tipo_processo}`,
-    });
+  if (ws.tipo_processo !== undefined && ws.tipo_processo !== null) {
+    ws.tipo_processo = normalizeTipoProcesso(ws.tipo_processo);
   }
 
   const valor = toNumberOrNull(ws.valor_exportacao);
