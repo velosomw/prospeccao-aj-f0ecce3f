@@ -95,7 +95,7 @@ Deno.serve(async (req) => {
     const onlyJob = body.job_id as string | undefined;
     const isHomologation = body.mode === "homologacao";
 
-    let jobs = [];
+    let jobs: any[] = [];
     if (onlyJob) {
       const { data: job, error: qErr } = await admin.from("prospeccao_pdf_jobs").select("*").eq("id", onlyJob).single();
       if (qErr) throw qErr;
@@ -107,6 +107,36 @@ Deno.serve(async (req) => {
         .limit(limit);
       if (qErr) throw qErr;
       jobs = j || [];
+    }
+
+    // Modo homologação: nunca depende da fila. Aceita links avulsos (body.links)
+    // ou lê direto das linhas da planilha que possuem link_documento.
+    if (isHomologation) {
+      const manualLinks: string[] = Array.isArray(body.links) ? body.links.filter(Boolean) : [];
+      if (manualLinks.length > 0) {
+        jobs = manualLinks.slice(0, limit).map((link, i) => ({
+          id: `homolog-${i}`, link, status: "pendente", linha_id: null, user_id: null, attempts: 0,
+        }));
+      } else if (jobs.length === 0) {
+        const { data: linhas } = await admin
+          .from("prospeccao_linhas")
+          .select("id,user_id,link_documento")
+          .not("link_documento", "is", null)
+          .limit(limit);
+        jobs = (linhas || []).map((l: any) => ({
+          id: `homolog-${l.id}`, link: l.link_documento, status: "pendente",
+          linha_id: l.id, user_id: l.user_id, attempts: 0,
+        }));
+      }
+      if (jobs.length === 0) {
+        return json({
+          ok: false,
+          mode: "homologacao",
+          error: "Nenhum documento disponível para homologação. Faça o upload de uma planilha com a coluna Link_Documento (ou envie 'links' no corpo da requisição).",
+          timestamp: new Date().toISOString(),
+          total_processos: 0, total_pdfs: 0, ocr_executados: 0, tempo_total_ms: 0, processos: [],
+        }, 200);
+      }
     }
 
     const tStart = Date.now();
