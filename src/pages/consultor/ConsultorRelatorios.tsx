@@ -134,8 +134,8 @@ export default function ConsultorRelatorios() {
 
   return (
     <ConsultorPageShell
-      title="Planilha"
-      subtitle="Planilha atualizada automaticamente a partir da certificação da análise de IA dos documentos."
+      title="Inteligência Executiva de Processos"
+      subtitle="Ambiente de Inteligência Executiva fundamentado nas evidências produzidas pelo motor cognitivo."
       search={search}
       onSearch={setSearch}
       kpis={[
