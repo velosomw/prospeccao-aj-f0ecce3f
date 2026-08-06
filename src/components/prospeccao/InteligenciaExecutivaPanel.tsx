@@ -16,10 +16,18 @@ export function InteligenciaExecutivaPanel({ linha }: InteligenciaExecutivaPanel
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <button className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 transition-colors">
-          <Sparkles className="w-4 h-4" />
-          <span className="text-xs font-semibold">IA</span>
-        </button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="flex items-center justify-center p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm border border-blue-100 group">
+                <Sparkles className="w-4 h-4 group-hover:animate-pulse" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="top" className="bg-blue-600 text-white font-bold text-[10px] border-0">
+              Análise Inteligente
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </SheetTrigger>
       <SheetContent className="w-[700px] sm:max-w-[700px] overflow-y-auto bg-slate-50">
         <SheetHeader className="mb-6 p-4 bg-white border-b sticky top-0 z-10">
