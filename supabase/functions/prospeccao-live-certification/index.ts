@@ -16,7 +16,8 @@ import { logStage } from "../_shared/processing-telemetry.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_AI_API_KEY = Deno.env.get("GOOGLE_AI_API_KEY");
-const MODELO_PADRAO = "gemini-3.1-pro-preview"; // melhor Gemini 3.X para raciocínio jurídico-contábil
+const MODELO_PADRAO = "gemini-3.6-flash";
+const MODELO_FALLBACK = "gemini-3.6-flash"; // melhor Gemini 3.X para raciocínio jurídico-contábil
 const MODELOS_PERMITIDOS = ["gemini-3.1-pro-preview", "gemini-3-pro-preview", "gemini-3.6-flash", "gemini-3.5-flash"];
 const FASES = [1, 5, 20, 100];
 
@@ -127,6 +128,7 @@ Deno.serve(async (req) => {
       let motivo: string | null = null;
       let schemaValido = false;
       let schemaIssues: any[] = [];
+      let modeloUsado = modelo;
 
 
       try {
@@ -204,7 +206,7 @@ Deno.serve(async (req) => {
         extracted = validation.normalized as Record<string, any>;
         ws = extracted.workspace || {};
         gemini = {
-          modelo: modelo,
+          modelo: modeloUsado,
           tempo_ms: Date.now() - t1,
           tokens_entrada: aiResult.tokens?.input ?? estimateTokens(EXTRACTION_PROMPT),
           tokens_saida: aiResult.tokens?.output ?? estimateTokens(content),
@@ -223,7 +225,7 @@ Deno.serve(async (req) => {
           duration_ms: Date.now() - t1,
           tokens_input: aiResult.tokens?.input ?? 0,
           tokens_output: aiResult.tokens?.output ?? 0,
-          model: modelo,
+          model: modeloUsado,
           provider: "gemini",
           metadata: { certificacao_live: true },
         });
@@ -282,7 +284,7 @@ Deno.serve(async (req) => {
         stage: "total",
         status: aprovado ? "success" : "error",
         duration_ms: Date.now() - tProc,
-        model: modelo,
+        model: modeloUsado,
         provider: "gemini",
         error_message: aprovado ? null : motivo,
         metadata: { certificacao_live: true, fase, ordem: i + 1 },
