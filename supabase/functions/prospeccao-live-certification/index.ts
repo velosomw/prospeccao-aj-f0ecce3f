@@ -162,11 +162,11 @@ Deno.serve(async (req) => {
         const fileUri = await uploadGeminiFile(acq.bytes, "application/pdf", acq.nome_arquivo);
         console.log(`[cert] upload gemini ok em ${Date.now() - t1}ms`);
         const { callLLM } = await import("../_shared/llm-service.ts");
-        const aiResult = await callLLM({
+        const chamarGemini = (m: string) => callLLM({
           prompt: EXTRACTION_PROMPT,
           system: "Auditor Sênior BEx — Certificação Operacional do Motor Gemini.",
           provider: "gemini",
-          model: modelo,
+          model: m,
           useCache: false,
           customBody: {
             contents: [{
@@ -179,6 +179,17 @@ Deno.serve(async (req) => {
             generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8192 },
           },
         });
+        // Degradação controlada: se o modelo escolhido estiver sem cota (429), cai para o Gemini 3.x disponível
+        let aiResult;
+        try {
+          aiResult = await chamarGemini(modelo);
+        } catch (err) {
+          const msg = String((err as Error)?.message ?? err);
+          if (!msg.includes("429") || modelo === MODELO_FALLBACK) throw err;
+          console.warn(`[cert] ${modelo} sem cota (429) → fallback ${MODELO_FALLBACK}`);
+          modeloUsado = MODELO_FALLBACK;
+          aiResult = await chamarGemini(MODELO_FALLBACK);
+        }
 
         const content = aiResult.text || "";
         const rawExtracted = extractJson(content);
