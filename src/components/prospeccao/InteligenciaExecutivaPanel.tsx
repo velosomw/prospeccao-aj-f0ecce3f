@@ -13,6 +13,23 @@ export function InteligenciaExecutivaPanel({ linha }: InteligenciaExecutivaPanel
   const score = ws.score_comercial || {};
   const resComercial = ws.resumo_comercial || {};
 
+  if (!linha.ai_extracted) {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="flex items-center justify-center p-2 rounded-lg bg-slate-50 text-slate-300 border border-slate-100 cursor-not-allowed">
+              <Sparkles className="w-4 h-4" />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="text-[10px]">
+            Aguardando processamento IA
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
   return (
     <Sheet>
       <SheetTrigger asChild>
