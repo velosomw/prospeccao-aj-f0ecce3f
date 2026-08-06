@@ -100,10 +100,22 @@ const queryClient = new QueryClient({
 });
 
 const RouteFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+  <div className="min-h-screen bg-background p-6 md:p-8 animate-in fade-in duration-150">
+    <div className="max-w-7xl mx-auto space-y-6">
+      <div className="space-y-3">
+        <div className="h-7 w-64 rounded-md bg-muted animate-pulse" />
+        <div className="h-4 w-96 max-w-full rounded-md bg-muted/70 animate-pulse" />
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="h-24 rounded-xl border border-border bg-muted/50 animate-pulse" />
+        ))}
+      </div>
+      <div className="h-72 rounded-xl border border-border bg-muted/40 animate-pulse" />
+    </div>
   </div>
 );
+
 
 const RmaHomeRoute = () => {
   const { roles, loading } = useUserRoles();
