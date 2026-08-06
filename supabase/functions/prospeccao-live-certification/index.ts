@@ -335,9 +335,46 @@ function step(nome: string, t0: number) {
 function json(b: unknown, status = 200) {
   return new Response(JSON.stringify(b), { headers: { ...corsHeaders, "Content-Type": "application/json" }, status });
 }
-function base64Encode(bytes: Uint8Array): string {
-  return encodeBase64(bytes);
+/** Upload binário para a Gemini Files API (protocolo resumable) → fileUri. */
+async function uploadGeminiFile(bytes: Uint8Array, mime: string, displayName: string): Promise<string> {
+  const base = "https://generativelanguage.googleapis.com";
+  const start = await fetch(`${base}/upload/v1beta/files?key=${GOOGLE_AI_API_KEY}`, {
+    method: "POST",
+    headers: {
+      "X-Goog-Upload-Protocol": "resumable",
+      "X-Goog-Upload-Command": "start",
+      "X-Goog-Upload-Header-Content-Length": String(bytes.length),
+      "X-Goog-Upload-Header-Content-Type": mime,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ file: { display_name: displayName || "documento.pdf" } }),
+  });
+  if (!start.ok) throw new Error(`GEMINI_UPLOAD_START_${start.status}: ${await start.text()}`);
+  const uploadUrl = start.headers.get("x-goog-upload-url");
+  if (!uploadUrl) throw new Error("GEMINI_UPLOAD_SEM_URL");
+
+  const up = await fetch(uploadUrl, {
+    method: "POST",
+    headers: {
+      "Content-Length": String(bytes.length),
+      "X-Goog-Upload-Offset": "0",
+      "X-Goog-Upload-Command": "upload, finalize",
+    },
+    body: bytes,
+  });
+  if (!up.ok) throw new Error(`GEMINI_UPLOAD_${up.status}: ${await up.text()}`);
+  const info = await up.json();
+  let file = info.file ?? info;
+  // Aguarda o processamento do arquivo (state ACTIVE)
+  for (let i = 0; i < 30 && file.state && file.state !== "ACTIVE"; i++) {
+    await new Promise((r) => setTimeout(r, 1500));
+    const r = await fetch(`${base}/v1beta/${file.name}?key=${GOOGLE_AI_API_KEY}`);
+    file = await r.json();
+    if (file.state === "FAILED") throw new Error("GEMINI_UPLOAD_FALHOU");
+  }
+  return file.uri as string;
 }
+
 async function sha256Hex(bytes: Uint8Array): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-256", bytes as unknown as ArrayBuffer);
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
