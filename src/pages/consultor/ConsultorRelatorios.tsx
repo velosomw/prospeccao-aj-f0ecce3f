@@ -1,3 +1,4 @@
+import { InteligenciaExecutivaPanel } from "@/components/prospeccao/InteligenciaExecutivaPanel";
 import { useEffect, useRef, useState } from "react";
 import * as XLSX from "xlsx";
 import ConsultorPageShell from "@/components/consultor/PageShell";
@@ -211,7 +212,7 @@ export default function ConsultorRelatorios() {
                 <tr>
                   {[
                     "Data Distribuição", "Mês", "Processo", "Empresa", "Vara", "Estado",
-                    "Passivo", "AJ", "Magistrado", "Link Documento", "Status",
+                    "Passivo", "AJ", "Magistrado", "Link Documento", "IA", "Status",
                   ].map(h => (
                     <th key={h} className="px-3 py-2 text-left font-semibold whitespace-nowrap border-r border-white/20 last:border-r-0">{h}</th>
                   ))}
@@ -241,6 +242,9 @@ export default function ConsultorRelatorios() {
                         {r.link_documento ? (
                           <a href={r.link_documento} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">PDF</a>
                         ) : "—"}
+                      </td>
+                      <td className="px-3 py-2 border-b text-center">
+                        <InteligenciaExecutivaPanel linha={r} />
                       </td>
                       <td className="px-3 py-2 border-b">
                         <span
