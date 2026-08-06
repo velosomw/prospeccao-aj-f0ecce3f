@@ -412,7 +412,8 @@ Deno.serve(async (req) => {
         };
 
 
-        await admin.from("prospeccao_linhas").update(linhaUpdate).eq("id", job.linha_id);
+        const { error: linhaErr } = await admin.from("prospeccao_linhas").update(linhaUpdate).eq("id", job.linha_id);
+        if (linhaErr) throw new Error(`FALHA_UPDATE_LINHA: ${linhaErr.message}`);
 
         // 2. Gerenciar Versionamento no Workspace
         const { data: latestVersao } = await admin
