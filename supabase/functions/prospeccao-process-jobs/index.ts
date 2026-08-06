@@ -474,10 +474,13 @@ Deno.serve(async (req) => {
         });
 
         // 5. Atualizar Indicadores (MD-001 Parte 16)
-        await admin.rpc('increment_prospeccao_metrics', {
-          p_prioridade: (ws.score_comercial?.prioridade || 0) > 70 ? 'alta' : (ws.score_comercial?.prioridade || 0) > 30 ? 'media' : 'baixa',
-          p_tem_aj: Boolean(ws.administrador_judicial)
-        }).catch(e => console.error("Metrics update failed:", e));
+        try {
+          await admin.rpc('increment_prospeccao_metrics', {
+            p_prioridade: (ws.score_comercial?.prioridade || 0) > 70 ? 'alta' : (ws.score_comercial?.prioridade || 0) > 30 ? 'media' : 'baixa',
+            p_tem_aj: Boolean(ws.administrador_judicial)
+          });
+        } catch (e) { console.error("Metrics update failed:", e); }
+
 
         logStage({
           linha_id: job.linha_id ?? null,
