@@ -84,3 +84,24 @@ export function prefetchRoute(path: string): void {
   // Fire-and-forget; falhas (offline) não devem quebrar a UI.
   loader().catch(() => started.delete(path));
 }
+
+// Pré-carrega, em tempo ocioso e de forma escalonada, todas as rotas visíveis
+// no menu lateral — assim o clique já encontra o chunk em cache.
+export function prefetchRoutesIdle(paths: string[]): void {
+  const pending = paths.filter((p) => !started.has(p) && loaders[p]);
+  if (!pending.length) return;
+
+  const schedule =
+    typeof (window as any).requestIdleCallback === "function"
+      ? (cb: () => void) => (window as any).requestIdleCallback(cb, { timeout: 2500 })
+      : (cb: () => void) => window.setTimeout(cb, 300);
+
+  let i = 0;
+  const next = () => {
+    if (i >= pending.length) return;
+    prefetchRoute(pending[i++]);
+    schedule(next);
+  };
+  schedule(next);
+}
+
