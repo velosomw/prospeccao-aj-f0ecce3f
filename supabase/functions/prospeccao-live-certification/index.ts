@@ -128,7 +128,10 @@ Deno.serve(async (req) => {
         const acq = await acquireDocument({
           url: entrada.link, projeto: "certificacao_live", user_id: userId, dryRun: true,
         });
+        console.log(`[cert] download ok em ${Date.now() - t0}ms, bytes=${acq.bytes.length}`);
+        const tHash = Date.now();
         const hash = await sha256Hex(acq.bytes);
+        console.log(`[cert] hash em ${Date.now() - tHash}ms`);
         download = {
           url: entrada.link,
           http_status: 200,
@@ -143,6 +146,7 @@ Deno.serve(async (req) => {
           status: "ok",
         };
         etapas.push(step("download", t0));
+
 
         // 2) Gemini — OCR + classificação + segmentação + extração
         const t1 = Date.now();
