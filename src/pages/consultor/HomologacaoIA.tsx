@@ -76,7 +76,7 @@ export default function HomologacaoIA() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Modo Homologação: Motor Gemini</h1>
-              <p className="text-muted-foreground text-sm">o processo de homologação motor gemini nãoe stá funcionando, como deve ser o funcionamento através da analise arquivo excel, onde entrai os dados da planilha, entra no link web informado na planilha, analisa o pdf e extrai os dados - como será feite o processo de homologação</p>
+              <p className="text-muted-foreground text-sm">analise o documento via modo homologação motor gemini extraindo os dados pdf através do acesso do link documento na planilha</p>
             </div>
           </div>
           <div className="flex gap-2">
