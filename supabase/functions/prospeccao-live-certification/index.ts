@@ -309,6 +309,10 @@ Deno.serve(async (req) => {
     const tempoTotal = Date.now() - tRun;
     const scores = processos.map((p) => p.painel?.score).filter((s: any) => typeof s === "number");
     const consolidado = {
+      modelo,
+      amostra,
+      amostra_offset: offset,
+      fase_alvo: fase,
       total_processos: processos.length,
       processados: processos.length,
       falhas: processos.length - aprovados,
@@ -338,7 +342,7 @@ Deno.serve(async (req) => {
     }).eq("id", run.id).select("*").single();
 
     return json({
-      ok: true, modo: "LIVE_CERTIFICATION", fase, status,
+      ok: true, modo: amostra ? "LIVE_CERTIFICATION_AMOSTRA" : "LIVE_CERTIFICATION", fase, modelo, amostra, offset, status,
       run: finalRun ?? run, consolidado, processos,
       proxima_fase: status === "aprovado" ? (FASES[idx + 1] ?? null) : null,
     });
