@@ -163,9 +163,19 @@ export default function AppSidebar() {
   const groups = buildNav(role);
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
 
+  // Pré-carrega em tempo ocioso todas as páginas do menu do perfil atual,
+  // para que o clique renderize praticamente na hora.
+  useEffect(() => {
+    const paths = groups.flatMap((g) =>
+      g.items.flatMap((it) => [it.to, ...(it.children?.map((c) => c.to) ?? [])]),
+    );
+    prefetchRoutesIdle(paths);
+  }, [role]);
+
   const toggleSubmenu = (label: string) => {
     setOpenSubmenus(prev => ({ ...prev, [label]: !prev[label] }));
   };
+
 
   const [contrast, setContrast] = useState<"dark" | "light">(() => {
     if (typeof window === "undefined") return "dark";
