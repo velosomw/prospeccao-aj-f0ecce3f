@@ -187,6 +187,11 @@ Deno.serve(async (req) => {
           created_by: caller.id,
           status: "ativa",
           source: "prospeccao",
+          rma_id: metadata.rma_id || null,
+          auto_monthly: metadata.auto_monthly ?? false,
+          execution_year: metadata.execution_year ?? new Date().getFullYear(),
+          period_active: metadata.period_active ?? false,
+          current_period_month: metadata.current_period_month ?? null,
         };
         const { error: companyError } = await adminClient.from("companies").insert(companyPayload);
         if (companyError) {
