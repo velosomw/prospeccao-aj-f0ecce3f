@@ -83,7 +83,7 @@ const getPerfilColor = (perfil: string) => {
     Coordenador: "hsl(258,90%,66%)",
     Consultor: "hsl(210,80%,55%)",
     Magistrado: "hsl(0,70%,55%)",
-    Recuperanda: "hsl(38,90%,55%)",
+    "Empresa Prospecção": "hsl(38,90%,55%)",
     "Gestor IA": "hsl(152,70%,45%)",
   };
   return map[perfil] || "hsl(215,12%,50%)";
@@ -324,7 +324,7 @@ const TabTrilhaAuditoria = () => {
                 <SelectItem value="Coordenador">Coordenador</SelectItem>
                 <SelectItem value="Consultor">Consultor</SelectItem>
                 <SelectItem value="Magistrado">Magistrado</SelectItem>
-                <SelectItem value="Recuperanda">Recuperanda</SelectItem>
+                <SelectItem value="Empresa Prospecção">Empresa Prospecção</SelectItem>
                 <SelectItem value="Gestor IA">Gestor IA</SelectItem>
               </SelectContent>
             </Select>

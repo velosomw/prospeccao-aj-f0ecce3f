@@ -7,7 +7,7 @@ import ProfileHome from "@/components/shell/ProfileHome";
 export default function RecuperandaDashboard() {
   return (
     <ProfileHome
-      defaultName="Empresa de Prospecção"
+      defaultName="Empresa Prospecção"
       subtitle="Acompanhe seu processo e envio de documentos."
       cards={[
         { label: "Documentos",  desc: "Acervo de documentos enviados.",         icon: FolderOpen,    to: "/recuperanda/documentos",  tone: "blue"   },
