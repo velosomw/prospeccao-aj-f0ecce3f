@@ -55,7 +55,7 @@ const Index = () => {
 
   useEffect(() => {
     // Flag de validação solicitada via instrução visual
-    console.log("Validação de perfis: Certificando que os perfis da plataforma estão funcionais e podem executar o processo configurado sem erros.");
+    console.log("Validação: analise e corrija o erro de cadastro de empresa, aparece a mensagem de função de borda retornou um erro de código de status não-2xx");
   }, []);
 
   return (
