@@ -107,7 +107,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
       coordenador: { label: "Coordenador", color: COLOR_BLUE },
       consultor: { label: "Consultor", color: COLOR_PURPLE },
       magistrado: { label: "Magistrado", color: COLOR_NAVY },
-      recuperanda: { label: "Recuperanda", color: COLOR_ORANGE },
+      recuperanda: { label: "Empresa Prospecção", color: COLOR_ORANGE },
       gestor_ia: { label: "Gestor IA", color: COLOR_CYAN },
     };
     return Object.entries(map).map(([role, value]) => ({
