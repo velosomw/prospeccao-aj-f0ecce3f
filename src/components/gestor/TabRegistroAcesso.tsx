@@ -16,7 +16,7 @@ import {
 const mockAccessLogs: any[] = [];
 
 const acaoOptions = ["Todas", "Login", "Logout", "Visualização de RMA", "Upload de documento", "Aprovação/Reprovação", "Alteração de dados", "Download de arquivos"];
-const perfilOptions = ["Todos", "Coordenador", "Consultor", "Magistrado", "Recuperanda", "Gestor IA"];
+const perfilOptions = ["Todos", "Coordenador", "Consultor", "Magistrado", "Empresa Prospecção", "Gestor IA"];
 const moduloOptions = ["Todos", "Dashboard", "RMA", "Documentos", "Relatórios", "Gestor IA", "Financeiro"];
 
 const ITEMS_PER_PAGE = 8;
@@ -45,7 +45,7 @@ const getPerfilColor = (p: string) => {
     case "Coordenador": return "bg-[hsl(258,90%,66%)]/10 text-[hsl(258,90%,66%)]";
     case "Consultor": return "bg-[hsl(210,80%,50%)]/10 text-[hsl(210,80%,50%)]";
     case "Magistrado": return "bg-[hsl(38,90%,55%)]/10 text-[hsl(38,90%,55%)]";
-    case "Recuperanda": return "bg-[hsl(152,70%,45%)]/10 text-[hsl(152,70%,45%)]";
+    case "Empresa Prospecção": return "bg-[hsl(152,70%,45%)]/10 text-[hsl(152,70%,45%)]";
     case "Gestor IA": return "bg-[hsl(0,70%,55%)]/10 text-[hsl(0,70%,55%)]";
     default: return "bg-muted text-muted-foreground";
   }
