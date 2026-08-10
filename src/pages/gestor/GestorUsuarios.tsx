@@ -6,7 +6,7 @@ const users = [
   { nome: "Ana Silva",       email: "ana@bex.com",       role: "Consultor",   status: "Ativo",     last: "Hoje 13:18" },
   { nome: "Carlos Mendes",   email: "carlos@bex.com",    role: "Consultor",   status: "Ativo",     last: "Hoje 11:40" },
   { nome: "Dr. José Souza",  email: "jose@trib.gov.br",  role: "Magistrado",  status: "Ativo",     last: "Ontem" },
-  { nome: "Recuperanda XPTO",email: "rec@xpto.com",      role: "Recuperanda", status: "Inativo",   last: "Há 5d" },
+  { nome: "Empresa XPTO",email: "rec@xpto.com",      role: "Empresa Prospecção", status: "Inativo",   last: "Há 5d" },
   { nome: "Adm. Judicial Y", email: "adm@y.com",         role: "Adm Judicial",status: "Ativo",     last: "Hoje 09:32" },
 ];
 
@@ -14,7 +14,7 @@ const roleColor: Record<string, { bg: string; fg: string }> = {
   "Coordenador":  { bg: "hsl(217,91%,96%)", fg: "hsl(217,91%,45%)" },
   "Consultor":    { bg: "hsl(258,90%,96%)", fg: "hsl(258,90%,45%)" },
   "Magistrado":   { bg: "hsl(38,92%,95%)",  fg: "hsl(38,92%,40%)"  },
-  "Recuperanda":  { bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" },
+  "Empresa Prospecção":  { bg: "hsl(220,15%,93%)", fg: "hsl(220,15%,40%)" },
   "Adm Judicial": { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
 };
 
