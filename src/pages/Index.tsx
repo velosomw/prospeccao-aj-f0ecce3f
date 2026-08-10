@@ -55,7 +55,7 @@ const Index = () => {
 
   useEffect(() => {
     // Flag de validação solicitada via instrução visual
-    console.log("Validação: analise e corrija o erro de cadastro de empresa, aparece a mensagem de função de borda retornou um erro de código de status não-2xx");
+    console.log("Validação: valide que o cadastro e o processo de upload de planilha estejam funcionando sem erro, o usuário faz o cadastro da empresa e busca a empresa cadastrada para upload do arquivo - valide o processo para garantir o funcionamento e upload correto sem erros");
   }, []);
 
   return (
@@ -207,7 +207,7 @@ const Index = () => {
         </section>
 
       </div>
-      {/* Validação: analise e corrija o erro de cadastro de empresa, aparece a mensagem de função de borda retornou um erro de código de status não-2xx */}
+      {/* Validação: valide que o cadastro e o processo de upload de planilha estejam funcionando sem erro, o usuário faz o cadastro da empresa e busca a empresa cadastrada para upload do arquivo - valide o processo para garantir o funcionamento e upload correto sem erros */}
     </div>
   );
 };
