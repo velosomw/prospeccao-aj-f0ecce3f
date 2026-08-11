@@ -12,7 +12,7 @@ export default function RecuperandaDashboard() {
       cards={[
         { label: "Documentos",  desc: "Acervo de documentos enviados.",         icon: FolderOpen,    to: "/recuperanda/documentos",  tone: "blue"   },
         { label: "Pendências",  desc: "Documentos que faltam enviar.",          icon: AlertTriangle, to: "/recuperanda/pendencias",  tone: "red"    },
-        { label: "Relatórios",  desc: "Prospecções AJ publicadas sobre sua empresa.",     icon: FileBarChart,  to: "/recuperanda/relatorios",  tone: "green"  },
+        { label: "Relatórios",  desc: "Prospeccoes AJ publicadas sobre sua empresa.",     icon: FileBarChart,  to: "/recuperanda/relatorios",  tone: "green"  },
         { label: "Cronograma",  desc: "Prazos do processo de prospeccao.",        icon: Calendar,      to: "/recuperanda/cronograma",  tone: "purple" },
         { label: "Upload",      desc: "Envie novos documentos agora.",          icon: Upload,        to: "/recuperanda/documentos",  tone: "teal"   },
       ]}
@@ -21,7 +21,7 @@ export default function RecuperandaDashboard() {
         { label: "Documentos",      value: 60,   icon: FileText,      tone: "blue"   },
         { label: "Pendências",      value: 14,   icon: AlertTriangle, tone: "orange", to: "/recuperanda/pendencias" },
         { label: "Próximo Prazo",   value: "8d", icon: Calendar,      tone: "blue"    },
-        { label: "Prospecções AJ Publicados", value: "04", icon: CheckCircle2,  tone: "green"  },
+        { label: "Prospeccoes AJ Publicados", value: "04", icon: CheckCircle2,  tone: "green"  },
         { label: "Uploads (30d)",   value: 47,   icon: Upload,        tone: "purple" },
       ]}
       avisos={[

@@ -187,7 +187,7 @@ const TabTrilhaAuditoria = () => {
           { label: "Eventos Críticos", value: criticos, icon: AlertTriangle, color: "hsl(0,80%,55%)" },
           { label: "Eventos Médios", value: medios, icon: Clock, color: "hsl(38,90%,55%)" },
           { label: "Eventos Baixos", value: baixos, icon: Eye, color: "hsl(152,70%,45%)" },
-          { label: "Prospecções AJ Rastreados", value: uniqueRmas, icon: FileCheck, color: "hsl(210,80%,55%)" },
+          { label: "Prospeccoes AJ Rastreados", value: uniqueRmas, icon: FileCheck, color: "hsl(210,80%,55%)" },
         ].map((kpi, i) => (
           <div key={i} className="bg-card rounded-xl border border-border p-4 relative overflow-hidden">
             <div className="absolute top-2 right-2 opacity-10">

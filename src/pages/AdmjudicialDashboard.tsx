@@ -11,14 +11,14 @@ export default function AdmjudicialDashboard() {
       subtitle="Painel das empresas prospeccao sob sua administração judicial."
       cards={[
         { label: "Empresas Prospeccao", desc: "Empresas sob sua administração.",       icon: Building2,     to: "/admjudicial/recuperandas", tone: "blue"   },
-        { label: "Prospecções AJ",         desc: "Relatórios mensais em monitoramento.",  icon: Briefcase,     to: "/admjudicial/prospeccoes",         tone: "purple" },
+        { label: "Prospeccoes AJ",         desc: "Relatórios mensais em monitoramento.",  icon: Briefcase,     to: "/admjudicial/prospecções",         tone: "purple" },
         { label: "Pendências",   desc: "Documentos aguardando empresas prospeccao.",   icon: AlertTriangle, to: "/admjudicial/pendencias",   tone: "red"    },
         { label: "Relatórios",   desc: "Consolidados e exportações.",           icon: FileBarChart,  to: "/admjudicial/relatorios",   tone: "green"  },
         { label: "Histórico",    desc: "Linha do tempo das ações realizadas.",  icon: History,       to: "/admjudicial/historico",    tone: "teal"   },
       ]}
       summary={[
         { label: "Empresas Prospeccao",      value: 16,    icon: Building2,     tone: "blue",   to: "/admjudicial/recuperandas" },
-        { label: "Prospecções AJ Vigentes",     value: 47,    icon: Briefcase,     tone: "purple", to: "/admjudicial/prospeccoes" },
+        { label: "Prospeccoes AJ Vigentes",     value: 47,    icon: Briefcase,     tone: "purple", to: "/admjudicial/prospecções" },
         { label: "Pendências",        value: 23,    icon: AlertTriangle, tone: "orange", to: "/admjudicial/pendencias" },
         { label: "Críticas",          value: "06",  icon: AlertTriangle, tone: "red"    },
         { label: "Concluídos (30d)",  value: 12,    icon: CheckCircle2,  tone: "green",  to: "/admjudicial/historico" },

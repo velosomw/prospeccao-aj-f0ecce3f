@@ -13,11 +13,11 @@ import PlatformLayout from "@/components/PlatformLayout";
 import type { ProspeccaoEntry } from "@/types/prospeccao";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  startRmaAnalysis,
+  startProspeccaoAnalysis,
   getRmaAnalysis,
-  type RmaAnalysisResult,
+  type ProspeccaoAnalysisResult,
 } from "@/services/prospeccaoAnalysisService";
-import { buildLiveScoreTopics, computeRmaScore, fetchRmaScores, type ScoreFile } from "@/lib/prospeccaoScore";
+import { buildLiveScoreTopics, computeProspeccaoScore, fetchProspeccaoScores, type ScoreFile } from "@/lib/prospeccaoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
 import ProspeccaoStatusTab from "@/components/prospeccao/ProspeccaoStatusTab";
 import ProspeccaoProcessamentoTab from "@/components/prospeccao/ProspeccaoProcessamentoTab";
@@ -165,7 +165,7 @@ const ProspeccaoWorkspace = () => {
   const [companyId, setCompanyId] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState<string | null>(null);
   const [prospeccaoCode, setRmaCode] = useState<string | null>(null);
-  const [analysis, setAnalysis] = useState<RmaAnalysisResult | null>(null);
+  const [analysis, setAnalysis] = useState<ProspeccaoAnalysisResult | null>(null);
   const [scoreFiles, setScoreFiles] = useState<ScoreFile[]>([]);
   const [prospeccaoPeriod, setRmaPeriod] = useState<{ ano: number; mes: number } | null>(null);
   const [overviewFiles, setOverviewFiles] = useState<ScoreFile[]>([]);
@@ -314,7 +314,7 @@ const ProspeccaoWorkspace = () => {
       if (!cancelled) setScoreFiles((data as any) || []);
     };
     const loadUnified = async () => {
-      const scores = await fetchRmaScores([companyId]);
+      const scores = await fetchProspeccaoScores([companyId]);
       if (!cancelled && scores[companyId]) setUnifiedScore(scores[companyId].percentual);
     };
     loadFiles();
@@ -351,7 +351,7 @@ const ProspeccaoWorkspace = () => {
     }
     setLoading(true);
     try {
-      await startRmaAnalysis(companyId);
+      await startProspeccaoAnalysis(companyId);
       setAnalysis(prev => prev ? { ...prev, status: "em_analise" } : {
         id: companyId,
         company_id: companyId,
@@ -382,7 +382,7 @@ const ProspeccaoWorkspace = () => {
   }, [companyId]);
 
   const liveWorkspaceTopics = buildLiveScoreTopics(analysis?.topics as any, scoreFiles);
-  const localWorkspacePct = computeRmaScore(liveWorkspaceTopics, analysis?.percentual ?? 0);
+  const localWorkspacePct = computeProspeccaoScore(liveWorkspaceTopics, analysis?.percentual ?? 0);
   // unifiedScore (edge `prospeccao-score`) é a fonte canônica; reconcileScore garante
   // paridade com Status Prospeccao, Processamento IA e Alertas Inteligentes.
   const liveWorkspacePercentual = reconcileScore("ProspeccaoWorkspace", unifiedScore, localWorkspacePct);

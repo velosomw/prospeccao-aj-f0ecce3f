@@ -22,7 +22,7 @@ export default function MagHistorico() {
         { label: "Eventos (30d)", value: 88, hint: "Total",     icon: History,      tone: "blue" },
         { label: "Decisões",      value: 28, hint: "Proferidas",icon: Gavel,        tone: "purple" },
         { label: "Audiências",    value: 22, hint: "Realizadas",icon: CheckCircle2, tone: "green" },
-        { label: "Prospecções AJ Lidos",    value: 14, hint: "Análises",  icon: FileText,     tone: "blue" },
+        { label: "Prospeccoes AJ Lidos",    value: 14, hint: "Análises",  icon: FileText,     tone: "blue" },
         { label: "Pendências",    value: 4,  hint: "Em aberto", icon: AlertTriangle, tone: "red" },
         { label: "Usuários",      value: 1,  hint: "Gabinete",  icon: User,         tone: "slate" },
       ]}

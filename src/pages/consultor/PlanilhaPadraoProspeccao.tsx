@@ -15,7 +15,7 @@ type Linha = {
   juiz: string | null;
 };
 
-// Dados extraídos da planilha padrão "BEx_Planilha_Padrão_Prospeccao_Administrador_Judicial"
+// Dados extraídos da planilha padrão "BEx_Planilha_Padrão_Prospecção_Administrador_Judicial"
 const LINHAS: Linha[] = [];
 
 const MESES_PT = [
@@ -39,7 +39,7 @@ function fmtMoney(n: number | null) {
   return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
-export default function PlanilhaPadraoProspeccao() {
+export default function PlanilhaPadraoProspecção() {
   const [search, setSearch] = useState("");
   const [dbLinhas, setDbLinhas] = useState<Linha[]>([]);
   const [loading, setLoading] = useState(true);

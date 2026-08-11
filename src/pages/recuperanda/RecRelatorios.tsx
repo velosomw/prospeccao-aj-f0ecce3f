@@ -12,7 +12,7 @@ const scoreColor = (s: number) => s < 33 ? "hsl(0,84%,55%)" : s < 67 ? "hsl(38,9
 export default function RecRelatorios() {
   return (
     <ConsultorPageShell
-      title="Meus Relatórios" subtitle="Prospecções AJ publicados sobre seu processo de recuperação."
+      title="Meus Relatórios" subtitle="Prospeccoes AJ publicados sobre seu processo de recuperação."
       kpis={[
         { label: "Publicados",  value: rels.length, hint: "Total",       icon: CheckCircle2, tone: "green" },
         { label: "Score Atual", value: 87, hint: "Último Prospeccao AJ",           icon: Award,        tone: "green" },
@@ -23,7 +23,7 @@ export default function RecRelatorios() {
       ]}
     >
       <div className="bg-white rounded-xl border">
-        <div className="p-4 border-b"><h3 className="text-sm font-semibold">Histórico de Prospecções AJ</h3></div>
+        <div className="p-4 border-b"><h3 className="text-sm font-semibold">Histórico de Prospeccoes AJ</h3></div>
         <div className="divide-y">
           {rels.map(r => (
             <div key={r.id} className="flex items-center gap-4 p-4 hover:bg-muted/20">

@@ -16,11 +16,11 @@ const COLORS = {
 };
 
 const consultores = [
-  { nome: "Ana Silva",       prospeccoes: 12, score: 87, status: "Ativo" },
-  { nome: "Carlos Mendes",   prospeccoes: 9,  score: 74, status: "Ativo" },
-  { nome: "Fernanda Costa",  prospeccoes: 7,  score: 91, status: "Ativo" },
-  { nome: "Rafael Souza",    prospeccoes: 5,  score: 62, status: "Sobrecarga" },
-  { nome: "Julia Pereira",   prospeccoes: 4,  score: 80, status: "Ativo" },
+  { nome: "Ana Silva",       prospecções: 12, score: 87, status: "Ativo" },
+  { nome: "Carlos Mendes",   prospecções: 9,  score: 74, status: "Ativo" },
+  { nome: "Fernanda Costa",  prospecções: 7,  score: 91, status: "Ativo" },
+  { nome: "Rafael Souza",    prospecções: 5,  score: 62, status: "Sobrecarga" },
+  { nome: "Julia Pereira",   prospecções: 4,  score: 80, status: "Ativo" },
 ];
 
 const aprovacoes = [
@@ -42,7 +42,7 @@ const evolucao = [
   { m: "Abr", v: 28 }, { m: "Mai", v: 24 },
 ];
 
-const equipeBar = consultores.map(c => ({ name: c.nome.split(" ")[0], prospeccoes: c.prospeccoes }));
+const equipeBar = consultores.map(c => ({ name: c.nome.split(" ")[0], prospecções: c.prospecções }));
 
 export default function Dashboard() {
   const { userName } = useUser();
@@ -56,7 +56,7 @@ export default function Dashboard() {
       title={`Olá, ${userName?.split(" ")[0] || "Coordenador"}!`}
       subtitle="Visão executiva da operação, equipe e aprovações pendentes."
       kpis={[
-        { label: "Prospecções AJ Totais",       value: stats.total,      hint: "Período atual",    icon: Briefcase,    tone: "blue" },
+        { label: "Prospeccoes AJ Totais",       value: stats.total,      hint: "Período atual",    icon: Briefcase,    tone: "blue" },
         { label: "Em Andamento",      value: stats.ativos,     hint: "Pipelines ativos", icon: Activity,     tone: "purple" },
         { label: "Aprovações",        value: stats.aprovacoes, hint: "Aguardando você",  icon: CheckCircle2, tone: "orange" },
         { label: "Equipe",            value: stats.equipe,     hint: "Consultores",      icon: Users,        tone: "blue" },
@@ -89,15 +89,15 @@ export default function Dashboard() {
         </div>
 
         <div className="bg-white rounded-xl border p-5">
-          <h3 className="text-sm font-semibold mb-3">Prospecções AJ por Consultor</h3>
+          <h3 className="text-sm font-semibold mb-3">Prospeccoes AJ por Consultor</h3>
           <div className="h-[260px]">
             <ResponsiveContainer>
               <BarChart data={equipeBar} margin={{ top: 24, right: 8, left: 0, bottom: 0 }}>
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis hide />
                 <Tooltip />
-                <Bar dataKey="prospeccoes" fill={COLORS.blue} radius={[8,8,0,0]} maxBarSize={42}>
-                  <LabelList dataKey="prospeccoes" position="top" style={{ fontSize: 11, fontWeight: 700 }} />
+                <Bar dataKey="prospecções" fill={COLORS.blue} radius={[8,8,0,0]} maxBarSize={42}>
+                  <LabelList dataKey="prospecções" position="top" style={{ fontSize: 11, fontWeight: 700 }} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -158,7 +158,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium">{c.nome}</div>
-                  <div className="text-xs text-muted-foreground">{c.prospeccoes} Prospeccoes ativos</div>
+                  <div className="text-xs text-muted-foreground">{c.prospecções} Prospeccoes ativos</div>
                 </div>
                 <div className="w-32">
                   <div className="h-1.5 bg-muted rounded-full overflow-hidden">

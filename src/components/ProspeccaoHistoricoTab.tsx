@@ -9,10 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Building2, Calendar, CheckCircle2, ClipboardList, FileText, History, Layers, Search } from "lucide-react";
 import { supabase } from "@/lib/supabase-any";
 import type { Company } from "@/services/companiesService";
-import type { RmaPeriodAnalysis } from "@/services/prospeccaoPeriodService";
+import type { ProspeccaoPeriodAnalysis } from "@/services/prospeccaoPeriodService";
 
 interface Props {
-  periods: RmaPeriodAnalysis[];
+  periods: ProspeccaoPeriodAnalysis[];
   companies: Company[];
 }
 
@@ -145,7 +145,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
 
   // Periodos por ano para o foco
   const periodsByYear = useMemo(() => {
-    const m = new Map<number, RmaPeriodAnalysis[]>();
+    const m = new Map<number, ProspeccaoPeriodAnalysis[]>();
     focusPeriods.forEach((p) => {
       const arr = m.get(p.year) || [];
       arr.push(p);
@@ -161,7 +161,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
 
   const renderMonthRow = (year: number) => {
     const yearPeriods = periodsByYear.get(year) || [];
-    const periodByMonth = new Map<number, RmaPeriodAnalysis>();
+    const periodByMonth = new Map<number, ProspeccaoPeriodAnalysis>();
     yearPeriods.forEach((p) => periodByMonth.set(p.month, p));
 
     return (
@@ -374,7 +374,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
                   <tr>
                     <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospeccao AJ · Empresa</th>
                     <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">CNPJ</th>
-                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospecções AJ Apurados</th>
+                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospeccoes AJ Apurados</th>
                     <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Último Período</th>
                     <th className="text-right px-4 py-3 text-sm font-semibold text-muted-foreground">Ações</th>
                   </tr>
@@ -472,7 +472,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
             {/* KPIs da empresa */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="p-3 rounded-lg border border-border/60 bg-muted/20">
-                <p className="text-xs text-muted-foreground">Prospecções AJ Apurados</p>
+                <p className="text-xs text-muted-foreground">Prospeccoes AJ Apurados</p>
                 <p className="text-2xl font-bold text-foreground">{companyKpis.apurados}</p>
               </div>
               <div className="p-3 rounded-lg border border-border/60 bg-muted/20">

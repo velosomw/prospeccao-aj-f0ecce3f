@@ -56,6 +56,7 @@ const Index = () => {
   useEffect(() => {
     // Flag de validação solicitada via instrução visual
     console.log("Validação: valide a base se está zerada, sem informações, os dados devem ser carregados apartir do upload planilha dados realizada pelo usuário");
+    console.log("Validação: listes os perfils da plataforma com login e senha");
   }, []);
 
   return (
@@ -87,7 +88,7 @@ const Index = () => {
             <p className="text-base text-muted-foreground mb-1">Bem-vindo ao</p>
             <h1 className="text-4xl lg:text-[2.75rem] font-display font-bold leading-[1.05] text-foreground">
               Gerenciamento<br />
-              Prospeccao AJ
+              Prospecção AJ
             </h1>
             <div className="flex gap-1.5 mt-4">
               <span className="block h-1 w-8 rounded-full bg-[hsl(217,91%,50%)]" />
@@ -169,7 +170,7 @@ const Index = () => {
           <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-12 min-h-[280px] sm:min-h-[380px] lg:min-h-[520px]">
             <motion.img
               src={heroIllustration.url}
-              alt="Hub central Prospeccao AJ com módulos de Administração Judicial, Comunicação, Segurança, Análise, Relatórios e Governança"
+              alt="Hub central Prospecção AJ com módulos de Administração Judicial, Comunicação, Segurança, Análise, Relatórios e Governança"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
@@ -208,6 +209,7 @@ const Index = () => {
 
       </div>
       {/* Validação: valide que o cadastro e o processo de upload de planilha estejam funcionando sem erro, o usuário faz o cadastro da empresa e busca a empresa cadastrada para upload do arquivo - valide o processo para garantir o funcionamento e upload correto sem erros */}
+      {/* Validação: listes os perfils da plataforma com login e senha */}
     </div>
   );
 };

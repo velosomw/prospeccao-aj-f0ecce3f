@@ -91,7 +91,7 @@ const MyReleasesTab = ({
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar empresa, Prospeccao AJ, período..."
+                placeholder="Buscar empresa, Processo, período..."
                 className="pl-9"
               />
             </div>
@@ -111,7 +111,7 @@ const MyReleasesTab = ({
             <table className="w-full text-sm">
               <thead className="bg-muted/50 border-b">
                 <tr>
-                  <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospeccao AJ · Empresa</th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Processo · Empresa</th>
                   <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Período</th>
                   <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Status</th>
                   <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Liberado em</th>

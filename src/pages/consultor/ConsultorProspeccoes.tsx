@@ -126,10 +126,10 @@ export default function ConsultorProspeccoes() {
 
   return (
     <ConsultorPageShell
-      title="Prospecções AJ" subtitle="Todos os Relatórios de Monitoramento sob sua responsabilidade."
+      title="Prospeccoes AJ" subtitle="Todos os Relatórios de Monitoramento sob sua responsabilidade."
       search={search} onSearch={(s) => { setSearch(s); setPage(1); }}
       kpis={[
-        { label: "Prospecções AJ Totais",  value: stats.total, hint: "No período",      icon: Briefcase,     tone: "blue" },
+        { label: "Prospeccoes AJ Totais",  value: stats.total, hint: "No período",      icon: Briefcase,     tone: "blue" },
         { label: "Em Análise IA",value: stats.proc,  hint: "Processando",     icon: Activity,      tone: "purple" },
         { label: "Em Revisão",   value: stats.rev,   hint: "Aguardando você", icon: Eye,           tone: "orange" },
         { label: "Concluídos",   value: stats.done,  hint: "Finalizados",     icon: CheckCircle2,  tone: "green" },
@@ -140,7 +140,7 @@ export default function ConsultorProspeccoes() {
       <div className="bg-white rounded-xl border">
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-semibold">Lista de Prospecções AJ</h3>
+            <h3 className="text-sm font-semibold">Lista de Prospeccoes AJ</h3>
             <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{total}</span>
           </div>
           <div className="flex items-center gap-1">

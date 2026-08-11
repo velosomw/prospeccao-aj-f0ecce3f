@@ -13,15 +13,15 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import PlatformLayout from "@/components/PlatformLayout";
 import { mockProspeccoes, type ProspeccaoEntry } from "@/data/prospeccoesMockData";
-import { listMyAssignedCompanies, activateAssignedRma, type Company } from "@/services/companiesService";
-import { startRmaAnalysis, listRmaAnalyses, type RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
-import { listPeriodsForCompanies, type RmaPeriodAnalysis } from "@/services/prospeccaoPeriodService";
+import { listMyAssignedCompanies, activateAssignedProspeccao, type Company } from "@/services/companiesService";
+import { startProspeccaoAnalysis, listProspeccaoAnalyses, type ProspeccaoAnalysisResult } from "@/services/prospeccaoAnalysisService";
+import { listPeriodsForCompanies, type ProspeccaoPeriodAnalysis } from "@/services/prospeccaoPeriodService";
 import ProspeccaoHistoricoTab from "@/components/ProspeccaoHistoricoTab";
 import MyReleasesTab from "@/components/MyReleasesTab";
 import Prospeccao360Panel from "@/components/coordenador/Prospeccao360Panel";
 import { DeferredBatchIndicator } from "@/components/prospeccao/DeferredBatchIndicator";
 import ProspeccaoCompanySearch from "@/components/prospeccao/ProspeccaoCompanySearch";
-import { buildLiveScoreTopics, computeRmaScore, groupFilesByCompany, fetchRmaScores, type ScoreFile } from "@/lib/prospeccaoScore";
+import { buildLiveScoreTopics, computeProspeccaoScore, groupFilesByCompany, fetchProspeccaoScores, type ScoreFile } from "@/lib/prospeccaoScore";
 
 const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
   em_processamento: { label: "Em Processamento", color: "text-accent", bg: "bg-accent/15" },
@@ -35,12 +35,12 @@ const EmpresaDashboard = () => {
   const { userName } = useUser();
   const { toast } = useToast();
   const firstName = userName?.split(" ")[0] || null;
-  const [prospeccoes] = useState<ProspeccaoEntry[]>([]);
+  const [prospecções] = useState<ProspeccaoEntry[]>([]);
 
   // Prospeccoes atribuídos pelo Coordenador, aguardando ativação
   const [pendingCompanies, setPendingCompanies] = useState<Company[]>([]);
   const [activatedCompanies, setActivatedCompanies] = useState<Company[]>([]);
-  const [analyses, setAnalyses] = useState<Record<string, RmaAnalysisResult>>({});
+  const [analyses, setAnalyses] = useState<Record<string, ProspeccaoAnalysisResult>>({});
   const [pendingOpen, setPendingOpen] = useState(true);
   const [activatingId, setActivatingId] = useState<string | null>(null);
   const [statusCompanyId, setStatusCompanyId] = useState<string | null>(null);
@@ -49,7 +49,7 @@ const EmpresaDashboard = () => {
   const [unifiedScores, setUnifiedScores] = useState<Record<string, { percentual: number }>>({});
 
   // Histórico mensal
-  const [periods, setPeriods] = useState<RmaPeriodAnalysis[]>([]);
+  const [periods, setPeriods] = useState<ProspeccaoPeriodAnalysis[]>([]);
   const [histYear, setHistYear] = useState<string>("todos");
   const [histMonth, setHistMonth] = useState<string>("todos");
   const [histCompany, setHistCompany] = useState<string>("todos");
@@ -66,8 +66,8 @@ const EmpresaDashboard = () => {
       return;
     }
 
-    const rows = await listRmaAnalyses(companyIds);
-    const next = rows.reduce<Record<string, RmaAnalysisResult>>((acc, row) => {
+    const rows = await listProspeccaoAnalyses(companyIds);
+    const next = rows.reduce<Record<string, ProspeccaoAnalysisResult>>((acc, row) => {
       acc[row.company_id] = row;
       return acc;
     }, {});
@@ -112,7 +112,7 @@ const EmpresaDashboard = () => {
       if (!cancelled) setScoreFiles((data as any) || []);
     };
     const loadUnified = async () => {
-      const scores = await fetchRmaScores(companyIds);
+      const scores = await fetchProspeccaoScores(companyIds);
       if (!cancelled && Object.keys(scores).length > 0) setUnifiedScores(scores as any);
     };
 
@@ -125,8 +125,8 @@ const EmpresaDashboard = () => {
   const handleActivate = async (company: Company) => {
     setActivatingId(company.id);
     try {
-      await activateAssignedRma(company.id);
-      await startRmaAnalysis(company.id);
+      await activateAssignedProspeccao(company.id);
+      await startProspeccaoAnalysis(company.id);
       await reloadAssigned();
       toast({
         title: "Análise IA iniciada",
@@ -134,7 +134,7 @@ const EmpresaDashboard = () => {
       });
       navigate(`/prospeccao/${company.id}`);
     } catch (e: any) {
-      toast({ title: "Erro ao ativar Prospeccao AJ", description: e.message, variant: "destructive" });
+      toast({ title: "Erro ao ativar Prospeccao", description: e.message, variant: "destructive" });
     } finally {
       setActivatingId(null);
     }
@@ -144,7 +144,7 @@ const EmpresaDashboard = () => {
   const handleRefreshIA = async (companyId: string, companyName: string) => {
     setRefreshingId(companyId);
     try {
-      await startRmaAnalysis(companyId);
+      await startProspeccaoAnalysis(companyId);
       await reloadAssigned();
       toast({
         title: "Status IA atualizado",
@@ -160,7 +160,7 @@ const EmpresaDashboard = () => {
   // Combina Prospeccoes ativados (reais) + mocks para exibir nas abas Alertas e Prospeccoes
   const filesByCompany = useMemo(() => groupFilesByCompany(scoreFiles), [scoreFiles]);
 
-  const realRmas = useMemo(() => activatedCompanies.map(c => {
+  const realProspeccoes = useMemo(() => activatedCompanies.map(c => {
     const analysis = analyses[c.id];
     const analysisTopics = analysis?.topics?.map((t, index) => ({
       id: `t${t.number ?? index + 1}`,
@@ -173,7 +173,7 @@ const EmpresaDashboard = () => {
       processing: t.processing,
     })) || [];
     const topics = buildLiveScoreTopics(analysisTopics, filesByCompany[c.id]);
-    const percentual = unifiedScores[c.id]?.percentual ?? computeRmaScore(topics, analysis?.percentual ?? 0);
+    const percentual = unifiedScores[c.id]?.percentual ?? computeProspeccaoScore(topics, analysis?.percentual ?? 0);
 
     const mappedStatus = analysis?.status === "concluido"
       ? "concluido"
@@ -198,15 +198,15 @@ const EmpresaDashboard = () => {
         : null,
     };
   }), [activatedCompanies, analyses, filesByCompany]);
-  const displayRmas: (ProspeccaoEntry & { companyId?: string; analysisStatus?: string })[] = [...realRmas as any, ...prospeccoes];
+  const displayProspeccoes: (ProspeccaoEntry & { companyId?: string; analysisStatus?: string })[] = [...realProspeccoes as any, ...prospecções];
 
-  const total = displayRmas.length;
-  const emProcessamento = displayRmas.filter(r => r.status === "em_processamento").length;
-  const emRevisao = displayRmas.filter(r => r.status === "em_revisao").length;
-  const concluidos = displayRmas.filter(r => r.status === "concluido").length;
+  const total = displayProspeccoes.length;
+  const emProcessamento = displayProspeccoes.filter(r => r.status === "em_processamento").length;
+  const emRevisao = displayProspeccoes.filter(r => r.status === "em_revisao").length;
+  const concluidos = displayProspeccoes.filter(r => r.status === "concluido").length;
 
   const kpis = [
-    { label: "Prospecções AJ em Andamento", value: emProcessamento, icon: Clock, color: "hsl(var(--accent))" },
+    { label: "Prospeccoes AJ em Andamento", value: emProcessamento, icon: Clock, color: "hsl(var(--accent))" },
     { label: "Em Análise IA", value: emProcessamento, icon: Activity, color: "hsl(var(--ring))" },
     { label: "Em Revisão", value: emRevisao, icon: AlertTriangle, color: "hsl(var(--destructive))" },
     { label: "Concluídos", value: concluidos, icon: CheckCircle2, color: "hsl(var(--primary))" },
@@ -317,12 +317,12 @@ const EmpresaDashboard = () => {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Olá, {firstName || "Empresa"}</h1>
-            <p className="text-sm text-muted-foreground">Gestão de Prospecções AJ e acompanhamento de processos</p>
+            <p className="text-sm text-muted-foreground">Gestão de Prospeccoes AJ e acompanhamento de processos</p>
           </div>
           <ProspeccaoCompanySearch
             companies={[...activatedCompanies, ...pendingCompanies]}
             onSelect={(c) => navigate(`/prospeccao/${c.id}`)}
-            placeholder="Buscar por empresa, ID Prospeccao AJ ou CNPJ..."
+            placeholder="Buscar por empresa, ID Prospeccao ou CNPJ..."
             className="w-full md:w-96"
           />
         </div>
@@ -332,14 +332,14 @@ const EmpresaDashboard = () => {
             <TabsTrigger value="dashboard" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <BarChart3 className="w-4 h-4" /> Dashboard
             </TabsTrigger>
-            <TabsTrigger value="prospeccoes" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
+            <TabsTrigger value="prospecções" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <FileText className="w-4 h-4" /> Prospeccoes
             </TabsTrigger>
             <TabsTrigger value="historico" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <History className="w-4 h-4" /> Histórico
             </TabsTrigger>
             <TabsTrigger value="liberacoes" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
-              <Calendar className="w-4 h-4" /> Prospeccoes Liberados
+              <Calendar className="w-4 h-4" /> Prospeccoes Liberadas
             </TabsTrigger>
           </TabsList>
 
@@ -451,7 +451,7 @@ const EmpresaDashboard = () => {
                   const now = Date.now();
                   const DAY_MS = 24 * 60 * 60 * 1000;
                   // Considera apenas Prospeccoes reais (com companyId) que NÃO estão concluídos
-                  const candidatos = displayRmas.filter(r => r.status !== "concluido" && r.companyId);
+                  const candidatos = displayProspeccoes.filter(r => r.status !== "concluido" && r.companyId);
                   if (candidatos.length === 0) {
                     return (
                       <p className="text-xs text-muted-foreground text-center py-6">
@@ -597,7 +597,7 @@ const EmpresaDashboard = () => {
               <CardContent>
                 <div className="space-y-3">
                   {recentActivities.length === 0 ? (
-                    <p className="text-xs text-muted-foreground">Sem atividades recentes registradas para os seus Prospecções AJ.</p>
+                    <p className="text-xs text-muted-foreground">Sem atividades recentes registradas para os seus Prospeccoes AJ.</p>
                   ) : recentActivities.map((act) => (
                     <div key={act.id} className="flex items-start gap-3">
                       <div className="w-2 h-2 rounded-full bg-accent mt-1.5 shrink-0" />
@@ -613,10 +613,10 @@ const EmpresaDashboard = () => {
           </TabsContent>
 
           {/* ABA 2 - Prospeccoes */}
-          <TabsContent value="prospeccoes" className="space-y-4">
+          <TabsContent value="prospecções" className="space-y-4">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">Lista de Prospecções AJ</CardTitle>
+                <CardTitle className="text-base">Lista de Prospeccoes AJ</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">
@@ -633,7 +633,7 @@ const EmpresaDashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {displayRmas.map(prospeccao => {
+                      {displayProspeccoes.map(prospeccao => {
                         const sc = statusConfig[prospeccao.status];
                         return (
                           <tr key={(prospeccao as any).companyId || prospeccao.id} className="border-b border-border/30 hover:bg-muted/30 transition-colors">

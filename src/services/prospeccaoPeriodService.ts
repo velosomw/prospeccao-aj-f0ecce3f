@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase-any";
 
-export interface RmaPeriodAnalysis {
+export interface ProspeccaoPeriodAnalysis {
   id: string;
   company_id: string;
   year: number;
@@ -35,7 +35,7 @@ export function getCurrentPeriod(): { year: number; month: number; label: string
 }
 
 /** Lista o histórico de análises mensais para uma empresa (mais recentes primeiro). */
-export async function listCompanyPeriods(companyId: string): Promise<RmaPeriodAnalysis[]> {
+export async function listCompanyPeriods(companyId: string): Promise<ProspeccaoPeriodAnalysis[]> {
   const { data, error } = await supabase
     .from("prospeccao_period_analyses" as any)
     .select("*")
@@ -43,11 +43,11 @@ export async function listCompanyPeriods(companyId: string): Promise<RmaPeriodAn
     .order("year", { ascending: false })
     .order("month", { ascending: false });
   if (error) throw error;
-  return ((data as any[]) || []) as RmaPeriodAnalysis[];
+  return ((data as any[]) || []) as ProspeccaoPeriodAnalysis[];
 }
 
 /** Lista o histórico de várias empresas (para a aba Histórico do consultor). */
-export async function listPeriodsForCompanies(companyIds: string[]): Promise<RmaPeriodAnalysis[]> {
+export async function listPeriodsForCompanies(companyIds: string[]): Promise<ProspeccaoPeriodAnalysis[]> {
   if (companyIds.length === 0) return [];
   const { data, error } = await supabase
     .from("prospeccao_period_analyses" as any)
@@ -56,5 +56,5 @@ export async function listPeriodsForCompanies(companyIds: string[]): Promise<Rma
     .order("year", { ascending: false })
     .order("month", { ascending: false });
   if (error) throw error;
-  return ((data as any[]) || []) as RmaPeriodAnalysis[];
+  return ((data as any[]) || []) as ProspeccaoPeriodAnalysis[];
 }

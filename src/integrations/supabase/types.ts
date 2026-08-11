@@ -1411,7 +1411,7 @@ export type Database = {
         }
         Relationships: []
       }
-      company_rma_topics: {
+      company_prospeccao_topics: {
         Row: {
           company_id: string
           created_at: string
@@ -1435,7 +1435,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "company_rma_topics_company_id_fkey"
+            foreignKeyName: "company_prospeccao_topics_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
@@ -2646,11 +2646,11 @@ export type Database = {
           mes: number | null
           original_queue_id: string | null
           payload: Json | null
+          prospeccao_id: string | null
           reason: string | null
           resolution_notes: string | null
           resolved_at: string | null
           resolved_by: string | null
-          prospeccao_id: string | null
         }
         Insert: {
           ano?: number | null
@@ -2664,11 +2664,11 @@ export type Database = {
           mes?: number | null
           original_queue_id?: string | null
           payload?: Json | null
+          prospeccao_id?: string | null
           reason?: string | null
           resolution_notes?: string | null
           resolved_at?: string | null
           resolved_by?: string | null
-          prospeccao_id?: string | null
         }
         Update: {
           ano?: number | null
@@ -2682,11 +2682,11 @@ export type Database = {
           mes?: number | null
           original_queue_id?: string | null
           payload?: Json | null
+          prospeccao_id?: string | null
           reason?: string | null
           resolution_notes?: string | null
           resolved_at?: string | null
           resolved_by?: string | null
-          prospeccao_id?: string | null
         }
         Relationships: []
       }
@@ -4950,6 +4950,44 @@ export type Database = {
         }
         Relationships: []
       }
+      prospeccao_assignment_history: {
+        Row: {
+          action: string
+          changed_by: string | null
+          company_id: string
+          created_at: string
+          from_consultant_user_id: string | null
+          id: string
+          to_consultant_user_id: string | null
+        }
+        Insert: {
+          action: string
+          changed_by?: string | null
+          company_id: string
+          created_at?: string
+          from_consultant_user_id?: string | null
+          id?: string
+          to_consultant_user_id?: string | null
+        }
+        Update: {
+          action?: string
+          changed_by?: string | null
+          company_id?: string
+          created_at?: string
+          from_consultant_user_id?: string | null
+          id?: string
+          to_consultant_user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_assignment_history_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       prospeccao_business_facts: {
         Row: {
           cnpj: string | null
@@ -5529,6 +5567,101 @@ export type Database = {
           },
         ]
       }
+      prospeccao_period_chain: {
+        Row: {
+          company_id: string
+          created_at: string
+          finished_at: string | null
+          id: string
+          last_check_at: string | null
+          month: number
+          notes: string | null
+          sequence_order: number
+          status: string
+          triggered_at: string | null
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          finished_at?: string | null
+          id?: string
+          last_check_at?: string | null
+          month: number
+          notes?: string | null
+          sequence_order: number
+          status?: string
+          triggered_at?: string | null
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          finished_at?: string | null
+          id?: string
+          last_check_at?: string | null
+          month?: number
+          notes?: string | null
+          sequence_order?: number
+          status?: string
+          triggered_at?: string | null
+          updated_at?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_period_chain_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prospeccao_release_assignments: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          month: number
+          notes: string | null
+          released_by: string | null
+          released_to_role: Database["public"]["Enums"]["app_role"]
+          released_to_user_id: string
+          status: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          month: number
+          notes?: string | null
+          released_by?: string | null
+          released_to_role: Database["public"]["Enums"]["app_role"]
+          released_to_user_id: string
+          status?: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          month?: number
+          notes?: string | null
+          released_by?: string | null
+          released_to_role?: Database["public"]["Enums"]["app_role"]
+          released_to_user_id?: string
+          status?: string
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
       prospeccao_uploads: {
         Row: {
           company_id: string | null
@@ -5848,44 +5981,6 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
-      }
-      rma_assignment_history: {
-        Row: {
-          action: string
-          changed_by: string | null
-          company_id: string
-          created_at: string
-          from_consultant_user_id: string | null
-          id: string
-          to_consultant_user_id: string | null
-        }
-        Insert: {
-          action: string
-          changed_by?: string | null
-          company_id: string
-          created_at?: string
-          from_consultant_user_id?: string | null
-          id?: string
-          to_consultant_user_id?: string | null
-        }
-        Update: {
-          action?: string
-          changed_by?: string | null
-          company_id?: string
-          created_at?: string
-          from_consultant_user_id?: string | null
-          id?: string
-          to_consultant_user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "rma_assignment_history_company_id_fkey"
-            columns: ["company_id"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       rma_cobrancas: {
         Row: {
@@ -6566,101 +6661,6 @@ export type Database = {
           started_at?: string
           status?: string
           topics?: Json
-          updated_at?: string
-          year?: number
-        }
-        Relationships: []
-      }
-      rma_period_chain: {
-        Row: {
-          company_id: string
-          created_at: string
-          finished_at: string | null
-          id: string
-          last_check_at: string | null
-          month: number
-          notes: string | null
-          sequence_order: number
-          status: string
-          triggered_at: string | null
-          updated_at: string
-          year: number
-        }
-        Insert: {
-          company_id: string
-          created_at?: string
-          finished_at?: string | null
-          id?: string
-          last_check_at?: string | null
-          month: number
-          notes?: string | null
-          sequence_order: number
-          status?: string
-          triggered_at?: string | null
-          updated_at?: string
-          year: number
-        }
-        Update: {
-          company_id?: string
-          created_at?: string
-          finished_at?: string | null
-          id?: string
-          last_check_at?: string | null
-          month?: number
-          notes?: string | null
-          sequence_order?: number
-          status?: string
-          triggered_at?: string | null
-          updated_at?: string
-          year?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "rma_period_chain_company_id_fkey"
-            columns: ["company_id"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      rma_release_assignments: {
-        Row: {
-          company_id: string
-          created_at: string
-          id: string
-          month: number
-          notes: string | null
-          released_by: string | null
-          released_to_role: Database["public"]["Enums"]["app_role"]
-          released_to_user_id: string
-          status: string
-          updated_at: string
-          year: number
-        }
-        Insert: {
-          company_id: string
-          created_at?: string
-          id?: string
-          month: number
-          notes?: string | null
-          released_by?: string | null
-          released_to_role: Database["public"]["Enums"]["app_role"]
-          released_to_user_id: string
-          status?: string
-          updated_at?: string
-          year: number
-        }
-        Update: {
-          company_id?: string
-          created_at?: string
-          id?: string
-          month?: number
-          notes?: string | null
-          released_by?: string | null
-          released_to_role?: Database["public"]["Enums"]["app_role"]
-          released_to_user_id?: string
-          status?: string
           updated_at?: string
           year?: number
         }

@@ -421,7 +421,7 @@ const RenumberProspeccoesCard = () => {
     setRunning(true);
     setResult(null);
     try {
-      const { data, error } = await supabase.functions.invoke("onedrive-renumber-prospeccoes", {
+      const { data, error } = await supabase.functions.invoke("onedrive-renumber-prospecções", {
         body: { path: ONEDRIVE_CONFIG.base_path, year: Number(year), prefix, dryRun },
       });
       if (error) throw error;
@@ -447,7 +447,7 @@ const RenumberProspeccoesCard = () => {
     <div className="bg-card rounded-xl border border-border p-5 space-y-4" style={{ borderTopWidth: 3, borderTopColor: "hsl(258,90%,66%)" }}>
       <div className="flex items-center gap-2">
         <FolderOpen className="w-4 h-4 text-[hsl(258,90%,66%)]" />
-        <h3 className="text-sm font-bold text-foreground">Renumerar Prospecções AJ existentes (OneDrive → Banco)</h3>
+        <h3 className="text-sm font-bold text-foreground">Renumerar Prospeccoes AJ existentes (OneDrive → Banco)</h3>
       </div>
       <p className="text-xs text-muted-foreground">
         Lê cada subpasta direta de <code className="bg-muted px-1 rounded">/{ONEDRIVE_CONFIG.base_path}</code>,

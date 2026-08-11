@@ -74,7 +74,7 @@ export default function MonthCoverageCard({ companyId, refreshKey }: Props) {
           .eq("company_id", companyId)
           .limit(20000),
         supabase
-          .from("prospeccao_file_parse_cache")
+          .from("prospeccao_file_parse_cache" as any)
           .select("ano, mes, tipo")
           .eq("company_id", companyId)
           .is("error_message", null)

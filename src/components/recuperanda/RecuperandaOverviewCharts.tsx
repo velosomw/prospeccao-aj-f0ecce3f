@@ -6,12 +6,12 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, PieChart as PieIcon, BarChart3, Activity, Target, Layers } from "lucide-react";
 import type { Company, RmaHistoryEntry } from "@/services/companiesService";
-import type { RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
+import type { ProspeccaoAnalysisResult } from "@/services/prospeccaoAnalysisService";
 
 interface Props {
   companies: Company[];
   history: RmaHistoryEntry[];
-  analyses: Record<string, RmaAnalysisResult>;
+  analyses: Record<string, ProspeccaoAnalysisResult>;
 }
 
 const COLOR_BLUE = "hsl(217, 91%, 50%)";
@@ -54,7 +54,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
   // Cadastros por mês (6m)
   const cadastrosData = useMemo(() => {
     const now = new Date();
-    const out: { month: string; prospeccoes: number }[] = [];
+    const out: { month: string; prospecções: number }[] = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const next = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
@@ -62,7 +62,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
         const t = new Date(c.created_at).getTime();
         return t >= d.getTime() && t < next.getTime();
       }).length;
-      out.push({ month: monthsPt[d.getMonth()], prospeccoes: count });
+      out.push({ month: monthsPt[d.getMonth()], prospecções: count });
     }
     return out;
   }, [companies]);
@@ -121,7 +121,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
               <Layers className="w-4 h-4" style={{ color: COLOR_GREEN }} />
             </div>
             <p className="text-2xl font-bold text-foreground mt-1">{avgPct}%</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">Média dos Prospecções AJ</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Média dos Prospeccoes AJ</p>
           </CardContent>
         </Card>
         <Card className="border-l-4" style={{ borderLeftColor: COLOR_ORANGE }}>
@@ -131,7 +131,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
               <Activity className="w-4 h-4" style={{ color: COLOR_ORANGE }} />
             </div>
             <p className="text-2xl font-bold text-foreground mt-1">{emAnalise}</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">Prospecções AJ sendo processados</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Prospeccoes AJ sendo processados</p>
           </CardContent>
         </Card>
         <Card className="border-l-4" style={{ borderLeftColor: COLOR_PURPLE }}>
@@ -141,7 +141,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
               <PieIcon className="w-4 h-4" style={{ color: COLOR_PURPLE }} />
             </div>
             <p className="text-2xl font-bold text-foreground mt-1">{concluidos}</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">Prospecções AJ entregues</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Prospeccoes AJ entregues</p>
           </CardContent>
         </Card>
       </div>
@@ -202,7 +202,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
             <CardTitle className="text-base flex items-center gap-2">
               <TrendingUp className="w-4 h-4" style={{ color: COLOR_GREEN }} /> Cadastros de Prospeccao — 6 meses
             </CardTitle>
-            <CardDescription>Evolução mensal dos novos Prospecções AJ</CardDescription>
+            <CardDescription>Evolução mensal dos novos Prospeccoes AJ</CardDescription>
           </CardHeader>
           <CardContent className="h-[260px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -211,7 +211,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
                 <XAxis dataKey="month" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                 <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                 <Tooltip />
-                <Line type="monotone" dataKey="prospeccoes" stroke={COLOR_BLUE} strokeWidth={3} dot={{ r: 5, fill: COLOR_BLUE }} activeDot={{ r: 7 }} />
+                <Line type="monotone" dataKey="prospecções" stroke={COLOR_BLUE} strokeWidth={3} dot={{ r: 5, fill: COLOR_BLUE }} activeDot={{ r: 7 }} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>

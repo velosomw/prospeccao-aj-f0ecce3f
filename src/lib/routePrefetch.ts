@@ -15,8 +15,8 @@ const loaders: Record<string, Loader> = {
 
   "/consultor":               () => import("@/pages/consultor/ConsultorHome"),
   "/consultor/dashboard":     () => import("@/pages/ConsultorDashboard"),
-  "/consultor/prospeccoes":          () => import("@/pages/consultor/ConsultorProspeccoes"),
-  "/consultor/prospeccoes-aj": () => import("@/pages/consultor/ConsultorProspeccoes"),
+  "/consultor/prospecções":          () => import("@/pages/consultor/ConsultorProspeccoes"),
+  "/consultor/prospecções-aj": () => import("@/pages/consultor/ConsultorProspeccoes"),
   "/consultor/processos":     () => import("@/pages/consultor/ConsultorProcessos"),
   "/consultor/pendencias":    () => import("@/pages/consultor/ConsultorPendencias"),
   "/consultor/relatorios":    () => import("@/pages/consultor/ConsultorRelatorios"),
@@ -47,7 +47,7 @@ const loaders: Record<string, Loader> = {
 
   "/magistrado":              () => import("@/pages/MagistradoDashboard"),
   "/magistrado/processos":    () => import("@/pages/magistrado/MagProcessos"),
-  "/magistrado/prospeccoes":         () => import("@/pages/magistrado/MagProspeccoes"),
+  "/magistrado/prospecções":         () => import("@/pages/magistrado/MagProspeccoes"),
   "/magistrado/empresas":     () => import("@/pages/magistrado/MagEmpresas"),
   "/magistrado/decisoes":     () => import("@/pages/magistrado/MagDecisoes"),
   "/magistrado/historico":    () => import("@/pages/magistrado/MagHistorico"),
@@ -60,7 +60,7 @@ const loaders: Record<string, Loader> = {
 
   "/admjudicial":              () => import("@/pages/AdmjudicialDashboard"),
   "/admjudicial/recuperandas": () => import("@/pages/admjudicial/AdmRecuperandas"),
-  "/admjudicial/prospeccoes":         () => import("@/pages/admjudicial/AdmProspeccoes"),
+  "/admjudicial/prospecções":         () => import("@/pages/admjudicial/AdmProspeccoes"),
   "/admjudicial/pendencias":   () => import("@/pages/admjudicial/AdmPendencias"),
   "/admjudicial/relatorios":   () => import("@/pages/admjudicial/AdmRelatorios"),
   "/admjudicial/historico":    () => import("@/pages/admjudicial/AdmHistorico"),

@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useRmaDocument } from "@/hooks/useRmaDocument";
+import { useProspeccaoDocument } from "@/hooks/useProspeccaoDocument";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
@@ -59,7 +59,7 @@ export default function StageRelatorioProspeccao({
   prospeccaoId, scoreFinal, companyId, prospeccaoCode, empresa, mesReferencia, responsavel,
 }: Props) {
   const { doc, sections, progresso, aprovadoPct, regenerateFinal, buildCharts, reload } =
-    useRmaDocument(prospeccaoId, "prospeccao_mensal", "Relatório Mensal de Atividade (CNJ 72/2020)");
+    useProspeccaoDocument(prospeccaoId, "prospeccao_mensal", "Relatório Mensal de Atividade (CNJ 72/2020)");
 
   const [busy, setBusy] = useState<null | "gerar" | "atualizar">(null);
   const [phase, setPhase] = useState<string>("");
@@ -84,7 +84,7 @@ export default function StageRelatorioProspeccao({
     let cancel = false;
     (async () => {
       const { data } = await supabase
-        .from("prospeccao_analysis_results")
+        .from("prospeccao_analysis_results" as any)
         .select("percentual, kanitz, pendencias, indicadores, score_rj, topics, diagnostico")
         .eq("company_id", companyId)
         .maybeSingle();

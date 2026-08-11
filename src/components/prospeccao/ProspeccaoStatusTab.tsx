@@ -6,17 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/lib/supabase-any";
-import { buildLiveScoreTopics, computeRmaScore } from "@/lib/prospeccaoScore";
+import { buildLiveScoreTopics, computeProspeccaoScore } from "@/lib/prospeccaoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
 import type { ProspeccaoEntry } from "@/types/prospeccao";
-import type { RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
+import type { ProspeccaoAnalysisResult } from "@/services/prospeccaoAnalysisService";
 
 interface Props {
   prospeccao: ProspeccaoEntry;
   companyId?: string | null;
   onUpdateIA: () => void;
   isAnalyzing?: boolean;
-  analysis?: RmaAnalysisResult | null;
+  analysis?: ProspeccaoAnalysisResult | null;
 }
 
 type StatusFilter = "all" | "completo" | "pendente" | "incompleto";
@@ -104,7 +104,7 @@ const ProspeccaoStatusTab = ({ prospeccao, companyId, onUpdateIA, isAnalyzing = 
 
   // Score Global unificado: `prospeccao.percentual` é a fonte canônica (vinda do
   // Workspace/edge `prospeccao-score`). reconcileScore garante paridade em runtime.
-  const localScore = computeRmaScore(liveTopics as any, analysis?.percentual ?? 0);
+  const localScore = computeProspeccaoScore(liveTopics as any, analysis?.percentual ?? 0);
   const avgCompletude = reconcileScore("ProspeccaoStatusTab", prospeccao.percentual, localScore);
   useScoreParityGuard(prospeccao.id ?? null, "ProspeccaoStatusTab", avgCompletude);
 

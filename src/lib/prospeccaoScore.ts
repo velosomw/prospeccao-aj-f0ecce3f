@@ -101,7 +101,7 @@ export function groupFilesByCompany(files: ScoreFile[] | null | undefined): Reco
   }, {});
 }
 
-export function computeRmaScore(topics: ScoreTopic[] | null | undefined, baseline = 0): number {
+export function computeProspeccaoScore(topics: ScoreTopic[] | null | undefined, baseline = 0): number {
   const list = Array.isArray(topics) ? topics : [];
   const total = list.length || 1;
   const completos = list.filter((t) => t.status === "completo").length;
@@ -135,7 +135,7 @@ export interface UnifiedRmaScore {
   topics: ScoreTopic[];
 }
 
-export async function fetchRmaScores(
+export async function fetchProspeccaoScores(
   companyIds?: string[],
 ): Promise<Record<string, UnifiedRmaScore>> {
   try {
@@ -151,7 +151,7 @@ export async function fetchRmaScores(
     if (error) throw error;
     return (data?.scores ?? {}) as Record<string, UnifiedRmaScore>;
   } catch (e) {
-    console.warn("[prospeccaoScore] fetchRmaScores falhou, usando cálculo local:", e);
+    console.warn("[prospeccaoScore] fetchProspeccaoScores falhou, usando cálculo local:", e);
     return {};
   }
 }

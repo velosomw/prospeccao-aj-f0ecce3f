@@ -18,7 +18,7 @@ const scoreColor = (s: number) => s < 33 ? "hsl(0,84%,55%)" : s < 67 ? "hsl(38,9
 export default function CoordRelatorios() {
   return (
     <ConsultorPageShell
-      title="Relatórios" subtitle="Acompanhamento consolidado de Prospecções AJ publicados e em produção."
+      title="Relatórios" subtitle="Acompanhamento consolidado de Prospeccoes AJ publicados e em produção."
       kpis={[
         { label: "Publicados",      value: 47, hint: "Total geral",   icon: CheckCircle2, tone: "green" },
         { label: "Em Revisão",      value: 8,  hint: "Coordenação",   icon: Eye,          tone: "orange" },

@@ -68,7 +68,7 @@ export default function CoordEmpresas() {
       search={search} onSearch={(s) => { setSearch(s); setPage(1); }}
       kpis={[
         { label: "Empresas",      value: total,       hint: "Cadastradas",  icon: Building2,    tone: "blue" },
-        { label: "Prospecções AJ Totais",   value: total,       hint: "Acumulado",    icon: Briefcase,    tone: "purple" },
+        { label: "Prospeccoes AJ Totais",   value: total,       hint: "Acumulado",    icon: Briefcase,    tone: "purple" },
         { label: "Ativas",        value: ativas,      hint: "Em operação",  icon: TrendingUp,   tone: "green" },
         { label: "Pend. Ativação",value: pendentes,   hint: "Aguardando",   icon: AlertTriangle, tone: "orange" },
         { label: "Inativas",      value: inativas,    hint: "Desabilitadas",icon: AlertTriangle, tone: "red" },

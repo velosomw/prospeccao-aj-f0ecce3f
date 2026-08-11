@@ -2,17 +2,17 @@ import { Users, Award, Activity, Briefcase, AlertTriangle, Plus } from "lucide-r
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
 const team = [
-  { nome: "Ana Silva",      email: "ana@bex.com",      prospeccoes: 12, score: 87, sla: 96, status: "Ativo" },
-  { nome: "Carlos Mendes",  email: "carlos@bex.com",   prospeccoes: 9,  score: 74, sla: 90, status: "Ativo" },
-  { nome: "Fernanda Costa", email: "fernanda@bex.com", prospeccoes: 7,  score: 91, sla: 98, status: "Ativo" },
-  { nome: "Rafael Souza",   email: "rafael@bex.com",   prospeccoes: 5,  score: 62, sla: 84, status: "Sobrecarga" },
-  { nome: "Julia Pereira",  email: "julia@bex.com",    prospeccoes: 4,  score: 80, sla: 92, status: "Ativo" },
+  { nome: "Ana Silva",      email: "ana@bex.com",      prospecções: 12, score: 87, sla: 96, status: "Ativo" },
+  { nome: "Carlos Mendes",  email: "carlos@bex.com",   prospecções: 9,  score: 74, sla: 90, status: "Ativo" },
+  { nome: "Fernanda Costa", email: "fernanda@bex.com", prospecções: 7,  score: 91, sla: 98, status: "Ativo" },
+  { nome: "Rafael Souza",   email: "rafael@bex.com",   prospecções: 5,  score: 62, sla: 84, status: "Sobrecarga" },
+  { nome: "Julia Pereira",  email: "julia@bex.com",    prospecções: 4,  score: 80, sla: 92, status: "Ativo" },
 ];
 
 const statusColor = (s: string) => s === "Sobrecarga" ? { bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)" } : { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" };
 
 export default function CoordEquipe() {
-  const totalProspeccoes = team.reduce((s, t) => s + t.prospeccoes, 0);
+  const totalProspeccoes = team.reduce((s, t) => s + t.prospecções, 0);
   const avgScore  = Math.round(team.reduce((s, t) => s + t.score, 0) / team.length);
   const avgSLA    = Math.round(team.reduce((s, t) => s + t.sla, 0) / team.length);
   return (
@@ -20,7 +20,7 @@ export default function CoordEquipe() {
       title="Equipe" subtitle="Gestão de consultores, carga e performance individual."
       kpis={[
         { label: "Consultores",   value: team.length, hint: "Ativos",         icon: Users,        tone: "blue" },
-        { label: "Prospecções AJ Atribuídos", value: totalProspeccoes, hint: "Total da equipe",icon: Briefcase,    tone: "purple" },
+        { label: "Prospeccoes AJ Atribuídos", value: totalProspeccoes, hint: "Total da equipe",icon: Briefcase,    tone: "purple" },
         { label: "Score Médio",   value: avgScore,    hint: "Qualidade",      icon: Award,        tone: "green" },
         { label: "SLA Médio",     value: `${avgSLA}%`, hint: "Cumprimento",    icon: Activity,     tone: "blue" },
         { label: "Sobrecarga",    value: team.filter(t => t.status === "Sobrecarga").length, hint: "Atenção", icon: AlertTriangle, tone: "orange" },
@@ -38,7 +38,7 @@ export default function CoordEquipe() {
           <thead className="bg-muted/40 text-xs text-muted-foreground uppercase tracking-wider">
             <tr>
               <th className="text-left px-4 py-2.5">Consultor</th>
-              <th className="text-left px-4 py-2.5">Prospecções AJ</th>
+              <th className="text-left px-4 py-2.5">Prospeccoes AJ</th>
               <th className="text-left px-4 py-2.5">Score</th>
               <th className="text-left px-4 py-2.5">SLA</th>
               <th className="text-left px-4 py-2.5">Status</th>
@@ -58,7 +58,7 @@ export default function CoordEquipe() {
                       <div className="text-xs text-muted-foreground">{t.email}</div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 font-semibold">{t.prospeccoes}</td>
+                  <td className="px-4 py-3 font-semibold">{t.prospecções}</td>
                   <td className="px-4 py-3"><span className="font-semibold">{t.score}</span></td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2 w-32">

@@ -59,15 +59,15 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
     const arr = Array.from(counts.entries()).map(([uid, count]) => {
       const p = profiles.find((x) => x.user_id === uid);
       const name = p?.full_name?.split(" ")[0] || "—";
-      return { name, prospeccoes: count };
+      return { name, prospecções: count };
     });
-    return arr.sort((a, b) => b.prospeccoes - a.prospeccoes).slice(0, 6);
+    return arr.sort((a, b) => b.prospecções - a.prospecções).slice(0, 6);
   }, [assignments, profiles]);
 
   // 3. Cadastros por mês (últimos 6 meses)
   const cadastrosData = useMemo(() => {
     const now = new Date();
-    const out: { month: string; prospeccoes: number }[] = [];
+    const out: { month: string; prospecções: number }[] = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const next = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
@@ -75,7 +75,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
         const t = new Date(c.created_at).getTime();
         return t >= d.getTime() && t < next.getTime();
       }).length;
-      out.push({ month: monthsPt[d.getMonth()], prospeccoes: count });
+      out.push({ month: monthsPt[d.getMonth()], prospecções: count });
     }
     return out;
   }, [companies]);
@@ -157,7 +157,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
               <Layers className="w-4 h-4" style={{ color: COLOR_PURPLE }} />
             </div>
             <p className="text-2xl font-bold text-foreground mt-1">{cargaMedia}</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">Prospecções AJ por consultor ativo</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Prospeccoes AJ por consultor ativo</p>
           </CardContent>
         </Card>
         <Card className="border-l-4" style={{ borderLeftColor: COLOR_GREEN }}>
@@ -228,7 +228,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
             <CardTitle className="text-base flex items-center gap-2">
               <BarChart3 className="w-4 h-4" style={{ color: COLOR_PURPLE }} /> Carga por Consultor
             </CardTitle>
-            <CardDescription>Top 6 consultores por nº de Prospecções AJ</CardDescription>
+            <CardDescription>Top 6 consultores por nº de Prospeccoes AJ</CardDescription>
           </CardHeader>
           <CardContent className="h-[280px]">
             {consultorData.length === 0 ? (
@@ -240,7 +240,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
                   <XAxis dataKey="name" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <Tooltip cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }} />
-                  <Bar dataKey="prospeccoes" fill={COLOR_PURPLE} radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="prospecções" fill={COLOR_PURPLE} radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             )}
@@ -255,7 +255,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
             <CardTitle className="text-base flex items-center gap-2">
               <TrendingUp className="w-4 h-4" style={{ color: COLOR_GREEN }} /> Cadastros de Prospeccao — 6 meses
             </CardTitle>
-            <CardDescription>Evolução mensal dos novos Prospecções AJ</CardDescription>
+            <CardDescription>Evolução mensal dos novos Prospeccoes AJ</CardDescription>
           </CardHeader>
           <CardContent className="h-[260px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -266,7 +266,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
                 <Tooltip />
                 <Line
                   type="monotone"
-                  dataKey="prospeccoes"
+                  dataKey="prospecções"
                   stroke={COLOR_BLUE}
                   strokeWidth={3}
                   dot={{ r: 5, fill: COLOR_BLUE }}
@@ -346,7 +346,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
             <CardTitle className="text-base flex items-center gap-2">
               <BarChart3 className="w-4 h-4" style={{ color: COLOR_NAVY }} /> Setores Atendidos
             </CardTitle>
-            <CardDescription>Top 5 setores econômicos por volume de Prospecções AJ</CardDescription>
+            <CardDescription>Top 5 setores econômicos por volume de Prospeccoes AJ</CardDescription>
           </CardHeader>
           <CardContent className="h-[280px]">
             {setorData.length === 0 ? (

@@ -27,7 +27,7 @@ export default function ConsultorHistorico() {
       title="Histórico" subtitle="Trilha completa de auditoria com versões, alterações e aprovações."
       kpis={[
         { label: "Eventos (30d)", value: 412, hint: "Total registrado", icon: History, tone: "blue" },
-        { label: "Publicações",   value: 47,  hint: "Prospecções AJ concluídos",  icon: CheckCircle2, tone: "green" },
+        { label: "Publicações",   value: 47,  hint: "Prospeccoes AJ concluídos",  icon: CheckCircle2, tone: "green" },
         { label: "Edições",       value: 198, hint: "Blocos alterados", icon: GitCommit,    tone: "purple" },
         { label: "Aprovações",    value: 89,  hint: "Coordenação",      icon: CheckCircle2, tone: "green" },
         { label: "Rejeições",     value: 14,  hint: "Para revisão",     icon: AlertTriangle, tone: "red" },

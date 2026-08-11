@@ -11,7 +11,7 @@ export default function MagistradoDashboard() {
       subtitle="Panorama dos processos de recuperação judicial sob sua jurisdição."
       cards={[
         { label: "Processos",      desc: "Processos sob sua jurisdição.",         icon: Gavel,         to: "/magistrado/processos", tone: "blue"   },
-        { label: "Prospecções AJ Recebidos", desc: "Prospeccoes aguardando sua análise.",          icon: FileText,      to: "/magistrado/prospeccoes",      tone: "purple" },
+        { label: "Prospeccoes AJ Recebidos", desc: "Prospeccoes aguardando sua análise.",          icon: FileText,      to: "/magistrado/prospecções",      tone: "purple" },
         { label: "Empresas Prospeccao",   desc: "Empresas em recuperação.",              icon: Building2,     to: "/magistrado/empresas",  tone: "teal"   },
         { label: "Decisões",       desc: "Deliberações e despachos.",             icon: Scale,         to: "/magistrado/decisoes",  tone: "amber"  },
         { label: "Histórico",      desc: "Linha do tempo e arquivo.",             icon: History,       to: "/magistrado/historico", tone: "green"  },
@@ -19,7 +19,7 @@ export default function MagistradoDashboard() {
       summary={[
         { label: "Processos Ativos",   value: 33,    icon: Gavel,         tone: "blue"   },
         { label: "Empresas Prospeccao",       value: 18,    icon: Building2,     tone: "purple" },
-        { label: "Prospecções AJ a Analisar",    value: "07",  icon: FileText,      tone: "orange", to: "/magistrado/prospeccoes" },
+        { label: "Prospeccoes AJ a Analisar",    value: "07",  icon: FileText,      tone: "orange", to: "/magistrado/prospecções" },
         { label: "Decisões Pendentes", value: "04",  icon: AlertTriangle, tone: "red",    to: "/magistrado/decisoes" },
         { label: "Encerrados (30d)",   value: 9,     icon: CheckCircle2,  tone: "green"  },
         { label: "Tempo Médio",        value: "14d", icon: Clock,         tone: "teal"   },

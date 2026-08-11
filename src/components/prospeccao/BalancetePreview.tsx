@@ -76,10 +76,10 @@ const BalancetePreview = ({ companyId, prospeccaoId }: Props) => {
           const byId = new Map((docs || []).map((d: any) => [d.id, d.file_name as string]));
           const seen = new Set<string>();
           for (const e of (extr || []) as any[]) {
-            const fn = byId.get(e.document_id);
+            const fn = byId.get(e.document_id) as string;
             if (!fn || seen.has(fn)) continue;
             seen.add(fn);
-            files.push({ file_name: fn, classe: e.classe, status: e.status });
+            files.push({ file_name: fn, classe: e.classe as string as string, status: e.status as string as string });
           }
           files.sort((a, b) => a.file_name.localeCompare(b.file_name));
         }

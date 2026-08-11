@@ -5,7 +5,7 @@ import {
   Sparkles, Clock, FileText, Loader2, ChevronRight, Send, Undo2, Lock, FileCheck2,
   ShieldCheck, BarChart3,
 } from "lucide-react";
-import { useRmaDocument, type SectionStatus } from "@/hooks/useRmaDocument";
+import { useProspeccaoDocument, type SectionStatus } from "@/hooks/useProspeccaoDocument";
 import SectionGovernanceCard from "./SectionGovernanceCard";
 import { useUserRoles, getSectionPermissions, type SectionPermission } from "@/hooks/useUserRoles";
 import { supabase } from "@/lib/supabase-any";
@@ -92,7 +92,7 @@ const RmaIntelligentEditor = ({ tipo, titulo }: Props) => {
     bulkGenerating, bulkProgress,
     generateSection, regenerateWithFeedback, buildCharts,
     generateAllSections, updateContent, setStatus, assignTo, addComment, consolidate, regenerateFinal,
-  } = useRmaDocument(prospeccaoId, tipo, titulo);
+  } = useProspeccaoDocument(prospeccaoId, tipo, titulo);
   const userRoles = useUserRoles();
 
   const [selectedId, setSelectedId] = useState<string | null>(null);

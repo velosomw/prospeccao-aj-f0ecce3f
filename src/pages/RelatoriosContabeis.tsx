@@ -86,7 +86,7 @@ export default function RelatoriosContabeis() {
     return Array.from(names).sort((a, b) => a.localeCompare(b));
   }, [companies, filter]);
 
-  const prospeccoesOfCompany = useMemo(() => {
+  const prospecçõesOfCompany = useMemo(() => {
     if (!companyName) return [];
     return companies.filter(c => c.name === companyName);
   }, [companies, companyName]);
@@ -219,7 +219,7 @@ export default function RelatoriosContabeis() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {prospeccoesOfCompany.map(c => (
+                {prospecçõesOfCompany.map(c => (
                   <button
                     key={c.id}
                     onClick={() => { setCompanyId(c.id); setStep(3); }}

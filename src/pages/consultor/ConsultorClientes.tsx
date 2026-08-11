@@ -26,7 +26,7 @@ interface LinhaCarta {
   historico: { data: string; evento: string; canal: string; status: "ok" | "pendente" | "falha" }[];
 }
 
-// Mockup: linhas derivadas das recuperações judiciais da Planilha Padrão Prospeccao
+// Mockup: linhas derivadas das recuperações judiciais da Planilha Padrão Prospecção
 const LINHAS: LinhaCarta[] = [];
 
 const statusPill = (s: CartaStatus) =>
