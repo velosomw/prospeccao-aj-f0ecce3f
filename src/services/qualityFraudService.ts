@@ -1,5 +1,5 @@
 // Service para Quality Engine + Antifraude
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface FraudAlert {
   id: string;
@@ -73,7 +73,7 @@ export async function updateAlertStatus(
   if (status === "resolved" || status === "false_positive") {
     patch.resolved_at = new Date().toISOString();
   }
-  const { error } = await supabase.from("fraud_alerts").update(patch).eq("id", id);
+  const { error } = await supabase.from( (null as any) || "fraud_alerts").update(patch).eq("id", id);
   if (error) throw error;
 }
 

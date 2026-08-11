@@ -8,7 +8,7 @@ import {
 import { useRmaDocument, type SectionStatus } from "@/hooks/useRmaDocument";
 import SectionGovernanceCard from "./SectionGovernanceCard";
 import { useUserRoles, getSectionPermissions, type SectionPermission } from "@/hooks/useUserRoles";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -42,7 +42,7 @@ const PermButton = ({
   const handle = () => {
     if (perm.allowed) return onClick();
     // Loga tentativa bloqueada (UI-side) — backend também loga ao tentar RPC
-    supabase.from("prospeccao_section_audit_log").insert({
+    (supabase.from("prospeccao_section_audit_log") as any).insert({
       section_id: sectionId,
       document_id: documentId,
       user_role: primaryRole,

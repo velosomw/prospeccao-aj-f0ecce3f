@@ -1,7 +1,7 @@
 // Diagnóstico end-to-end do pipeline ai-full-process
 // Fluxo: cria pipeline_document sintético → injeta ocr_results pronto → invoca ai-full-process
 // → re-consulta KPIs e compara antes/depois.
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { getGestorKpis, type GestorKpis } from "./gestorKpisService";
 
 export interface DiagnosticStep {

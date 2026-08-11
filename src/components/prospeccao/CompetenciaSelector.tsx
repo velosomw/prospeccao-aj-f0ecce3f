@@ -9,7 +9,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
   DropdownMenuLabel, DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface Competencia { ano: number; mes: number; key: string; label: string }
 
@@ -43,26 +43,26 @@ export default function CompetenciaSelector({
     let cancelled = false;
     (async () => {
       const [bsRes, dreRes, balRes, compRes] = await Promise.all([
-        supabase.from("bs_consolidado")
+        (supabase.from("bs_consolidado") as any)
           .select("ano, mes")
           .eq("company_id", companyId)
           .order("ano", { ascending: false })
           .order("mes", { ascending: false })
           .limit(50),
-        supabase.from("dre_consolidado")
+        (supabase.from("dre_consolidado") as any)
           .select("ano, mes")
           .eq("company_id", companyId)
           .order("ano", { ascending: false })
           .order("mes", { ascending: false })
           .limit(50),
-        supabase.from("balancete_consolidado")
+        (supabase.from("balancete_consolidado") as any)
           .select("ano, mes")
           .eq("company_id", companyId)
           .order("ano", { ascending: false })
           .order("mes", { ascending: false })
           .limit(50),
         supabase.from("companies")
-          .select("prospeccao_id, execution_year, current_period_month")
+          .select("*")
           .eq("id", companyId)
           .maybeSingle(),
       ]);
@@ -83,13 +83,13 @@ export default function CompetenciaSelector({
 
       if (preferredCompetencia) {
         setRmaPeriodo(preferredCompetencia);
-      } else if (compRes.data?.prospeccao_id && /^Prospeccao-DIP-\d{2}-\d{4}$/i.test(String(compRes.data.prospeccao_id))) {
-        const [, mm, yyyy] = String(compRes.data.prospeccao_id).match(/^Prospeccao-DIP-(\d{2})-(\d{4})$/i)!;
+      } else if ((compRes.data as any)?.prospeccao_id && /^Prospeccao-DIP-\d{2}-\d{4}$/i.test(String((compRes.data as any).prospeccao_id))) {
+        const [, mm, yyyy] = String((compRes.data as any).prospeccao_id).match(/^Prospeccao-DIP-(\d{2})-(\d{4})$/i)!;
         setRmaPeriodo(toComp(Number(yyyy), Number(mm)));
-      } else if (compRes.data?.execution_year && compRes.data?.current_period_month) {
+      } else if ((compRes.data as any)?.execution_year && (compRes.data as any)?.current_period_month) {
         setRmaPeriodo(toComp(
-          Number(compRes.data.execution_year),
-          Number(compRes.data.current_period_month),
+          Number((compRes.data as any).execution_year),
+          Number((compRes.data as any).current_period_month),
         ));
       } else {
         setRmaPeriodo(null);

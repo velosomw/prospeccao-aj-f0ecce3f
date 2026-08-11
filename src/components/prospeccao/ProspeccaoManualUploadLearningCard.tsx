@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { uploadLearningFile, extractTextFromFile, processWithAI, markExtractionAsLearning } from "@/services/learningService";
@@ -31,8 +31,8 @@ export default function ProspeccaoManualUploadLearningCard({ prospeccaoId, compa
 
   useEffect(() => {
     if (resolvedRmaId || !companyId) return;
-    supabase.from("companies").select("prospeccao_id").eq("id", companyId).maybeSingle()
-      .then(({ data }) => { if (data?.prospeccao_id) setResolvedRmaId(data.prospeccao_id); });
+    supabase.from("companies").select("*").eq("id", companyId).maybeSingle()
+      .then(({ data }) => { if ((data as any)?.prospeccao_id) setResolvedRmaId((data as any).prospeccao_id); });
   }, [companyId, resolvedRmaId]);
 
   const load = async () => {

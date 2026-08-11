@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ShieldCheck, ShieldAlert, Database, BarChart3, AlertTriangle } from "lucide-react";
@@ -48,16 +48,16 @@ export const SectionGovernanceCard = ({
     let cancelled = false;
     (async () => {
       if (graficosIds?.length) {
-        const { data } = await supabase
-          .from("prospeccao_document_charts")
+        const { data } = await (supabase
+          .from("prospeccao_document_charts") as any)
           .select("id,tipo,titulo,descricao_ia,dados")
           .in("id", graficosIds);
         if (!cancelled) setCharts((data || []) as any);
       } else {
         setCharts([]);
       }
-      const { data: src } = await supabase
-        .from("prospeccao_section_data_sources")
+      const { data: src } = await (supabase
+        .from("prospeccao_section_data_sources") as any)
         .select("id,source_type,periodo_label,trecho")
         .eq("section_id", sectionId)
         .order("created_at", { ascending: false })

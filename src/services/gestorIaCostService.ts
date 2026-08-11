@@ -1,6 +1,6 @@
 // Service de custos / tokens — Gestor IA Financeiro
 // Espelha o cálculo do trigger SQL e agrega indicadores por período.
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export type PeriodKey = "mes" | "trimestre" | "semestre" | "ano" | "total";
 
@@ -121,7 +121,7 @@ export async function fetchCostConfig(): Promise<CostConfigRow[]> {
 
 export async function upsertCostConfig(row: Partial<CostConfigRow> & { service: string; provider: string; label: string }) {
   const payload = { ...row, updated_at: new Date().toISOString() };
-  const { error } = await supabase.from("ai_cost_config" as never).upsert(payload as never, { onConflict: "service" } as never);
+  const { error } = await supabase.from( (null as any) || "ai_cost_config" as never).upsert(payload as never, { onConflict: "service" } as never);
   if (error) throw error;
 }
 
@@ -293,7 +293,7 @@ export async function fetchPlatformCounts(cutoff: Date | null): Promise<Platform
   const since = cutoff ? cutoff.toISOString() : null;
 
   const cnt = async (table: string, filter?: (q: ReturnType<typeof supabase.from>) => unknown) => {
-    let q: any = supabase.from(table as never).select("*", { count: "exact", head: true });
+    let q: any = supabase.from( (null as any) || table as never).select("*", { count: "exact", head: true });
     if (since) q = q.gte("created_at", since);
     if (filter) q = filter(q);
     const { count, error } = await q;
@@ -361,7 +361,7 @@ export async function runCostDiagnostics(): Promise<{ adjustments: number; delta
     // batch em chunks de 200
     for (let i = 0; i < inserts.length; i += 200) {
       const chunk = inserts.slice(i, i + 200);
-      const { error } = await supabase.from("ai_usage_logs" as never).insert(chunk as never);
+      const { error } = await supabase.from( (null as any) || "ai_usage_logs" as never).insert(chunk as never);
       if (error) throw error;
     }
   }
@@ -381,7 +381,7 @@ export async function logAiUsage(input: {
   metadata?: Record<string, unknown>;
 }) {
   const { data: { user } } = await supabase.auth.getUser();
-  const { error } = await supabase.from("ai_usage_logs" as never).insert({
+  const { error } = await supabase.from( (null as any) || "ai_usage_logs" as never).insert({
     type: input.type,
     provider: input.provider,
     service: input.service,

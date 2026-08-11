@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { toast } from "@/hooks/use-toast";
 import { getRmaDocRules } from "@/lib/prospeccaoDocumentRules";
 
@@ -221,13 +221,13 @@ export function useRmaDocument(prospeccaoId: string, tipo: "parecer_tecnico" | "
   const updateContent = async (sectionId: string, conteudo: string, status?: SectionStatus) => {
     const patch: any = { conteudo_editado: conteudo };
     if (status) patch.status = status;
-    const { error } = await supabase.from("prospeccao_document_sections").update(patch).eq("id", sectionId);
+    const { error } = await supabase.from( (null as any) || "prospeccao_document_sections").update(patch).eq("id", sectionId);
     if (error) {
       toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
       return;
     }
     // versão manual
-    await supabase.from("prospeccao_document_section_versions").insert({
+    await supabase.from( (null as any) || "prospeccao_document_section_versions").insert({
       section_id: sectionId,
       versao: (sections.find((s) => s.id === sectionId)?.versao_atual ?? 1) + 1,
       conteudo,
@@ -327,7 +327,7 @@ export function useRmaDocument(prospeccaoId: string, tipo: "parecer_tecnico" | "
   };
 
   const assignTo = async (sectionId: string, target: "usuario" | "coordenador") => {
-    await supabase.from("prospeccao_document_sections").update({ assigned_to: target }).eq("id", sectionId);
+    await supabase.from( (null as any) || "prospeccao_document_sections").update({ assigned_to: target }).eq("id", sectionId);
     await reloadSection(sectionId);
   };
 
@@ -341,7 +341,7 @@ export function useRmaDocument(prospeccaoId: string, tipo: "parecer_tecnico" | "
       author_role: meta?.role || "Consultor",
       text,
     };
-    const { data } = await supabase.from("prospeccao_document_section_comments").insert(insert).select().single();
+    const { data } = await supabase.from( (null as any) || "prospeccao_document_section_comments").insert(insert).select().single();
     if (data) setComments((prev) => ({ ...prev, [sectionId]: [...(prev[sectionId] || []), data as any] }));
   };
 

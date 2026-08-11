@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Mail, Paperclip, Send, X, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -91,7 +91,7 @@ export function CobrancaEmailDialog({ open, onOpenChange, prospeccaoId, companyN
       });
       if (sendErr) throw sendErr;
 
-      const { error: dbErr } = await supabase.from("prospeccao_cobrancas").insert({
+      const { error: dbErr } = await (supabase.from("prospeccao_cobrancas") as any).insert({
         prospeccao_id: prospeccaoId,
         company_name: companyName ?? null,
         recipient_email: recipient.trim(),

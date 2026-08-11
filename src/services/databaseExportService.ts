@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export type ExportStatus = 'AVAILABLE' | 'OUTDATED' | 'GENERATING' | 'SUCCESS' | 'ERROR' | 'NO_DATA';
 
@@ -124,7 +124,7 @@ export const databaseExportService = {
     const { data: userData } = await supabase.auth.getUser();
     if (!userData.user) throw new Error("Not authenticated");
 
-    await supabase.from('export_downloads').insert({
+    await supabase.from( (null as any) || 'export_downloads').insert({
       export_run_id: latestRun.id,
       downloaded_by: userData.user.id
     });

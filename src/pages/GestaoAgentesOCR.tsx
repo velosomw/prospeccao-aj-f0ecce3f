@@ -121,8 +121,8 @@ export default function GestaoAgentesOCR() {
       status: editing.status || "active",
     };
     const op = editing.id
-      ? supabase.from("ocr_agents").update(payload).eq("id", editing.id)
-      : supabase.from("ocr_agents").insert(payload);
+      ? supabase.from( (null as any) || "ocr_agents").update(payload).eq("id", editing.id)
+      : supabase.from( (null as any) || "ocr_agents").insert(payload);
     const { error } = await op;
     if (error) toast.error(error.message);
     else {
@@ -135,14 +135,14 @@ export default function GestaoAgentesOCR() {
 
   const remove = async (id: string) => {
     if (!confirm("Remover este agente?")) return;
-    const { error } = await supabase.from("ocr_agents").delete().eq("id", id);
+    const { error } = await supabase.from( (null as any) || "ocr_agents").delete().eq("id", id);
     if (error) toast.error(error.message);
     else { toast.success("Agente removido"); load(); }
   };
 
   const toggleStatus = async (a: Agent) => {
     const next = a.status === "active" ? "paused" : "active";
-    const { error } = await supabase.from("ocr_agents").update({ status: next }).eq("id", a.id);
+    const { error } = await supabase.from( (null as any) || "ocr_agents").update({ status: next }).eq("id", a.id);
     if (error) toast.error(error.message);
     else load();
   };

@@ -11,7 +11,7 @@ import {
   Activity, CheckCircle2, AlertTriangle, RefreshCw, FileText,
   Search, ListChecks, GitMerge, ShieldCheck, Loader2
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { toast } from "sonner";
 import OrphanExtractionsCard from "./OrphanExtractionsCard";
 import BalancetePreview from "./BalancetePreview";
@@ -103,17 +103,17 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
     (async () => {
       const { data } = await supabase
         .from("companies")
-        .select("prospeccao_id, current_period_month, execution_year, last_analyzed_period")
+        .select("*")
         .eq("id", id)
         .maybeSingle();
       if (cancelled || !data) return;
       setCompanyPeriod(data as any);
       // Aplica o período do cadastro do Prospeccao
-      let mes = data.current_period_month ?? null;
-      let ano = data.execution_year ?? null;
+      let mes = (data as any).current_period_month ?? null;
+      let ano = (data as any).execution_year ?? null;
       // Fallback: tenta last_analyzed_period (formato MM-YYYY)
-      if ((!mes || !ano) && data.last_analyzed_period) {
-        const m = String(data.last_analyzed_period).match(/^(\d{1,2})-(\d{4})$/);
+      if ((!mes || !ano) && (data as any).last_analyzed_period) {
+        const m = String((data as any).last_analyzed_period).match(/^(\d{1,2})-(\d{4})$/);
         if (m) { mes = Number(m[1]); ano = Number(m[2]); }
       }
       if (mes && ano) { setMonth(mes); setYear(ano); }
@@ -144,8 +144,8 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
 
   const loadCrossHistory = useCallback(async () => {
     if (!isRealRma || !id) return;
-    const { data } = await supabase
-      .from("cross_validation_runs" as any)
+    const { data } = await (supabase
+      .from("cross_validation_runs") as any)
       .select("id, ano, mes, score, passed, checked, issues, persisted_versions, created_at")
       .eq("company_id", id)
       .order("created_at", { ascending: false })
@@ -214,8 +214,8 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
 
   const loadConflictAudit = useCallback(async (ids: string[]) => {
     if (!ids.length) { setAuditByConflict({}); return; }
-    const { data, error } = await supabase
-      .from("balancete_conflict_audit" as any)
+    const { data, error } = await (supabase
+      .from("balancete_conflict_audit") as any)
       .select("id, conflict_id, user_id, user_role, action, from_status, to_status, notes, created_at")
       .in("conflict_id", ids)
       .order("created_at", { ascending: false });

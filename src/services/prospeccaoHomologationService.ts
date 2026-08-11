@@ -1,5 +1,5 @@
 // Service for Gemini Extraction Homologation Mode
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface HomologationResult {
   processo: string;

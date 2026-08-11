@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { toast } from "sonner";
 
 interface Props {
@@ -76,8 +76,8 @@ export default function ProspeccaoAuditTrailCard({ prospeccaoId, companyId }: Pr
 
   useEffect(() => {
     if (resolvedRmaId || !companyId) return;
-    supabase.from("companies").select("prospeccao_id").eq("id", companyId).maybeSingle()
-      .then(({ data }) => { if (data?.prospeccao_id) setResolvedRmaId(data.prospeccao_id); });
+    supabase.from("companies").select("*").eq("id", companyId).maybeSingle()
+      .then(({ data }) => { if ((data as any)?.prospeccao_id) setResolvedRmaId((data as any).prospeccao_id); });
   }, [companyId, resolvedRmaId]);
 
   const load = async () => {
@@ -101,13 +101,13 @@ export default function ProspeccaoAuditTrailCard({ prospeccaoId, companyId }: Pr
       if (fileIds.length === 0) { setQueue([]); setFailed([]); return; }
 
       const [{ data: qData }, { data: fData }] = await Promise.all([
-        supabase
-          .from("processing_queue")
+        (supabase
+          .from("processing_queue") as any)
           .select("file_id,status,attempts,block_reason,error_message,updated_at")
           .in("file_id", fileIds)
           .order("updated_at", { ascending: false }),
-        supabase
-          .from("failed_jobs")
+        (supabase
+          .from("failed_jobs") as any)
           .select("file_id,reason,attempts,error_message,created_at,resolved_at")
           .in("file_id", fileIds)
           .order("created_at", { ascending: false }),

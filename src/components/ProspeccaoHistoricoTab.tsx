@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Building2, Calendar, CheckCircle2, ClipboardList, FileText, History, Layers, Search } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import type { Company } from "@/services/companiesService";
 import type { RmaPeriodAnalysis } from "@/services/prospeccaoPeriodService";
 

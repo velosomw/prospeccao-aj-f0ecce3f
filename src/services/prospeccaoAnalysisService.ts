@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface RmaAnalysisTopic {
   number: number;
@@ -44,8 +44,8 @@ export async function startRmaAnalysis(companyId: string): Promise<void> {
 export async function listRmaAnalyses(companyIds: string[]): Promise<RmaAnalysisResult[]> {
   if (companyIds.length === 0) return [];
 
-  const { data, error } = await supabase
-    .from("prospeccao_analysis_results")
+  const { data, error } = await (supabase
+    .from("prospeccao_analysis_results") as any)
     .select("*")
     .in("company_id", companyIds)
     .order("updated_at", { ascending: false });
@@ -56,8 +56,8 @@ export async function listRmaAnalyses(companyIds: string[]): Promise<RmaAnalysis
 
 /** Busca o resultado mais recente para a empresa. */
 export async function getRmaAnalysis(companyId: string): Promise<RmaAnalysisResult | null> {
-  const { data, error } = await supabase
-    .from("prospeccao_analysis_results")
+  const { data, error } = await (supabase
+    .from("prospeccao_analysis_results") as any)
     .select("*")
     .eq("company_id", companyId)
     .maybeSingle();

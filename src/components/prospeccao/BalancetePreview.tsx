@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, AlertCircle, CheckCircle2, Layers, Loader2, FileSpreadsheet } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { fetchPivotConsolidado, type PivotRow, type PivotEquilibrio } from "@/services/bsDados/pivotConsolidado";
 import BalanceteDrilldownDialog from "./BalanceteDrilldownDialog";
 

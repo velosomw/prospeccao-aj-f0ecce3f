@@ -4,7 +4,7 @@ import { FileText, FileCheck, Lock, Loader2, CheckCircle2, AlertCircle } from "l
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { getRmaDocRules, type RmaDocTipo } from "@/lib/prospeccaoDocumentRules";
 
 interface DocSummary {
@@ -57,8 +57,8 @@ const ProspeccaoProgressByTypePanel = () => {
       setLoading(true);
       const result: DocSummary[] = [];
       for (const { tipo } of TIPOS) {
-        const { data: doc } = await supabase
-          .from("prospeccao_documents")
+        const { data: doc } = await (supabase
+          .from("prospeccao_documents") as any)
           .select("id, status, arquivo_final_url, arquivo_final_versao, arquivo_final_gerado_em")
           .eq("prospeccao_id", id)
           .eq("tipo", tipo)
@@ -75,8 +75,8 @@ const ProspeccaoProgressByTypePanel = () => {
         };
 
         if (doc?.id) {
-          const { data: secs } = await supabase
-            .from("prospeccao_document_sections")
+          const { data: secs } = await (supabase
+            .from("prospeccao_document_sections") as any)
             .select("status")
             .eq("document_id", doc.id);
           (secs || []).forEach((s: any) => {

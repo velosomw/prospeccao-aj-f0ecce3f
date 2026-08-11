@@ -4,7 +4,7 @@
 //   - startAsyncProcessing(input)       → força modo assíncrono (retorna { id, pollUrl })
 //   - getProcessingStatus(id)           → snapshot de status/progresso
 //   - waitForProcessing(id, onProgress) → polling até completed/failed
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export type AgentClasse = "PIX" | "COMPROVANTE" | "BOLETO" | "BALANCETE" | "DRE" | "OUTRO";
 export type AiStatus = "pending" | "processing" | "completed" | "failed" | "canceled";

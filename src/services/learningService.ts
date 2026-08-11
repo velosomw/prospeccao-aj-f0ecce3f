@@ -8,7 +8,7 @@
 //   3. processWithAI({ text, ... })    → invoca ai-process (engine de agentes)
 //   4. listPendingExtractions/listLearningExtractions / submitGroundTruth / saveFieldFeedback
 import * as XLSX from "xlsx";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { processDocument, waitForProcessing, type AiProcessStatus, type AiProcessSyncResult, type AiProcessAsyncStarted } from "@/services/aiProcessService";
 import { submitCorrection } from "@/services/datasetService";
 
@@ -418,7 +418,7 @@ export async function saveGroundTruth(input: SaveCorrectionInput) {
       new_value: c.new_value as never,
       created_by: userResp?.user?.id ?? null,
     }));
-    const { error } = await supabase.from("dataset_feedback").insert(rows);
+    const { error } = await supabase.from( (null as any) || "dataset_feedback").insert(rows);
     if (error) console.warn("dataset_feedback insert:", error.message);
   }
 

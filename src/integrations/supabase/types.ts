@@ -243,7 +243,7 @@ export type Database = {
           quality_action: string | null
           quality_score: number | null
           raw_text: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           source: string
           status: string
           updated_at: string
@@ -275,7 +275,7 @@ export type Database = {
           quality_action?: string | null
           quality_score?: number | null
           raw_text?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           source?: string
           status?: string
           updated_at?: string
@@ -307,7 +307,7 @@ export type Database = {
           quality_action?: string | null
           quality_score?: number | null
           raw_text?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           source?: string
           status?: string
           updated_at?: string
@@ -428,7 +428,7 @@ export type Database = {
           resolution_notes: string | null
           resolved_at: string | null
           resolved_by: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           status: string
           updated_at: string
           valor_vencedor: number | null
@@ -449,7 +449,7 @@ export type Database = {
           resolution_notes?: string | null
           resolved_at?: string | null
           resolved_by?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           updated_at?: string
           valor_vencedor?: number | null
@@ -470,7 +470,7 @@ export type Database = {
           resolution_notes?: string | null
           resolved_at?: string | null
           resolved_by?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           updated_at?: string
           valor_vencedor?: number | null
@@ -565,7 +565,7 @@ export type Database = {
           created_at: string
           id: string
           mes: number
-          prospeccao_id: string | null
+          rma_id: string | null
           status: string
           timeline: Json
           total_contas: number
@@ -583,7 +583,7 @@ export type Database = {
           created_at?: string
           id?: string
           mes: number
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           timeline?: Json
           total_contas?: number
@@ -601,7 +601,7 @@ export type Database = {
           created_at?: string
           id?: string
           mes?: number
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           timeline?: Json
           total_contas?: number
@@ -635,7 +635,7 @@ export type Database = {
           progress: number
           reconciliation_passed: boolean | null
           reconciliation_report: Json | null
-          prospeccao_id: string | null
+          rma_id: string | null
           started_at: string
           status: string
           triggered_by: string | null
@@ -662,7 +662,7 @@ export type Database = {
           progress?: number
           reconciliation_passed?: boolean | null
           reconciliation_report?: Json | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           started_at?: string
           status?: string
           triggered_by?: string | null
@@ -689,7 +689,7 @@ export type Database = {
           progress?: number
           reconciliation_passed?: boolean | null
           reconciliation_report?: Json | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           started_at?: string
           status?: string
           triggered_by?: string | null
@@ -709,7 +709,7 @@ export type Database = {
           origem: string | null
           payload: Json
           restored_from: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           rows_balancete: number
           rows_bs: number
           rows_dre: number
@@ -728,7 +728,7 @@ export type Database = {
           origem?: string | null
           payload?: Json
           restored_from?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           rows_balancete?: number
           rows_bs?: number
           rows_dre?: number
@@ -747,7 +747,7 @@ export type Database = {
           origem?: string | null
           payload?: Json
           restored_from?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           rows_balancete?: number
           rows_bs?: number
           rows_dre?: number
@@ -835,7 +835,7 @@ export type Database = {
           id: string
           mes: number
           origem_arquivo: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           run_id: string | null
           saldo: number
           valor: number
@@ -856,7 +856,7 @@ export type Database = {
           id?: string
           mes: number
           origem_arquivo?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           run_id?: string | null
           saldo?: number
           valor?: number
@@ -877,7 +877,7 @@ export type Database = {
           id?: string
           mes?: number
           origem_arquivo?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           run_id?: string | null
           saldo?: number
           valor?: number
@@ -948,7 +948,7 @@ export type Database = {
           id: string
           mes: number
           nivel: number
-          prospeccao_id: string | null
+          rma_id: string | null
           secao: string
           updated_at: string
           valor: number
@@ -967,7 +967,7 @@ export type Database = {
           id?: string
           mes: number
           nivel?: number
-          prospeccao_id?: string | null
+          rma_id?: string | null
           secao: string
           updated_at?: string
           valor?: number
@@ -986,7 +986,7 @@ export type Database = {
           id?: string
           mes?: number
           nivel?: number
-          prospeccao_id?: string | null
+          rma_id?: string | null
           secao?: string
           updated_at?: string
           valor?: number
@@ -1227,7 +1227,7 @@ export type Database = {
           period_active: boolean
           phone: string | null
           phone_fixed: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           sector: string | null
           source: string
           status: string
@@ -1256,7 +1256,7 @@ export type Database = {
           period_active?: boolean
           phone?: string | null
           phone_fixed?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           sector?: string | null
           source?: string
           status?: string
@@ -1285,7 +1285,7 @@ export type Database = {
           period_active?: boolean
           phone?: string | null
           phone_fixed?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           sector?: string | null
           source?: string
           status?: string
@@ -1334,7 +1334,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           id: string
-          prospeccao_id: string | null
+          rma_id: string | null
           scope: string
           updated_at: string
           valor: string
@@ -1346,7 +1346,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           scope?: string
           updated_at?: string
           valor: string
@@ -1358,7 +1358,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           scope?: string
           updated_at?: string
           valor?: string
@@ -1376,7 +1376,7 @@ export type Database = {
           embedding: string | null
           extraction_id: string | null
           id: string
-          prospeccao_id: string | null
+          rma_id: string | null
           source: string | null
           tipo: string
           weight: number
@@ -1390,7 +1390,7 @@ export type Database = {
           embedding?: string | null
           extraction_id?: string | null
           id?: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           source?: string | null
           tipo?: string
           weight?: number
@@ -1404,7 +1404,7 @@ export type Database = {
           embedding?: string | null
           extraction_id?: string | null
           id?: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           source?: string | null
           tipo?: string
           weight?: number
@@ -1452,7 +1452,7 @@ export type Database = {
           id: string
           prioridade: number
           regra: string
-          prospeccao_id: string | null
+          rma_id: string | null
           tipo: string
           updated_at: string
         }
@@ -1464,7 +1464,7 @@ export type Database = {
           id?: string
           prioridade?: number
           regra: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           tipo?: string
           updated_at?: string
         }
@@ -1476,7 +1476,7 @@ export type Database = {
           id?: string
           prioridade?: number
           regra?: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           tipo?: string
           updated_at?: string
         }
@@ -1724,7 +1724,7 @@ export type Database = {
           mes: number | null
           passed: boolean
           persisted_versions: number
-          prospeccao_id: string | null
+          rma_id: string | null
           score: number
           summary: Json
           triggered_by: string | null
@@ -1739,7 +1739,7 @@ export type Database = {
           mes?: number | null
           passed?: boolean
           persisted_versions?: number
-          prospeccao_id?: string | null
+          rma_id?: string | null
           score?: number
           summary?: Json
           triggered_by?: string | null
@@ -1754,7 +1754,7 @@ export type Database = {
           mes?: number | null
           passed?: boolean
           persisted_versions?: number
-          prospeccao_id?: string | null
+          rma_id?: string | null
           score?: number
           summary?: Json
           triggered_by?: string | null
@@ -1837,7 +1837,7 @@ export type Database = {
           output_correto: Json
           output_original: Json | null
           path: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           source: string
           updated_at: string
           validated_by: string | null
@@ -1856,7 +1856,7 @@ export type Database = {
           output_correto: Json
           output_original?: Json | null
           path?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           source?: string
           updated_at?: string
           validated_by?: string | null
@@ -1875,7 +1875,7 @@ export type Database = {
           output_correto?: Json
           output_original?: Json | null
           path?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           source?: string
           updated_at?: string
           validated_by?: string | null
@@ -1921,7 +1921,7 @@ export type Database = {
           operation_name: string | null
           page_count_estimate: number | null
           payload: Json
-          prospeccao_id: string | null
+          rma_id: string | null
           split_parent_id: string | null
           status: string
           submitted_at: string | null
@@ -1950,7 +1950,7 @@ export type Database = {
           operation_name?: string | null
           page_count_estimate?: number | null
           payload?: Json
-          prospeccao_id?: string | null
+          rma_id?: string | null
           split_parent_id?: string | null
           status?: string
           submitted_at?: string | null
@@ -1979,7 +1979,7 @@ export type Database = {
           operation_name?: string | null
           page_count_estimate?: number | null
           payload?: Json
-          prospeccao_id?: string | null
+          rma_id?: string | null
           split_parent_id?: string | null
           status?: string
           submitted_at?: string | null
@@ -2089,7 +2089,7 @@ export type Database = {
           document_id: string
           embedding: string | null
           id: string
-          prospeccao_id: string
+          rma_id: string
         }
         Insert: {
           chunk_index?: number
@@ -2098,7 +2098,7 @@ export type Database = {
           document_id: string
           embedding?: string | null
           id?: string
-          prospeccao_id: string
+          rma_id: string
         }
         Update: {
           chunk_index?: number
@@ -2107,7 +2107,7 @@ export type Database = {
           document_id?: string
           embedding?: string | null
           id?: string
-          prospeccao_id?: string
+          rma_id?: string
         }
         Relationships: [
           {
@@ -2213,7 +2213,7 @@ export type Database = {
           file_id: string | null
           last_stage: string
           latest_version: number
-          prospeccao_id: string | null
+          rma_id: string | null
           status: string
           updated_at: string
         }
@@ -2229,7 +2229,7 @@ export type Database = {
           file_id?: string | null
           last_stage?: string
           latest_version?: number
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           updated_at?: string
         }
@@ -2245,7 +2245,7 @@ export type Database = {
           file_id?: string | null
           last_stage?: string
           latest_version?: number
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           updated_at?: string
         }
@@ -2312,7 +2312,7 @@ export type Database = {
           qtd_lancamentos: number
           reconciled: boolean
           reconciliation_notes: Json | null
-          prospeccao_id: string | null
+          rma_id: string | null
           run_id: string | null
           saldo: number
           subgrupo: string | null
@@ -2338,7 +2338,7 @@ export type Database = {
           qtd_lancamentos?: number
           reconciled?: boolean
           reconciliation_notes?: Json | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           run_id?: string | null
           saldo?: number
           subgrupo?: string | null
@@ -2364,7 +2364,7 @@ export type Database = {
           qtd_lancamentos?: number
           reconciled?: boolean
           reconciliation_notes?: Json | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           run_id?: string | null
           saldo?: number
           subgrupo?: string | null
@@ -2650,7 +2650,7 @@ export type Database = {
           resolution_notes: string | null
           resolved_at: string | null
           resolved_by: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
         }
         Insert: {
           ano?: number | null
@@ -2668,7 +2668,7 @@ export type Database = {
           resolution_notes?: string | null
           resolved_at?: string | null
           resolved_by?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
         }
         Update: {
           ano?: number | null
@@ -2686,7 +2686,7 @@ export type Database = {
           resolution_notes?: string | null
           resolved_at?: string | null
           resolved_by?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
         }
         Relationships: []
       }
@@ -2751,7 +2751,7 @@ export type Database = {
           mes: number
           origem_lancamento_ids: string[] | null
           qtd_lancamentos: number
-          prospeccao_id: string | null
+          rma_id: string | null
           run_id: string | null
           saidas: number
           saldo: number
@@ -2772,7 +2772,7 @@ export type Database = {
           mes: number
           origem_lancamento_ids?: string[] | null
           qtd_lancamentos?: number
-          prospeccao_id?: string | null
+          rma_id?: string | null
           run_id?: string | null
           saidas?: number
           saldo?: number
@@ -2793,7 +2793,7 @@ export type Database = {
           mes?: number
           origem_lancamento_ids?: string[] | null
           qtd_lancamentos?: number
-          prospeccao_id?: string | null
+          rma_id?: string | null
           run_id?: string | null
           saidas?: number
           saldo?: number
@@ -2816,7 +2816,7 @@ export type Database = {
           message: string
           resolved_at: string | null
           resolved_by: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           severity: string
           status: string
         }
@@ -2831,7 +2831,7 @@ export type Database = {
           message: string
           resolved_at?: string | null
           resolved_by?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           severity?: string
           status?: string
         }
@@ -2846,7 +2846,7 @@ export type Database = {
           message?: string
           resolved_at?: string | null
           resolved_by?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           severity?: string
           status?: string
         }
@@ -3189,7 +3189,7 @@ export type Database = {
           protected: boolean
           reviewed_at: string | null
           reviewed_by: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           saldo: number
           status: string
           subgrupo: string | null
@@ -3225,7 +3225,7 @@ export type Database = {
           protected?: boolean
           reviewed_at?: string | null
           reviewed_by?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           saldo?: number
           status?: string
           subgrupo?: string | null
@@ -3261,7 +3261,7 @@ export type Database = {
           protected?: boolean
           reviewed_at?: string | null
           reviewed_by?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           saldo?: number
           status?: string
           subgrupo?: string | null
@@ -3513,7 +3513,7 @@ export type Database = {
           ncm: string | null
           numero_nota: string | null
           origem_arquivo: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           serie: string | null
           tipo: string
           updated_at: string
@@ -3553,7 +3553,7 @@ export type Database = {
           ncm?: string | null
           numero_nota?: string | null
           origem_arquivo?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           serie?: string | null
           tipo?: string
           updated_at?: string
@@ -3593,7 +3593,7 @@ export type Database = {
           ncm?: string | null
           numero_nota?: string | null
           origem_arquivo?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           serie?: string | null
           tipo?: string
           updated_at?: string
@@ -3908,7 +3908,7 @@ export type Database = {
           normalized_text: string | null
           ocr_result_id: string | null
           path: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           source: string
           text: string
         }
@@ -3922,7 +3922,7 @@ export type Database = {
           normalized_text?: string | null
           ocr_result_id?: string | null
           path?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           source?: string
           text: string
         }
@@ -3936,7 +3936,7 @@ export type Database = {
           normalized_text?: string | null
           ocr_result_id?: string | null
           path?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           source?: string
           text?: string
         }
@@ -3956,7 +3956,7 @@ export type Database = {
           pages_total: number | null
           progress: number
           raw_text: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           status: string
           structure: Json | null
           updated_at: string
@@ -3974,7 +3974,7 @@ export type Database = {
           pages_total?: number | null
           progress?: number
           raw_text?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           structure?: Json | null
           updated_at?: string
@@ -3992,7 +3992,7 @@ export type Database = {
           pages_total?: number | null
           progress?: number
           raw_text?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           structure?: Json | null
           updated_at?: string
@@ -4028,7 +4028,7 @@ export type Database = {
           path: string
           reprocess_count: number
           requires_manual_upload: boolean
-          prospeccao_id: string | null
+          rma_id: string | null
           size_bytes: number | null
           status: string
           updated_at: string
@@ -4062,7 +4062,7 @@ export type Database = {
           path: string
           reprocess_count?: number
           requires_manual_upload?: boolean
-          prospeccao_id?: string | null
+          rma_id?: string | null
           size_bytes?: number | null
           status?: string
           updated_at?: string
@@ -4096,7 +4096,7 @@ export type Database = {
           path?: string
           reprocess_count?: number
           requires_manual_upload?: boolean
-          prospeccao_id?: string | null
+          rma_id?: string | null
           size_bytes?: number | null
           status?: string
           updated_at?: string
@@ -4120,7 +4120,7 @@ export type Database = {
           folder_path: string | null
           id: string
           mes: number | null
-          prospeccao_id: string | null
+          rma_id: string | null
           scan_id: string
           source: string
           status: string
@@ -4141,7 +4141,7 @@ export type Database = {
           folder_path?: string | null
           id?: string
           mes?: number | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           scan_id?: string
           source?: string
           status?: string
@@ -4162,7 +4162,7 @@ export type Database = {
           folder_path?: string | null
           id?: string
           mes?: number | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           scan_id?: string
           source?: string
           status?: string
@@ -4186,7 +4186,7 @@ export type Database = {
           id: string
           motivo: string | null
           resultado_final: Json | null
-          prospeccao_id: string | null
+          rma_id: string | null
           score_confianca: number | null
           validado: boolean
         }
@@ -4205,7 +4205,7 @@ export type Database = {
           id?: string
           motivo?: string | null
           resultado_final?: Json | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           score_confianca?: number | null
           validado?: boolean
         }
@@ -4224,7 +4224,7 @@ export type Database = {
           id?: string
           motivo?: string | null
           resultado_final?: Json | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           score_confianca?: number | null
           validado?: boolean
         }
@@ -4242,7 +4242,7 @@ export type Database = {
           parent_deferred_job_id: string | null
           parent_document_id: string | null
           parent_file_id: string
-          prospeccao_id: string | null
+          rma_id: string | null
           status: string
           total_chunks: number
           updated_at: string
@@ -4258,7 +4258,7 @@ export type Database = {
           parent_deferred_job_id?: string | null
           parent_document_id?: string | null
           parent_file_id: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           total_chunks: number
           updated_at?: string
@@ -4274,7 +4274,7 @@ export type Database = {
           parent_deferred_job_id?: string | null
           parent_document_id?: string | null
           parent_file_id?: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           total_chunks?: number
           updated_at?: string
@@ -4310,7 +4310,7 @@ export type Database = {
           processed_at: string | null
           provider: string | null
           risk_indicators: Json | null
-          prospeccao_id: string
+          rma_id: string
           rma_topic: number | null
           sha256_hash: string
           storage_path: string | null
@@ -4337,7 +4337,7 @@ export type Database = {
           processed_at?: string | null
           provider?: string | null
           risk_indicators?: Json | null
-          prospeccao_id: string
+          rma_id: string
           rma_topic?: number | null
           sha256_hash: string
           storage_path?: string | null
@@ -4364,7 +4364,7 @@ export type Database = {
           processed_at?: string | null
           provider?: string | null
           risk_indicators?: Json | null
-          prospeccao_id?: string
+          rma_id?: string
           rma_topic?: number | null
           sha256_hash?: string
           storage_path?: string | null
@@ -4426,7 +4426,7 @@ export type Database = {
           entity_type: string
           id: string
           metadata: Json
-          prospeccao_id: string | null
+          rma_id: string | null
           summary: string | null
           user_id: string | null
           user_role: string | null
@@ -4442,7 +4442,7 @@ export type Database = {
           entity_type: string
           id?: string
           metadata?: Json
-          prospeccao_id?: string | null
+          rma_id?: string | null
           summary?: string | null
           user_id?: string | null
           user_role?: string | null
@@ -4458,7 +4458,7 @@ export type Database = {
           entity_type?: string
           id?: string
           metadata?: Json
-          prospeccao_id?: string | null
+          rma_id?: string | null
           summary?: string | null
           user_id?: string | null
           user_role?: string | null
@@ -4491,7 +4491,7 @@ export type Database = {
           priority: number
           processing_mode: string
           reason: string
-          prospeccao_id: string | null
+          rma_id: string | null
           status: string
           trigger_source: string
           updated_at: string
@@ -4521,7 +4521,7 @@ export type Database = {
           priority?: number
           processing_mode?: string
           reason?: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           trigger_source?: string
           updated_at?: string
@@ -4551,7 +4551,7 @@ export type Database = {
           priority?: number
           processing_mode?: string
           reason?: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           status?: string
           trigger_source?: string
           updated_at?: string
@@ -4867,7 +4867,7 @@ export type Database = {
           id: string
           prompt_final: string
           prompt_hash: string
-          prospeccao_id: string | null
+          rma_id: string | null
           tokens_estimated: number | null
           used_count: number
           version: string
@@ -4881,7 +4881,7 @@ export type Database = {
           id?: string
           prompt_final: string
           prompt_hash: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           tokens_estimated?: number | null
           used_count?: number
           version?: string
@@ -4895,7 +4895,7 @@ export type Database = {
           id?: string
           prompt_final?: string
           prompt_hash?: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           tokens_estimated?: number | null
           used_count?: number
           version?: string
@@ -5731,7 +5731,7 @@ export type Database = {
           max_attempts: number | null
           metadata: Json | null
           reason: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           user_id: string | null
           user_role: string | null
         }
@@ -5745,7 +5745,7 @@ export type Database = {
           max_attempts?: number | null
           metadata?: Json | null
           reason?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           user_id?: string | null
           user_role?: string | null
         }
@@ -5759,7 +5759,7 @@ export type Database = {
           max_attempts?: number | null
           metadata?: Json | null
           reason?: string | null
-          prospeccao_id?: string | null
+          rma_id?: string | null
           user_id?: string | null
           user_role?: string | null
         }
@@ -5899,7 +5899,7 @@ export type Database = {
           has_attachment: boolean
           id: string
           recipient_email: string
-          prospeccao_id: string
+          rma_id: string
           sent_at: string
           sent_by: string | null
           subject: string
@@ -5915,7 +5915,7 @@ export type Database = {
           has_attachment?: boolean
           id?: string
           recipient_email: string
-          prospeccao_id: string
+          rma_id: string
           sent_at?: string
           sent_by?: string | null
           subject: string
@@ -5931,7 +5931,7 @@ export type Database = {
           has_attachment?: boolean
           id?: string
           recipient_email?: string
-          prospeccao_id?: string
+          rma_id?: string
           sent_at?: string
           sent_by?: string | null
           subject?: string
@@ -6284,7 +6284,7 @@ export type Database = {
           released_to_recuperanda_by: string | null
           released_to_recuperanda_notes: string | null
           risk_global: string | null
-          prospeccao_id: string
+          rma_id: string
           status: string
           template_id: string | null
           tipo: string
@@ -6308,7 +6308,7 @@ export type Database = {
           released_to_recuperanda_by?: string | null
           released_to_recuperanda_notes?: string | null
           risk_global?: string | null
-          prospeccao_id: string
+          rma_id: string
           status?: string
           template_id?: string | null
           tipo: string
@@ -6332,7 +6332,7 @@ export type Database = {
           released_to_recuperanda_by?: string | null
           released_to_recuperanda_notes?: string | null
           risk_global?: string | null
-          prospeccao_id?: string
+          rma_id?: string
           status?: string
           template_id?: string | null
           tipo?: string
@@ -6370,7 +6370,7 @@ export type Database = {
           mime_type: string | null
           parsed_at: string
           parser_version: string
-          prospeccao_id: string | null
+          rma_id: string | null
           size_bytes: number | null
           tipo: string | null
           topic_name: string | null
@@ -6397,7 +6397,7 @@ export type Database = {
           mime_type?: string | null
           parsed_at?: string
           parser_version?: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           size_bytes?: number | null
           tipo?: string | null
           topic_name?: string | null
@@ -6424,7 +6424,7 @@ export type Database = {
           mime_type?: string | null
           parsed_at?: string
           parser_version?: string
-          prospeccao_id?: string | null
+          rma_id?: string | null
           size_bytes?: number | null
           tipo?: string | null
           topic_name?: string | null
@@ -6447,7 +6447,7 @@ export type Database = {
           payload: Json
           percentual: number
           resumo: Json
-          prospeccao_id: string | null
+          rma_id: string | null
           rows_balancete: number
           rows_bs: number
           rows_dre: number
@@ -6467,7 +6467,7 @@ export type Database = {
           payload?: Json
           percentual?: number
           resumo?: Json
-          prospeccao_id?: string | null
+          rma_id?: string | null
           rows_balancete?: number
           rows_bs?: number
           rows_dre?: number
@@ -6487,7 +6487,7 @@ export type Database = {
           payload?: Json
           percentual?: number
           resumo?: Json
-          prospeccao_id?: string | null
+          rma_id?: string | null
           rows_balancete?: number
           rows_bs?: number
           rows_dre?: number
@@ -6948,7 +6948,7 @@ export type Database = {
           folder_path: string | null
           in_batch_count: number | null
           latest_eta: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           total_count: number | null
         }
         Relationships: []
@@ -6965,7 +6965,7 @@ export type Database = {
           processing_count: number | null
           rate_limit_until: string | null
           rate_limited_count: number | null
-          prospeccao_id: string | null
+          rma_id: string | null
           total_count: number | null
         }
         Relationships: []
@@ -7102,7 +7102,7 @@ export type Database = {
           mime_type: string | null
           normalized_text: string | null
           path: string | null
-          prospeccao_id: string | null
+          rma_id: string | null
           status: string | null
         }
         Relationships: []
@@ -7161,7 +7161,7 @@ export type Database = {
       }
       can_access_company: { Args: { p_company_id: string }; Returns: boolean }
       can_access_company_by_rma: {
-        Args: { p_prospeccao_id: string }
+        Args: { p_rma_id: string }
         Returns: boolean
       }
       can_access_rma_doc: { Args: { p_document_id: string }; Returns: boolean }
@@ -7200,7 +7200,7 @@ export type Database = {
           priority: number
           processing_mode: string
           reason: string
-          prospeccao_id: string | null
+          rma_id: string | null
           status: string
           trigger_source: string
           updated_at: string
@@ -7240,7 +7240,7 @@ export type Database = {
           priority: number
           processing_mode: string
           reason: string
-          prospeccao_id: string | null
+          rma_id: string | null
           status: string
           trigger_source: string
           updated_at: string
@@ -7271,7 +7271,7 @@ export type Database = {
           released_to_recuperanda_by: string | null
           released_to_recuperanda_notes: string | null
           risk_global: string | null
-          prospeccao_id: string
+          rma_id: string
           status: string
           template_id: string | null
           tipo: string
@@ -7361,7 +7361,7 @@ export type Database = {
           p_mime_type: string
           p_pages: number
           p_payload?: Json
-          p_prospeccao_id: string
+          p_rma_id: string
           p_size_bytes: number
         }
         Returns: string
@@ -7406,7 +7406,7 @@ export type Database = {
           priority: number
           processing_mode: string
           reason: string
-          prospeccao_id: string | null
+          rma_id: string | null
           status: string
           trigger_source: string
           updated_at: string
@@ -7509,7 +7509,7 @@ export type Database = {
           p_entity_id: string
           p_entity_type: string
           p_metadata?: Json
-          p_prospeccao_id?: string
+          p_rma_id?: string
           p_summary?: string
         }
         Returns: string
@@ -7526,7 +7526,7 @@ export type Database = {
         Args: {
           p_company_id: string
           p_folder_prefix: string
-          p_prospeccao_id: string
+          p_rma_id: string
           p_scan_id: string
         }
         Returns: number
@@ -7587,7 +7587,7 @@ export type Database = {
           parent_deferred_job_id: string | null
           parent_document_id: string | null
           parent_file_id: string
-          prospeccao_id: string | null
+          rma_id: string | null
           status: string
           total_chunks: number
           updated_at: string
@@ -7644,7 +7644,7 @@ export type Database = {
           match_count?: number
           match_threshold?: number
           query_embedding: string
-          target_prospeccao_id: string
+          target_rma_id: string
         }
         Returns: {
           chunk_text: string
@@ -7658,13 +7658,13 @@ export type Database = {
           match_threshold?: number
           query_embedding: string
           target_classe?: string
-          target_prospeccao_id?: string
+          target_rma_id?: string
         }
         Returns: {
           classe: string
           document_id: string
           id: string
-          prospeccao_id: string
+          rma_id: string
           similarity: number
           text: string
         }[]
@@ -7720,7 +7720,7 @@ export type Database = {
           released_to_recuperanda_by: string | null
           released_to_recuperanda_notes: string | null
           risk_global: string | null
-          prospeccao_id: string
+          rma_id: string
           status: string
           template_id: string | null
           tipo: string

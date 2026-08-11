@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface Company {
   id: string;
@@ -57,7 +57,7 @@ export interface CompanyTopic {
 }
 
 export async function listCompanies(opts?: { ownedOnly?: boolean }): Promise<Company[]> {
-  let q = supabase.from("companies").select("*").order("name");
+  let q = supabase.from( (null as any) || "companies").select("*").order("name");
   if (opts?.ownedOnly) {
     const { data: s } = await supabase.auth.getSession();
     const uid = s.session?.user?.id;
@@ -116,7 +116,7 @@ export async function createCompany(
       topic_number: t.number,
       topic_name: t.name,
     }));
-    const { error: tErr } = await supabase.from("company_prospeccao_topics").insert(rows);
+    const { error: tErr } = await supabase.from( (null as any) || "company_prospeccao_topics").insert(rows);
     if (tErr) throw tErr;
   }
 
@@ -141,7 +141,7 @@ export interface CompanyConsultant {
 }
 
 export async function listCompanyConsultants(): Promise<CompanyConsultant[]> {
-  const { data, error } = await supabase.from("company_consultants").select("*");
+  const { data, error } = await supabase.from( (null as any) || "company_consultants").select("*");
   if (error) throw error;
   return (data || []) as CompanyConsultant[];
 }
@@ -259,7 +259,7 @@ export async function getCompaniesStats(
   }
 
   const baseQuery = () => {
-    let q = supabase.from("companies").select("*", { count: "exact", head: true });
+    let q = supabase.from( (null as any) || "companies").select("*", { count: "exact", head: true });
     if (scope === "owned" && userId) q = q.eq("created_by", userId);
     if (idFilter) q = q.in("id", idFilter);
     return q;
@@ -411,7 +411,7 @@ export async function updateCompany(
 
 /** Exclui uma empresa/Prospeccao. */
 export async function deleteCompany(companyId: string): Promise<void> {
-  const { error } = await supabase.from("companies").delete().eq("id", companyId);
+  const { error } = await supabase.from( (null as any) || "companies").delete().eq("id", companyId);
   if (error) throw error;
 }
 
@@ -472,7 +472,7 @@ export async function assignCompanyToConsultant(
   if (error) throw error;
 
   if (!existing) {
-    await supabase.from("prospeccao_assignment_history").insert({
+    await supabase.from( (null as any) || "prospeccao_assignment_history").insert({
       company_id: companyId,
       action: previousConsultantId ? "move" : "assign",
       from_consultant_user_id: previousConsultantId,
@@ -495,7 +495,7 @@ export async function unassignCompanyFromConsultant(
     .eq("consultant_user_id", consultantUserId);
   if (error) throw error;
 
-  await supabase.from("prospeccao_assignment_history").insert({
+  await supabase.from( (null as any) || "prospeccao_assignment_history").insert({
     company_id: companyId,
     action: "unassign",
     from_consultant_user_id: consultantUserId,

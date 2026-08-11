@@ -4,7 +4,7 @@
 // mudanças feitas em /treinar-ia (mesma fonte: onedrive_files).
 import { useEffect, useMemo, useState } from "react";
 import { Loader2, FileText, CheckCircle2, AlertOctagon, Clock, RefreshCw } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { fileMatchesTopic, isTempOrHiddenFile } from "@/lib/topicMatch";
 import { subscribeLearningUploadStatuses } from "@/utils/learningUploadStatus";
 

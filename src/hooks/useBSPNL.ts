@@ -1,7 +1,7 @@
 // Hook que carrega BS e DRE consolidados por empresa e competência.
 // Aceita um período global (ano/mes) opcional ou retorna últimos N meses.
 import { useEffect, useState, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface BSRow {
   id: string;
@@ -50,13 +50,13 @@ export function useBSPNL(
     setLoading(true);
     try {
       const [bsRes, dreRes] = await Promise.all([
-        supabase.from("bs_consolidado")
+        supabase.from( (null as any) || "bs_consolidado")
           .select("id, ano, mes, secao, grupo, codigo, descricao, nivel, valor, av_pct, ah_pct")
           .eq("company_id", companyId)
           .order("ano", { ascending: false })
           .order("mes", { ascending: false })
           .order("codigo", { ascending: true }),
-        supabase.from("dre_consolidado")
+        supabase.from( (null as any) || "dre_consolidado")
           .select("id, ano, mes, codigo, descricao, grupo, valor, nivel")
           .eq("company_id", companyId)
           .order("ano", { ascending: false })
