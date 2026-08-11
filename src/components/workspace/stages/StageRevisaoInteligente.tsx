@@ -100,7 +100,7 @@ export default function StageRevisaoInteligente({ topics, criticas, onOpenTopic,
       {/* Lista + IA assistiva */}
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-3">
         <div className="bg-white border border-border rounded-lg p-4">
-          <h3 className="text-sm font-bold text-foreground mb-3">Tópicos do Prospeccao AJ</h3>
+          <h3 className="text-sm font-bold text-foreground mb-3">Tópicos do Prospecção AJ</h3>
           <TopicsTaskList items={filtered} onOpen={onOpenTopic} prospeccaoId={prospeccaoId} />
         </div>
 

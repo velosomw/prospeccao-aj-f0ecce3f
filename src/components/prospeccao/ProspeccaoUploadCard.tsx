@@ -1,4 +1,4 @@
-// Card de upload real para o fluxo Prospeccao AJ.
+// Card de upload real para o fluxo Prospecção AJ.
 import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Upload, FileSpreadsheet, FileText, Loader2, CheckCircle2, AlertTriangle, PlayCircle } from "lucide-react";

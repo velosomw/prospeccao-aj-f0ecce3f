@@ -33,7 +33,7 @@ const generateInsight = (block: DocumentBlock, index: number): AIInsight | null 
     },
     informativo: {
       summary: "Contexto técnico aplicado",
-      detail: `O tópico "${block.title}" foi formulado com base nas noprospeccoes NBC TA vigentes e dados extraídos via OCR. Os indicadores utilizados seguem os padrões de análise da plataforma.`,
+      detail: `O tópico "${block.title}" foi formulado com base nas noprospecções NBC TA vigentes e dados extraídos via OCR. Os indicadores utilizados seguem os padrões de análise da plataforma.`,
     },
   };
 

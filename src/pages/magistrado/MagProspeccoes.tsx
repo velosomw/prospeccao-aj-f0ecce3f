@@ -10,7 +10,7 @@ const statusMeta: Record<string, { bg: string; fg: string }> = {
   "Visualizado":  { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
 };
 
-export default function MagProspeccoes() {
+export default function MagProspecções() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -45,7 +45,7 @@ export default function MagProspeccoes() {
   const columns = [
     {
       key: "info",
-      header: "Prospeccao AJ",
+      header: "Prospecção AJ",
       cell: (r: typeof rows[number]) => {
         const s = statusMeta[r.status];
         return (

@@ -283,7 +283,7 @@ export default function LearningUploadPanel({ prospeccaoId, companyId, defaultFo
       return;
     }
     if (maxFiles > 1 && !refMonthKey) {
-      toast({ title: "Selecione mês/ano de referência", description: "Defina o mês cujo DIP-Prospeccao AJ será atualizado por este lote.", variant: "destructive" });
+      toast({ title: "Selecione mês/ano de referência", description: "Defina o mês cujo DIP-Prospecção AJ será atualizado por este lote.", variant: "destructive" });
       return;
     }
     const folder = selected;
@@ -851,10 +851,10 @@ export default function LearningUploadPanel({ prospeccaoId, companyId, defaultFo
             {monthLocked ? (
               <span
                 className="h-9 inline-flex items-center px-3 rounded-md border border-amber-300 bg-amber-50 text-sm font-semibold text-amber-900"
-                title="Mês/Ano travados ao Prospeccao AJ selecionado"
+                title="Mês/Ano travados ao Prospecção AJ selecionado"
               >
                 {String(effectiveRefMonth).padStart(2, "0")}/{effectiveRefYear}
-                <span className="ml-2 text-[10px] font-normal text-amber-700">(Prospeccao AJ)</span>
+                <span className="ml-2 text-[10px] font-normal text-amber-700">(Prospecção AJ)</span>
               </span>
             ) : (
               <>

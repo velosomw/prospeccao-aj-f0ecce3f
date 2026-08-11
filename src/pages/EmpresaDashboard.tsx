@@ -35,9 +35,9 @@ const EmpresaDashboard = () => {
   const { userName } = useUser();
   const { toast } = useToast();
   const firstName = userName?.split(" ")[0] || null;
-  const [prospeccoes] = useState<ProspeccaoEntry[]>([]);
+  const [prospecções] = useState<ProspeccaoEntry[]>([]);
 
-  // Prospeccoes atribuídos pelo Coordenador, aguardando ativação
+  // Prospecções atribuídos pelo Coordenador, aguardando ativação
   const [pendingCompanies, setPendingCompanies] = useState<Company[]>([]);
   const [activatedCompanies, setActivatedCompanies] = useState<Company[]>([]);
   const [analyses, setAnalyses] = useState<Record<string, ProspeccaoAnalysisResult>>({});
@@ -87,7 +87,7 @@ const EmpresaDashboard = () => {
   }, []);
 
   // Polling peprospeccaonente: sempre que houver Prospeccao ativo, reconsulta a cada 2.5s
-  // garantindo UI viva em Alertas Inteligentes + lista de Prospeccoes.
+  // garantindo UI viva em Alertas Inteligentes + lista de Prospecções.
   useEffect(() => {
     if (activatedCompanies.length === 0 && pendingCompanies.length === 0) return;
     const hasRunning = Object.values(analyses).some(a => a.status === "em_analise");
@@ -157,10 +157,10 @@ const EmpresaDashboard = () => {
     }
   };
 
-  // Combina Prospeccoes ativados (reais) + mocks para exibir nas abas Alertas e Prospeccoes
+  // Combina Prospecções ativados (reais) + mocks para exibir nas abas Alertas e Prospecções
   const filesByCompany = useMemo(() => groupFilesByCompany(scoreFiles), [scoreFiles]);
 
-  const realProspeccoes = useMemo(() => activatedCompanies.map(c => {
+  const realProspecções = useMemo(() => activatedCompanies.map(c => {
     const analysis = analyses[c.id];
     const analysisTopics = analysis?.topics?.map((t, index) => ({
       id: `t${t.number ?? index + 1}`,
@@ -198,12 +198,12 @@ const EmpresaDashboard = () => {
         : null,
     };
   }), [activatedCompanies, analyses, filesByCompany]);
-  const displayProspeccoes: (ProspeccaoEntry & { companyId?: string; analysisStatus?: string })[] = [...realProspeccoes as any, ...prospeccoes];
+  const displayProspecções: (ProspeccaoEntry & { companyId?: string; analysisStatus?: string })[] = [...realProspecções as any, ...prospecções];
 
-  const total = displayProspeccoes.length;
-  const emProcessamento = displayProspeccoes.filter(r => r.status === "em_processamento").length;
-  const emRevisao = displayProspeccoes.filter(r => r.status === "em_revisao").length;
-  const concluidos = displayProspeccoes.filter(r => r.status === "concluido").length;
+  const total = displayProspecções.length;
+  const emProcessamento = displayProspecções.filter(r => r.status === "em_processamento").length;
+  const emRevisao = displayProspecções.filter(r => r.status === "em_revisao").length;
+  const concluidos = displayProspecções.filter(r => r.status === "concluido").length;
 
   const kpis = [
     { label: "Prospecções AJ em Andamento", value: emProcessamento, icon: Clock, color: "hsl(var(--accent))" },
@@ -332,8 +332,8 @@ const EmpresaDashboard = () => {
             <TabsTrigger value="dashboard" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <BarChart3 className="w-4 h-4" /> Dashboard
             </TabsTrigger>
-            <TabsTrigger value="prospeccoes" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
-              <FileText className="w-4 h-4" /> Prospeccoes
+            <TabsTrigger value="prospecções" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
+              <FileText className="w-4 h-4" /> Prospecções
             </TabsTrigger>
             <TabsTrigger value="historico" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <History className="w-4 h-4" /> Histórico
@@ -359,7 +359,7 @@ const EmpresaDashboard = () => {
               ))}
             </div>
 
-            {/* Prospeccoes Empresa atribuídos pelo Coordenador — aguardando ativação */}
+            {/* Prospecções Empresa atribuídos pelo Coordenador — aguardando ativação */}
             {pendingCompanies.length > 0 && (
               <Card className="border-2 border-accent/40 bg-gradient-to-br from-accent/5 to-transparent">
                 <CardHeader className="pb-3">
@@ -373,7 +373,7 @@ const EmpresaDashboard = () => {
                       </div>
                       <div className="text-left">
                         <CardTitle className="text-base flex items-center gap-2">
-                          Prospeccoes Empresa atribuídos
+                          Prospecções Empresa atribuídos
                           <Badge className="bg-accent text-accent-foreground text-[10px]">
                             {pendingCompanies.length} aguardando
                           </Badge>
@@ -436,13 +436,13 @@ const EmpresaDashboard = () => {
               </Card>
             )}
 
-            {/* Alertas — Prospeccoes com atualização nas últimas 24h */}
+            {/* Alertas — Prospecções com atualização nas últimas 24h */}
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-destructive" /> Alertas Inteligentes
                   <span className="text-[10px] font-normal text-muted-foreground ml-1">
-                    (atualizações dos Prospeccoes nas últimas 24h)
+                    (atualizações dos Prospecções nas últimas 24h)
                   </span>
                 </CardTitle>
               </CardHeader>
@@ -450,8 +450,8 @@ const EmpresaDashboard = () => {
                 {(() => {
                   const now = Date.now();
                   const DAY_MS = 24 * 60 * 60 * 1000;
-                  // Considera apenas Prospeccoes reais (com companyId) que NÃO estão concluídos
-                  const candidatos = displayProspeccoes.filter(r => r.status !== "concluido" && r.companyId);
+                  // Considera apenas Prospecções reais (com companyId) que NÃO estão concluídos
+                  const candidatos = displayProspecções.filter(r => r.status !== "concluido" && r.companyId);
                   if (candidatos.length === 0) {
                     return (
                       <p className="text-xs text-muted-foreground text-center py-6">
@@ -612,8 +612,8 @@ const EmpresaDashboard = () => {
             </Card>
           </TabsContent>
 
-          {/* ABA 2 - Prospeccoes */}
-          <TabsContent value="prospeccoes" className="space-y-4">
+          {/* ABA 2 - Prospecções */}
+          <TabsContent value="prospecções" className="space-y-4">
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Lista de Prospecções AJ</CardTitle>
@@ -633,7 +633,7 @@ const EmpresaDashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {displayProspeccoes.map(prospeccao => {
+                      {displayProspecções.map(prospeccao => {
                         const sc = statusConfig[prospeccao.status];
                         return (
                           <tr key={(prospeccao as any).companyId || prospeccao.id} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
@@ -675,7 +675,7 @@ const EmpresaDashboard = () => {
             </Card>
           </TabsContent>
 
-          {/* ABA 3 - Histórico de Prospeccoes por período */}
+          {/* ABA 3 - Histórico de Prospecções por período */}
           <TabsContent value="historico" className="space-y-4">
             <ProspeccaoHistoricoTab
               periods={periods}

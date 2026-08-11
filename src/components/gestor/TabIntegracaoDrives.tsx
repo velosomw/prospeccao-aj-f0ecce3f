@@ -242,7 +242,7 @@ const SyncControls = () => {
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="space-y-1">
-          <Label className="text-xs">Prospeccao AJ ID</Label>
+          <Label className="text-xs">Prospecção AJ ID</Label>
           <Input className="h-9 text-sm" value={prospeccaoId} onChange={e => setRmaId(e.target.value)} />
         </div>
         <div className="space-y-1">
@@ -409,8 +409,8 @@ const DiagnosticsCard = () => {
   );
 };
 
-// ─── Renumber existing Prospeccoes from OneDrive folders ─────────────
-const RenumberProspeccoesCard = () => {
+// ─── Renumber existing Prospecções from OneDrive folders ─────────────
+const RenumberProspecçõesCard = () => {
   const [year, setYear] = useState(String(new Date().getFullYear()));
   const [prefix, setPrefix] = useState("Prospeccao");
   const [dryRun, setDryRun] = useState(true);
@@ -421,7 +421,7 @@ const RenumberProspeccoesCard = () => {
     setRunning(true);
     setResult(null);
     try {
-      const { data, error } = await supabase.functions.invoke("onedrive-renumber-prospeccoes", {
+      const { data, error } = await supabase.functions.invoke("onedrive-renumber-prospecções", {
         body: { path: ONEDRIVE_CONFIG.base_path, year: Number(year), prefix, dryRun },
       });
       if (error) throw error;
@@ -430,7 +430,7 @@ const RenumberProspeccoesCard = () => {
         toast.success(
           dryRun
             ? `Pré-visualização: ${data.totalFolders} pastas`
-            : `${data.totalFolders} Prospeccoes sincronizados`
+            : `${data.totalFolders} Prospecções sincronizados`
         );
       } else {
         toast.error(data?.error || "Falha na renumeração");
@@ -489,7 +489,7 @@ const RenumberProspeccoesCard = () => {
               <tr>
                 <th className="text-left px-3 py-2 font-semibold">#</th>
                 <th className="text-left px-3 py-2 font-semibold">Pasta OneDrive</th>
-                <th className="text-left px-3 py-2 font-semibold">Prospeccao AJ ID</th>
+                <th className="text-left px-3 py-2 font-semibold">Prospecção AJ ID</th>
                 <th className="text-left px-3 py-2 font-semibold">Ação</th>
                 <th className="text-left px-3 py-2 font-semibold">Link</th>
               </tr>
@@ -802,7 +802,7 @@ const TabIntegracaoDrives = ({ onBack }: { onBack: () => void }) => {
 
         <TabsContent value="sync" className="space-y-4 mt-4">
           <DiagnosticsCard />
-          <RenumberProspeccoesCard />
+          <RenumberProspecçõesCard />
           <SyncControls />
         </TabsContent>
 

@@ -110,7 +110,7 @@ export default function CompetenciaSelector({
           <Calendar className="w-3.5 h-3.5 text-[hsl(217,91%,50%)]" />
           <span className="capitalize">{currentLabel}</span>
           {value && isRma(value) && (
-            <Badge variant="secondary" className="ml-1 h-4 px-1 text-[9px]">Prospeccao AJ</Badge>
+            <Badge variant="secondary" className="ml-1 h-4 px-1 text-[9px]">Prospecção AJ</Badge>
           )}
         </Button>
       </DropdownMenuTrigger>
@@ -131,7 +131,7 @@ export default function CompetenciaSelector({
           >
             <span>{p.label}</span>
             {isRma(p) && (
-              <Badge variant="secondary" className="h-4 px-1 text-[9px]">Prospeccao AJ</Badge>
+              <Badge variant="secondary" className="h-4 px-1 text-[9px]">Prospecção AJ</Badge>
             )}
           </DropdownMenuItem>
         ))}
@@ -141,7 +141,7 @@ export default function CompetenciaSelector({
             className="text-xs flex items-center justify-between capitalize"
           >
             <span>{prospeccaoPeriodo.label}</span>
-            <Badge variant="secondary" className="h-4 px-1 text-[9px]">Prospeccao AJ</Badge>
+            <Badge variant="secondary" className="h-4 px-1 text-[9px]">Prospecção AJ</Badge>
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />

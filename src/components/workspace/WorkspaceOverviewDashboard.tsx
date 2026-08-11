@@ -36,7 +36,7 @@ export default function WorkspaceOverviewDashboard({
     <div className="bg-white border border-border rounded-lg p-4">
       <div className="flex items-center justify-between mb-3">
         <div>
-          <h2 className="text-sm font-bold text-foreground">Visão geral do Prospeccao AJ</h2>
+          <h2 className="text-sm font-bold text-foreground">Visão geral do Prospecção AJ</h2>
           <p className="text-xs text-muted-foreground">
             Processamento de documentos, completude do score e status dos tópicos.
           </p>

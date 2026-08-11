@@ -176,7 +176,7 @@ export default function OficioPendenciasCard({
 
       {!semPendencias && (
         <p className="mt-3 text-xs text-muted-foreground">
-          Você pode gerar o <strong>Prospeccao AJ Final</strong> mesmo com pendências em aberto — elas
+          Você pode gerar o <strong>Prospecção AJ Final</strong> mesmo com pendências em aberto — elas
           serão automaticamente reportadas na seção final do relatório.
         </p>
       )}

@@ -86,7 +86,7 @@ export default function RelatoriosContabeis() {
     return Array.from(names).sort((a, b) => a.localeCompare(b));
   }, [companies, filter]);
 
-  const prospeccoesOfCompany = useMemo(() => {
+  const prospecçõesOfCompany = useMemo(() => {
     if (!companyName) return [];
     return companies.filter(c => c.name === companyName);
   }, [companies, companyName]);
@@ -178,7 +178,7 @@ export default function RelatoriosContabeis() {
               <div className="relative">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <Input
-                  placeholder="Buscar por nome ou Prospeccao AJ..."
+                  placeholder="Buscar por nome ou Prospecção AJ..."
                   value={filter}
                   onChange={e => setFilter(e.target.value)}
                   className="pl-9"
@@ -211,7 +211,7 @@ export default function RelatoriosContabeis() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-base flex items-center gap-2">
-                <Briefcase className="w-4 h-4" /> Prospeccoes de {companyName}
+                <Briefcase className="w-4 h-4" /> Prospecções de {companyName}
               </CardTitle>
               <Button variant="ghost" size="sm" onClick={() => setStep(1)}>
                 <ChevronLeft className="w-4 h-4 mr-1" /> Voltar
@@ -219,7 +219,7 @@ export default function RelatoriosContabeis() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {prospeccoesOfCompany.map(c => (
+                {prospecçõesOfCompany.map(c => (
                   <button
                     key={c.id}
                     onClick={() => { setCompanyId(c.id); setStep(3); }}
@@ -365,7 +365,7 @@ export default function RelatoriosContabeis() {
               <CardContent className="space-y-2 text-sm">
                 <div><b>Empresa:</b> {selected.name}</div>
                 {selected.cnpj && <div><b>CNPJ:</b> {selected.cnpj}</div>}
-                <div><b>Prospeccao AJ:</b> {selected.prospeccao_id || "—"}</div>
+                <div><b>Prospecção AJ:</b> {selected.prospeccao_id || "—"}</div>
                 <div><b>Agregação:</b> {AGREG_LABEL[agregacao]}</div>
                 <div><b>Períodos disponíveis:</b> {periodKeys.length}</div>
                 <div><b>Intervalo:</b> {fromKey || "—"} → {toKey || "—"}</div>

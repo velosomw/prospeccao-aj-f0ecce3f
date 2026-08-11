@@ -111,7 +111,7 @@ const buildNav = (role: string | null): NavGroup[] => {
       label: "Jurisdição",
       items: [
         { label: "Processos",       to: "/magistrado/processos", icon: Gavel },
-        { label: "Prospecções AJ Recebidas",  to: "/magistrado/prospeccoes-aj",      icon: FileText, badge: 7 },
+        { label: "Prospecções AJ Recebidas",  to: "/magistrado/prospecções-aj",      icon: FileText, badge: 7 },
         { label: "Empresa Prospeccao",    to: "/magistrado/empresas",  icon: Building2 },
         { label: "Decisões",        to: "/magistrado/decisoes",  icon: Scale },
         { label: "Histórico",       to: "/magistrado/historico", icon: History },
@@ -137,7 +137,7 @@ const buildNav = (role: string | null): NavGroup[] => {
       label: "Administração",
       items: [
         { label: "Empresa Prospeccao", to: "/admjudicial/recuperandas", icon: Building2 },
-        { label: "Prospecções AJ", to: "/admjudicial/prospeccoes-aj",         icon: Briefcase },
+        { label: "Prospecções AJ", to: "/admjudicial/prospecções-aj",         icon: Briefcase },
         { label: "Pendências",   to: "/admjudicial/pendencias",   icon: AlertTriangle, badge: 23 },
         { label: "Planilha de Carga",   to: "/admjudicial/relatorios",   icon: FileBarChart },
         { label: "Histórico",    to: "/admjudicial/historico",    icon: History },

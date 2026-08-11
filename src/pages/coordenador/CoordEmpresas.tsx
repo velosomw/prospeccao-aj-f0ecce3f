@@ -50,7 +50,7 @@ export default function CoordEmpresas() {
       ),
     },
     { key: "cnpj", header: "CNPJ", cell: (e: typeof rows[number]) => <span className="font-mono text-xs text-muted-foreground">{e.cnpj}</span> },
-    { key: "prospeccaoId", header: "Prospeccao AJ ID", cell: (e: typeof rows[number]) => <span className="font-mono text-xs text-muted-foreground">{e.prospeccaoId}</span> },
+    { key: "prospeccaoId", header: "Prospecção AJ ID", cell: (e: typeof rows[number]) => <span className="font-mono text-xs text-muted-foreground">{e.prospeccaoId}</span> },
     {
       key: "status",
       header: "Status",

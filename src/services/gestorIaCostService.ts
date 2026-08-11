@@ -54,9 +54,9 @@ export interface CostInsight {
 }
 
 export interface PlatformCounts {
-  prospeccoesTotal: number;            // Prospeccoes distintos analisados (prospeccao_analysis_results)
-  prospeccoesConcluidos: number;
-  prospeccoesEmAnalise: number;
+  prospecçõesTotal: number;            // Prospecções distintos analisados (prospeccao_analysis_results)
+  prospecçõesConcluidos: number;
+  prospecçõesEmAnalise: number;
   balancetesRuns: number;       // balancete_runs total
   balancetesConsolidados: number;
   relatoriosFinalizados: number;  // prospeccao_documents status='finalizado'
@@ -69,8 +69,8 @@ export interface CostIndicators {
   custoBalancete: number;          // custo IA atribuído a OCR/extraction/embedding
   custoRelatorio: number;          // custo IA atribuído a geração de relatório
   custoIaOcrProcessamento: number; // OCR + extraction + embedding + classification + validation
-  custoMedioExecucao: number;      // custoTotal / Prospeccoes reais
-  custoMedioPorProspeccao: number;        // custoTotal / nº Prospeccoes
+  custoMedioExecucao: number;      // custoTotal / Prospecções reais
+  custoMedioPorProspeccao: number;        // custoTotal / nº Prospecções
   custoMedioPorBalancete: number;  // custoBalancete / nº runs balancete
   custoMedioPorRelatorio: number;  // custoRelatorio / nº relatórios (finalizados+andamento)
   totalBalancetes: number;
@@ -182,11 +182,11 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
   const counts = await fetchPlatformCounts(cutoff);
 
   // Custos médios por unidade real
-  const custoMedioPorProspeccao       = counts.prospeccoesTotal > 0 ? custoTotal / counts.prospeccoesTotal : 0;
+  const custoMedioPorProspeccao       = counts.prospecçõesTotal > 0 ? custoTotal / counts.prospecçõesTotal : 0;
   const custoMedioPorBalancete = counts.balancetesRuns > 0 ? custoBalancete / counts.balancetesRuns : 0;
   const totalRel = counts.relatoriosFinalizados + counts.relatoriosEmElaboracao;
   const custoMedioPorRelatorio = totalRel > 0 ? custoRelatorio / totalRel : 0;
-  const custoMedioExecucao     = counts.prospeccoesTotal > 0 ? custoTotal / counts.prospeccoesTotal : 0;
+  const custoMedioExecucao     = counts.prospecçõesTotal > 0 ? custoTotal / counts.prospecçõesTotal : 0;
 
   const totalBalancetes = counts.balancetesRuns;
   const totalRelatorios = totalRel;
@@ -301,7 +301,7 @@ export async function fetchPlatformCounts(cutoff: Date | null): Promise<Platform
     return count ?? 0;
   };
 
-  const [prospeccoesTotal, prospeccoesConcluidos, prospeccoesEmAnalise, balancetesRuns, balancetesConsolidados,
+  const [prospecçõesTotal, prospecçõesConcluidos, prospecçõesEmAnalise, balancetesRuns, balancetesConsolidados,
     relatoriosFinalizados, relatoriosEmElaboracao, documentosOcr] = await Promise.all([
     cnt("prospeccao_analysis_results"),
     cnt("prospeccao_analysis_results", (q: any) => q.eq("status", "concluido")),
@@ -314,7 +314,7 @@ export async function fetchPlatformCounts(cutoff: Date | null): Promise<Platform
   ]);
 
   return {
-    prospeccoesTotal, prospeccoesConcluidos, prospeccoesEmAnalise,
+    prospecçõesTotal, prospecçõesConcluidos, prospecçõesEmAnalise,
     balancetesRuns, balancetesConsolidados,
     relatoriosFinalizados, relatoriosEmElaboracao,
     documentosOcr,

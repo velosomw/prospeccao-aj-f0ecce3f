@@ -166,7 +166,7 @@ const mockTopics: ProspeccaoTopic[] = [
     ] },
   { id: 't37', pasta: 37, name: 'Última Alteração Contratual', folder: 'Pasta_37', status: 'completo', completude: 100,
     documents: [{ id: 'd37', name: 'Alteracao_Contratual_2024.pdf', type: 'pdf', status: 'ok', compliance: 'atende' }] },
-  { id: 't38', pasta: 38, name: 'Informacaoções de Pendência de Prospeccao AJ Anterior', folder: 'Pasta_38', status: 'completo', completude: 100,
+  { id: 't38', pasta: 38, name: 'Informacaoções de Pendência de Prospecção AJ Anterior', folder: 'Pasta_38', status: 'completo', completude: 100,
     documents: [{ id: 'd38', name: 'Pendencias_Prospeccao_Anterior.pdf', type: 'pdf', status: 'ok', compliance: 'atende' }] },
   { id: 't39', pasta: 39, name: 'Outras Informacaoções', folder: 'Pasta_39', status: 'pendente', completude: 10,
     documents: [{ id: 'd39', name: 'Info_Complementar.pdf', type: 'pdf', status: 'vazio', compliance: 'nao_atende' }] },

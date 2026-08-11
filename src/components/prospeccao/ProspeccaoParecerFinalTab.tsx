@@ -193,11 +193,11 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospeccao_intelligenc
                 value={tipo}
                 onChange={(e) => setTipo(e.target.value as DocTipo)}
                 className="text-xs border rounded-md px-2 py-1 bg-background text-foreground"
-                title="Template do Prospeccao AJ"
+                title="Template do Prospecção AJ"
               >
-                <option value="prospeccao_intelligence">Prospeccao AJ Intelligence Engine (v3, padrão)</option>
-                <option value="prospeccao_mensal_dip">Prospeccao AJ Mensal — DIP (Capital AJ)</option>
-                <option value="prospeccao_mensal">Prospeccao AJ Mensal (CNJ 72 — legado)</option>
+                <option value="prospeccao_intelligence">Prospecção AJ Intelligence Engine (v3, padrão)</option>
+                <option value="prospeccao_mensal_dip">Prospecção AJ Mensal — DIP (Capital AJ)</option>
+                <option value="prospeccao_mensal">Prospecção AJ Mensal (CNJ 72 — legado)</option>
               </select>
             )}
             {isFinalized && (
@@ -247,7 +247,7 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospeccao_intelligenc
         {blockedForRecuperanda ? (
           <div className="bg-muted/30 border rounded-lg p-10 text-center">
             <Lock className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-            <p className="text-sm font-medium text-foreground mb-1">Relatório Prospeccao AJ Final ainda não liberado</p>
+            <p className="text-sm font-medium text-foreground mb-1">Relatório Prospecção AJ Final ainda não liberado</p>
             <p className="text-xs text-muted-foreground max-w-md mx-auto">
               O Coordenador ainda não liberou este Relatório Mensal de Atividades para visualização.
               Você será notificada assim que ele estiver disponível.
@@ -291,10 +291,10 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospeccao_intelligenc
               {tipo === "parecer_tecnico"
                 ? <>Nenhum <b>Parecer Técnico Contábil</b> criado ainda. Inicie pela aba <b>Revisão-Parecer Técnico</b>; ao atingir 100% de seções aprovadas, o Parecer Técnico Final é emitido automaticamente em .docx.</>
                 : tipo === "prospeccao_intelligence"
-                  ? <>Nenhum <b>Prospeccao AJ Intelligence Engine (v3)</b> criado ainda. O relatório é gerado por evidências em 5 blocos por capítulo (Dados extraídos · Evidências · Validação · Análise IA · Conclusão IA), com Sumário Executivo, Health Score e Risco Global. Ao atingir 70% de seções aprovadas, o Prospeccao AJ Final é emitido automaticamente em .docx.</>
+                  ? <>Nenhum <b>Prospecção AJ Intelligence Engine (v3)</b> criado ainda. O relatório é gerado por evidências em 5 blocos por capítulo (Dados extraídos · Evidências · Validação · Análise IA · Conclusão IA), com Sumário Executivo, Health Score e Risco Global. Ao atingir 70% de seções aprovadas, o Prospecção AJ Final é emitido automaticamente em .docx.</>
                   : tipo === "prospeccao_mensal_dip"
-                    ? <>Nenhum <b>Prospeccao AJ Mensal — DIP (Capital AJ)</b> criado ainda. Use o template <b>prospeccao_mensal_dip</b> para iniciar o documento institucional. Ao atingir 70% de seções aprovadas, o Prospeccao AJ Final é emitido automaticamente em .docx.</>
-                    : <>Nenhum <b>Relatório Mensal de Atividades</b> (CNJ 72/2020) criado ainda. Ao atingir 90% de seções aprovadas, o Prospeccao AJ Final é emitido automaticamente em .docx.</>}
+                    ? <>Nenhum <b>Prospecção AJ Mensal — DIP (Capital AJ)</b> criado ainda. Use o template <b>prospeccao_mensal_dip</b> para iniciar o documento institucional. Ao atingir 70% de seções aprovadas, o Prospecção AJ Final é emitido automaticamente em .docx.</>
+                    : <>Nenhum <b>Relatório Mensal de Atividades</b> (CNJ 72/2020) criado ainda. Ao atingir 90% de seções aprovadas, o Prospecção AJ Final é emitido automaticamente em .docx.</>}
             </p>
             {(tipo === "prospeccao_intelligence" || tipo === "prospeccao_mensal_dip") && canRelease && (
               <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">

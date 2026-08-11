@@ -369,7 +369,7 @@ export async function listReleasedCompaniesPage(
   };
 }
 
-/** Lista as empresas (Prospeccoes) atribuídas ao consultor logado */
+/** Lista as empresas (Prospecções) atribuídas ao consultor logado */
 export async function listMyAssignedCompanies(): Promise<Company[]> {
   const { data: s } = await supabase.auth.getSession();
   const uid = s.session?.user?.id;

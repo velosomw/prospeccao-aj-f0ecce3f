@@ -378,10 +378,10 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
             {lockMonth ? (
               <span
                 className="text-xs px-2 py-1 rounded border border-border bg-[hsl(220,15%,96%)] text-foreground font-semibold"
-                title="Mês travado ao Prospeccao AJ vinculado"
+                title="Mês travado ao Prospecção AJ vinculado"
               >
                 {effectiveMonth === "all" ? "Prospeccao sem competência definida" : monthLabel(effectiveMonth)}
-                <span className="ml-2 text-[10px] text-muted-foreground font-normal">(Prospeccao AJ)</span>
+                <span className="ml-2 text-[10px] text-muted-foreground font-normal">(Prospecção AJ)</span>
               </span>
             ) : (
               <select

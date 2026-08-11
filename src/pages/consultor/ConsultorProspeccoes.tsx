@@ -17,7 +17,7 @@ const stageMeta: Record<string, { label: string; bg: string; fg: string }> = {
   pendente:         { label: "Pendente",      bg: "hsl(0,84%,95%)",   fg: "hsl(0,84%,45%)"   },
 };
 
-export default function ConsultorProspeccoes() {
+export default function ConsultorProspecções() {
   const navigate = useNavigate();
   const [filter, setFilter] = useState<Filter>("todos");
   const [search, setSearch] = useState("");

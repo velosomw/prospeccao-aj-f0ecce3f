@@ -337,7 +337,7 @@ SAÍDA: { categoria, itens[], total_mensal, total_anual, alertas[], confianca }`
   {
     key: "AGENTE_GENERICO",
     name: "Agente Genérico (Fallback)",
-    description: "Pendência de Prospeccao AJ anterior, outras informações e documentos não-classificáveis.",
+    description: "Pendência de Prospecção AJ anterior, outras informações e documentos não-classificáveis.",
     topics: [38, 39],
     ai_model: "google/gemini-2.5-flash",
     temperature: 0.3,
@@ -350,7 +350,7 @@ EXTRAIA:
 - entidades_principais (pessoas, empresas, valores, datas)
 - assunto_resumido (≤ 200 chars)
 - categoria_inferida (tente classificar entre: financeiro, juridico, operacional, fiscal, outro)
-- referencias_externas (números de processo, contratos, Prospeccoes anteriores)
+- referencias_externas (números de processo, contratos, Prospecções anteriores)
 SAÍDA: { titulo, resumo, entidades[], categoria_inferida, referencias[], confianca }`,
   },
 ];

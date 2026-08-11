@@ -156,7 +156,7 @@ const TabTrilhaAuditoria = () => {
     URL.revokeObjectURL(url);
   };
 
-  // Unique Prospeccoes for timeline
+  // Unique Prospecções for timeline
   const prospeccaoTimelines = Array.from(new Set(mockLogs.filter(l => l.prospeccaoId !== "-").map(l => l.prospeccaoId)));
 
   return (
@@ -224,7 +224,7 @@ const TabTrilhaAuditoria = () => {
 
         {/* ── Tab: Linha do Tempo ── */}
         <TabsContent value="timeline" className="mt-4 space-y-4">
-          <p className="text-sm text-muted-foreground">Reconstrução cronológica completa dos eventos por processo Prospeccao AJ.</p>
+          <p className="text-sm text-muted-foreground">Reconstrução cronológica completa dos eventos por processo Prospecção AJ.</p>
           {prospeccaoTimelines.map(prospeccaoId => {
             const prospeccaoLogs = mockLogs.filter(l => l.prospeccaoId === prospeccaoId).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
             return (
@@ -330,7 +330,7 @@ const TabTrilhaAuditoria = () => {
             </Select>
             <div className="flex items-center gap-1.5 bg-background border border-border rounded-lg px-2.5 py-1.5 max-w-[140px]">
               <input
-                placeholder="Prospeccao AJ ID..."
+                placeholder="Prospecção AJ ID..."
                 className="bg-transparent text-xs outline-none flex-1 text-foreground placeholder:text-muted-foreground w-full"
                 value={filterRma}
                 onChange={e => setFilterRma(e.target.value)}
@@ -350,7 +350,7 @@ const TabTrilhaAuditoria = () => {
                   <TableHead className="text-xs">ID</TableHead>
                   <TableHead className="text-xs">Evento</TableHead>
                   <TableHead className="text-xs">Criticidade</TableHead>
-                  <TableHead className="text-xs">Prospeccao AJ</TableHead>
+                  <TableHead className="text-xs">Prospecção AJ</TableHead>
                   <TableHead className="text-xs">Usuário</TableHead>
                   <TableHead className="text-xs">Perfil</TableHead>
                   <TableHead className="text-xs">Data/Hora</TableHead>

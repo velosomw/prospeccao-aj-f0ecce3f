@@ -121,13 +121,13 @@ const CadastroProspeccao = () => {
 
   const handleNext = () => {
     if (!prospeccaoName.trim()) {
-      toast({ title: "Nome Prospeccao AJ é obrigatório", variant: "destructive" });
+      toast({ title: "Nome Prospecção AJ é obrigatório", variant: "destructive" });
       return;
     }
     if (!prospeccaoId.trim() || !prospeccaoIdNumber) {
       toast({
-        title: "ID Prospeccao AJ inválido",
-        description: "Selecione um ID Prospeccao AJ entre Prospeccao AJ-001 e Prospeccao AJ-012.",
+        title: "ID Prospecção AJ inválido",
+        description: "Selecione um ID Prospecção AJ entre Prospecção AJ-001 e Prospecção AJ-012.",
         variant: "destructive",
       });
       return;
@@ -139,7 +139,7 @@ const CadastroProspeccao = () => {
     if (!executionMonth || executionMonth !== prospeccaoIdNumber) {
       toast({
         title: "Mês de referência divergente",
-        description: "O mês deve coincidir com o número do ID Prospeccao AJ (001–012).",
+        description: "O mês deve coincidir com o número do ID Prospecção AJ (001–012).",
         variant: "destructive",
       });
       setExecutionMonth(prospeccaoIdNumber);
@@ -150,7 +150,7 @@ const CadastroProspeccao = () => {
 
   const handleNextToValidation = () => {
     if (selectedTopics.size === 0) {
-      toast({ title: "Selecione ao menos 1 tópico do Prospeccao AJ", variant: "destructive" });
+      toast({ title: "Selecione ao menos 1 tópico do Prospecção AJ", variant: "destructive" });
       return;
     }
     setStep(3);
@@ -164,7 +164,7 @@ const CadastroProspeccao = () => {
     if (!prospeccaoIdNumber || executionMonth !== prospeccaoIdNumber) {
       toast({
         title: "Mês de referência divergente",
-        description: "O mês deve coincidir com o número do ID Prospeccao AJ (001–012). Volte à etapa 1 e revise.",
+        description: "O mês deve coincidir com o número do ID Prospecção AJ (001–012). Volte à etapa 1 e revise.",
         variant: "destructive",
       });
       return;
@@ -190,7 +190,7 @@ const CadastroProspeccao = () => {
       );
       await assignCompanyToConsultant(company.id, selectedConsultor);
       toast({
-        title: "Prospeccao AJ cadastrado e atribuído",
+        title: "Prospecção AJ cadastrado e atribuído",
         description: `${selectedTopics.size} tópico(s) vinculados. Aguardando ativação pelo consultor.`,
       });
       navigate("/dashboard");
@@ -221,7 +221,7 @@ const CadastroProspeccao = () => {
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Cadastro Prospeccao AJ</h1>
+            <h1 className="text-2xl font-bold text-foreground">Cadastro Prospecção AJ</h1>
             <p className="text-sm text-muted-foreground">{stepLabel}</p>
           </div>
         </div>
@@ -241,7 +241,7 @@ const CadastroProspeccao = () => {
               : "bg-muted text-muted-foreground"
           }`}>
             {step > 2 ? <CheckCircle2 className="w-4 h-4" /> : <ListChecks className="w-4 h-4" />}
-            <span className="text-sm font-medium">Tópicos Prospeccao AJ</span>
+            <span className="text-sm font-medium">Tópicos Prospecção AJ</span>
           </div>
           <div className="h-px w-8 bg-border" />
           <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${step === 3 ? "bg-[hsl(217,91%,50%)]/10 text-[hsl(217,91%,50%)]" : "bg-muted text-muted-foreground"}`}>
@@ -254,12 +254,12 @@ const CadastroProspeccao = () => {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Dados da Empresa (Recuperanda)</CardTitle>
-              <CardDescription>O Coordenador registra o ID Prospeccao AJ que vincula o Prospeccao AJ Empresa na plataforma e ao Consultor.</CardDescription>
+              <CardDescription>O Coordenador registra o ID Prospecção AJ que vincula o Prospecção AJ Empresa na plataforma e ao Consultor.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
-                  <Label>Nome Prospeccao AJ * <span className="text-xs text-muted-foreground font-normal">(nome da empresa)</span></Label>
+                  <Label>Nome Prospecção AJ * <span className="text-xs text-muted-foreground font-normal">(nome da empresa)</span></Label>
                   <Input
                     value={prospeccaoName}
                     onChange={(e) => setRmaName(e.target.value.toUpperCase())}
@@ -268,9 +268,9 @@ const CadastroProspeccao = () => {
                   />
                 </div>
                 <div>
-                  <Label>ID Prospeccao AJ * <span className="text-xs text-muted-foreground font-normal">(número = mês de referência)</span></Label>
+                  <Label>ID Prospecção AJ * <span className="text-xs text-muted-foreground font-normal">(número = mês de referência)</span></Label>
                   <div className="flex items-center gap-2">
-                    <span className="px-3 h-10 inline-flex items-center rounded-md border border-input bg-muted text-sm font-mono text-foreground">Prospeccao AJ-</span>
+                    <span className="px-3 h-10 inline-flex items-center rounded-md border border-input bg-muted text-sm font-mono text-foreground">Prospecção AJ-</span>
                     <Select
                       value={prospeccaoId.startsWith("Prospeccao-") ? prospeccaoId.slice(4) : ""}
                       onValueChange={(v) => {
@@ -391,7 +391,7 @@ const CadastroProspeccao = () => {
             <CardHeader>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
-                  <CardTitle className="text-lg">Tópicos do Prospeccao AJ</CardTitle>
+                  <CardTitle className="text-lg">Tópicos do Prospecção AJ</CardTitle>
                   <CardDescription>
                     Selecione os tópicos que farão parte do Prospeccao desta empresa. Você pode escolher quantos quiser.
                   </CardDescription>
@@ -516,7 +516,7 @@ const CadastroProspeccao = () => {
                   <div className="p-4 rounded-lg bg-[hsl(258,90%,66%)]/5 border border-[hsl(258,90%,66%)]/20">
                     <div className="flex items-center gap-2 mb-2 text-[hsl(258,90%,66%)]">
                       <ListChecks className="w-4 h-4" />
-                      <span className="text-xs font-semibold uppercase tracking-wide">Tópicos Prospeccao AJ</span>
+                      <span className="text-xs font-semibold uppercase tracking-wide">Tópicos Prospecção AJ</span>
                     </div>
                     <p className="text-3xl font-bold text-foreground leading-none">
                       {selectedTopics.size}

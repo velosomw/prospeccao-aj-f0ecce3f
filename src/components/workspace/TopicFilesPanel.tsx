@@ -91,7 +91,7 @@ export default function TopicFilesPanel({ prospeccaoId, topicNumber }: Props) {
   }, [rows, topicNumber]);
 
   if (!prospeccaoId) {
-    return <div className="text-xs text-muted-foreground px-3 py-3">Prospeccao AJ não definido.</div>;
+    return <div className="text-xs text-muted-foreground px-3 py-3">Prospecção AJ não definido.</div>;
   }
 
   return (
