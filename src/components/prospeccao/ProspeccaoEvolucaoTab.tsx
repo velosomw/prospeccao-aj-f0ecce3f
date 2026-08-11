@@ -43,8 +43,8 @@ const ProspeccaoEvolucaoTab = ({ prospeccao }: Props) => {
     (async () => {
       setLoading(true);
       // Documentos do Prospeccao
-      const { data: docs } = await supabase
-        .from("prospeccao_documents")
+      const { data: docs } = await (supabase
+        .from("prospeccao_documents") as any)
         .select("id, titulo")
         .eq("prospeccao_id", id);
       const docIds = (docs || []).map((d) => d.id);
@@ -53,8 +53,8 @@ const ProspeccaoEvolucaoTab = ({ prospeccao }: Props) => {
         if (!cancelled) { setEntries([]); setLoading(false); }
         return;
       }
-      const { data: log } = await supabase
-        .from("prospeccao_section_audit_log")
+      const { data: log } = await (supabase
+        .from("prospeccao_section_audit_log") as any)
         .select("*")
         .in("document_id", docIds)
         .order("created_at", { ascending: false })
@@ -66,7 +66,7 @@ const ProspeccaoEvolucaoTab = ({ prospeccao }: Props) => {
           ? supabase.from("profiles").select("user_id, full_name, email").in("user_id", userIds)
           : Promise.resolve({ data: [] as any[] }),
         sectionIds.length
-          ? supabase.from("prospeccao_document_sections").select("id, titulo, numero").in("id", sectionIds)
+          ? (supabase.from("prospeccao_document_sections") as any).select("id, titulo, numero").in("id", sectionIds)
           : Promise.resolve({ data: [] as any[] }),
       ]);
       const userMap = new Map((profilesRes.data || []).map((p: any) => [p.user_id, p.full_name || p.email]));

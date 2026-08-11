@@ -155,8 +155,8 @@ const ProspeccaoAnaliseTab = ({ prospeccao }: Props) => {
   }>({ total: 0, comAnexo: 0, ultima: null, ultimoAnexo: null });
 
   const fetchCobrancas = async () => {
-    const { data, error } = await supabase
-      .from("prospeccao_cobrancas")
+    const { data, error } = await (supabase
+      .from("prospeccao_cobrancas") as any)
       .select("created_at, has_attachment")
       .eq("prospeccao_id", prospeccao.id)
       .order("created_at", { ascending: false });

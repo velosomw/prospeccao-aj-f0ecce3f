@@ -31,8 +31,8 @@ export default function ProspeccaoManualUploadLearningCard({ prospeccaoId, compa
 
   useEffect(() => {
     if (resolvedRmaId || !companyId) return;
-    supabase.from("companies").select("prospeccao_id").eq("id", companyId).maybeSingle()
-      .then(({ data }) => { if (data?.prospeccao_id) setResolvedRmaId(data.prospeccao_id); });
+    supabase.from("companies").select("*").eq("id", companyId).maybeSingle()
+      .then(({ data }) => { if ((data as any)?.prospeccao_id) setResolvedRmaId((data as any).prospeccao_id); });
   }, [companyId, resolvedRmaId]);
 
   const load = async () => {

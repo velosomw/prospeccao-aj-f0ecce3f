@@ -53,11 +53,11 @@ export default function ProspeccaoFailedFilesLearningCard({ prospeccaoId, compan
     if (resolvedRmaId || !companyId) return;
     supabase
       .from("companies")
-      .select("prospeccao_id")
+      .select("*")
       .eq("id", companyId)
       .maybeSingle()
       .then(({ data }) => {
-        if (data?.prospeccao_id) setResolvedRmaId(data.prospeccao_id);
+        if ((data as any)?.prospeccao_id) setResolvedRmaId((data as any).prospeccao_id);
       });
   }, [companyId, resolvedRmaId]);
 

@@ -54,9 +54,9 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospeccao_intelligenc
 
   const reload = async () => {
     if (!id) return;
-    const { data: d } = await supabase
-      .from("prospeccao_documents")
-      .select("id, titulo, status, progresso, arquivo_final_url, arquivo_final_versao, arquivo_final_gerado_em, arquivo_final_pct, released_to_recuperanda_at, released_to_recuperanda_by, released_to_recuperanda_notes")
+    const { data: d } = await (supabase
+      .from("prospeccao_documents") as any)
+      .select("*")
       .eq("prospeccao_id", id)
       .eq("tipo", tipo)
       .order("created_at", { ascending: false })
@@ -64,9 +64,9 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospeccao_intelligenc
       .maybeSingle();
     setDoc((d as DocRow) || null);
     if (d?.id) {
-      const { data: s } = await supabase
-        .from("prospeccao_document_sections")
-        .select("id, numero, titulo, conteudo_editado, conteudo_ia, status, grounding_score, ungrounded_claims")
+      const { data: s } = await (supabase
+        .from("prospeccao_document_sections") as any)
+        .select("*")
         .eq("document_id", d.id)
         .order("ordem", { ascending: true });
       setSections((s || []) as any);
@@ -86,9 +86,9 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospeccao_intelligenc
         // neste template para o Prospeccao, mas existe um legado (prospeccao_mensal_dip / prospeccao_mensal),
         // migra automaticamente para o ajustado sem exigir clique manual.
         if (tipo === "prospeccao_intelligence" && id && canRelease) {
-          const { data: existing } = await supabase
-            .from("prospeccao_documents")
-            .select("id, tipo")
+          const { data: existing } = await (supabase
+            .from("prospeccao_documents") as any)
+            .select("*")
             .eq("prospeccao_id", id)
             .in("tipo", ["prospeccao_intelligence", "prospeccao_mensal_dip", "prospeccao_mensal"]);
           const hasIntel = (existing || []).some((d: any) => d.tipo === "prospeccao_intelligence");
@@ -115,7 +115,7 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospeccao_intelligenc
     if (!doc?.id) return;
     setReleasing(true);
     try {
-      const { error } = await supabase.rpc("set_prospeccao_document_recuperanda_release", {
+      const { error } = await (supabase.rpc("set_prospeccao_document_recuperanda_release", {
         p_document_id: doc.id,
         p_release: release,
         p_notes: null,

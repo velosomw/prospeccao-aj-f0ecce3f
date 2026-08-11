@@ -91,7 +91,7 @@ export function CobrancaEmailDialog({ open, onOpenChange, prospeccaoId, companyN
       });
       if (sendErr) throw sendErr;
 
-      const { error: dbErr } = await supabase.from("prospeccao_cobrancas").insert({
+      const { error: dbErr } = await (supabase.from("prospeccao_cobrancas") as any).insert({
         prospeccao_id: prospeccaoId,
         company_name: companyName ?? null,
         recipient_email: recipient.trim(),
