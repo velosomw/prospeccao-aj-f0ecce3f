@@ -127,7 +127,7 @@ const Login = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="empresa@prospecção.com.br"
+                    placeholder="empresa@prospeccao.com.br"
                     className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-primary"
                     required
                   />
@@ -207,7 +207,7 @@ const Login = () => {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="empresa@prospecção.com.br"
+                        placeholder="empresa@prospeccao.com.br"
                         className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-primary"
                         required
                       />

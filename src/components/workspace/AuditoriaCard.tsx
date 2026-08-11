@@ -2,7 +2,7 @@
  * AuditoriaCard — Card consolidado de Auditoria exibido após o Processamento da IA.
  *
  * Melhorias v3:
- *  - Persistência da aba ativa por prospecçãoId em localStorage + URL (?atab=).
+ *  - Persistência da aba ativa por prospeccaoId em localStorage + URL (?atab=).
  *  - Filtro de período (de/até) + atalhos rápidos (3m / 6m / 12m / YTD).
  *  - Exportação CSV das tabelas e Export XLSX consolidado (multi-aba).
  *  - Cards-resumo no topo de Indicadores (KPIs com Δ vs mês anterior).
@@ -35,7 +35,7 @@ interface AuditoriaCardProps {
   runToken: string;
   bsParsed: any;
   bsEntries: any;
-  prospecçãoId?: string | null;
+  prospeccaoId?: string | null;
   loading?: boolean;
 }
 
@@ -380,10 +380,10 @@ function PanelRiscoRJ({ rows }: { rows: BSDadosRow[] }) {
 /* Relatório Final foi movido para a aba "Relatório Prospeccao Final" do workspace. */
 
 /* ═══════════════════ Card raiz ═══════════════════ */
-export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries, prospecçãoId, loading }: AuditoriaCardProps) {
+export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries, prospeccaoId, loading }: AuditoriaCardProps) {
   const [params, setParams] = useSearchParams();
-  const storageKey = `auditoria-tab:${prospecçãoId ?? "global"}`;
-  const periodStorageKey = `auditoria-period:${prospecçãoId ?? "global"}`;
+  const storageKey = `auditoria-tab:${prospeccaoId ?? "global"}`;
+  const periodStorageKey = `auditoria-period:${prospeccaoId ?? "global"}`;
 
   // Aba inicial: URL > localStorage > "indicadores"
   const initial = useMemo<TabKey>(() => {
@@ -509,7 +509,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
     const patBody = PAT_ROWS.map(([label, field]) => [label, ...sortedPat.map(r => patValue(r, field))]);
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([patHeader, ...patBody]), "Patrimonial");
 
-    const tag = prospecçãoId ? `prospecção-${prospecçãoId.slice(0, 8)}` : "auditoria";
+    const tag = prospeccaoId ? `prospeccao-${prospeccaoId.slice(0, 8)}` : "auditoria";
     XLSX.writeFile(wb, `auditoria-${tag}.xlsx`);
   };
 

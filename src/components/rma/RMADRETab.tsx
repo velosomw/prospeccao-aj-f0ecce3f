@@ -157,7 +157,7 @@ const ProspeccaoDRETab = ({ companyId, periodo, runToken, janela }: Props) => {
               <CardTitle className="text-base flex items-center gap-2">
                 <BarChart3 className="w-4 h-4 text-[hsl(258,90%,56%)]" />
                 Demonstração de Resultados (P&amp;L)
-                <span className="text-xs text-muted-foreground font-noprospecçãol">
+                <span className="text-xs text-muted-foreground font-normal">
                   {periodos.length} {periodos.length === 1 ? "competência" : "competências"}
                 </span>
               </CardTitle>

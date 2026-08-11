@@ -318,7 +318,7 @@ export default function GestaoAgentesOCR() {
                   <h3 className="font-bold text-lg">MD MASTER — Arquitetura Completa</h3>
                   <p className="text-xs text-white/80 mt-1 max-w-3xl">
                     Plataforma multi-cloud (Google Drive + OneDrive) com OCR + IA, agentes especializados por pasta,
-                    aprospecçãozenamento estruturado + embeddings, e evolução via dataset próprio + learning loop.
+                    aprospeccaozenamento estruturado + embeddings, e evolução via dataset próprio + learning loop.
                   </p>
                   <div className="flex flex-wrap gap-2 mt-3">
                     {[

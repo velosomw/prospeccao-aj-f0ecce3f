@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { Upload, FileText, CheckCircle2, AlertTriangle, XCircle, ArrowRight, Eye, Download } from "lucide-react";
-import type { ScoreFile } from "@/lib/prospecçãoScore";
-import ProspeccaoProcessamentoTab from "@/components/prospecção/ProspeccaoProcessamentoTab";
+import type { ScoreFile } from "@/lib/prospeccaoScore";
+import ProspeccaoProcessamentoTab from "@/components/prospeccao/ProspeccaoProcessamentoTab";
 import OneDriveFoldersStatus from "@/components/workspace/OneDriveFoldersStatus";
 import LearningUploadPanel from "@/components/workspace/stages/LearningUploadPanel";
-import type { ProspeccaoEntry } from "@/types/prospecção";
+import type { ProspeccaoEntry } from "@/types/prospeccao";
 
 interface Props {
-  prospecção: ProspeccaoEntry;
+  prospeccao: ProspeccaoEntry;
   companyId: string | null;
   scoreFiles: ScoreFile[];
   ano?: number | null;
@@ -40,7 +40,7 @@ const fmtDate = (iso?: string | null) => {
   }
 };
 
-export default function StageDadosUpload({ prospecção, companyId, scoreFiles, ano, mes }: Props) {
+export default function StageDadosUpload({ prospeccao, companyId, scoreFiles, ano, mes }: Props) {
   const stats = useMemo(() => {
     const total = scoreFiles.length;
     let validos = 0, pendentes = 0, rejeitados = 0;
@@ -191,7 +191,7 @@ export default function StageDadosUpload({ prospecção, companyId, scoreFiles, 
             </div>
           </div>
           <LearningUploadPanel
-            prospecçãoId={prospecção.id}
+            prospeccaoId={prospeccao.id}
             companyId={companyId}
             compact
             maxFiles={10}
@@ -212,7 +212,7 @@ export default function StageDadosUpload({ prospecção, companyId, scoreFiles, 
           <span className="text-xs text-muted-foreground hidden group-open:inline">Recolher</span>
         </summary>
         <div className="p-4 pt-0">
-          <ProspeccaoProcessamentoTab prospecção={prospecção} companyId={companyId} />
+          <ProspeccaoProcessamentoTab prospeccao={prospeccao} companyId={companyId} />
         </div>
       </details>
     </div>

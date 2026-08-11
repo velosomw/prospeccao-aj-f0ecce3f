@@ -59,15 +59,15 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
     const arr = Array.from(counts.entries()).map(([uid, count]) => {
       const p = profiles.find((x) => x.user_id === uid);
       const name = p?.full_name?.split(" ")[0] || "—";
-      return { name, prospecçãos: count };
+      return { name, prospeccaos: count };
     });
-    return arr.sort((a, b) => b.prospecçãos - a.prospecçãos).slice(0, 6);
+    return arr.sort((a, b) => b.prospeccaos - a.prospeccaos).slice(0, 6);
   }, [assignments, profiles]);
 
   // 3. Cadastros por mês (últimos 6 meses)
   const cadastrosData = useMemo(() => {
     const now = new Date();
-    const out: { month: string; prospecçãos: number }[] = [];
+    const out: { month: string; prospeccaos: number }[] = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const next = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
@@ -75,7 +75,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
         const t = new Date(c.created_at).getTime();
         return t >= d.getTime() && t < next.getTime();
       }).length;
-      out.push({ month: monthsPt[d.getMonth()], prospecçãos: count });
+      out.push({ month: monthsPt[d.getMonth()], prospeccaos: count });
     }
     return out;
   }, [companies]);
@@ -240,7 +240,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
                   <XAxis dataKey="name" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <Tooltip cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }} />
-                  <Bar dataKey="prospecçãos" fill={COLOR_PURPLE} radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="prospeccaos" fill={COLOR_PURPLE} radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             )}
@@ -266,7 +266,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
                 <Tooltip />
                 <Line
                   type="monotone"
-                  dataKey="prospecçãos"
+                  dataKey="prospeccaos"
                   stroke={COLOR_BLUE}
                   strokeWidth={3}
                   dot={{ r: 5, fill: COLOR_BLUE }}

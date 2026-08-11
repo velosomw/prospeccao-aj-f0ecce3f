@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Camera, History, Loader2, FileSpreadsheet, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { useRmaMonthlySnapshots } from "@/hooks/useRmaMonthlySnapshots";
-import type { Competencia } from "@/components/prospecção/CompetenciaSelector";
+import type { Competencia } from "@/components/prospeccao/CompetenciaSelector";
 
 interface Props {
   companyId: string | null;

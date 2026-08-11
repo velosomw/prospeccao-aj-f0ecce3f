@@ -40,7 +40,7 @@ export default function ConsultorProspeccaos() {
 
   const rows = useMemo(() => {
     return (data?.rows ?? []).map((c) => ({
-      id: c.prospecção_id || `Prospeccao-${c.id.slice(0, 4).toUpperCase()}`,
+      id: c.prospeccao_id || `Prospeccao-${c.id.slice(0, 4).toUpperCase()}`,
       empresa: c.name,
       status: (c.status === "pendente_ativacao" ? "pendente" :
                c.status === "ativa" ? "em_processamento" :
@@ -68,7 +68,7 @@ export default function ConsultorProspeccaos() {
   }, [backendStats, bs, total]);
 
   const openProspeccao = (companyId?: string) => {
-    if (companyId) navigate(`/prospecção/${companyId}`);
+    if (companyId) navigate(`/prospeccao/${companyId}`);
   };
 
   const columns = [
@@ -76,7 +76,7 @@ export default function ConsultorProspeccaos() {
       key: "id",
       header: "ID",
       cell: (r: typeof rows[number]) => (
-        <button onClick={() => navigate(`/prospecção/${r.id}`)} className="font-mono text-primary font-semibold hover:underline">
+        <button onClick={() => navigate(`/prospeccao/${r.id}`)} className="font-mono text-primary font-semibold hover:underline">
           {r.id}
         </button>
       ),

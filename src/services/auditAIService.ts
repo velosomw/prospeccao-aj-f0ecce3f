@@ -115,7 +115,7 @@ export function isDataFile(file: File): boolean {
   return DATA_EXTENSIONS.includes(getFileExtension(file));
 }
 
-export function getFileFoprospecçãot(file: File): string {
+export function getFileFoprospeccaot(file: File): string {
   const ext = getFileExtension(file);
   const formatMap: Record<string, string> = {
     ".pdf": "PDF", ".xlsx": "Excel XLSX", ".xls": "Excel XLS", ".csv": "CSV",
@@ -268,7 +268,7 @@ export async function parseMultipleFiles(files: File[]): Promise<{ parsed: Parse
 
       fileResults.push({
         fileName: file.name,
-        format: getFileFoprospecçãot(file),
+        format: getFileFoprospeccaot(file),
         type: result.documentType || result.documentInfo?.tipo || "documento",
         rows: result.balanco.length + result.dre.length,
         success: true,
@@ -276,7 +276,7 @@ export async function parseMultipleFiles(files: File[]): Promise<{ parsed: Parse
     } catch (err) {
       fileResults.push({
         fileName: file.name,
-        format: getFileFoprospecçãot(file),
+        format: getFileFoprospeccaot(file),
         type: "erro",
         rows: 0,
         success: false,

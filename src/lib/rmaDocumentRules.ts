@@ -6,7 +6,7 @@
 // - Prospeccao Mensal (CNJ 72/2020): documento de ACOMPANHAMENTO — pode ser
 //   emitido com dados parciais; gera o "Prospeccao Final" em .docx.
 
-export type RmaDocTipo = "parecer_tecnico" | "prospecção_mensal";
+export type RmaDocTipo = "parecer_tecnico" | "prospeccao_mensal";
 
 export interface RmaDocRules {
   tipo: RmaDocTipo;
@@ -43,8 +43,8 @@ export const Prospeccao_DOC_RULES: Record<RmaDocTipo, RmaDocRules> = {
     description:
       "Documento pericial. Exige aprovação do Coordenador em todas as seções e só é emitido como Parecer Final quando 100% aprovado.",
   },
-  prospecção_mensal: {
-    tipo: "prospecção_mensal",
+  prospeccao_mensal: {
+    tipo: "prospeccao_mensal",
     label: "Relatório Mensal de Atividades (CNJ 72/2020)",
     finalLabel: "Prospeccao Final",
     finalFileLabel: "Prospeccao Final (.docx)",

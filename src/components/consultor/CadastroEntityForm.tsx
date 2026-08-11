@@ -119,7 +119,7 @@ export default function CadastroEntityForm({
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-foreground">Clique para alterar o logotipo</div>
-                    <div className="text-xs text-muted-foreground">Foprospecçãotos permitidos: PNG, JPG ou SVG.</div>
+                    <div className="text-xs text-muted-foreground">Foprospeccaotos permitidos: PNG, JPG ou SVG.</div>
                     <div className="text-xs text-muted-foreground">Tamanho máximo: 2MB.</div>
                   </div>
                 </div>

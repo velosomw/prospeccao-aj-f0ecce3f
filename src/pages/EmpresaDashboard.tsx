@@ -15,13 +15,13 @@ import PlatformLayout from "@/components/PlatformLayout";
 import { mockProspeccoes, type ProspeccaoEntry } from "@/data/prospeccoesMockData";
 import { listMyAssignedCompanies, activateAssignedRma, type Company } from "@/services/companiesService";
 import { startRmaAnalysis, listRmaAnalyses, type RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
-import { listPeriodsForCompanies, type RmaPeriodAnalysis } from "@/services/prospecçãoPeriodService";
+import { listPeriodsForCompanies, type RmaPeriodAnalysis } from "@/services/prospeccaoPeriodService";
 import RmaHistoricoTab from "@/components/RmaHistoricoTab";
 import MyReleasesTab from "@/components/MyReleasesTab";
 import Prospeccao360Panel from "@/components/coordenador/Prospeccao360Panel";
-import { DeferredBatchIndicator } from "@/components/prospecção/DeferredBatchIndicator";
-import RmaCompanySearch from "@/components/prospecção/RmaCompanySearch";
-import { buildLiveScoreTopics, computeRmaScore, groupFilesByCompany, fetchRmaScores, type ScoreFile } from "@/lib/prospecçãoScore";
+import { DeferredBatchIndicator } from "@/components/prospeccao/DeferredBatchIndicator";
+import RmaCompanySearch from "@/components/prospeccao/RmaCompanySearch";
+import { buildLiveScoreTopics, computeRmaScore, groupFilesByCompany, fetchRmaScores, type ScoreFile } from "@/lib/prospeccaoScore";
 
 const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
   em_processamento: { label: "Em Processamento", color: "text-accent", bg: "bg-accent/15" },
@@ -35,7 +35,7 @@ const EmpresaDashboard = () => {
   const { userName } = useUser();
   const { toast } = useToast();
   const firstName = userName?.split(" ")[0] || null;
-  const [prospecçãos] = useState<ProspeccaoEntry[]>([]);
+  const [prospeccaos] = useState<ProspeccaoEntry[]>([]);
 
   // Prospeccaos atribuídos pelo Coordenador, aguardando ativação
   const [pendingCompanies, setPendingCompanies] = useState<Company[]>([]);
@@ -86,7 +86,7 @@ const EmpresaDashboard = () => {
     reloadAssigned().catch(() => {});
   }, []);
 
-  // Polling peprospecçãonente: sempre que houver Prospeccao ativo, reconsulta a cada 2.5s
+  // Polling peprospeccaonente: sempre que houver Prospeccao ativo, reconsulta a cada 2.5s
   // garantindo UI viva em Alertas Inteligentes + lista de Prospeccaos.
   useEffect(() => {
     if (activatedCompanies.length === 0 && pendingCompanies.length === 0) return;
@@ -132,7 +132,7 @@ const EmpresaDashboard = () => {
         title: "Análise IA iniciada",
         description: `${company.name}: lendo pastas e documentos no OneDrive.`,
       });
-      navigate(`/prospecção/${company.id}`);
+      navigate(`/prospeccao/${company.id}`);
     } catch (e: any) {
       toast({ title: "Erro ao ativar Prospeccao AJ", description: e.message, variant: "destructive" });
     } finally {
@@ -182,7 +182,7 @@ const EmpresaDashboard = () => {
         : "em_processamento";
 
     return {
-      id: c.prospecção_id || c.id.slice(0, 8).toUpperCase(),
+      id: c.prospeccao_id || c.id.slice(0, 8).toUpperCase(),
       companyId: c.id,
       empresa: c.name,
       status: mappedStatus,
@@ -198,7 +198,7 @@ const EmpresaDashboard = () => {
         : null,
     };
   }), [activatedCompanies, analyses, filesByCompany]);
-  const displayRmas: (ProspeccaoEntry & { companyId?: string; analysisStatus?: string })[] = [...realRmas as any, ...prospecçãos];
+  const displayRmas: (ProspeccaoEntry & { companyId?: string; analysisStatus?: string })[] = [...realRmas as any, ...prospeccaos];
 
   const total = displayRmas.length;
   const emProcessamento = displayRmas.filter(r => r.status === "em_processamento").length;
@@ -265,25 +265,25 @@ const EmpresaDashboard = () => {
     const items: { id: string; text: string; time: string; ts: number }[] = [];
     activatedCompanies.forEach(c => {
       const a = analyses[c.id];
-      const prospecçãoLabel = c.prospecção_id || c.name;
+      const prospeccaoLabel = c.prospeccao_id || c.name;
       if (a) {
         const ts = new Date(a.updated_at || a.started_at || c.updated_at).getTime();
         let text = "";
         if (a.status === "concluido") {
-          text = `${prospecçãoLabel} — Análise IA concluída (${Math.round(a.percentual ?? 0)}%)`;
+          text = `${prospeccaoLabel} — Análise IA concluída (${Math.round(a.percentual ?? 0)}%)`;
         } else if (a.status === "em_analise") {
-          text = `${prospecçãoLabel} — Análise IA em andamento (${Math.round(a.percentual ?? 0)}%)`;
+          text = `${prospeccaoLabel} — Análise IA em andamento (${Math.round(a.percentual ?? 0)}%)`;
         } else if (a.status === "erro") {
-          text = `${prospecçãoLabel} — Análise IA com erro — revisar`;
+          text = `${prospeccaoLabel} — Análise IA com erro — revisar`;
         } else {
-          text = `${prospecçãoLabel} — ${a.status}`;
+          text = `${prospeccaoLabel} — ${a.status}`;
         }
         items.push({ id: `a-${c.id}`, text, time: formatRelative(a.updated_at || a.started_at), ts });
       } else {
         const ts = new Date(c.updated_at || c.created_at).getTime();
         items.push({
           id: `c-${c.id}`,
-          text: `${prospecçãoLabel} — Prospeccao ativado para ${c.name}`,
+          text: `${prospeccaoLabel} — Prospeccao ativado para ${c.name}`,
           time: formatRelative(c.updated_at || c.created_at),
           ts,
         });
@@ -293,7 +293,7 @@ const EmpresaDashboard = () => {
       const ts = new Date(c.updated_at || c.created_at).getTime();
       items.push({
         id: `p-${c.id}`,
-        text: `${c.prospecção_id || c.name} — Atribuído pelo Coordenador, aguardando ativação`,
+        text: `${c.prospeccao_id || c.name} — Atribuído pelo Coordenador, aguardando ativação`,
         time: formatRelative(c.updated_at || c.created_at),
         ts,
       });
@@ -321,7 +321,7 @@ const EmpresaDashboard = () => {
           </div>
           <RmaCompanySearch
             companies={[...activatedCompanies, ...pendingCompanies]}
-            onSelect={(c) => navigate(`/prospecção/${c.id}`)}
+            onSelect={(c) => navigate(`/prospeccao/${c.id}`)}
             placeholder="Buscar por empresa, ID Prospeccao AJ ou CNPJ..."
             className="w-full md:w-96"
           />
@@ -332,7 +332,7 @@ const EmpresaDashboard = () => {
             <TabsTrigger value="dashboard" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <BarChart3 className="w-4 h-4" /> Dashboard
             </TabsTrigger>
-            <TabsTrigger value="prospecçãos" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
+            <TabsTrigger value="prospeccaos" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <FileText className="w-4 h-4" /> Prospeccaos
             </TabsTrigger>
             <TabsTrigger value="historico" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
@@ -404,9 +404,9 @@ const EmpresaDashboard = () => {
                           <div className="min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
                               <p className="text-sm font-bold text-foreground truncate">{company.name}</p>
-                              {company.prospecção_id && (
+                              {company.prospeccao_id && (
                                 <Badge className="bg-accent text-accent-foreground text-[10px] font-mono">
-                                  {company.prospecção_id}
+                                  {company.prospeccao_id}
                                 </Badge>
                               )}
                               <Badge variant="outline" className="text-[10px] border-destructive/30 text-destructive">
@@ -441,7 +441,7 @@ const EmpresaDashboard = () => {
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-destructive" /> Alertas Inteligentes
-                  <span className="text-[10px] font-noprospecçãol text-muted-foreground ml-1">
+                  <span className="text-[10px] font-normal text-muted-foreground ml-1">
                     (atualizações dos Prospeccaos nas últimas 24h)
                   </span>
                 </CardTitle>
@@ -459,16 +459,16 @@ const EmpresaDashboard = () => {
                       </p>
                     );
                   }
-                  return candidatos.map(prospecção => {
-                    const sc = statusConfig[prospecção.status];
-                    const pct = prospecção.percentual;
-                    const pendingCount = prospecção.topics.length > 0
-                      ? prospecção.topics.filter(t => t.status !== "completo").length
+                  return candidatos.map(prospeccao => {
+                    const sc = statusConfig[prospeccao.status];
+                    const pct = prospeccao.percentual;
+                    const pendingCount = prospeccao.topics.length > 0
+                      ? prospeccao.topics.filter(t => t.status !== "completo").length
                       : 0;
-                    const targetId = prospecção.companyId || prospecção.id;
+                    const targetId = prospeccao.companyId || prospeccao.id;
                     const company = activatedCompanies.find(c => c.id === targetId);
                     const isStatusOpen = statusCompanyId === targetId;
-                    const updatedAt = prospecção.dataAtualizacao ? new Date(prospecção.dataAtualizacao).getTime() : 0;
+                    const updatedAt = prospeccao.dataAtualizacao ? new Date(prospeccao.dataAtualizacao).getTime() : 0;
                     const ageMs = updatedAt ? now - updatedAt : Number.POSITIVE_INFINITY;
                     const isStale = ageMs > DAY_MS;
                     const hoursAgo = updatedAt ? Math.floor(ageMs / (60 * 60 * 1000)) : null;
@@ -478,11 +478,11 @@ const EmpresaDashboard = () => {
                     const serverRunning = analyses[targetId]?.status === "em_analise";
                     const isRefreshing = refreshingId === targetId || serverRunning;
                     return (
-                      <div key={(prospecção as any).companyId || prospecção.id} className="p-4 rounded-lg bg-muted/30 space-y-3">
+                      <div key={(prospeccao as any).companyId || prospeccao.id} className="p-4 rounded-lg bg-muted/30 space-y-3">
                         <div className="flex items-center justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <p className="text-sm font-bold text-foreground truncate">{prospecção.id} — {prospecção.empresa}</p>
+                              <p className="text-sm font-bold text-foreground truncate">{prospeccao.id} — {prospeccao.empresa}</p>
                               {isStale && (
                                 <Badge className="bg-destructive/15 text-destructive border-0 text-[10px] gap-1">
                                   <AlertCircle className="w-3 h-3" />
@@ -491,7 +491,7 @@ const EmpresaDashboard = () => {
                               )}
                             </div>
                             <p className="text-xs text-muted-foreground">
-                              {prospecção.analysisStatus === "em_analise"
+                              {prospeccao.analysisStatus === "em_analise"
                                 ? `${pendingCount} tópicos em processamento`
                                 : `${pendingCount} tópicos pendentes`}
                               {hoursAgo !== null && (
@@ -543,7 +543,7 @@ const EmpresaDashboard = () => {
                               size="sm"
                               variant="outline"
                               className="text-xs gap-1.5"
-                              onClick={() => handleRefreshIA(targetId, prospecção.empresa)}
+                              onClick={() => handleRefreshIA(targetId, prospeccao.empresa)}
                               disabled={isRefreshing}
                             >
                               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin" : ""}`} />
@@ -563,7 +563,7 @@ const EmpresaDashboard = () => {
                               {isStatusOpen ? "Ocultar Status" : "Status Empresa"}
                             </Button>
                           )}
-                          <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/prospecção/${targetId}`)}>
+                          <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/prospeccao/${targetId}`)}>
                             Ver Prospeccao
                           </Button>
                         </div>
@@ -571,8 +571,8 @@ const EmpresaDashboard = () => {
                         {company && (
                           <DeferredBatchIndicator
                             companyId={targetId}
-                            prospecçãoId={prospecção.id}
-                            variant="prospecção-summary"
+                            prospeccaoId={prospeccao.id}
+                            variant="prospeccao-summary"
                           />
                         )}
                         {isStatusOpen && company && (
@@ -613,7 +613,7 @@ const EmpresaDashboard = () => {
           </TabsContent>
 
           {/* ABA 2 - Prospeccaos */}
-          <TabsContent value="prospecçãos" className="space-y-4">
+          <TabsContent value="prospeccaos" className="space-y-4">
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Lista de Prospecções AJ</CardTitle>
@@ -633,16 +633,16 @@ const EmpresaDashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {displayRmas.map(prospecção => {
-                        const sc = statusConfig[prospecção.status];
+                      {displayRmas.map(prospeccao => {
+                        const sc = statusConfig[prospeccao.status];
                         return (
-                          <tr key={(prospecção as any).companyId || prospecção.id} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
-                            <td className="py-3 px-3 font-mono font-semibold text-foreground">{prospecção.id}</td>
-                            <td className="py-3 px-3 text-foreground">{prospecção.empresa}</td>
+                          <tr key={(prospeccao as any).companyId || prospeccao.id} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
+                            <td className="py-3 px-3 font-mono font-semibold text-foreground">{prospeccao.id}</td>
+                            <td className="py-3 px-3 text-foreground">{prospeccao.empresa}</td>
                             <td className="py-3 px-3">
-                              {(prospecção as any).mes ? (
+                              {(prospeccao as any).mes ? (
                                 <Badge className="bg-[hsl(258,90%,66%)]/15 text-[hsl(258,90%,56%)] font-mono text-[10px] border-0">
-                                  {(prospecção as any).mes}
+                                  {(prospeccao as any).mes}
                                 </Badge>
                               ) : (
                                 <span className="text-muted-foreground text-xs">—</span>
@@ -654,14 +654,14 @@ const EmpresaDashboard = () => {
                             <td className="py-3 px-3">
                               <div className="flex items-center gap-2">
                                 <div className="relative h-2 w-20 rounded-full bg-muted overflow-hidden">
-                                  <div className="h-full rounded-full transition-all bg-accent" style={{ width: `${prospecção.percentual}%` }} />
+                                  <div className="h-full rounded-full transition-all bg-accent" style={{ width: `${prospeccao.percentual}%` }} />
                                 </div>
-                                <span className="text-xs font-mono font-semibold text-foreground">{prospecção.percentual}%</span>
+                                <span className="text-xs font-mono font-semibold text-foreground">{prospeccao.percentual}%</span>
                               </div>
                             </td>
-                            <td className="py-3 px-3 text-xs text-muted-foreground">{prospecção.dataAtualizacao}</td>
+                            <td className="py-3 px-3 text-xs text-muted-foreground">{prospeccao.dataAtualizacao}</td>
                             <td className="py-3 px-3 text-right">
-                              <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/prospecção/${prospecção.companyId || prospecção.id}`)}>
+                              <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/prospeccao/${prospeccao.companyId || prospeccao.id}`)}>
                                 Ver Prospeccao
                               </Button>
                             </td>

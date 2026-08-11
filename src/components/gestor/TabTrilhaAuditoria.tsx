@@ -32,7 +32,7 @@ interface AuditTrailLog {
   id: string;
   eventType: EventType;
   criticidade: Criticidade;
-  prospecçãoId: string;
+  prospeccaoId: string;
   processoNumero: string;
   etapa: string;
   userNome: string;
@@ -104,7 +104,7 @@ const TabTrilhaAuditoria = () => {
     if (filterCriticidade !== "todos" && log.criticidade !== filterCriticidade) return false;
     if (filterEventType !== "todos" && log.eventType !== filterEventType) return false;
     if (filterPerfil !== "todos" && log.userPerfil !== filterPerfil) return false;
-    if (filterRma && !log.prospecçãoId.toLowerCase().includes(filterRma.toLowerCase())) return false;
+    if (filterRma && !log.prospeccaoId.toLowerCase().includes(filterRma.toLowerCase())) return false;
     if (searchTerm) {
       const s = searchTerm.toLowerCase();
       return (
@@ -123,13 +123,13 @@ const TabTrilhaAuditoria = () => {
   const criticos = mockLogs.filter(l => l.criticidade === "critico").length;
   const medios = mockLogs.filter(l => l.criticidade === "medio").length;
   const baixos = mockLogs.filter(l => l.criticidade === "baixo").length;
-  const uniqueRmas = new Set(mockLogs.filter(l => l.prospecçãoId !== "-").map(l => l.prospecçãoId)).size;
+  const uniqueRmas = new Set(mockLogs.filter(l => l.prospeccaoId !== "-").map(l => l.prospeccaoId)).size;
 
   const handleExportCSV = () => {
     const headers = ["ID", "Tipo Evento", "Criticidade", "Prospeccao", "Processo", "Etapa", "Usuário", "Login", "Perfil", "Ação", "Módulo", "Antes", "Depois", "Data/Hora", "IP", "Dispositivo", "Hash"];
     const rows = filtered.map(l => [
       l.id, eventTypeLabels[l.eventType], criticidadeConfig[l.criticidade].label,
-      l.prospecçãoId, l.processoNumero, l.etapa, l.userNome, l.userLogin, l.userPerfil,
+      l.prospeccaoId, l.processoNumero, l.etapa, l.userNome, l.userLogin, l.userPerfil,
       l.acao, l.modulo,
       l.beforeData ? JSON.stringify(l.beforeData) : "",
       l.afterData ? JSON.stringify(l.afterData) : "",
@@ -157,7 +157,7 @@ const TabTrilhaAuditoria = () => {
   };
 
   // Unique Prospeccaos for timeline
-  const prospecçãoTimelines = Array.from(new Set(mockLogs.filter(l => l.prospecçãoId !== "-").map(l => l.prospecçãoId)));
+  const prospeccaoTimelines = Array.from(new Set(mockLogs.filter(l => l.prospeccaoId !== "-").map(l => l.prospeccaoId)));
 
   return (
     <div className="space-y-6">
@@ -225,24 +225,24 @@ const TabTrilhaAuditoria = () => {
         {/* ── Tab: Linha do Tempo ── */}
         <TabsContent value="timeline" className="mt-4 space-y-4">
           <p className="text-sm text-muted-foreground">Reconstrução cronológica completa dos eventos por processo Prospeccao AJ.</p>
-          {prospecçãoTimelines.map(prospecçãoId => {
-            const prospecçãoLogs = mockLogs.filter(l => l.prospecçãoId === prospecçãoId).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+          {prospeccaoTimelines.map(prospeccaoId => {
+            const prospeccaoLogs = mockLogs.filter(l => l.prospeccaoId === prospeccaoId).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
             return (
-              <Card key={prospecçãoId} className="border-border">
+              <Card key={prospeccaoId} className="border-border">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
                     <FileText className="w-4 h-4 text-[hsl(258,90%,66%)]" />
-                    {prospecçãoId}
-                    <span className="text-xs text-muted-foreground font-noprospecçãol ml-2">
-                      {prospecçãoLogs[0]?.processoNumero}
+                    {prospeccaoId}
+                    <span className="text-xs text-muted-foreground font-normal ml-2">
+                      {prospeccaoLogs[0]?.processoNumero}
                     </span>
-                    <Badge variant="outline" className="ml-auto text-xs">{prospecçãoLogs.length} eventos</Badge>
+                    <Badge variant="outline" className="ml-auto text-xs">{prospeccaoLogs.length} eventos</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="relative pl-6 space-y-4">
                     <div className="absolute left-2.5 top-1 bottom-1 w-0.5 bg-border" />
-                    {prospecçãoLogs.map((log, i) => {
+                    {prospeccaoLogs.map((log, i) => {
                       const cfg = criticidadeConfig[log.criticidade];
                       return (
                         <div key={log.id} className="relative">
@@ -377,7 +377,7 @@ const TabTrilhaAuditoria = () => {
                         <TableCell>
                           <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ background: cfg.color }}>{cfg.label}</span>
                         </TableCell>
-                        <TableCell className="text-xs font-mono">{log.prospecçãoId}</TableCell>
+                        <TableCell className="text-xs font-mono">{log.prospeccaoId}</TableCell>
                         <TableCell className="text-xs">{log.userNome}</TableCell>
                         <TableCell>
                           <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: `${getPerfilColor(log.userPerfil)}15`, color: getPerfilColor(log.userPerfil) }}>
@@ -485,7 +485,7 @@ const TabTrilhaAuditoria = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono text-muted-foreground">{log.prospecçãoId}</span>
+                      <span className="text-xs font-mono text-muted-foreground">{log.prospeccaoId}</span>
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ background: cfg.color }}>{cfg.label}</span>
                     </div>
                   </div>
@@ -626,7 +626,7 @@ const TabTrilhaAuditoria = () => {
                     ["Usuário", detailLog.userNome],
                     ["Login", detailLog.userLogin],
                     ["Perfil", detailLog.userPerfil],
-                    ["Prospeccao", detailLog.prospecçãoId],
+                    ["Prospeccao", detailLog.prospeccaoId],
                     ["Processo", detailLog.processoNumero],
                     ["Etapa", detailLog.etapa],
                     ["Módulo", detailLog.modulo],
@@ -649,7 +649,7 @@ const TabTrilhaAuditoria = () => {
                 {/* Diff */}
                 {(detailLog.beforeData || detailLog.afterData) && (
                   <div>
-                    <p className="text-xs text-muted-foreground mb-2">Estado da Infoprospecçãoção (Diff)</p>
+                    <p className="text-xs text-muted-foreground mb-2">Estado da Informacaoção (Diff)</p>
                     <div className="bg-muted/30 rounded-lg p-3 space-y-2">
                       {Object.keys({ ...detailLog.beforeData, ...detailLog.afterData }).map(key => (
                         <div key={key} className="flex items-center gap-2 text-xs">

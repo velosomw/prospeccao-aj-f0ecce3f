@@ -11,11 +11,11 @@ const ProspeccaoRelatorioTab = () => {
   const [subStep, setSubStep] = useState<DocumentSubStep>("escopo");
   const { sections, progresso, aprovadoPct, rules, canManualFinalize, regenerateFinal } = useRmaDocument(
     id,
-    "prospecção_mensal",
+    "prospeccao_mensal",
     "Revisão-Relatório Prospeccao Mensal (CNJ 72/2020)",
   );
   // Nota: progresso/status do documento são recalculados automaticamente
-  // pelo trigger trg_prospecção_section_autosync sempre que uma seção muda.
+  // pelo trigger trg_prospeccao_section_autosync sempre que uma seção muda.
   // O .docx Final é regenerado em tempo real via setStatus → regenerateFinal.
 
   const blocks: DocumentBlock[] = sections.map((s) => ({
@@ -44,7 +44,7 @@ const ProspeccaoRelatorioTab = () => {
         allCompleted={progresso === 100}
       />
       {subStep === "escopo" && (
-        <RmaIntelligentEditor tipo="prospecção_mensal" titulo="Revisão-Relatório Prospeccao Mensal (CNJ 72/2020)" />
+        <RmaIntelligentEditor tipo="prospeccao_mensal" titulo="Revisão-Relatório Prospeccao Mensal (CNJ 72/2020)" />
       )}
       {subStep === "relatorio" && (
         <RelatorioA4View

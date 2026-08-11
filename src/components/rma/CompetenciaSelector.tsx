@@ -35,7 +35,7 @@ export default function CompetenciaSelector({
   companyId, value, onChange, refreshKey, maxItems = 6, preferredCompetencia = null,
 }: Props) {
   const [periodos, setPeriodos] = useState<Competencia[]>([]);
-  const [prospecçãoPeriodo, setRmaPeriodo] = useState<Competencia | null>(null);
+  const [prospeccaoPeriodo, setRmaPeriodo] = useState<Competencia | null>(null);
 
   // Carrega últimos N períodos disponíveis no consolidado + período principal do Prospeccao
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function CompetenciaSelector({
           .order("mes", { ascending: false })
           .limit(50),
         supabase.from("companies")
-          .select("prospecção_id, execution_year, current_period_month")
+          .select("prospeccao_id, execution_year, current_period_month")
           .eq("id", companyId)
           .maybeSingle(),
       ]);
@@ -83,8 +83,8 @@ export default function CompetenciaSelector({
 
       if (preferredCompetencia) {
         setRmaPeriodo(preferredCompetencia);
-      } else if (compRes.data?.prospecção_id && /^Prospeccao-DIP-\d{2}-\d{4}$/i.test(String(compRes.data.prospecção_id))) {
-        const [, mm, yyyy] = String(compRes.data.prospecção_id).match(/^Prospeccao-DIP-(\d{2})-(\d{4})$/i)!;
+      } else if (compRes.data?.prospeccao_id && /^Prospeccao-DIP-\d{2}-\d{4}$/i.test(String(compRes.data.prospeccao_id))) {
+        const [, mm, yyyy] = String(compRes.data.prospeccao_id).match(/^Prospeccao-DIP-(\d{2})-(\d{4})$/i)!;
         setRmaPeriodo(toComp(Number(yyyy), Number(mm)));
       } else if (compRes.data?.execution_year && compRes.data?.current_period_month) {
         setRmaPeriodo(toComp(
@@ -99,7 +99,7 @@ export default function CompetenciaSelector({
   }, [companyId, refreshKey, maxItems, preferredCompetencia?.key]);
 
   const isRma = (p: Competencia) =>
-    prospecçãoPeriodo && p.ano === prospecçãoPeriodo.ano && p.mes === prospecçãoPeriodo.mes;
+    prospeccaoPeriodo && p.ano === prospeccaoPeriodo.ano && p.mes === prospeccaoPeriodo.mes;
 
   const currentLabel = value ? value.label : "Todos os meses";
 
@@ -135,12 +135,12 @@ export default function CompetenciaSelector({
             )}
           </DropdownMenuItem>
         ))}
-        {prospecçãoPeriodo && !periodos.some(p => isRma(p)) && (
+        {prospeccaoPeriodo && !periodos.some(p => isRma(p)) && (
           <DropdownMenuItem
-            onClick={() => onChange(prospecçãoPeriodo)}
+            onClick={() => onChange(prospeccaoPeriodo)}
             className="text-xs flex items-center justify-between capitalize"
           >
-            <span>{prospecçãoPeriodo.label}</span>
+            <span>{prospeccaoPeriodo.label}</span>
             <Badge variant="secondary" className="h-4 px-1 text-[9px]">Prospeccao AJ</Badge>
           </DropdownMenuItem>
         )}

@@ -10,7 +10,7 @@ type Entry = {
   action: string;
   user_id: string | null;
   user_role: string | null;
-  prospecção_id: string | null;
+  prospeccao_id: string | null;
   conversation_id: string | null;
   summary: string | null;
   created_at: string;
@@ -36,7 +36,7 @@ function todayISO(offset = 0) {
 }
 
 export default function GestorAuditoria() {
-  const [prospecção, setRma] = useState("");
+  const [prospeccao, setRma] = useState("");
   const [userQuery, setUserQuery] = useState("");
   const [entityType, setEntityType] = useState("");
   const [action, setAction] = useState("");
@@ -50,12 +50,12 @@ export default function GestorAuditoria() {
     setLoading(true);
     let q = supabase
       .from("platform_audit_log")
-      .select("id,entity_type,entity_id,action,user_id,user_role,prospecção_id,conversation_id,summary,created_at")
+      .select("id,entity_type,entity_id,action,user_id,user_role,prospeccao_id,conversation_id,summary,created_at")
       .gte("created_at", `${from}T00:00:00`)
       .lte("created_at", `${to}T23:59:59`)
       .order("created_at", { ascending: false })
       .limit(500);
-    if (prospecção.trim()) q = q.ilike("prospecção_id", `%${prospecção.trim()}%`);
+    if (prospeccao.trim()) q = q.ilike("prospeccao_id", `%${prospeccao.trim()}%`);
     if (entityType) q = q.eq("entity_type", entityType);
     if (action) q = q.eq("action", action);
 
@@ -125,8 +125,8 @@ export default function GestorAuditoria() {
         <div className="grid grid-cols-1 md:grid-cols-6 gap-3">
           <div className="md:col-span-1">
             <label className="text-[11px] font-semibold text-muted-foreground">Prospeccao AJ ID</label>
-            <input value={prospecção} onChange={(e) => setRma(e.target.value)}
-                   placeholder="prospecção_…"
+            <input value={prospeccao} onChange={(e) => setRma(e.target.value)}
+                   placeholder="prospeccao_…"
                    className="mt-1 h-9 w-full px-2.5 rounded-lg border border-border text-sm" />
           </div>
           <div className="md:col-span-1">
@@ -205,7 +205,7 @@ export default function GestorAuditoria() {
                       </span>
                     )}
                     {u && <span className="text-[11px] text-foreground/80">{u.name} <span className="text-muted-foreground">· {u.email}</span></span>}
-                    {e.prospecção_id && <span className="text-[10px] font-mono text-purple-700">{e.prospecção_id}</span>}
+                    {e.prospeccao_id && <span className="text-[10px] font-mono text-purple-700">{e.prospeccao_id}</span>}
                     <span className="ml-auto text-[10px] text-muted-foreground">
                       {new Date(e.created_at).toLocaleString("pt-BR")}
                     </span>

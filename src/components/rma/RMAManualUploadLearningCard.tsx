@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { uploadLearningFile, extractTextFromFile, processWithAI, markExtractionAsLearning } from "@/services/learningService";
 
 interface Props {
-  prospecçãoId?: string | null;
+  prospeccaoId?: string | null;
   companyId?: string | null;
 }
 
@@ -23,16 +23,16 @@ interface Row {
   learning_attempts: number;
 }
 
-export default function ProspeccaoManualUploadLearningCard({ prospecçãoId, companyId }: Props) {
-  const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(prospecçãoId ?? null);
+export default function ProspeccaoManualUploadLearningCard({ prospeccaoId, companyId }: Props) {
+  const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(prospeccaoId ?? null);
   const [files, setFiles] = useState<Row[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (resolvedRmaId || !companyId) return;
-    supabase.from("companies").select("prospecção_id").eq("id", companyId).maybeSingle()
-      .then(({ data }) => { if (data?.prospecção_id) setResolvedRmaId(data.prospecção_id); });
+    supabase.from("companies").select("prospeccao_id").eq("id", companyId).maybeSingle()
+      .then(({ data }) => { if (data?.prospeccao_id) setResolvedRmaId(data.prospeccao_id); });
   }, [companyId, resolvedRmaId]);
 
   const load = async () => {
@@ -41,7 +41,7 @@ export default function ProspeccaoManualUploadLearningCard({ prospecçãoId, com
     const { data, error } = await supabase
       .from("onedrive_files")
       .select("file_id, file_name, path, mime_type, last_learning_error, learning_attempts")
-      .eq("prospecção_id", resolvedRmaId)
+      .eq("prospeccao_id", resolvedRmaId)
       .eq("requires_manual_upload", true)
       .order("path", { ascending: true })
       .limit(500);

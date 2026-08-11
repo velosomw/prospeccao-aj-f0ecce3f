@@ -4,7 +4,7 @@ import ProcessingProgressCard from "@/components/workspace/ProcessingProgressCar
 import PendenciasResumoCard from "@/components/workspace/PendenciasResumoCard";
 import SaudeRelatorioCard from "@/components/workspace/SaudeRelatorioCard";
 import RmaDipKpiCards from "@/components/workspace/RmaDipKpiCards";
-import type { Competencia } from "@/components/prospecção/CompetenciaSelector";
+import type { Competencia } from "@/components/prospeccao/CompetenciaSelector";
 
 interface Props {
   score: number;
@@ -26,7 +26,7 @@ interface Props {
   janela: { from: { ano: number; mes: number }; to: { ano: number; mes: number } } | null;
   bsParsed: any;
   bsEntries: any;
-  prospecçãoId?: string;
+  prospeccaoId?: string;
 }
 
 export default function StageProcessamentoIA(p: Props) {
@@ -54,8 +54,8 @@ export default function StageProcessamentoIA(p: Props) {
       </div>
 
       {/* KPIs DIP — Completude, Documentos, Pendências, Confiabilidade IA, Kanitz, Health Score */}
-      {p.prospecçãoId && (
-        <RmaDipKpiCards prospecçãoId={p.prospecçãoId} companyId={p.companyId} scoreFinal={p.score} />
+      {p.prospeccaoId && (
+        <RmaDipKpiCards prospeccaoId={p.prospeccaoId} companyId={p.companyId} scoreFinal={p.score} />
       )}
     </div>
   );

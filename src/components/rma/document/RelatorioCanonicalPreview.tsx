@@ -139,7 +139,7 @@ interface SectionLike {
 
 interface Props {
   empresa?: string;
-  prospecçãoCode?: string;
+  prospeccaoCode?: string;
   mesReferencia?: string;
   responsavel?: string;
   juizo?: string;
@@ -259,7 +259,7 @@ function NodeRow({
 }
 
 export default function RelatorioCanonicalPreview({
-  empresa, prospecçãoCode, mesReferencia, responsavel, sections,
+  empresa, prospeccaoCode, mesReferencia, responsavel, sections,
   juizo = "JUÍZO DA 4ª VARA CÍVEL DE CASCAVEL - PARANÁ",
   autos = "0013103-92.2020.8.16.0021",
   rjAutos = "0024946-35.2012.8.16.0021",
@@ -309,7 +309,7 @@ export default function RelatorioCanonicalPreview({
         <p className="text-sm text-muted-foreground mt-1">Administração Judicial · Recomendação CNJ 72/2020</p>
         <div className="mt-6 space-y-1 text-sm">
           {empresa && <p><strong>Recuperanda:</strong> {empresa}</p>}
-          {prospecçãoCode && <p><strong>Prospeccao AJ:</strong> {prospecçãoCode}</p>}
+          {prospeccaoCode && <p><strong>Prospeccao AJ:</strong> {prospeccaoCode}</p>}
           {mesReferencia && <p><strong>Competência:</strong> {mesReferencia}</p>}
           {responsavel && <p><strong>Administrador Judicial:</strong> {responsavel}</p>}
         </div>

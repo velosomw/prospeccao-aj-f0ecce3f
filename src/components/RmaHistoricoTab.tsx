@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Building2, Calendar, CheckCircle2, ClipboardList, FileText, History, Layers, Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Company } from "@/services/companiesService";
-import type { RmaPeriodAnalysis } from "@/services/prospecçãoPeriodService";
+import type { RmaPeriodAnalysis } from "@/services/prospeccaoPeriodService";
 
 interface Props {
   periods: RmaPeriodAnalysis[];
@@ -44,9 +44,9 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
     return m;
   }, [companies]);
 
-  // Carrega contagem de documentos do pipeline por Prospeccao (prospecção_id) — usamos como total apurado.
+  // Carrega contagem de documentos do pipeline por Prospeccao (prospeccao_id) — usamos como total apurado.
   useEffect(() => {
-    const ids = Array.from(new Set(companies.map((c) => c.prospecção_id).filter(Boolean) as string[]));
+    const ids = Array.from(new Set(companies.map((c) => c.prospeccao_id).filter(Boolean) as string[]));
     if (ids.length === 0) {
       setDocCounts({});
       return;
@@ -54,11 +54,11 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
     (async () => {
       const { data } = await supabase
         .from("pipeline_documents")
-        .select("prospecção_id")
-        .in("prospecção_id", ids);
+        .select("prospeccao_id")
+        .in("prospeccao_id", ids);
       const counts: Record<string, number> = {};
       (data || []).forEach((r: any) => {
-        counts[r.prospecção_id] = (counts[r.prospecção_id] || 0) + 1;
+        counts[r.prospeccao_id] = (counts[r.prospeccao_id] || 0) + 1;
       });
       setDocCounts(counts);
     })();
@@ -107,7 +107,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
 
       // Busca textual
       if (q) {
-        const blob = [c.name, c.cnpj, c.prospecção_id].filter(Boolean).join(" ").toLowerCase();
+        const blob = [c.name, c.cnpj, c.prospeccao_id].filter(Boolean).join(" ").toLowerCase();
         if (!blob.includes(q)) return false;
       }
       return true;
@@ -134,7 +134,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
     const apurados = focusPeriods.length;
     const concluidos = focusPeriods.filter((p) => p.percentual >= 100).length;
     const incompletos = apurados - concluidos;
-    const docs = focusCompany?.prospecção_id ? docCounts[focusCompany.prospecção_id] || 0 : 0;
+    const docs = focusCompany?.prospeccao_id ? docCounts[focusCompany.prospeccao_id] || 0 : 0;
     return {
       apurados,
       concluidosPct: apurados > 0 ? Math.round((concluidos / apurados) * 100) : 0,
@@ -224,7 +224,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
               </div>
               <div className="col-span-2 text-xs text-muted-foreground flex items-center gap-1.5">
                 <FileText className="w-3 h-3" />
-                {p && focusCompany?.prospecção_id ? docCounts[focusCompany.prospecção_id] || 0 : 0} docs
+                {p && focusCompany?.prospeccao_id ? docCounts[focusCompany.prospeccao_id] || 0 : 0} docs
               </div>
               <div className="col-span-2 text-right">
                 {p && (
@@ -232,7 +232,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
                     size="sm"
                     variant="outline"
                     className="text-xs h-7"
-                    onClick={() => navigate(`/prospecção/${p.company_id}?period=${p.period_label}`)}
+                    onClick={() => navigate(`/prospeccao/${p.company_id}?period=${p.period_label}`)}
                   >
                     Ver Prospeccao
                   </Button>
@@ -396,9 +396,9 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
                       >
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2 flex-wrap">
-                            {c.prospecção_id && (
+                            {c.prospeccao_id && (
                               <Badge className="text-sm font-mono font-semibold bg-[hsl(217,91%,50%)]/10 text-[hsl(217,91%,50%)] border-0 px-2 py-0.5">
-                                {c.prospecção_id}
+                                {c.prospeccao_id}
                               </Badge>
                             )}
                             <span className="text-base font-semibold text-foreground">{c.name}</span>
@@ -452,8 +452,8 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
                   <Building2 className="w-5 h-5 text-accent" /> {focusCompany.name}
                 </CardTitle>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  {focusCompany.prospecção_id && (
-                    <Badge variant="outline" className="text-[10px] font-mono">{focusCompany.prospecção_id}</Badge>
+                  {focusCompany.prospeccao_id && (
+                    <Badge variant="outline" className="text-[10px] font-mono">{focusCompany.prospeccao_id}</Badge>
                   )}
                   {focusCompany.cnpj && (
                     <span className="text-xs text-muted-foreground">CNPJ {focusCompany.cnpj}</span>

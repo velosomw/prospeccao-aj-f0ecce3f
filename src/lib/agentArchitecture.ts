@@ -152,7 +152,7 @@ export const ARCH_BLOCKS: { key: string; label: string; phases: ArchPhase[] }[] 
   },
   {
     key: "storage",
-    label: "4. Aprospecçãozenamento",
+    label: "4. Aprospeccaozenamento",
     phases: [
       {
         id: "postgres",

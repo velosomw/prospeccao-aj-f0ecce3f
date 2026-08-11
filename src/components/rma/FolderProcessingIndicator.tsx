@@ -16,7 +16,7 @@ interface FolderStatus {
 
 interface Props {
   companyId: string;
-  prospecçãoId?: string | null;
+  prospeccaoId?: string | null;
   folderPath: string;
   pollMs?: number;
 }
@@ -31,7 +31,7 @@ function formatCountdown(target: string | null): string {
   return `${m}m${s % 60}s`;
 }
 
-export function FolderProcessingIndicator({ companyId, prospecçãoId, folderPath, pollMs = 15000 }: Props) {
+export function FolderProcessingIndicator({ companyId, prospeccaoId, folderPath, pollMs = 15000 }: Props) {
   const [status, setStatus] = useState<FolderStatus | null>(null);
   const [tick, setTick] = useState(0);
 
@@ -43,7 +43,7 @@ export function FolderProcessingIndicator({ companyId, prospecçãoId, folderPat
         .select("*")
         .eq("company_id", companyId)
         .eq("folder_path", folderPath);
-      if (prospecçãoId) q = q.eq("prospecção_id", prospecçãoId);
+      if (prospeccaoId) q = q.eq("prospeccao_id", prospeccaoId);
       const { data } = await q.maybeSingle();
       if (!cancelled) setStatus((data as FolderStatus | null) ?? null);
     };
@@ -55,7 +55,7 @@ export function FolderProcessingIndicator({ companyId, prospecçãoId, folderPat
       clearInterval(interval);
       clearInterval(ticker);
     };
-  }, [companyId, prospecçãoId, folderPath, pollMs]);
+  }, [companyId, prospeccaoId, folderPath, pollMs]);
 
   if (!status || status.total_count === 0) return null;
 

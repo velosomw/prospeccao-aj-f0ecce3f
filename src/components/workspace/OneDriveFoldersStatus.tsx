@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { buildFolderAliasMap, buildPathInFolder, findFolderLocationForDip, getPathDirectory, getPathFolderSegment, matchDipFolderBySegment, normalizeFolderText } from "@/utils/dipFolderPaths";
 import { buildFolderNumbering } from "@/utils/dipFolderNumbering";
 
-// Noprospecçãoliza um texto (lowercase, sem acentos, sem caracteres especiais)
+// Noprospeccaoliza um texto (lowercase, sem acentos, sem caracteres especiais)
 // para comparação fuzzy de labels de pasta entre OneDrive e DIP_FOLDERS.
 const normalize = (s: string) =>
   normalizeFolderText(s);
@@ -83,7 +83,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   // Pasta destino escolhida no seletor por arquivo (key = file_id ou path)
   const [moveTarget, setMoveTarget] = useState<Record<string, number>>({});
-  // Confiprospecçãoção em 2 etapas para exclusão
+  // Confirmacaoção em 2 etapas para exclusão
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   // Ações em curso (para desabilitar botões)
   const [busyKey, setBusyKey] = useState<string | null>(null);
@@ -381,7 +381,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
                 title="Mês travado ao Prospeccao AJ vinculado"
               >
                 {effectiveMonth === "all" ? "Prospeccao sem competência definida" : monthLabel(effectiveMonth)}
-                <span className="ml-2 text-[10px] text-muted-foreground font-noprospecçãol">(Prospeccao AJ)</span>
+                <span className="ml-2 text-[10px] text-muted-foreground font-normal">(Prospeccao AJ)</span>
               </span>
             ) : (
               <select
@@ -691,7 +691,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
                                               ) : (
                                                 <span className="inline-flex items-center gap-2 text-[11px] px-2 py-1 rounded bg-[hsl(0,84%,60%)]/10 border border-[hsl(0,84%,60%)]/40 text-[hsl(0,84%,40%)]">
                                                   <AlertTriangle className="w-3 h-3" />
-                                                  Confiprospecçãor exclusão definitiva?
+                                                  Confirmacaor exclusão definitiva?
                                                   <button
                                                     disabled={busy}
                                                     onClick={() => deleteFile(r)}

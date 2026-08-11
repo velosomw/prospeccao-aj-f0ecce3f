@@ -190,7 +190,7 @@ SAÍDA: { notas[], totais_por_cfop, totais_impostos, alertas[], confianca }`,
   {
     key: "AGENTE_NFE_COMPRAS_READER",
     name: "Agente NF-e Compras Reader",
-    description: "Lê RELAÇÃO de Notas Fiscais de Compras (planilhas/PDFs tabulares). Extrai linha-a-linha com schema canônico, noprospecçãoliza datas/valores/CNPJ e persiste em nfe_compras.",
+    description: "Lê RELAÇÃO de Notas Fiscais de Compras (planilhas/PDFs tabulares). Extrai linha-a-linha com schema canônico, normaliza datas/valores/CNPJ e persiste em nfe_compras.",
     topics: [11], // Reforça especialização do tópico 11 (Relação NFs de Compras)
     ai_model: "google/gemini-2.5-pro",
     temperature: 0.15,

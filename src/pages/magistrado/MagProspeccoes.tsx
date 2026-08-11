@@ -24,7 +24,7 @@ export default function MagProspeccaos() {
 
   const rows = useMemo(() => {
     return (data?.rows ?? []).map((c) => ({
-      id: c.prospecção_id || `Prospeccao-${c.id.slice(0, 4).toUpperCase()}`,
+      id: c.prospeccao_id || `Prospeccao-${c.id.slice(0, 4).toUpperCase()}`,
       empresa: c.name,
       proc: "—",
       periodo: c.current_period_month && c.execution_year
@@ -86,7 +86,7 @@ export default function MagProspeccaos() {
 
   return (
     <ConsultorPageShell
-      title="Prospecções AJ Recebidos" subtitle="Relatórios de Monitoramento das empresas de prospecção para análise judicial."
+      title="Prospecções AJ Recebidos" subtitle="Relatórios de Monitoramento das empresas de prospeccao para análise judicial."
       search={search} onSearch={(s) => { setSearch(s); setPage(1); }}
       kpis={[
         { label: "Prospecções AJ (30d)",    value: total, hint: "Recebidos",    icon: FileText,     tone: "blue" },

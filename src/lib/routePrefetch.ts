@@ -15,7 +15,7 @@ const loaders: Record<string, Loader> = {
 
   "/consultor":               () => import("@/pages/consultor/ConsultorHome"),
   "/consultor/dashboard":     () => import("@/pages/ConsultorDashboard"),
-  "/consultor/prospecçãos":          () => import("@/pages/consultor/ConsultorProspeccaos"),
+  "/consultor/prospeccaos":          () => import("@/pages/consultor/ConsultorProspeccaos"),
   "/consultor/prospeccoes-aj": () => import("@/pages/consultor/ConsultorProspeccaos"),
   "/consultor/processos":     () => import("@/pages/consultor/ConsultorProcessos"),
   "/consultor/pendencias":    () => import("@/pages/consultor/ConsultorPendencias"),
@@ -47,7 +47,7 @@ const loaders: Record<string, Loader> = {
 
   "/magistrado":              () => import("@/pages/MagistradoDashboard"),
   "/magistrado/processos":    () => import("@/pages/magistrado/MagProcessos"),
-  "/magistrado/prospecçãos":         () => import("@/pages/magistrado/MagProspeccaos"),
+  "/magistrado/prospeccaos":         () => import("@/pages/magistrado/MagProspeccaos"),
   "/magistrado/empresas":     () => import("@/pages/magistrado/MagEmpresas"),
   "/magistrado/decisoes":     () => import("@/pages/magistrado/MagDecisoes"),
   "/magistrado/historico":    () => import("@/pages/magistrado/MagHistorico"),
@@ -60,7 +60,7 @@ const loaders: Record<string, Loader> = {
 
   "/admjudicial":              () => import("@/pages/AdmjudicialDashboard"),
   "/admjudicial/recuperandas": () => import("@/pages/admjudicial/AdmRecuperandas"),
-  "/admjudicial/prospecçãos":         () => import("@/pages/admjudicial/AdmProspeccaos"),
+  "/admjudicial/prospeccaos":         () => import("@/pages/admjudicial/AdmProspeccaos"),
   "/admjudicial/pendencias":   () => import("@/pages/admjudicial/AdmPendencias"),
   "/admjudicial/relatorios":   () => import("@/pages/admjudicial/AdmRelatorios"),
   "/admjudicial/historico":    () => import("@/pages/admjudicial/AdmHistorico"),
@@ -85,7 +85,7 @@ export function prefetchRoute(path: string): void {
   loader().catch(() => started.delete(path));
 }
 
-// Pré-carrega, em tempo ocioso e de foprospecção escalonada, todas as rotas visíveis
+// Pré-carrega, em tempo ocioso e de foprospeccao escalonada, todas as rotas visíveis
 // no menu lateral — assim o clique já encontra o chunk em cache.
 export function prefetchRoutesIdle(paths: string[]): void {
   const pending = paths.filter((p) => !started.has(p) && loaders[p]);

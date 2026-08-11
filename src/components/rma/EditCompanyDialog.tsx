@@ -43,7 +43,7 @@ export default function EditCompanyDialog({ company, open, onOpenChange, onSaved
       await updateCompany(company.id, {
         name: form.name || company.name,
         cnpj: form.cnpj || undefined,
-        prospecção_id: form.prospecção_id || undefined,
+        prospeccao_id: form.prospeccao_id || undefined,
         sector: form.sector || undefined,
         cnae: form.cnae || undefined,
         city: form.city || undefined,
@@ -95,7 +95,7 @@ export default function EditCompanyDialog({ company, open, onOpenChange, onSaved
           </div>
           <div>
             <Label>ID Prospeccao AJ</Label>
-            <Input value={form.prospecção_id || ""} onChange={(e) => set("prospecção_id", e.target.value)} />
+            <Input value={form.prospeccao_id || ""} onChange={(e) => set("prospeccao_id", e.target.value)} />
           </div>
           <div>
             <Label>CNPJ</Label>
@@ -158,7 +158,7 @@ export default function EditCompanyDialog({ company, open, onOpenChange, onSaved
               <AlertDialogHeader>
                 <AlertDialogTitle>Excluir {company.name}?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Esta ação não pode ser desfeita. O Prospeccao e os dados de cadastro serão removidos peprospecçãonentemente.
+                  Esta ação não pode ser desfeita. O Prospeccao e os dados de cadastro serão removidos permanentemente.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

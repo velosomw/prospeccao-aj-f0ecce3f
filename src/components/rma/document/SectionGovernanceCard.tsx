@@ -49,7 +49,7 @@ export const SectionGovernanceCard = ({
     (async () => {
       if (graficosIds?.length) {
         const { data } = await supabase
-          .from("prospecção_document_charts")
+          .from("prospeccao_document_charts")
           .select("id,tipo,titulo,descricao_ia,dados")
           .in("id", graficosIds);
         if (!cancelled) setCharts((data || []) as any);
@@ -57,7 +57,7 @@ export const SectionGovernanceCard = ({
         setCharts([]);
       }
       const { data: src } = await supabase
-        .from("prospecção_section_data_sources")
+        .from("prospeccao_section_data_sources")
         .select("id,source_type,periodo_label,trecho")
         .eq("section_id", sectionId)
         .order("created_at", { ascending: false })

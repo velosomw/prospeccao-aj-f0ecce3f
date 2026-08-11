@@ -2,11 +2,11 @@ import { History, GitCommit, User, FileText, CheckCircle2, AlertTriangle } from 
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
 const events = [
-  { id: "H-401", tipo: "publicacao", titulo: "Prospeccao Maio/2026 publicado",       prospecção: "Prospeccao-0012", usuario: "Coordenador", data: "Hoje 14:32" },
-  { id: "H-400", tipo: "aprovacao",  titulo: "Aprovado pelo Coordenador",     prospecção: "Prospeccao-0012", usuario: "Coordenador", data: "Hoje 13:10" },
-  { id: "H-399", tipo: "edicao",     titulo: "Bloco 7 - DRE editado",         prospecção: "Prospeccao-0014", usuario: "Carlos Mendes", data: "Hoje 11:48" },
-  { id: "H-398", tipo: "rejeicao",   titulo: "Bloco 5 reprovado",             prospecção: "Prospeccao-0009", usuario: "Coordenador", data: "Ontem 17:20" },
-  { id: "H-397", tipo: "criacao",    titulo: "Novo Prospeccao criado",               prospecção: "Prospeccao-0014", usuario: "Coordenador", data: "07/05" },
+  { id: "H-401", tipo: "publicacao", titulo: "Prospeccao Maio/2026 publicado",       prospeccao: "Prospeccao-0012", usuario: "Coordenador", data: "Hoje 14:32" },
+  { id: "H-400", tipo: "aprovacao",  titulo: "Aprovado pelo Coordenador",     prospeccao: "Prospeccao-0012", usuario: "Coordenador", data: "Hoje 13:10" },
+  { id: "H-399", tipo: "edicao",     titulo: "Bloco 7 - DRE editado",         prospeccao: "Prospeccao-0014", usuario: "Carlos Mendes", data: "Hoje 11:48" },
+  { id: "H-398", tipo: "rejeicao",   titulo: "Bloco 5 reprovado",             prospeccao: "Prospeccao-0009", usuario: "Coordenador", data: "Ontem 17:20" },
+  { id: "H-397", tipo: "criacao",    titulo: "Novo Prospeccao criado",               prospeccao: "Prospeccao-0014", usuario: "Coordenador", data: "07/05" },
 ];
 
 const typeMeta: Record<string, { icon: any; bg: string; fg: string; label: string }> = {
@@ -45,7 +45,7 @@ export default function CoordHistorico() {
                   <div className="bg-muted/30 rounded-lg p-3">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: m.bg, color: m.fg }}>{m.label}</span>
-                      <span className="text-xs font-mono text-primary">{e.prospecção}</span>
+                      <span className="text-xs font-mono text-primary">{e.prospeccao}</span>
                       <span className="text-xs text-muted-foreground ml-auto">{e.data}</span>
                     </div>
                     <div className="text-sm font-medium">{e.titulo}</div>

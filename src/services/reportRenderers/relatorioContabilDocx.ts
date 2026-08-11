@@ -240,7 +240,7 @@ export async function generateRelatorioContabilDocx(d: ReportDataset, filename?:
       children: [new TextRun({ text: "Relatório Contábil de Dados — Composição, Endividamento e Balanço", bold: true, size: 28, color: NAVY })] }),
     new Paragraph({ alignment: AlignmentType.CENTER,
       children: [new TextRun({ text: `Empresa: ${d.empresaNome}${d.empresaCnpj ? ` — CNPJ ${d.empresaCnpj}` : ""}`, size: 22 })] }),
-    d.prospecçãoId ? new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: `Prospeccao: ${d.prospecçãoId}`, size: 20, color: "555555" })] }) : new Paragraph({}),
+    d.prospeccaoId ? new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: `Prospeccao: ${d.prospeccaoId}`, size: 20, color: "555555" })] }) : new Paragraph({}),
     new Paragraph({ alignment: AlignmentType.CENTER,
       children: [new TextRun({ text: `Período: ${ini} a ${fim} (${d.periodos.length} ${d.periodos.length === 1 ? "período" : "períodos"})`, size: 22 })] }),
     new Paragraph({ alignment: AlignmentType.CENTER,

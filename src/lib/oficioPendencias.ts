@@ -14,7 +14,7 @@ export interface PendenciaItem {
 }
 
 export interface OficioMeta {
-  prospecçãoCode: string;
+  prospeccaoCode: string;
   mesReferencia?: string;
   empresa?: string;
   responsavel?: string;
@@ -97,10 +97,10 @@ export async function generateOficioDocx(pendencias: PendenciaItem[], meta: Ofic
     styles: {
       default: { document: { run: { font: "Arial", size: 22 } } },
       paragraphStyles: [
-        { id: "Heading1", name: "Heading 1", basedOn: "Noprospecçãol", next: "Noprospecçãol", quickFoprospecçãot: true,
+        { id: "Heading1", name: "Heading 1", basedOn: "Noprospeccaol", next: "Noprospeccaol", quickFoprospeccaot: true,
           run: { size: 32, bold: true, font: "Arial", color: "0B3A82" },
           paragraph: { spacing: { before: 240, after: 200 }, outlineLevel: 0 } },
-        { id: "Heading2", name: "Heading 2", basedOn: "Noprospecçãol", next: "Noprospecçãol", quickFoprospecçãot: true,
+        { id: "Heading2", name: "Heading 2", basedOn: "Noprospeccaol", next: "Noprospeccaol", quickFoprospeccaot: true,
           run: { size: 26, bold: true, font: "Arial", color: "0B3A82" },
           paragraph: { spacing: { before: 200, after: 120 }, outlineLevel: 1 } },
       ],
@@ -111,7 +111,7 @@ export async function generateOficioDocx(pendencias: PendenciaItem[], meta: Ofic
         new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun({ text: todayBR(), size: 20, color: "64748B" })] }),
         new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("Ofício de Pendências — Prospeccao")] }),
         new Paragraph({ children: [
-          new TextRun({ text: "Prospeccao: ", bold: true }), new TextRun(meta.prospecçãoCode),
+          new TextRun({ text: "Prospeccao: ", bold: true }), new TextRun(meta.prospeccaoCode),
           new TextRun({ text: "    Mês de referência: ", bold: true }), new TextRun(meta.mesReferencia || "—"),
         ]}),
         ...(meta.empresa ? [new Paragraph({ children: [new TextRun({ text: "Recuperanda: ", bold: true }), new TextRun(meta.empresa)] })] : []),
@@ -119,7 +119,7 @@ export async function generateOficioDocx(pendencias: PendenciaItem[], meta: Ofic
         new Paragraph({ children: [new TextRun("")] }),
         new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("1. Objeto")] }),
         new Paragraph({ children: [new TextRun(
-          "O presente ofício foprospecçãoliza a relação de pendências, inconsistências e documentos faltantes identificados pelo Administrador Judicial durante a análise do Prospeccao em referência, nos termos da Recomendação CNJ 72/2020."
+          "O presente ofício foprospeccaoliza a relação de pendências, inconsistências e documentos faltantes identificados pelo Administrador Judicial durante a análise do Prospeccao em referência, nos termos da Recomendação CNJ 72/2020."
         )] }),
         new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun(`2. Pendências Identificadas (${pendencias.length})`)] }),
         new Table({
@@ -130,7 +130,7 @@ export async function generateOficioDocx(pendencias: PendenciaItem[], meta: Ofic
         new Paragraph({ children: [new TextRun("")] }),
         new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("3. Providências Solicitadas")] }),
         new Paragraph({ children: [new TextRun(
-          "Solicita-se à Recuperanda o saneamento das pendências acima no prazo de 15 (quinze) dias corridos, mediante upload na plataforma BEx-Prospeccao e/ou resposta foprospecçãol por escrito. Pendências não sanadas serão consignadas no Relatório Mensal de Atividades (Prospeccao) submetido ao Juízo."
+          "Solicita-se à Recuperanda o saneamento das pendências acima no prazo de 15 (quinze) dias corridos, mediante upload na plataforma BEx-Prospeccao e/ou resposta foprospeccaol por escrito. Pendências não sanadas serão consignadas no Relatório Mensal de Atividades (Prospeccao) submetido ao Juízo."
         )] }),
         new Paragraph({ children: [new TextRun("")] }),
         new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: meta.emitidoPor || "Administração Judicial — BEx-Prospeccao IA", bold: true })] }),
@@ -139,7 +139,7 @@ export async function generateOficioDocx(pendencias: PendenciaItem[], meta: Ofic
   });
 
   const blob = await Packer.toBlob(doc);
-  saveAs(blob, `Oficio_Pendencias_${meta.prospecçãoCode}.docx`);
+  saveAs(blob, `Oficio_Pendencias_${meta.prospeccaoCode}.docx`);
 }
 
 export function generateOficioPdf(pendencias: PendenciaItem[], meta: OficioMeta) {
@@ -149,7 +149,7 @@ export function generateOficioPdf(pendencias: PendenciaItem[], meta: OficioMeta)
   const margin = 18;
   let y = margin;
 
-  pdf.setFont("helvetica", "noprospecçãol");
+  pdf.setFont("helvetica", "normal");
   pdf.setFontSize(9); pdf.setTextColor(100);
   pdf.text(todayBR(), pageW - margin, y, { align: "right" });
 
@@ -158,8 +158,8 @@ export function generateOficioPdf(pendencias: PendenciaItem[], meta: OficioMeta)
   pdf.text("Ofício de Pendências — Prospeccao", margin, y);
 
   y += 8;
-  pdf.setFontSize(10); pdf.setTextColor(30); pdf.setFont("helvetica", "noprospecçãol");
-  pdf.text(`Prospeccao: ${meta.prospecçãoCode}    Mês de referência: ${meta.mesReferencia || "—"}`, margin, y);
+  pdf.setFontSize(10); pdf.setTextColor(30); pdf.setFont("helvetica", "normal");
+  pdf.text(`Prospeccao: ${meta.prospeccaoCode}    Mês de referência: ${meta.mesReferencia || "—"}`, margin, y);
   if (meta.empresa) { y += 5; pdf.text(`Recuperanda: ${meta.empresa}`, margin, y); }
   if (meta.responsavel) { y += 5; pdf.text(`Responsável: ${meta.responsavel}`, margin, y); }
 
@@ -167,9 +167,9 @@ export function generateOficioPdf(pendencias: PendenciaItem[], meta: OficioMeta)
   pdf.setFont("helvetica", "bold"); pdf.setTextColor(11, 58, 130);
   pdf.text("1. Objeto", margin, y);
   y += 6;
-  pdf.setFont("helvetica", "noprospecçãol"); pdf.setTextColor(30); pdf.setFontSize(10);
+  pdf.setFont("helvetica", "normal"); pdf.setTextColor(30); pdf.setFontSize(10);
   const objeto = pdf.splitTextToSize(
-    "O presente ofício foprospecçãoliza a relação de pendências, inconsistências e documentos faltantes identificados pelo Administrador Judicial durante a análise do Prospeccao em referência, nos termos da Recomendação CNJ 72/2020.",
+    "O presente ofício foprospeccaoliza a relação de pendências, inconsistências e documentos faltantes identificados pelo Administrador Judicial durante a análise do Prospeccao em referência, nos termos da Recomendação CNJ 72/2020.",
     pageW - margin * 2,
   );
   pdf.text(objeto, margin, y); y += objeto.length * 5 + 4;
@@ -191,7 +191,7 @@ export function generateOficioPdf(pendencias: PendenciaItem[], meta: OficioMeta)
   cols.forEach(c => { pdf.text(c.label, x + 2, y + 5); x += c.w; });
   y += 7;
 
-  pdf.setFont("helvetica", "noprospecçãol"); pdf.setFontSize(9); pdf.setTextColor(30);
+  pdf.setFont("helvetica", "normal"); pdf.setFontSize(9); pdf.setTextColor(30);
   pendencias.forEach((p) => {
     const topico = pdf.splitTextToSize(p.topico, cols[1].w - 3);
     const desc = pdf.splitTextToSize(p.descricao, cols[2].w - 3);
@@ -214,9 +214,9 @@ export function generateOficioPdf(pendencias: PendenciaItem[], meta: OficioMeta)
   if (y > pageH - 40) { pdf.addPage(); y = margin; }
   pdf.setFont("helvetica", "bold"); pdf.setTextColor(11, 58, 130); pdf.setFontSize(12);
   pdf.text("3. Providências Solicitadas", margin, y); y += 6;
-  pdf.setFont("helvetica", "noprospecçãol"); pdf.setTextColor(30); pdf.setFontSize(10);
+  pdf.setFont("helvetica", "normal"); pdf.setTextColor(30); pdf.setFontSize(10);
   const prov = pdf.splitTextToSize(
-    "Solicita-se à Recuperanda o saneamento das pendências acima no prazo de 15 (quinze) dias corridos, mediante upload na plataforma BEx-Prospeccao e/ou resposta foprospecçãol por escrito. Pendências não sanadas serão consignadas no Relatório Mensal de Atividades (Prospeccao) submetido ao Juízo.",
+    "Solicita-se à Recuperanda o saneamento das pendências acima no prazo de 15 (quinze) dias corridos, mediante upload na plataforma BEx-Prospeccao e/ou resposta foprospeccaol por escrito. Pendências não sanadas serão consignadas no Relatório Mensal de Atividades (Prospeccao) submetido ao Juízo.",
     pageW - margin * 2,
   );
   pdf.text(prov, margin, y); y += prov.length * 5 + 10;
@@ -224,7 +224,7 @@ export function generateOficioPdf(pendencias: PendenciaItem[], meta: OficioMeta)
   pdf.setFont("helvetica", "bold"); pdf.setTextColor(11, 58, 130);
   pdf.text(meta.emitidoPor || "Administração Judicial — BEx-Prospeccao IA", pageW / 2, y, { align: "center" });
 
-  pdf.save(`Oficio_Pendencias_${meta.prospecçãoCode}.pdf`);
+  pdf.save(`Oficio_Pendencias_${meta.prospeccaoCode}.pdf`);
 }
 
 /** Deriva pendências a partir de dados de análise (topics + lista pendencias) */

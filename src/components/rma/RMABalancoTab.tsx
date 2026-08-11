@@ -139,7 +139,7 @@ const ProspeccaoBalancoTab = ({ companyId, periodo, runToken, janela }: Props) =
               <CardTitle className="text-base flex items-center gap-2">
                 <FileSpreadsheet className="w-4 h-4 text-[hsl(217,91%,50%)]" />
                 Balanço Patrimonial (BS)
-                <span className="text-xs text-muted-foreground font-noprospecçãol">
+                <span className="text-xs text-muted-foreground font-normal">
                   Derivado do Balancete · {periodos.length} {periodos.length === 1 ? "competência" : "competências"}
                 </span>
               </CardTitle>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-import { getRmaDocRules, type RmaDocTipo } from "@/lib/prospecçãoDocumentRules";
+import { getRmaDocRules, type RmaDocTipo } from "@/lib/prospeccaoDocumentRules";
 
 interface DocSummary {
   tipo: RmaDocTipo;
@@ -24,7 +24,7 @@ interface DocSummary {
 
 const TIPOS: Array<{ tipo: RmaDocTipo; icon: typeof FileText; accent: string }> = [
   { tipo: "parecer_tecnico", icon: FileText, accent: "hsl(330,70%,50%)" },
-  { tipo: "prospecção_mensal",      icon: FileCheck, accent: "hsl(280,60%,50%)" },
+  { tipo: "prospeccao_mensal",      icon: FileCheck, accent: "hsl(280,60%,50%)" },
 ];
 
 function pctColor(pct: number) {
@@ -58,9 +58,9 @@ const ProspeccaoProgressByTypePanel = () => {
       const result: DocSummary[] = [];
       for (const { tipo } of TIPOS) {
         const { data: doc } = await supabase
-          .from("prospecção_documents")
+          .from("prospeccao_documents")
           .select("id, status, arquivo_final_url, arquivo_final_versao, arquivo_final_gerado_em")
-          .eq("prospecção_id", id)
+          .eq("prospeccao_id", id)
           .eq("tipo", tipo)
           .order("created_at", { ascending: false })
           .limit(1)
@@ -76,7 +76,7 @@ const ProspeccaoProgressByTypePanel = () => {
 
         if (doc?.id) {
           const { data: secs } = await supabase
-            .from("prospecção_document_sections")
+            .from("prospeccao_document_sections")
             .select("status")
             .eq("document_id", doc.id);
           (secs || []).forEach((s: any) => {

@@ -11,7 +11,7 @@ import { toast } from "sonner";
 interface Props {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  prospecçãoId: string;
+  prospeccaoId: string;
   companyName?: string;
   defaultEmail?: string;
   onSent?: () => void;
@@ -23,14 +23,14 @@ Em continuidade ao processo de Registro e Cobrança do Prospeccao, solicitamos o
 
 Caso já tenham sido encaminhados, favor desconsiderar este e-mail.
 
-Peprospecçãonecemos à disposição para esclarecimentos.
+Peprospeccaonecemos à disposição para esclarecimentos.
 
 Atenciosamente,
 Equipe BEx Prospeccao IA`;
 
-export function CobrancaEmailDialog({ open, onOpenChange, prospecçãoId, companyName, defaultEmail, onSent }: Props) {
+export function CobrancaEmailDialog({ open, onOpenChange, prospeccaoId, companyName, defaultEmail, onSent }: Props) {
   const [recipient, setRecipient] = useState(defaultEmail || "");
-  const [subject, setSubject] = useState(`Solicitação de documentos — ${prospecçãoId}${companyName ? ` ${companyName}` : ""}`);
+  const [subject, setSubject] = useState(`Solicitação de documentos — ${prospeccaoId}${companyName ? ` ${companyName}` : ""}`);
   const [body, setBody] = useState(buildDefaultBody(companyName));
   const [file, setFile] = useState<File | null>(null);
   const [sending, setSending] = useState(false);
@@ -38,11 +38,11 @@ export function CobrancaEmailDialog({ open, onOpenChange, prospecçãoId, compan
   useEffect(() => {
     if (open) {
       setRecipient(defaultEmail || "");
-      setSubject(`Solicitação de documentos — ${prospecçãoId}${companyName ? ` ${companyName}` : ""}`);
+      setSubject(`Solicitação de documentos — ${prospeccaoId}${companyName ? ` ${companyName}` : ""}`);
       setBody(buildDefaultBody(companyName));
       setFile(null);
     }
-  }, [open, defaultEmail, prospecçãoId, companyName]);
+  }, [open, defaultEmail, prospeccaoId, companyName]);
 
   const handleSend = async () => {
     if (!recipient.trim() || !subject.trim() || !body.trim()) {
@@ -61,7 +61,7 @@ export function CobrancaEmailDialog({ open, onOpenChange, prospecçãoId, compan
 
       if (file) {
         const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-        filePath = `${prospecçãoId}/${Date.now()}-${safeName}`;
+        filePath = `${prospeccaoId}/${Date.now()}-${safeName}`;
         const { error: upErr } = await supabase.storage
           .from("cobranca-attachments")
           .upload(filePath, file, { upsert: false });
@@ -73,10 +73,10 @@ export function CobrancaEmailDialog({ open, onOpenChange, prospecçãoId, compan
         fileName = file.name;
       }
 
-      const idempotencyKey = `cobranca-${prospecçãoId}-${Date.now()}`;
+      const idempotencyKey = `cobranca-${prospeccaoId}-${Date.now()}`;
       const { error: sendErr } = await supabase.functions.invoke("send-transactional-email", {
         body: {
-          templateName: "cobranca-prospecção",
+          templateName: "cobranca-prospeccao",
           recipientEmail: recipient.trim(),
           idempotencyKey,
           templateData: {
@@ -84,15 +84,15 @@ export function CobrancaEmailDialog({ open, onOpenChange, prospecçãoId, compan
             message: body,
             fileName,
             fileUrl,
-            prospecçãoId,
+            prospeccaoId,
             companyName,
           },
         },
       });
       if (sendErr) throw sendErr;
 
-      const { error: dbErr } = await supabase.from("prospecção_cobrancas").insert({
-        prospecção_id: prospecçãoId,
+      const { error: dbErr } = await supabase.from("prospeccao_cobrancas").insert({
+        prospeccao_id: prospeccaoId,
         company_name: companyName ?? null,
         recipient_email: recipient.trim(),
         subject,
@@ -124,7 +124,7 @@ export function CobrancaEmailDialog({ open, onOpenChange, prospecçãoId, compan
             <Mail className="w-5 h-5" /> Enviar e-mail de cobrança
           </DialogTitle>
           <DialogDescription>
-            O envio é registrado como cobrança do {prospecçãoId}{companyName ? ` — ${companyName}` : ""}.
+            O envio é registrado como cobrança do {prospeccaoId}{companyName ? ` — ${companyName}` : ""}.
           </DialogDescription>
         </DialogHeader>
 

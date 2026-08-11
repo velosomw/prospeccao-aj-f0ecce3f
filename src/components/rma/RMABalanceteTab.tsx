@@ -75,7 +75,7 @@ type Run = {
 };
 
 interface CompanyPeriod {
-  prospecção_id: string | null;
+  prospeccao_id: string | null;
   current_period_month: number | null;
   execution_year: number | null;
   last_analyzed_period: string | null;
@@ -103,7 +103,7 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
     (async () => {
       const { data } = await supabase
         .from("companies")
-        .select("prospecção_id, current_period_month, execution_year, last_analyzed_period")
+        .select("prospeccao_id, current_period_month, execution_year, last_analyzed_period")
         .eq("id", id)
         .maybeSingle();
       if (cancelled || !data) return;
@@ -279,7 +279,7 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
     return () => clearInterval(t);
   }, [run?.id, run?.status, loadConsolidado, loadLancamentos, loadHistory]);
 
-  // Pipeline de balancete agora é disparado automaticamente por prospecção-analyze
+  // Pipeline de balancete agora é disparado automaticamente por prospeccao-analyze
   // (ver botão "Atualizar Status IA" na aba Status Prospeccao).
 
 
@@ -358,7 +358,7 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
                 </SelectContent>
               </Select>
               <Badge variant="secondary" className="text-[10px] gap-1">
-                🔒 Período do Prospeccao{companyPeriod?.prospecção_id ? ` ${companyPeriod.prospecção_id}` : ""}
+                🔒 Período do Prospeccao{companyPeriod?.prospeccao_id ? ` ${companyPeriod.prospeccao_id}` : ""}
               </Badge>
               <Button onClick={() => { loadHistory(); loadConsolidado(); loadLancamentos(); }} variant="outline" size="sm">
                 <RefreshCw className="w-4 h-4" />
@@ -372,7 +372,7 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
       {isRealRma && id && (
         <OrphanExtractionsCard
           companyId={id}
-          prospecçãoId={companyPeriod?.prospecção_id || null}
+          prospeccaoId={companyPeriod?.prospeccao_id || null}
           onConsolidated={() => { loadHistory(); loadConsolidado(); loadLancamentos(); }}
         />
       )}
@@ -900,7 +900,7 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
         <div className="space-y-4">
           <BalancetePreview
             companyId={id!}
-            prospecçãoId={companyPeriod?.prospecção_id || null}
+            prospeccaoId={companyPeriod?.prospeccao_id || null}
             ano={year}
             mes={month}
             consolidado={consolidado}

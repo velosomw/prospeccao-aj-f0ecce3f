@@ -34,7 +34,7 @@ export interface RmaAnalysisResult {
 
 /** Dispara a análise IA (não aguarda — corre em background no servidor). */
 export async function startRmaAnalysis(companyId: string): Promise<void> {
-  const { error } = await supabase.functions.invoke("prospecção-analyze", {
+  const { error } = await supabase.functions.invoke("prospeccao-analyze", {
     body: { companyId },
   });
   if (error) throw error;
@@ -45,7 +45,7 @@ export async function listRmaAnalyses(companyIds: string[]): Promise<RmaAnalysis
   if (companyIds.length === 0) return [];
 
   const { data, error } = await supabase
-    .from("prospecção_analysis_results")
+    .from("prospeccao_analysis_results")
     .select("*")
     .in("company_id", companyIds)
     .order("updated_at", { ascending: false });
@@ -57,7 +57,7 @@ export async function listRmaAnalyses(companyIds: string[]): Promise<RmaAnalysis
 /** Busca o resultado mais recente para a empresa. */
 export async function getRmaAnalysis(companyId: string): Promise<RmaAnalysisResult | null> {
   const { data, error } = await supabase
-    .from("prospecção_analysis_results")
+    .from("prospeccao_analysis_results")
     .select("*")
     .eq("company_id", companyId)
     .maybeSingle();

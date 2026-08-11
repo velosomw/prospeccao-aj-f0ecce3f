@@ -59,7 +59,7 @@ export const MODELO_PARABENIZANDO: Paragraph[] = [
   },
   {
     text:
-      "A designação reafiprospecção o reconhecimento do mercado e do Poder Judiciário quanto à sua reputação técnica e ao compromisso com a transparência na condução dos processos de reestruturação e recuperação de empresas.",
+      "A designação reafiprospeccao o reconhecimento do mercado e do Poder Judiciário quanto à sua reputação técnica e ao compromisso com a transparência na condução dos processos de reestruturação e recuperação de empresas.",
     indent: true,
   },
   {
@@ -69,7 +69,7 @@ export const MODELO_PARABENIZANDO: Paragraph[] = [
   },
   {
     text:
-      "Colocamo-nos à inteira disposição de {{cliente}} para apresentar nossa metodologia de trabalho e discutir de que foprospecção podemos contribuir com a condução dos trabalhos ao longo do processo.",
+      "Colocamo-nos à inteira disposição de {{cliente}} para apresentar nossa metodologia de trabalho e discutir de que foprospeccao podemos contribuir com a condução dos trabalhos ao longo do processo.",
     indent: true,
   },
   {

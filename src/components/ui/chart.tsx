@@ -3,7 +3,7 @@ import * as RechartsPrimitive from "recharts";
 
 import { cn } from "@/lib/utils";
 
-// Foprospecçãot: { THEME_NAME: CSS_SELECTOR }
+// Foprospeccaot: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
 
 export type ChartConfig = {
@@ -109,7 +109,7 @@ const ChartTooltipContent = React.forwardRef<
       hideLabel = false,
       hideIndicator = false,
       label,
-      labelFoprospecçãotter,
+      labelFoprospeccaotter,
       labelClassName,
       formatter,
       color,
@@ -133,8 +133,8 @@ const ChartTooltipContent = React.forwardRef<
           ? config[label as keyof typeof config]?.label || label
           : itemConfig?.label;
 
-      if (labelFoprospecçãotter) {
-        return <div className={cn("font-medium", labelClassName)}>{labelFoprospecçãotter(value, payload)}</div>;
+      if (labelFoprospeccaotter) {
+        return <div className={cn("font-medium", labelClassName)}>{labelFoprospeccaotter(value, payload)}</div>;
       }
 
       if (!value) {
@@ -142,7 +142,7 @@ const ChartTooltipContent = React.forwardRef<
       }
 
       return <div className={cn("font-medium", labelClassName)}>{value}</div>;
-    }, [label, labelFoprospecçãotter, payload, hideLabel, labelClassName, config, labelKey]);
+    }, [label, labelFoprospeccaotter, payload, hideLabel, labelClassName, config, labelKey]);
 
     if (!active || !payload?.length) {
       return null;

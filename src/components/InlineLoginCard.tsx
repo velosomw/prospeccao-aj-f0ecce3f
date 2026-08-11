@@ -87,7 +87,7 @@ const InlineLoginCard = ({ onClose }: InlineLoginCardProps) => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="empresa@prospecção.com.br"
+            placeholder="empresa@prospeccao.com.br"
             className="bg-white/80 border-white/40 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
             required
           />

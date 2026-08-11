@@ -24,7 +24,7 @@ export const SERIES_COLORS = [
   "hsl(280, 60%, 55%)", "hsl(170, 70%, 40%)",
 ];
 
-// ── Foprospecçãotters ───────────────────────────────────────────────────────────
+// ── Foprospeccaotters ───────────────────────────────────────────────────────────
 export const fmtMilhar = (v: number | null | undefined) => {
   if (v == null || !Number.isFinite(v)) return "#N/D";
   const n = Math.round(v);

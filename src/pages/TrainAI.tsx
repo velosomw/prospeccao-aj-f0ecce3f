@@ -1,9 +1,9 @@
 // Página dedicada "Upload Planilha" — fora do Prospeccao Workspace.
 import { useEffect, useMemo, useState } from "react";
 import PlatformLayout from "@/components/PlatformLayout";
-import TrainAITab from "@/components/prospecção/TrainAITab";
+import TrainAITab from "@/components/prospeccao/TrainAITab";
 import LearningUploadPanel from "@/components/workspace/stages/LearningUploadPanel";
-import ErrorFilesPanel from "@/components/prospecção/training/ErrorFilesPanel";
+import ErrorFilesPanel from "@/components/prospeccao/training/ErrorFilesPanel";
 import ProspeccaoUploadCard from "@/components/prospeccao/ProspeccaoUploadCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -55,14 +55,14 @@ export default function TrainAI() {
     companies.forEach(c => {
       const name = c.name || "";
       if (!name) return;
-      if (q && !name.toLowerCase().includes(q) && !(c.prospecção_id || "").toLowerCase().includes(q)) return;
+      if (q && !name.toLowerCase().includes(q) && !(c.prospeccao_id || "").toLowerCase().includes(q)) return;
       names.add(name);
     });
     return Array.from(names).sort((a, b) => a.localeCompare(b));
   }, [companies, filter]);
 
   // Prospeccaos vinculados à empresa selecionada
-  const prospecçãosOfCompany = useMemo(() => {
+  const prospeccaosOfCompany = useMemo(() => {
     if (!companyName) return [];
     return companies.filter(c => c.name === companyName);
   }, [companies, companyName]);
@@ -84,7 +84,7 @@ export default function TrainAI() {
           <div>
             <h1 className="text-xl font-bold text-foreground">Upload Planilha</h1>
             <p className="text-sm text-muted-foreground">
-              Carregamento de base de dados e prospecção ativa. A IA processará automaticamente os links de documentos encontrados.
+              Carregamento de base de dados e prospeccao ativa. A IA processará automaticamente os links de documentos encontrados.
             </p>
           </div>
         </div>
@@ -136,12 +136,12 @@ export default function TrainAI() {
                     <SelectValue placeholder={!companyName ? "Selecione a empresa primeiro" : "Arquivo"} />
                   </SelectTrigger>
                   <SelectContent className="max-h-80">
-                    {prospecçãosOfCompany.length === 0 && (
+                    {prospeccaosOfCompany.length === 0 && (
                       <div className="px-2 py-4 text-xs text-muted-foreground text-center">
                         Nenhuma planilha vinculada.
                       </div>
                     )}
-                    {prospecçãosOfCompany.map(c => (
+                    {prospeccaosOfCompany.map(c => (
                       <SelectItem key={c.id} value={c.id}>
                         Arquivo
                       </SelectItem>
@@ -187,7 +187,7 @@ export default function TrainAI() {
 
             {view === "erros" ? (
               <ErrorFilesPanel
-                prospecçãoId={selected?.prospecção_id || companyId}
+                prospeccaoId={selected?.prospeccao_id || companyId}
                 companyId={companyId}
               />
             ) : (

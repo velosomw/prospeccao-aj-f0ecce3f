@@ -1,7 +1,7 @@
 import { Briefcase, CheckCircle2, Eye, AlertTriangle, Award, Building2, MoreVertical } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
-const prospecçãos = [
+const prospeccaos = [
   { id: "Prospeccao-0012", empresa: "DIPLOMATA",  periodo: "05/2026", status: "Concluído",   score: 87 },
   { id: "Prospeccao-0014", empresa: "TECNOMAX",   periodo: "04/2026", status: "Em Revisão",  score: 72 },
   { id: "Prospeccao-0009", empresa: "BENTOIA",    periodo: "05/2026", status: "Concluído",   score: 91 },
@@ -42,7 +42,7 @@ export default function AdmProspeccaos() {
             </tr>
           </thead>
           <tbody>
-            {prospecçãos.map(r => {
+            {prospeccaos.map(r => {
               const s = statusMeta[r.status];
               return (
                 <tr key={r.id} className="border-t hover:bg-muted/20">

@@ -7,7 +7,7 @@ export type MessageType =
   | "solicitacao_correcao"
   | "alerta_prazo"
   | "nao_conformidade"
-  | "prospecção";
+  | "prospeccao";
 
 export type Priority = "baixa" | "media" | "alta" | "critica";
 

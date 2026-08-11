@@ -54,7 +54,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
   // Cadastros por mês (6m)
   const cadastrosData = useMemo(() => {
     const now = new Date();
-    const out: { month: string; prospecçãos: number }[] = [];
+    const out: { month: string; prospeccaos: number }[] = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const next = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
@@ -62,7 +62,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
         const t = new Date(c.created_at).getTime();
         return t >= d.getTime() && t < next.getTime();
       }).length;
-      out.push({ month: monthsPt[d.getMonth()], prospecçãos: count });
+      out.push({ month: monthsPt[d.getMonth()], prospeccaos: count });
     }
     return out;
   }, [companies]);
@@ -211,7 +211,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
                 <XAxis dataKey="month" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                 <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                 <Tooltip />
-                <Line type="monotone" dataKey="prospecçãos" stroke={COLOR_BLUE} strokeWidth={3} dot={{ r: 5, fill: COLOR_BLUE }} activeDot={{ r: 7 }} />
+                <Line type="monotone" dataKey="prospeccaos" stroke={COLOR_BLUE} strokeWidth={3} dot={{ r: 5, fill: COLOR_BLUE }} activeDot={{ r: 7 }} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>

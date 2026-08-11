@@ -30,7 +30,7 @@ interface AgentProfile {
 interface CompanyContext {
   id: string;
   company_id: string;
-  prospecção_id: string | null;
+  prospeccao_id: string | null;
   scope: string;
   chave: string;
   valor: string;
@@ -40,7 +40,7 @@ interface CompanyContext {
 interface CompanyOpt {
   id: string;
   name: string;
-  prospecção_id: string | null;
+  prospeccao_id: string | null;
 }
 
 interface MemoryItem {
@@ -87,7 +87,7 @@ export default function GestorIAPerfilAgentes() {
   };
 
   const loadCompanies = async () => {
-    const { data } = await supabase.from("companies").select("id,name,prospecção_id").order("name");
+    const { data } = await supabase.from("companies").select("id,name,prospeccao_id").order("name");
     setCompanies((data ?? []) as CompanyOpt[]);
   };
 
@@ -175,7 +175,7 @@ export default function GestorIAPerfilAgentes() {
     const company = companies.find((c) => c.id === selectedCompany);
     const { error } = await supabase.from("company_context").insert({
       company_id: selectedCompany,
-      prospecção_id: company?.prospecção_id ?? null,
+      prospeccao_id: company?.prospeccao_id ?? null,
       scope: newCtx.scope,
       chave: newCtx.chave,
       valor: newCtx.valor,
@@ -203,7 +203,7 @@ export default function GestorIAPerfilAgentes() {
       const company = companies.find((c) => c.id === selectedCompany);
       const { error } = await supabase.from("company_memory_embeddings").insert({
         company_id: selectedCompany,
-        prospecção_id: company?.prospecção_id ?? null,
+        prospeccao_id: company?.prospeccao_id ?? null,
         tipo: newMemory.tipo,
         conteudo: newMemory.conteudo.slice(0, 2000),
         weight: 1.0,
@@ -234,7 +234,7 @@ export default function GestorIAPerfilAgentes() {
     const company = companies.find((c) => c.id === selectedCompany);
     const { error } = await supabase.from("company_rules").insert({
       company_id: selectedCompany,
-      prospecção_id: company?.prospecção_id ?? null,
+      prospeccao_id: company?.prospeccao_id ?? null,
       tipo: newRule.tipo,
       regra: newRule.regra,
       prioridade: Number(newRule.prioridade),
@@ -371,7 +371,7 @@ export default function GestorIAPerfilAgentes() {
                 >
                   <option value="">— Selecione uma empresa —</option>
                   {companies.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name} {c.prospecção_id ? `(${c.prospecção_id})` : ""}</option>
+                    <option key={c.id} value={c.id}>{c.name} {c.prospeccao_id ? `(${c.prospeccao_id})` : ""}</option>
                   ))}
                 </select>
               </div>
@@ -453,7 +453,7 @@ export default function GestorIAPerfilAgentes() {
                 >
                   <option value="">— Selecione uma empresa —</option>
                   {companies.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name} {c.prospecção_id ? `(${c.prospecção_id})` : ""}</option>
+                    <option key={c.id} value={c.id}>{c.name} {c.prospeccao_id ? `(${c.prospeccao_id})` : ""}</option>
                   ))}
                 </select>
               </div>
@@ -539,7 +539,7 @@ export default function GestorIAPerfilAgentes() {
                 >
                   <option value="">— Selecione uma empresa —</option>
                   {companies.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name} {c.prospecção_id ? `(${c.prospecção_id})` : ""}</option>
+                    <option key={c.id} value={c.id}>{c.name} {c.prospeccao_id ? `(${c.prospeccao_id})` : ""}</option>
                   ))}
                 </select>
               </div>

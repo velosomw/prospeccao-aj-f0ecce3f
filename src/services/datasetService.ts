@@ -30,7 +30,7 @@ export interface QualityScore {
 export interface SubmitCorrectionInput {
   extraction_id?: string;
   document_id?: string;
-  prospecção_id?: string;
+  prospeccao_id?: string;
   classe: string;
   agent?: string;
   path?: string;

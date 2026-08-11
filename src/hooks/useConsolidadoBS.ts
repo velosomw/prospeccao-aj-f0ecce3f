@@ -14,7 +14,7 @@ export interface JanelaConsolidado {
 
 const REALTIME_TABLES = [
   "balancete_consolidado",
-  "prospecção_file_parse_cache",
+  "prospeccao_file_parse_cache",
   "lancamentos",
   "bs_consolidado",
   "dre_consolidado",
@@ -116,7 +116,7 @@ export function useConsolidadoBS(
           .eq("company_id", companyId)
           .not("origem_arquivo", "is", null),
         supabase
-          .from("prospecção_file_parse_cache")
+          .from("prospeccao_file_parse_cache")
           .select("ano, mes, tipo, file_name, balanco, dre")
           .eq("company_id", companyId)
           .is("error_message", null)

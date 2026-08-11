@@ -15,14 +15,14 @@ import {
 
 interface Props {
   analysis: any;
-  prospecçãoCode: string;
+  prospeccaoCode: string;
   mesReferencia?: string;
   empresa?: string;
   responsavel?: string;
 }
 
 export default function OficioPendenciasCard({
-  analysis, prospecçãoCode, mesReferencia, empresa, responsavel,
+  analysis, prospeccaoCode, mesReferencia, empresa, responsavel,
 }: Props) {
   const pendencias = useMemo(() => buildPendenciasFromAnalysis(analysis), [analysis]);
   const [busy, setBusy] = useState<null | "pdf" | "docx">(null);
@@ -34,7 +34,7 @@ export default function OficioPendenciasCard({
   const baixas = pendencias.filter((p) => p.severidade === "baixa").length;
   const total = pendencias.length;
 
-  const meta: OficioMeta = { prospecçãoCode, mesReferencia, empresa, responsavel };
+  const meta: OficioMeta = { prospeccaoCode, mesReferencia, empresa, responsavel };
 
   const handle = async (fmt: "pdf" | "docx") => {
     setBusy(fmt);
@@ -68,7 +68,7 @@ export default function OficioPendenciasCard({
           <div>
             <h2 className="text-lg font-bold text-foreground">Ofício de Pendências</h2>
             <p className="text-sm text-muted-foreground max-w-2xl">
-              Documento foprospecçãol endereçado à Recuperanda consolidando pendências, inconsistências e
+              Documento foprospeccaol endereçado à Recuperanda consolidando pendências, inconsistências e
               documentos faltantes identificados pela análise IA. Pode ser emitido a qualquer
               momento e regenerado conforme novas evidências são incorporadas.
             </p>
@@ -144,7 +144,7 @@ export default function OficioPendenciasCard({
               {showPreview ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
               Prévia · primeiras {Math.min(5, pendencias.length)} de {pendencias.length}
             </span>
-            <span className="text-[10px] noprospecçãol-case font-noprospecçãol text-muted-foreground/80">
+            <span className="text-[10px] normal-case font-normal text-muted-foreground/80">
               {showPreview ? "Ocultar" : "Mostrar"}
             </span>
           </button>

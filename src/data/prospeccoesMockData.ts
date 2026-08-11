@@ -166,9 +166,9 @@ const mockTopics: ProspeccaoTopic[] = [
     ] },
   { id: 't37', pasta: 37, name: 'Última Alteração Contratual', folder: 'Pasta_37', status: 'completo', completude: 100,
     documents: [{ id: 'd37', name: 'Alteracao_Contratual_2024.pdf', type: 'pdf', status: 'ok', compliance: 'atende' }] },
-  { id: 't38', pasta: 38, name: 'Infoprospecçãoções de Pendência de Prospeccao AJ Anterior', folder: 'Pasta_38', status: 'completo', completude: 100,
+  { id: 't38', pasta: 38, name: 'Informacaoções de Pendência de Prospeccao AJ Anterior', folder: 'Pasta_38', status: 'completo', completude: 100,
     documents: [{ id: 'd38', name: 'Pendencias_Prospeccao_Anterior.pdf', type: 'pdf', status: 'ok', compliance: 'atende' }] },
-  { id: 't39', pasta: 39, name: 'Outras Infoprospecçãoções', folder: 'Pasta_39', status: 'pendente', completude: 10,
+  { id: 't39', pasta: 39, name: 'Outras Informacaoções', folder: 'Pasta_39', status: 'pendente', completude: 10,
     documents: [{ id: 'd39', name: 'Info_Complementar.pdf', type: 'pdf', status: 'vazio', compliance: 'nao_atende' }] },
   { id: 't40', pasta: 40, name: 'Situação Fiscal', folder: 'Pasta_40', status: 'em_processamento', completude: 65,
     documents: [
@@ -231,7 +231,7 @@ export const mockBalanceteData: BalanceteRow[] = [
   { conta: '114', descricao: 'Outros Valores a Receber', tipo: 'conta', jan: 1878267.88, fev: 3200131.14, mar: 1190174.60, abr: 1183225.16, mai: 1226406.10, jun: 387733.49, jul: 4954435.16 },
   { conta: '115', descricao: 'Valores a Recuperar', tipo: 'conta', jan: 4934280.35, fev: 5057714.81, mar: 4931460.77, abr: 4827523.26, mai: 4716923.07, jun: 5119923.07, jul: 1126923.07 },
   { conta: '12', descricao: 'Ativo Não Circulante', tipo: 'subgrupo', jan: 2748294.32, fev: 2748050.18, mar: 2747850.46, abr: 2747585.46, mai: 2747385.78, jul: 2742139.94 },
-  { conta: '13', descricao: 'Ativo Peprospecçãonente', tipo: 'subgrupo', jan: 2543583.69, fev: 2543583.69, mar: 2543583.69, abr: 2543583.69, mai: 2543583.69, jun: 2548407.77, jul: 2548407.77 },
+  { conta: '13', descricao: 'Ativo Peprospeccaonente', tipo: 'subgrupo', jan: 2543583.69, fev: 2543583.69, mar: 2543583.69, abr: 2543583.69, mai: 2543583.69, jun: 2548407.77, jul: 2548407.77 },
 
   // PASSIVO
   { conta: '2', descricao: 'PASSIVO', tipo: 'grupo', jan: -267319556.33, fev: -265820103.62, mar: -261277252.95, abr: -260129236.93, mai: -237606117.27, jun: -182523612.48, jul: -103709380.21 },
@@ -265,7 +265,7 @@ export const mockReviewHistory: ReviewEntry[] = [
   { id: 'r2', autor: 'Maria Coordenadora', papel: 'coordenador', acao: 'Revisão iniciada', data: '2024-07-16', hora: '09:00', tempo: '0min', comentario: 'Iniciando análise da documentação do Prospeccao XPT S.A.' },
   { id: 'r3', autor: 'Maria Coordenadora', papel: 'coordenador', acao: 'Comentário adicionado', data: '2024-07-16', hora: '11:45', tempo: '2h 45min', comentario: 'Divergência encontrada no FGTS (pasta 21). GIA incompleta a partir de abril (pasta 18). Solicitar reenvio.' },
   { id: 'r4', autor: 'Maria Coordenadora', papel: 'coordenador', acao: 'Devolvido para ajustes', data: '2024-07-16', hora: '14:00', tempo: '5h', comentario: 'Necessário completar pastas 27-30 (obrigações) e pastas 33-35 (garantias). Total de 12 pastas vazias.' },
-  { id: 'r5', autor: 'Ana Silva', papel: 'usuario', acao: 'Ajustes realizados', data: '2024-07-17', hora: '10:30', tempo: '3h 30min', comentario: 'Correções aplicadas nas pastas fiscais. Pastas de obrigações confiprospecçãodas como N/A pela recuperanda.' },
+  { id: 'r5', autor: 'Ana Silva', papel: 'usuario', acao: 'Ajustes realizados', data: '2024-07-17', hora: '10:30', tempo: '3h 30min', comentario: 'Correções aplicadas nas pastas fiscais. Pastas de obrigações confiprospeccaodas como N/A pela recuperanda.' },
 ];
 
 export const mockProspeccaos: ProspeccaoEntry[] = [

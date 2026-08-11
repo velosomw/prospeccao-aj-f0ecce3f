@@ -25,7 +25,7 @@ import { buildFolderNumbering, deriveAppliedDipIds } from "@/utils/dipFolderNumb
 
 
 interface Props {
-  prospecçãoId: string;
+  prospeccaoId: string;
   companyId: string | null;
   defaultFolderId?: number;
   defaultFileName?: string;
@@ -61,7 +61,7 @@ const PROCESSING_STATUSES = new Set(["uploading", "ocr", "ai"]);
  *  - à classificação contábil predominante (Ativo, Passivo, Receita, Despesa, Fiscal…),
  *    que será usada no carregamento do balancete após a extração.
  */
-export default function LearningUploadPanel({ prospecçãoId, companyId, defaultFolderId, defaultFileName, compact, maxFiles = 1, lockedYear, lockedMonth, onFolderChange }: Props) {
+export default function LearningUploadPanel({ prospeccaoId, companyId, defaultFolderId, defaultFileName, compact, maxFiles = 1, lockedYear, lockedMonth, onFolderChange }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [rows, setRows] = useState<RowState[]>([]);
   const [busy, setBusy] = useState(false);
@@ -69,7 +69,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
   const [folderId, setFolderId] = useState<number | null>(defaultFolderId ?? null);
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [detectedFolderLabel, setDetectedFolderLabel] = useState<string | null>(null);
-  const [localStatuses, setLocalStatuses] = useState(() => listLearningUploadStatuses(prospecçãoId));
+  const [localStatuses, setLocalStatuses] = useState(() => listLearningUploadStatuses(prospeccaoId));
   // Lista de arquivos com erro da pasta selecionada (vw_training_pending) — orienta o lote.
   const [folderErrors, setFolderErrors] = useState<Array<{ extraction_id: string; file_name: string | null; path: string | null; status: string; final_confidence: number | null }>>([]);
   const [loadingFolderErrors, setLoadingFolderErrors] = useState(false);
@@ -105,23 +105,23 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
 
 
   useEffect(() => {
-    const refresh = () => setLocalStatuses(listLearningUploadStatuses(prospecçãoId));
+    const refresh = () => setLocalStatuses(listLearningUploadStatuses(prospeccaoId));
     refresh();
     return subscribeLearningUploadStatuses(refresh);
-  }, [prospecçãoId]);
+  }, [prospeccaoId]);
 
   // Numeração unificada (OD / Arq) — mesma referência das abas Worker e Arquivos com erro.
   const [appliedDipIds, setAppliedDipIds] = useState<number[]>([]);
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      if (!prospecçãoId) { setAppliedDipIds([]); return; }
+      if (!prospeccaoId) { setAppliedDipIds([]); return; }
       const rows: Array<{ path?: string | null; metadata?: Record<string, any> | null }> = [];
       for (let from = 0; from < 5000; from += 1000) {
         const { data } = await supabase
           .from("onedrive_files")
           .select("path, metadata")
-          .eq("prospecção_id", prospecçãoId)
+          .eq("prospeccao_id", prospeccaoId)
           .range(from, from + 999);
         if (!data?.length) break;
         rows.push(...(data as any[]));
@@ -130,7 +130,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
       if (!cancelled) setAppliedDipIds(deriveAppliedDipIds(rows));
     })();
     return () => { cancelled = true; };
-  }, [prospecçãoId]);
+  }, [prospeccaoId]);
   const folderNumbering = useMemo(() => buildFolderNumbering(appliedDipIds), [appliedDipIds]);
   const formatOption = (f: DipFolder) => {
     const ref = folderNumbering.get(f.id);
@@ -147,7 +147,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
 
   // Carrega arquivos com erro da pasta selecionada (apenas no modo lote).
   const loadFolderErrors = useCallback(async () => {
-    if (maxFiles <= 1 || !prospecçãoId || !selected) {
+    if (maxFiles <= 1 || !prospeccaoId || !selected) {
       setFolderErrors([]);
       return;
     }
@@ -157,12 +157,12 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
         supabase
         .from("vw_training_pending")
         .select("extraction_id, file_name, path, status, final_confidence, agent")
-        .eq("prospecção_id", prospecçãoId)
+        .eq("prospeccao_id", prospeccaoId)
         .limit(500),
         supabase
           .from("onedrive_files")
           .select("file_id, file_name, path, status")
-          .eq("prospecção_id", prospecçãoId)
+          .eq("prospeccao_id", prospeccaoId)
           .eq("status", "processing")
           .limit(200),
       ]);
@@ -215,7 +215,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
     } finally {
       setLoadingFolderErrors(false);
     }
-  }, [maxFiles, prospecçãoId, selected, localStatuses]);
+  }, [maxFiles, prospeccaoId, selected, localStatuses]);
 
   useEffect(() => { loadFolderErrors(); }, [loadFolderErrors]);
 
@@ -255,7 +255,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
       const { data } = await supabase
         .from("onedrive_files")
         .select("path, metadata")
-        .eq("prospecção_id", prospecçãoId)
+        .eq("prospeccao_id", prospeccaoId)
         .ilike("file_name", first.name)
         .limit(1)
         .maybeSingle();
@@ -299,7 +299,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
         let folderQuery = supabase
           .from("onedrive_files")
           .select("path, metadata")
-          .eq("prospecção_id", prospecçãoId)
+          .eq("prospeccao_id", prospeccaoId)
           .range(from, from + 999);
         if (companyId) folderQuery = folderQuery.eq("company_id", companyId);
         const { data } = await folderQuery;
@@ -333,7 +333,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
         const { data: matches } = await supabase
           .from("onedrive_files")
           .select("file_id, path, status, metadata, ano, mes")
-          .eq("prospecção_id", prospecçãoId)
+          .eq("prospeccao_id", prospeccaoId)
           .ilike("file_name", f.name)
           .in("status", PROC)
           .limit(10);
@@ -481,7 +481,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
     // e adiciona as novas linhas no topo (final da fila visualmente = topo recente).
     setRows((prev) => [...initial, ...prev.filter((r) => !fileNames.has(r.file))].slice(0, 20));
     initial.forEach((r) => recordLearningUploadStatus({
-      prospecçãoId,
+      prospeccaoId,
       fileName: r.file,
       folderId: folder.id,
       folderLabel: folder.label,
@@ -494,7 +494,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
       const f = workFiles[i];
       try {
         update(i, { status: "uploading", progress: 5, message: "Enviando ao bucket…" });
-        recordLearningUploadStatus({ prospecçãoId, fileName: f.name, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: 5, message: "Enviando ao bucket…" });
+        recordLearningUploadStatus({ prospeccaoId, fileName: f.name, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: 5, message: "Enviando ao bucket…" });
         // Bloqueia o auto-sync/extração do OneDrive enquanto este arquivo é processado
         // manualmente — evita corrida e duplicidade na fila incremental.
         try {
@@ -511,7 +511,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
           const { data: existingRows } = await supabase
             .from("onedrive_files")
             .select("file_id, path, metadata")
-            .eq("prospecção_id", prospecçãoId)
+            .eq("prospeccao_id", prospeccaoId)
             .ilike("file_name", f.name)
             .order("updated_at", { ascending: false })
             .limit(5);
@@ -546,8 +546,8 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
             // Não existe registro → cria novo, correlacionado a uma pasta real (mesmo slug
             // ou segmento canônico) para casar com o agrupamento do Worker OneDrive.
             const { error: upsertErr } = await supabase.from("onedrive_files").upsert({
-              file_id: `manual:${prospecçãoId}:${crypto.randomUUID()}`,
-              prospecção_id: prospecçãoId,
+              file_id: `manual:${prospeccaoId}:${crypto.randomUUID()}`,
+              prospeccao_id: prospeccaoId,
               company_id: companyId,
               path: `${resolvedFolderPath}/${f.name}`,
               file_name: f.name,
@@ -575,12 +575,12 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
         const up = await uploadLearningFile(f);
 
         update(i, { status: "ocr", progress: 20, message: "Extraindo texto (OCR)…" });
-        recordLearningUploadStatus({ prospecçãoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: 20, message: "Extraindo texto (OCR)…" });
+        recordLearningUploadStatus({ prospeccaoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: 20, message: "Extraindo texto (OCR)…" });
         let extracted = await extractTextFromFile(f, up);
         if (extracted.asyncOcrId) {
           const done = await waitForOcr(extracted.asyncOcrId, (s) => {
             update(i, { status: "ocr", progress: Math.max(20, Math.min(55, s.progress ?? 20)), message: `OCR em processamento · ${s.progress ?? 0}%` });
-            recordLearningUploadStatus({ prospecçãoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: Math.max(20, Math.min(55, s.progress ?? 20)), message: `OCR em processamento · ${s.progress ?? 0}%` });
+            recordLearningUploadStatus({ prospeccaoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: Math.max(20, Math.min(55, s.progress ?? 20)), message: `OCR em processamento · ${s.progress ?? 0}%` });
           });
           extracted = {
             ...extracted,
@@ -593,24 +593,24 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
 
         if (!extracted.rawText || extracted.rawText.length < 20) {
           update(i, { status: "error", progress: 100, confidence: extracted.ocrConfidence, message: "Processamento parcial: texto extraído insuficiente. Reenvie arquivo mais legível." });
-          recordLearningUploadStatus({ prospecçãoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "error", progress: 100, confidence: extracted.ocrConfidence, message: "Processamento parcial: texto extraído insuficiente. Reenvie arquivo mais legível." });
+          recordLearningUploadStatus({ prospeccaoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "error", progress: 100, confidence: extracted.ocrConfidence, message: "Processamento parcial: texto extraído insuficiente. Reenvie arquivo mais legível." });
           try {
             await supabase
               .from("onedrive_files")
               .update({ status: "error", last_learning_error: "Texto extraído insuficiente", last_learning_at: new Date().toISOString() })
-              .eq("prospecção_id", prospecçãoId)
+              .eq("prospeccao_id", prospeccaoId)
               .ilike("file_name", f.name);
           } catch {}
           continue;
         }
 
         update(i, { status: "ai", progress: 60, message: `Processando com ${folder.agent}…` });
-        recordLearningUploadStatus({ prospecçãoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: 60, confidence: extracted.ocrConfidence, message: `Processando com ${folder.agent}…` });
+        recordLearningUploadStatus({ prospeccaoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: 60, confidence: extracted.ocrConfidence, message: `Processando com ${folder.agent}…` });
         const ai = await processWithAI({
           rawText: extracted.rawText,
           normalizedText: extracted.normalizedText,
           path:
-            `learning-docs/${slug}/${up.path} · prospecção:${prospecçãoId}` +
+            `learning-docs/${slug}/${up.path} · prospeccao:${prospeccaoId}` +
             (companyId ? ` · company:${companyId}` : "") +
             ` · folder:${slug} · folderId:${folder.id} · agent:${folder.agent}` +
             ` · accountClass:${folder.accountClass}` +
@@ -623,7 +623,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
           const done = await waitForProcessing(extractionId, (s) => {
             const p = Math.max(60, Math.min(99, s.progress ?? 60));
             update(i, { status: "ai", progress: p, message: `Processando com ${folder.agent} · ${p}%` });
-            recordLearningUploadStatus({ prospecçãoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: p, confidence: s.final_conf ?? null, message: `Processando com ${folder.agent} · ${p}%` });
+            recordLearningUploadStatus({ prospeccaoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: p, confidence: s.final_conf ?? null, message: `Processando com ${folder.agent} · ${p}%` });
           });
           if (done.status !== "completed") {
             const pct = done.final_conf != null ? ` · confiança ${Math.round(done.final_conf * 100)}%` : "";
@@ -649,7 +649,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
           const { data: candidates } = await supabase
             .from("onedrive_files")
             .select("file_id, path, metadata")
-            .eq("prospecção_id", prospecçãoId)
+            .eq("prospeccao_id", prospeccaoId)
             .ilike("file_name", f.name)
             .limit(5);
           for (const c of candidates ?? []) {
@@ -689,7 +689,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
           message: `Pronto · ${folder.label}`,
           extractionId,
         });
-        recordLearningUploadStatus({ prospecçãoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "done", progress: 100, confidence: finalConfidence, message: `Pronto · ${folder.label}` });
+        recordLearningUploadStatus({ prospeccaoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "done", progress: 100, confidence: finalConfidence, message: `Pronto · ${folder.label}` });
       } catch (e: any) {
         const raw = e?.message || String(e) || "Falha";
         const isCredit =
@@ -702,14 +702,14 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
           ? "Limite de requisições IA atingido — aguarde alguns segundos e tente novamente."
           : raw;
         update(i, { status: "error", progress: 100, message: friendly });
-        recordLearningUploadStatus({ prospecçãoId, fileName: f.name, folderId: folder.id, folderLabel: folder.label, status: "error", progress: 100, message: friendly });
+        recordLearningUploadStatus({ prospeccaoId, fileName: f.name, folderId: folder.id, folderLabel: folder.label, status: "error", progress: 100, message: friendly });
         // Reverte a flag de "processing" para "error" no OneDrive — assim o arquivo
         // volta a aparecer na lista de erros e pode ser reenviado pelo usuário.
         try {
           await supabase
             .from("onedrive_files")
             .update({ status: "error", last_learning_error: friendly })
-            .eq("prospecção_id", prospecçãoId)
+            .eq("prospeccao_id", prospeccaoId)
             .ilike("file_name", f.name);
         } catch {}
         if (isCredit) {
@@ -854,7 +854,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
                 title="Mês/Ano travados ao Prospeccao AJ selecionado"
               >
                 {String(effectiveRefMonth).padStart(2, "0")}/{effectiveRefYear}
-                <span className="ml-2 text-[10px] font-noprospecçãol text-amber-700">(Prospeccao AJ)</span>
+                <span className="ml-2 text-[10px] font-normal text-amber-700">(Prospeccao AJ)</span>
               </span>
             ) : (
               <>
@@ -890,7 +890,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
               <div className="text-xs font-semibold text-amber-900">
                 {pendingFiles.length} arquivo(s) selecionado(s) · máx {maxFiles}
                 {detectedFolderLabel && (
-                  <span className="ml-1 font-noprospecçãol">· pasta atual: <strong>{detectedFolderLabel}</strong> (mantenha ou altere acima)</span>
+                  <span className="ml-1 font-normal">· pasta atual: <strong>{detectedFolderLabel}</strong> (mantenha ou altere acima)</span>
                 )}
               </div>
               <div className="flex items-center gap-2">

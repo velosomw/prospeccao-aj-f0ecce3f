@@ -64,7 +64,7 @@ const ONEDRIVE_CONFIG = {
   allowed_extensions: ["pdf", "docx", "xlsx", "xls", "png", "jpg", "jpeg", "csv", "txt"],
   max_file_size_mb: 50,
   share_url: "https://bexonedrive-my.sharepoint.com/:f:/g/personal/tecnico_brasilexpert_com_br/IgA6tcBZSKW9Qq9kqTMlHODwAWn9lmWTkQNwh_kj1yOvzxA",
-  account: "projetoprospecção@brasilexpert.com.br",
+  account: "projetoprospeccao@brasilexpert.com.br",
 };
 
 // ─── Provider Icon ─────────────────────────────────────────────
@@ -189,9 +189,9 @@ const OneDriveCard = () => {
   );
 };
 
-// ─── Sync controls (calls onedrive-sync-prospecção) ───────────────────
+// ─── Sync controls (calls onedrive-sync-prospeccao) ───────────────────
 const SyncControls = () => {
-  const [prospecçãoId, setRmaId] = useState("Prospeccao-001");
+  const [prospeccaoId, setRmaId] = useState("Prospeccao-001");
   const [clientFolder, setClientFolder] = useState("GERATHERM");
   const [year, setYear] = useState("2026");
   const [period, setPeriod] = useState("02.2026");
@@ -204,10 +204,10 @@ const SyncControls = () => {
     setRunning(true);
     setResult(null);
     try {
-      const fn = mode === "sync" ? "onedrive-sync-prospecção" : "onedrive-poll-entradas";
+      const fn = mode === "sync" ? "onedrive-sync-prospeccao" : "onedrive-poll-entradas";
       const { data, error } = await supabase.functions.invoke(fn, {
         body: {
-          prospecçãoId,
+          prospeccaoId,
           shareUrl: ONEDRIVE_CONFIG.share_url,
           clientFolder: clientFolder || undefined,
           year, period,
@@ -243,7 +243,7 @@ const SyncControls = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="space-y-1">
           <Label className="text-xs">Prospeccao AJ ID</Label>
-          <Input className="h-9 text-sm" value={prospecçãoId} onChange={e => setRmaId(e.target.value)} />
+          <Input className="h-9 text-sm" value={prospeccaoId} onChange={e => setRmaId(e.target.value)} />
         </div>
         <div className="space-y-1">
           <Label className="text-xs">Cliente (pasta)</Label>
@@ -421,7 +421,7 @@ const RenumberProspeccaosCard = () => {
     setRunning(true);
     setResult(null);
     try {
-      const { data, error } = await supabase.functions.invoke("onedrive-renumber-prospecçãos", {
+      const { data, error } = await supabase.functions.invoke("onedrive-renumber-prospeccaos", {
         body: { path: ONEDRIVE_CONFIG.base_path, year: Number(year), prefix, dryRun },
       });
       if (error) throw error;
@@ -452,7 +452,7 @@ const RenumberProspeccaosCard = () => {
       <p className="text-xs text-muted-foreground">
         Lê cada subpasta direta de <code className="bg-muted px-1 rounded">/{ONEDRIVE_CONFIG.base_path}</code>,
         atribui IDs sequenciais no formato <code className="bg-muted px-1 rounded">{prefix}-{year}-0001…</code> em ordem
-        alfabética e cadastra/atualiza a empresa correspondente. Conflitos por nome <strong>atualizam</strong> o <code className="bg-muted px-1 rounded">prospecção_id</code>.
+        alfabética e cadastra/atualiza a empresa correspondente. Conflitos por nome <strong>atualizam</strong> o <code className="bg-muted px-1 rounded">prospeccao_id</code>.
       </p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="space-y-1">
@@ -499,7 +499,7 @@ const RenumberProspeccaosCard = () => {
                 <tr key={idx} className="border-t border-border/50 hover:bg-muted/20">
                   <td className="px-3 py-2 text-muted-foreground">{idx + 1}</td>
                   <td className="px-3 py-2 font-medium">{it.folderName}</td>
-                  <td className="px-3 py-2 font-mono">{it.prospecçãoId}</td>
+                  <td className="px-3 py-2 font-mono">{it.prospeccaoId}</td>
                   <td className="px-3 py-2">
                     <Badge variant="outline" className={`text-[10px] ${
                       it.action === "inserted" ? "text-[hsl(152,70%,45%)] border-[hsl(152,70%,45%)]/30" :
@@ -615,7 +615,7 @@ const AuditLogsTable = () => {
       .from("pipeline_logs")
       .select("id, step, status, duration_ms, error_message, details, created_at")
       .in("step", [
-        "onedrive_sync_prospecção", "onedrive_poll_entradas",
+        "onedrive_sync_prospeccao", "onedrive_poll_entradas",
         "onedrive_poll_move", "onedrive_poll_invalid",
       ])
       .order("created_at", { ascending: false })

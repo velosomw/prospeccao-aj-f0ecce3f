@@ -82,7 +82,7 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de Prospecc
       if (!q) return true;
       const c = companiesById.get(e.company_id);
       const txt = [
-        c?.name, c?.prospecção_id, c?.cnpj,
+        c?.name, c?.prospeccao_id, c?.cnpj,
         nameOf(e.from_consultant_user_id),
         nameOf(e.to_consultant_user_id),
         nameOf(e.changed_by),
@@ -188,9 +188,9 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de Prospecc
                       <td className="px-3 py-2">
                         <div className="flex flex-col">
                           <span className="font-medium text-foreground">{c?.name || "Empresa removida"}</span>
-                          {c?.prospecção_id && (
+                          {c?.prospeccao_id && (
                             <Badge variant="outline" className="text-[10px] font-mono w-fit mt-0.5">
-                              {c.prospecção_id}
+                              {c.prospeccao_id}
                             </Badge>
                           )}
                         </div>

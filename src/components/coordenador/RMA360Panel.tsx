@@ -114,9 +114,9 @@ const Prospeccao360Panel = ({ company, onClose }: Props) => {
             <div className="min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h2 className="text-xl font-bold text-foreground truncate">{company.name}</h2>
-                {company.prospecção_id && (
+                {company.prospeccao_id && (
                   <Badge className="bg-[hsl(217,91%,50%)] text-white font-mono text-xs">
-                    {company.prospecção_id}
+                    {company.prospeccao_id}
                   </Badge>
                 )}
                 <Badge variant="outline" className="text-xs capitalize">{company.status}</Badge>
@@ -139,7 +139,7 @@ const Prospeccao360Panel = ({ company, onClose }: Props) => {
             <Button
               size="sm"
               className="bg-[hsl(217,91%,50%)] hover:bg-[hsl(217,91%,45%)] text-white gap-1.5"
-              onClick={() => navigate(`/prospecção/${company.id}`)}
+              onClick={() => navigate(`/prospeccao/${company.id}`)}
             >
               <ExternalLink className="w-3.5 h-3.5" /> Abrir Workspace
             </Button>

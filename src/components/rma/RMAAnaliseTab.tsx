@@ -19,13 +19,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import type { ProspeccaoEntry } from "@/types/prospecção";
+import type { ProspeccaoEntry } from "@/types/prospeccao";
 import logoBrasilExpert from "@/assets/logo-bex-full.jpeg";
 import { CobrancaEmailDialog } from "./CobrancaEmailDialog";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
-  prospecção: ProspeccaoEntry;
+  prospeccao: ProspeccaoEntry;
 }
 
 const COLORS = {
@@ -43,10 +43,10 @@ const hash = (s: string) => {
   return Math.abs(h);
 };
 
-const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
+const ProspeccaoAnaliseTab = ({ prospeccao }: Props) => {
   const reportRef = useRef<HTMLDivElement>(null);
-  const storageKey = `prospecção:relatorio-cobranca:${prospecção.id}`;
-  const dataFingerprint = String(prospecção.dataAtualizacao || prospecção.percentual || "");
+  const storageKey = `prospeccao:relatorio-cobranca:${prospeccao.id}`;
+  const dataFingerprint = String(prospeccao.dataAtualizacao || prospeccao.percentual || "");
 
   const [generatedAt, setGeneratedAt] = useState<string | null>(null);
   const [generatedFingerprint, setGeneratedFingerprint] = useState<string | null>(null);
@@ -99,7 +99,7 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
     const styles = Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
       .map((el) => el.outerHTML)
       .join("\n");
-    win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Relatório de Registro & Cobrança — ${prospecção.id}</title>${styles}
+    win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Relatório de Registro & Cobrança — ${prospeccao.id}</title>${styles}
       <style>
         @page { size: A4; margin: 0; }
         body { margin: 0; background: #fff; }
@@ -120,33 +120,33 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
     const styles = Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
       .map((el) => el.outerHTML)
       .join("\n");
-    const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Relatório de Registro & Cobrança — ${prospecção.id}</title>${styles}
+    const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Relatório de Registro & Cobrança — ${prospeccao.id}</title>${styles}
       <style>@page{size:A4;margin:0}body{margin:0;background:#fff}.page-break{page-break-after:always;break-after:page}</style>
     </head><body>${node.outerHTML}</body></html>`;
     const blob = new Blob([html], { type: "text/html;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `Relatorio-Registro-Cobranca-${prospecção.id}-${new Date().toISOString().slice(0,10)}.html`;
+    a.download = `Relatorio-Registro-Cobranca-${prospeccao.id}-${new Date().toISOString().slice(0,10)}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 
-  const completos = prospecção.topics.filter((t: any) => (t.completude ?? 0) === 100);
-  const vazios = prospecção.topics.filter((t: any) => (t.completude ?? 0) === 0);
-  const parciais = prospecção.topics.filter(
+  const completos = prospeccao.topics.filter((t: any) => (t.completude ?? 0) === 100);
+  const vazios = prospeccao.topics.filter((t: any) => (t.completude ?? 0) === 0);
+  const parciais = prospeccao.topics.filter(
     (t: any) => (t.completude ?? 0) > 0 && (t.completude ?? 0) < 100
   );
-  const total = prospecção.topics.length;
+  const total = prospeccao.topics.length;
   const score = total > 0
     ? Math.round(((completos.length + parciais.length - vazios.length) / total) * 100)
     : 0;
   const scoreSafe = Math.max(0, score);
 
-  // Reais (prospecção_cobrancas) + fallback determinístico para histórico antigo
-  const seed = hash(String(prospecção.id || prospecção.empresa || "prospecção"));
+  // Reais (prospeccao_cobrancas) + fallback determinístico para histórico antigo
+  const seed = hash(String(prospeccao.id || prospeccao.empresa || "prospeccao"));
   const [realCobrancas, setRealCobrancas] = useState<{
     total: number;
     comAnexo: number;
@@ -156,9 +156,9 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
 
   const fetchCobrancas = async () => {
     const { data, error } = await supabase
-      .from("prospecção_cobrancas")
+      .from("prospeccao_cobrancas")
       .select("created_at, has_attachment")
-      .eq("prospecção_id", prospecção.id)
+      .eq("prospeccao_id", prospeccao.id)
       .order("created_at", { ascending: false });
     if (error || !data) return;
     const comAnexo = data.filter((d: any) => d.has_attachment).length;
@@ -169,12 +169,12 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
 
   useEffect(() => {
     fetchCobrancas();
-  }, [prospecção.id]);
+  }, [prospeccao.id]);
 
   const fmtDate = (iso: string | null, fb: string) =>
     iso ? new Date(iso).toLocaleDateString("pt-BR") : fb;
 
-  // Contadores 100% reais (associados ao Prospeccao via prospecção_cobrancas). Sem fallback mock.
+  // Contadores 100% reais (associados ao Prospeccao via prospeccao_cobrancas). Sem fallback mock.
   const cobrancas = realCobrancas.total;
   const emails = realCobrancas.total;
   const anexos = realCobrancas.comAnexo;
@@ -230,7 +230,7 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
             </div>
             <p className="text-3xl font-bold text-foreground">{emails}</p>
             <p className="text-xs text-muted-foreground mt-1">
-              E-mails enviados à empresa de prospecção
+              E-mails enviados à empresa de prospeccao
             </p>
             <p className="text-[10px] text-muted-foreground mt-2">
               Taxa de resposta:{" "}
@@ -256,7 +256,7 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
             </div>
             <p className="text-3xl font-bold text-foreground">{anexos}</p>
             <p className="text-xs text-muted-foreground mt-1">
-              Vezes que a empresa de prospecção anexou documentos
+              Vezes que a empresa de prospeccao anexou documentos
             </p>
             <p className="text-[10px] text-muted-foreground mt-2">
               Último envio: <span className="font-semibold text-foreground">{ultimoAnexo}</span>
@@ -354,8 +354,8 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
       <CobrancaEmailDialog
         open={emailOpen}
         onOpenChange={setEmailOpen}
-        prospecçãoId={prospecção.id}
-        companyName={prospecção.empresa}
+        prospeccaoId={prospeccao.id}
+        companyName={prospeccao.empresa}
         onSent={fetchCobrancas}
       />
 
@@ -444,11 +444,11 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
             <div className="grid grid-cols-3 gap-8 mt-12 max-w-[600px] w-full">
               <div className="text-center">
                 <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Empresa de Prospeccao</p>
-                <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{prospecção.empresa}</p>
+                <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{prospeccao.empresa}</p>
               </div>
               <div className="text-center">
                 <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Prospeccao AJ</p>
-                <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{prospecção.id}</p>
+                <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{prospeccao.id}</p>
               </div>
               <div className="text-center">
                 <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Emissão</p>
@@ -507,10 +507,10 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
               </div>
               <p className="text-sm leading-relaxed text-foreground/90">
                 A análise técnica realizada pela IA da <strong>Brasil Expert</strong> sobre as pastas do
-                OneDrive da recuperanda <strong>{prospecção.empresa}</strong> identificou <strong>{total} tópicos</strong> documentais.
+                OneDrive da recuperanda <strong>{prospeccao.empresa}</strong> identificou <strong>{total} tópicos</strong> documentais.
                 Destes, <strong style={{ color: COLORS.ok }}>{completos.length} estão completos</strong>,{" "}
                 <strong style={{ color: COLORS.incompleto }}>{parciais.length} parcialmente documentados</strong> e{" "}
-                <strong style={{ color: COLORS.vazio }}>{vazios.length} peprospecçãonecem vazios</strong>.
+                <strong style={{ color: COLORS.vazio }}>{vazios.length} peprospeccaonecem vazios</strong>.
                 O <strong>score global de recebimento</strong> é de{" "}
                 <strong style={{ color: scoreSafe >= 67 ? COLORS.ok : scoreSafe >= 33 ? COLORS.incompleto : COLORS.vazio }}>
                   {scoreSafe}%
@@ -527,7 +527,7 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
               </p>
               <p className="text-xs text-foreground/80 leading-relaxed">
                 {vazios.length > 0
-                  ? `Priorize cobrança ativa das ${vazios.length} pasta(s) sem qualquer documento. Recomenda-se enviar e-mail foprospecçãol e registrar nova cobrança nas próximas 48h.`
+                  ? `Priorize cobrança ativa das ${vazios.length} pasta(s) sem qualquer documento. Recomenda-se enviar e-mail foprospeccaol e registrar nova cobrança nas próximas 48h.`
                   : `Todas as pastas possuem ao menos um documento. Foque em complementar as ${parciais.length} pasta(s) parciais para liberar a auditoria.`}
               </p>
             </div>
@@ -659,7 +659,7 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
               </div>
               <p className="text-xs text-foreground/85 leading-relaxed mb-3">
                 Foram efetuadas <strong>{cobrancas} cobranças</strong> e enviados{" "}
-                <strong>{emails} e-mails</strong> à recuperanda <strong>{prospecção.empresa}</strong>,
+                <strong>{emails} e-mails</strong> à recuperanda <strong>{prospeccao.empresa}</strong>,
                 resultando em <strong>{anexos} anexos</strong> recebidos via OneDrive.
                 A taxa de resposta atual é de <strong style={{ color: COLORS.ok }}>{taxaResposta}%</strong>,
                 e o score global de recebimento documental encontra-se em{" "}
@@ -680,7 +680,7 @@ const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
                 Documento gerado automaticamente pela IA · BEx-Prospeccao · Brasil Expert
               </p>
               <p className="text-[10px] text-muted-foreground">
-                {dataRelatorio} · {prospecção.id} · {prospecção.empresa}
+                {dataRelatorio} · {prospeccao.id} · {prospeccao.empresa}
               </p>
             </div>
           </div>

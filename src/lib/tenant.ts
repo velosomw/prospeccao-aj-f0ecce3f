@@ -2,7 +2,7 @@
  * Tenant scoping para cache multi-tenant.
  *
  * O conceito de "tenant" nesta plataforma é o **Prospeccao / empresa em recuperação**
- * atualmente em foco. A URL /prospecção/:id define o tenant ativo. Para perfis sem
+ * atualmente em foco. A URL /prospeccao/:id define o tenant ativo. Para perfis sem
  * tenant fixo (Gestor IA, Coordenador na home), usamos "global".
  *
  * Incluir o tenantId no queryKey isola caches entre clientes/usuários e evita
@@ -12,9 +12,9 @@
 export function getActiveTenantId(): string {
   if (typeof window === "undefined") return "global";
   const path = window.location.pathname;
-  // /prospecção/<id> ou /prospecção/<id>/algo
-  const m = path.match(/^\/prospecção\/([^/?#]+)/);
-  if (m) return `prospecção:${m[1]}`;
+  // /prospeccao/<id> ou /prospeccao/<id>/algo
+  const m = path.match(/^\/prospeccao\/([^/?#]+)/);
+  if (m) return `prospeccao:${m[1]}`;
   // dashboards globais por perfil
   if (path.startsWith("/dashboard")) return "global:coordenador";
   if (path.startsWith("/consultor")) return "global:consultor";

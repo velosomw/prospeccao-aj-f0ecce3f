@@ -313,7 +313,7 @@ function UploadTab({ onSaved }: { onSaved: () => void }) {
         extraction: {
           id: extractionId,
           document_id: null,
-          prospecção_id: null,
+          prospeccao_id: null,
           path: uploaded ? `learning-docs/${uploaded.path}` : null,
           classe,
           agent: aiResult.agent ?? null,
@@ -610,7 +610,7 @@ function PendingTab() {
                   </Badge>
                 </div>
                 <p className="text-[11px] text-muted-foreground truncate">
-                  {it.path || it.prospecção_id || it.id.slice(0, 8)}
+                  {it.path || it.prospeccao_id || it.id.slice(0, 8)}
                 </p>
                 <p className="text-[10px] text-muted-foreground">
                   {new Date(it.created_at).toLocaleString("pt-BR")}

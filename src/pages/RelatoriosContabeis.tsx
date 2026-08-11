@@ -1,4 +1,4 @@
-// Página "Relatórios Contábeis" — seleciona Empresa → Prospeccao → Período/Foprospecçãoto e gera o
+// Página "Relatórios Contábeis" — seleciona Empresa → Prospeccao → Período/Foprospeccaoto e gera o
 // Relatório Contábil de Dados (DOCX/PDF) usando balancete_consolidado da empresa.
 import { useEffect, useMemo, useState } from "react";
 import PlatformLayout from "@/components/PlatformLayout";
@@ -80,13 +80,13 @@ export default function RelatoriosContabeis() {
     const names = new Set<string>();
     companies.forEach(c => {
       if (!c.name) return;
-      if (q && !c.name.toLowerCase().includes(q) && !(c.prospecção_id || "").toLowerCase().includes(q)) return;
+      if (q && !c.name.toLowerCase().includes(q) && !(c.prospeccao_id || "").toLowerCase().includes(q)) return;
       names.add(c.name);
     });
     return Array.from(names).sort((a, b) => a.localeCompare(b));
   }, [companies, filter]);
 
-  const prospecçãosOfCompany = useMemo(() => {
+  const prospeccaosOfCompany = useMemo(() => {
     if (!companyName) return [];
     return companies.filter(c => c.name === companyName);
   }, [companies, companyName]);
@@ -119,7 +119,7 @@ export default function RelatoriosContabeis() {
       const dataset = buildReportDataset({
         empresaNome: selected.name,
         empresaCnpj: selected.cnpj,
-        prospecçãoId: selected.prospecção_id,
+        prospeccaoId: selected.prospeccao_id,
         rows: bsRows,
         fromKey, toKey, agregacao, blocks,
       });
@@ -219,14 +219,14 @@ export default function RelatoriosContabeis() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {prospecçãosOfCompany.map(c => (
+                {prospeccaosOfCompany.map(c => (
                   <button
                     key={c.id}
                     onClick={() => { setCompanyId(c.id); setStep(3); }}
                     className="text-left p-4 border rounded-lg hover:border-[hsl(217,91%,50%)] hover:bg-muted/30 transition-colors"
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-semibold text-sm">{c.prospecção_id || "Prospeccao sem identificador"}</span>
+                      <span className="font-semibold text-sm">{c.prospeccao_id || "Prospeccao sem identificador"}</span>
                       <span className={`text-[10px] px-2 py-0.5 rounded-full ${
                         c.status === "active" ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"
                       }`}>{c.status}</span>
@@ -365,7 +365,7 @@ export default function RelatoriosContabeis() {
               <CardContent className="space-y-2 text-sm">
                 <div><b>Empresa:</b> {selected.name}</div>
                 {selected.cnpj && <div><b>CNPJ:</b> {selected.cnpj}</div>}
-                <div><b>Prospeccao AJ:</b> {selected.prospecção_id || "—"}</div>
+                <div><b>Prospeccao AJ:</b> {selected.prospeccao_id || "—"}</div>
                 <div><b>Agregação:</b> {AGREG_LABEL[agregacao]}</div>
                 <div><b>Períodos disponíveis:</b> {periodKeys.length}</div>
                 <div><b>Intervalo:</b> {fromKey || "—"} → {toKey || "—"}</div>

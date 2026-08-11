@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-import { buildLiveScoreTopics, computeRmaScore } from "@/lib/prospecçãoScore";
+import { buildLiveScoreTopics, computeRmaScore } from "@/lib/prospeccaoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
-import type { ProspeccaoEntry } from "@/types/prospecção";
+import type { ProspeccaoEntry } from "@/types/prospeccao";
 import type { RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
 
 interface Props {
-  prospecção: ProspeccaoEntry;
+  prospeccao: ProspeccaoEntry;
   companyId?: string | null;
   onUpdateIA: () => void;
   isAnalyzing?: boolean;
@@ -23,7 +23,7 @@ type StatusFilter = "all" | "completo" | "pendente" | "incompleto";
 
 interface OneDriveFile { path: string; file_name: string; status: string | null }
 
-const ProspeccaoStatusTab = ({ prospecção, companyId, onUpdateIA, isAnalyzing = false, analysis }: Props) => {
+const ProspeccaoStatusTab = ({ prospeccao, companyId, onUpdateIA, isAnalyzing = false, analysis }: Props) => {
   const [filter, setFilter] = useState<StatusFilter>("all");
   const [allFiles, setAllFiles] = useState<OneDriveFile[] | null>(null);
   const [refreshTick, setRefreshTick] = useState(0);
@@ -79,7 +79,7 @@ const ProspeccaoStatusTab = ({ prospecção, companyId, onUpdateIA, isAnalyzing 
           docsParsed: t.docsParsed,
           errors: t.errors,
         }))
-      : prospecção.topics.map((t: any, i: number) => ({
+      : prospeccao.topics.map((t: any, i: number) => ({
           id: t.id,
           number: (t.number ?? t.pasta ?? i + 1) as number,
           name: t.name,
@@ -93,20 +93,20 @@ const ProspeccaoStatusTab = ({ prospecção, companyId, onUpdateIA, isAnalyzing 
 
     // Sobrescreve fileCount/docsParsed/completude/status com os números reais do OneDrive.
     // A completude por tópico passa a refletir docsParsed/fileCount em tempo real
-    // (e não apenas o snapshot da última run completa de prospecção-analyze).
+    // (e não apenas o snapshot da última run completa de prospeccao-analyze).
     return buildLiveScoreTopics(base, allFiles) as typeof base;
-  }, [analysis, prospecção.topics, allFiles]);
+  }, [analysis, prospeccao.topics, allFiles]);
 
   const completos = liveTopics.filter((t) => t.status === "completo");
   const pendentes = liveTopics.filter((t) => t.status === "pendente");
   const incompletos = liveTopics.filter((t) => t.status === "incompleto");
   const processandoAtual = liveTopics.find((t) => t.processing);
 
-  // Score Global unificado: `prospecção.percentual` é a fonte canônica (vinda do
-  // Workspace/edge `prospecção-score`). reconcileScore garante paridade em runtime.
+  // Score Global unificado: `prospeccao.percentual` é a fonte canônica (vinda do
+  // Workspace/edge `prospeccao-score`). reconcileScore garante paridade em runtime.
   const localScore = computeRmaScore(liveTopics as any, analysis?.percentual ?? 0);
-  const avgCompletude = reconcileScore("ProspeccaoStatusTab", prospecção.percentual, localScore);
-  useScoreParityGuard(prospecção.id ?? null, "ProspeccaoStatusTab", avgCompletude);
+  const avgCompletude = reconcileScore("ProspeccaoStatusTab", prospeccao.percentual, localScore);
+  useScoreParityGuard(prospeccao.id ?? null, "ProspeccaoStatusTab", avgCompletude);
 
   const totalProcessados = completos.length + incompletos.length;
   const totalEsperado = liveTopics.length;

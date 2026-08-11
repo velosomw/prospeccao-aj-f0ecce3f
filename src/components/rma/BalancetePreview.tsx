@@ -8,7 +8,7 @@ import BalanceteDrilldownDialog from "./BalanceteDrilldownDialog";
 
 interface Props {
   companyId: string;
-  prospecçãoId: string | null;
+  prospeccaoId: string | null;
   ano: number;
   mes: number;
   consolidado: any[];
@@ -37,7 +37,7 @@ interface SourceFile {
   status: string | null;
 }
 
-const BalancetePreview = ({ companyId, prospecçãoId }: Props) => {
+const BalancetePreview = ({ companyId, prospeccaoId }: Props) => {
   const [loading, setLoading] = useState(false);
   const [rows, setRows] = useState<PivotRow[]>([]);
   const [mesKeys, setMesKeys] = useState<string[]>([]);
@@ -60,11 +60,11 @@ const BalancetePreview = ({ companyId, prospecçãoId }: Props) => {
         console.error("[BalancetePreview] pivot error", e);
       }
       // Lista dos arquivos-fonte que originaram o balancete (nome real do OneDrive)
-      if (prospecçãoId) {
+      if (prospeccaoId) {
         const { data: extr } = await supabase
           .from("ai_extractions")
           .select("document_id, classe, status")
-          .eq("prospecção_id", prospecçãoId)
+          .eq("prospeccao_id", prospeccaoId)
           .in("classe", ["BALANCETE", "DRE", "DEMONSTRACAO_RESULTADO", "DFC", "BALANCO"]);
         const docIds = Array.from(new Set((extr || []).map((e: any) => e.document_id).filter(Boolean)));
         let files: SourceFile[] = [];
@@ -88,7 +88,7 @@ const BalancetePreview = ({ companyId, prospecçãoId }: Props) => {
       if (!cancelled) setLoading(false);
     })();
     return () => { cancelled = true; };
-  }, [companyId, prospecçãoId]);
+  }, [companyId, prospeccaoId]);
 
   // Visão hierárquica plana ordenada por código contábil (espelha aba BALANCETES do XLSX).
   const sortedRows = useMemo(() => {
@@ -264,7 +264,7 @@ const BalancetePreview = ({ companyId, prospecçãoId }: Props) => {
                     const isRoot = len <= 3;
                     const isMid = len > 3 && len < 10;
                     const indent = isRoot ? 0 : isMid ? 12 : 24;
-                    const weight = isRoot ? "font-bold" : isMid ? "font-semibold" : "font-noprospecçãol";
+                    const weight = isRoot ? "font-bold" : isMid ? "font-semibold" : "font-normal";
                     const bg = isRoot ? "bg-muted/40" : isMid ? "bg-muted/15" : "";
                     return (
                       <tr

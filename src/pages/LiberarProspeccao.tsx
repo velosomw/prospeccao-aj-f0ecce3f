@@ -20,7 +20,7 @@ import { listCompanies, type Company } from "@/services/companiesService";
 import {
   listReleases, createRelease, updateReleaseStatus, deleteRelease,
   monthLabel, statusLabel, type ProspeccaoRelease, type ReleaseRole, type ReleaseStatus,
-} from "@/services/prospecçãoReleaseService";
+} from "@/services/prospeccaoReleaseService";
 
 type ProfileLite = { user_id: string; full_name: string; email: string; role: string; active: boolean };
 
@@ -134,7 +134,7 @@ const LiberarProspeccao = () => {
     return releases.filter((r) => {
       const c = companiesById.get(r.company_id);
       const u = profilesById.get(r.released_to_user_id);
-      return [c?.name, c?.prospecção_id, u?.full_name, u?.email, monthLabel(r.month), String(r.year)]
+      return [c?.name, c?.prospeccao_id, u?.full_name, u?.email, monthLabel(r.month), String(r.year)]
         .filter(Boolean).join(" ").toLowerCase().includes(q);
     });
   }, [releases, search, companiesById, profilesById]);
@@ -197,7 +197,7 @@ const LiberarProspeccao = () => {
                       <SelectContent>
                         {companies.map((c) => (
                           <SelectItem key={c.id} value={c.id}>
-                            {c.name} {c.prospecção_id ? `· ${c.prospecção_id}` : ""}
+                            {c.name} {c.prospeccao_id ? `· ${c.prospeccao_id}` : ""}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -317,7 +317,7 @@ const LiberarProspeccao = () => {
                               <td className="px-3 py-2">
                                 <div className="flex flex-col">
                                   <span className="font-medium text-foreground">{c?.name || "Empresa"}</span>
-                                  {c?.prospecção_id && <Badge variant="outline" className="text-[10px] font-mono w-fit mt-0.5">{c.prospecção_id}</Badge>}
+                                  {c?.prospeccao_id && <Badge variant="outline" className="text-[10px] font-mono w-fit mt-0.5">{c.prospeccao_id}</Badge>}
                                 </div>
                               </td>
                               <td className="px-3 py-2">

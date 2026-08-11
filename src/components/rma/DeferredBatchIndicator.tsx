@@ -15,9 +15,9 @@ interface DeferredFolderStatus {
 
 interface Props {
   companyId: string;
-  prospecçãoId?: string | null;
+  prospeccaoId?: string | null;
   folderPath?: string | null;
-  variant?: "folder" | "prospecção-summary";
+  variant?: "folder" | "prospeccao-summary";
   pollMs?: number;
 }
 
@@ -33,21 +33,21 @@ function formatEta(target: string | null): string {
 /**
  * Indicador de arquivos em fila batch (Document AI, até 24h, ~50% mais barato).
  * Variant 'folder': badge compacto na linha da pasta
- * Variant 'prospecção-summary': barra agregada para topo do workspace
+ * Variant 'prospeccao-summary': barra agregada para topo do workspace
  */
-export function DeferredBatchIndicator({ companyId, prospecçãoId, folderPath, variant = "folder", pollMs = 15000 }: Props) {
+export function DeferredBatchIndicator({ companyId, prospeccaoId, folderPath, variant = "folder", pollMs = 15000 }: Props) {
   const [status, setStatus] = useState<DeferredFolderStatus | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     const fetchStatus = async () => {
-      // Para prospecção-summary: agrega todas as pastas do Prospeccao
-      if (variant === "prospecção-summary") {
+      // Para prospeccao-summary: agrega todas as pastas do Prospeccao
+      if (variant === "prospeccao-summary") {
         let q = supabase
           .from("folder_deferred_status" as never)
           .select("in_batch_count, done_count, failed_count, total_count, earliest_eta, latest_eta")
           .eq("company_id", companyId);
-        if (prospecçãoId) q = q.eq("prospecção_id", prospecçãoId);
+        if (prospeccaoId) q = q.eq("prospeccao_id", prospeccaoId);
         const { data } = await q;
         if (cancelled) return;
         const rows = (data ?? []) as DeferredFolderStatus[];
@@ -70,19 +70,19 @@ export function DeferredBatchIndicator({ companyId, prospecçãoId, folderPath, 
         .select("*")
         .eq("company_id", companyId)
         .eq("folder_path", folderPath);
-      if (prospecçãoId) q = q.eq("prospecção_id", prospecçãoId);
+      if (prospeccaoId) q = q.eq("prospeccao_id", prospeccaoId);
       const { data } = await q.maybeSingle();
       if (!cancelled) setStatus((data as DeferredFolderStatus | null) ?? null);
     };
     fetchStatus();
     const interval = setInterval(fetchStatus, pollMs);
     return () => { cancelled = true; clearInterval(interval); };
-  }, [companyId, prospecçãoId, folderPath, pollMs, variant]);
+  }, [companyId, prospeccaoId, folderPath, pollMs, variant]);
 
   if (!status || status.total_count === 0) return null;
   if (status.in_batch_count === 0 && status.done_count === 0) return null;
 
-  if (variant === "prospecção-summary") {
+  if (variant === "prospeccao-summary") {
     return (
       <div className="flex flex-wrap items-center gap-2 rounded-lg border bg-muted/40 px-3 py-2 text-xs">
         <Hourglass className="h-4 w-4 text-primary" />

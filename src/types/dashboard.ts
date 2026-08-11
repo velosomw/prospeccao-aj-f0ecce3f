@@ -26,7 +26,7 @@ export interface RiskData {
   highRisk: number;
 }
 
-export interface NoprospecçãotiveReference {
+export interface NoprospeccaotiveReference {
   id: string;
   code: string;
   type: 'cpc' | 'ifrs' | 'nbcta' | 'legislation';

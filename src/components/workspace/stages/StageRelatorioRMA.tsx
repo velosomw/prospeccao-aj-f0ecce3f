@@ -10,13 +10,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 import OficioPendenciasCard from "./OficioPendenciasCard";
-import RelatorioCanonicalPreview from "@/components/prospecção/document/RelatorioCanonicalPreview";
+import RelatorioCanonicalPreview from "@/components/prospeccao/document/RelatorioCanonicalPreview";
 
 interface Props {
-  prospecçãoId: string;
+  prospeccaoId: string;
   scoreFinal: number;
   companyId: string | null;
-  prospecçãoCode?: string;
+  prospeccaoCode?: string;
   empresa?: string;
   mesReferencia?: string;
   responsavel?: string;
@@ -56,10 +56,10 @@ function computeState(scoreFinal: number, hasReport: boolean, aprovadoPct: numbe
  * Relatório DIP dinâmico, incremental e auditável (Em Construção → Consolidação → Final).
  */
 export default function StageRelatorioProspeccao({
-  prospecçãoId, scoreFinal, companyId, prospecçãoCode, empresa, mesReferencia, responsavel,
+  prospeccaoId, scoreFinal, companyId, prospeccaoCode, empresa, mesReferencia, responsavel,
 }: Props) {
   const { doc, sections, progresso, aprovadoPct, regenerateFinal, buildCharts, reload } =
-    useRmaDocument(prospecçãoId, "prospecção_mensal", "Relatório Mensal de Atividade (CNJ 72/2020)");
+    useRmaDocument(prospeccaoId, "prospeccao_mensal", "Relatório Mensal de Atividade (CNJ 72/2020)");
 
   const [busy, setBusy] = useState<null | "gerar" | "atualizar">(null);
   const [phase, setPhase] = useState<string>("");
@@ -84,7 +84,7 @@ export default function StageRelatorioProspeccao({
     let cancel = false;
     (async () => {
       const { data } = await supabase
-        .from("prospecção_analysis_results")
+        .from("prospeccao_analysis_results")
         .select("percentual, kanitz, pendencias, indicadores, score_rj, topics, diagnostico")
         .eq("company_id", companyId)
         .maybeSingle();
@@ -103,7 +103,7 @@ export default function StageRelatorioProspeccao({
     scoreFinal - (doc.arquivo_final_pct ?? 0) >= 5;
 
   // KPIs do Dashboard
-  // FONTE CANÔNICA: prospecção_analysis_results.diagnostico.pipeline reflete o pipeline real
+  // FONTE CANÔNICA: prospeccao_analysis_results.diagnostico.pipeline reflete o pipeline real
   // (onedrive_files únicos: ok / total / manual / pending). Somar por tópico contaria
   // o mesmo arquivo várias vezes (um arquivo pode pertencer a N tópicos) — por isso
   // víamos "174/258" enquanto o real é 173/189 para 01/2026 — DIPLOMATA.
@@ -145,7 +145,7 @@ export default function StageRelatorioProspeccao({
       // Agrupa todas as seções num único request — reduz overhead, reaproveita
       // dados da empresa e maximiza HIT do llm_response_cache.
       const { data: batchData, error: batchErr } = await supabase.functions.invoke(
-        "prospecção-doc-section-regenerate",
+        "prospeccao-doc-section-regenerate",
         { body: { section_ids: sections.map((s) => s.id), force: true } },
       );
       const falhas = batchErr
@@ -182,7 +182,7 @@ export default function StageRelatorioProspeccao({
       {/* Ofício de Pendências — emissão independente */}
       <OficioPendenciasCard
         analysis={analysis}
-        prospecçãoCode={prospecçãoCode || prospecçãoId}
+        prospeccaoCode={prospeccaoCode || prospeccaoId}
         mesReferencia={mesReferencia}
         empresa={empresa}
         responsavel={responsavel}
@@ -334,7 +334,7 @@ export default function StageRelatorioProspeccao({
       {/* Prévia estruturada DIP-Prospeccao — Capa → Carta ao Juízo → Sumário → Seções */}
       <RelatorioCanonicalPreview
         empresa={empresa}
-        prospecçãoCode={prospecçãoCode || prospecçãoId}
+        prospeccaoCode={prospeccaoCode || prospeccaoId}
         mesReferencia={mesReferencia}
         responsavel={responsavel}
         sections={sections as any}

@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 interface Props {
-  prospecçãoId?: string | null;
+  prospeccaoId?: string | null;
   companyId?: string | null;
 }
 
@@ -65,8 +65,8 @@ function statusBadge(row: FileRow) {
   return <Badge className="bg-muted text-muted-foreground border-0 text-[10px]">{row.status}</Badge>;
 }
 
-export default function ProspeccaoAuditTrailCard({ prospecçãoId, companyId }: Props) {
-  const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(prospecçãoId ?? null);
+export default function ProspeccaoAuditTrailCard({ prospeccaoId, companyId }: Props) {
+  const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(prospeccaoId ?? null);
   const [files, setFiles] = useState<FileRow[]>([]);
   const [queue, setQueue] = useState<QueueRow[]>([]);
   const [failed, setFailed] = useState<FailedJobRow[]>([]);
@@ -76,8 +76,8 @@ export default function ProspeccaoAuditTrailCard({ prospecçãoId, companyId }: 
 
   useEffect(() => {
     if (resolvedRmaId || !companyId) return;
-    supabase.from("companies").select("prospecção_id").eq("id", companyId).maybeSingle()
-      .then(({ data }) => { if (data?.prospecção_id) setResolvedRmaId(data.prospecção_id); });
+    supabase.from("companies").select("prospeccao_id").eq("id", companyId).maybeSingle()
+      .then(({ data }) => { if (data?.prospeccao_id) setResolvedRmaId(data.prospeccao_id); });
   }, [companyId, resolvedRmaId]);
 
   const load = async () => {
@@ -89,7 +89,7 @@ export default function ProspeccaoAuditTrailCard({ prospecçãoId, companyId }: 
         .select("file_id,file_name,path,status,parse_attempts,learning_attempts,requires_manual_upload,error_message,last_learning_error,last_parse_error_at,last_learning_at,last_processed_at,updated_at")
         .order("updated_at", { ascending: false })
         .limit(500);
-      if (resolvedRmaId) q = q.eq("prospecção_id", resolvedRmaId);
+      if (resolvedRmaId) q = q.eq("prospeccao_id", resolvedRmaId);
       else if (companyId) q = q.eq("company_id", companyId);
 
       const { data: filesData, error: filesErr } = await q;
@@ -287,7 +287,7 @@ export default function ProspeccaoAuditTrailCard({ prospecçãoId, companyId }: 
           </ScrollArea>
         )}
         <p className="text-[10px] text-muted-foreground mt-2">
-          <strong>Parse</strong>: tentativas de leitura via prospecção-analyze · <strong>Fila</strong>: tentativas no worker assíncrono ·
+          <strong>Parse</strong>: tentativas de leitura via prospeccao-analyze · <strong>Fila</strong>: tentativas no worker assíncrono ·
           <strong> Failed</strong>: registros arquivados em failed_jobs · <strong>Apz.</strong>: envios ao módulo de Aprendizado.
           Na 2ª falha consecutiva (não rate-limit), o arquivo é movido automaticamente para <em>Upload manual exigido</em>.
         </p>

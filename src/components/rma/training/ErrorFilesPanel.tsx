@@ -14,7 +14,7 @@ import { buildFolderAliasMap, buildPathInFolder, findFolderLocationForDip, getPa
 import { buildFolderNumbering } from "@/utils/dipFolderNumbering";
 
 interface Props {
-  prospecçãoId: string;
+  prospeccaoId: string;
   companyId: string | null;
 }
 
@@ -78,7 +78,7 @@ const MONTH_LABEL: Record<string, string> = {
 };
 const fmtMonth = (k: string) => `${MONTH_LABEL[k.slice(5, 7)]}/${k.slice(0, 4)}`;
 
-export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
+export default function ErrorFilesPanel({ prospeccaoId, companyId }: Props) {
   const [loading, setLoading] = useState(false);
   const [docs, setDocs] = useState<PendingDoc[]>([]);
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
@@ -88,13 +88,13 @@ export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
   // o arquivo para a pasta correspondente no OneDrive.
   const [folderOverrides, setFolderOverrides] = useState<Record<string, number>>({});
   const [aliasMap, setAliasMap] = useState<Map<string, string>>(new Map());
-  const [localStatuses, setLocalStatuses] = useState(() => listLearningUploadStatuses(prospecçãoId));
+  const [localStatuses, setLocalStatuses] = useState(() => listLearningUploadStatuses(prospeccaoId));
 
   useEffect(() => {
-    const refresh = () => setLocalStatuses(listLearningUploadStatuses(prospecçãoId));
+    const refresh = () => setLocalStatuses(listLearningUploadStatuses(prospeccaoId));
     refresh();
     return subscribeLearningUploadStatuses(refresh);
-  }, [prospecçãoId]);
+  }, [prospeccaoId]);
 
   const [monthFilter, setMonthFilter] = useState<string>("all");
 
@@ -106,7 +106,7 @@ export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
         .from("vw_training_pending")
         .select("extraction_id, path, classe, agent, status, final_confidence, file_name")
         .limit(500);
-      if (prospecçãoId) q = q.eq("prospecção_id", prospecçãoId);
+      if (prospeccaoId) q = q.eq("prospeccao_id", prospeccaoId);
 
       // Inclui qualquer arquivo do OneDrive que NÃO esteja finalizado:
       // processando, na fila, novo, atualizado, falho ou parado sem status final.
@@ -117,7 +117,7 @@ export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
         .select("file_id, file_name, path, status, last_learning_at, last_learning_error, metadata, updated_at")
         .not("status", "in", "(done,completed,processed,manual_uploaded,ignored,inactive)")
         .limit(500);
-      if (prospecçãoId) pq = pq.eq("prospecção_id", prospecçãoId);
+      if (prospeccaoId) pq = pq.eq("prospeccao_id", prospeccaoId);
 
       // Arquivos JÁ finalizados — usados para deduplicar entradas antigas de
       // "falha" que continuam na view pendente. Inclui `processed` (sucesso pipeline).
@@ -126,7 +126,7 @@ export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
         .select("file_name, path")
         .in("status", ["done", "completed", "processed", "manual_uploaded"])
         .limit(5000);
-      if (prospecçãoId) doneQ = doneQ.eq("prospecção_id", prospecçãoId);
+      if (prospeccaoId) doneQ = doneQ.eq("prospeccao_id", prospeccaoId);
 
       // TODOS os arquivos do Prospeccao — usados para reproduzir o mesmo agrupamento
       // canônico de pastas que o Worker OneDrive exibe (mesmo alias map).
@@ -134,7 +134,7 @@ export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
         .from("onedrive_files")
         .select("path, metadata")
         .limit(5000);
-      if (prospecçãoId) allQ = allQ.eq("prospecção_id", prospecçãoId);
+      if (prospeccaoId) allQ = allQ.eq("prospeccao_id", prospeccaoId);
 
       const [{ data, error }, { data: procRows, error: procErr }, { data: doneRows }, { data: allRows }] =
         await Promise.all([q, pq, doneQ, allQ]);
@@ -203,7 +203,7 @@ export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
     } finally {
       setLoading(false);
     }
-  }, [prospecçãoId, localStatuses]);
+  }, [prospeccaoId, localStatuses]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -553,7 +553,7 @@ export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
                                 </Button>
                               )}
                               <LearningUploadPanel
-                                prospecçãoId={prospecçãoId}
+                                prospeccaoId={prospeccaoId}
                                 companyId={companyId}
                                 defaultFolderId={folder.id}
                                 defaultFileName={it.file_name ?? undefined}

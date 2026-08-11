@@ -38,8 +38,8 @@ const CadastroProspeccao = () => {
   const [saving, setSaving] = useState(false);
 
   // Empresa
-  const [prospecçãoName, setRmaName] = useState("");
-  const [prospecçãoId, setRmaId] = useState("");
+  const [prospeccaoName, setRmaName] = useState("");
+  const [prospeccaoId, setRmaId] = useState("");
   const [cnpj, setCnpj] = useState("");
   const [uf, setUf] = useState("");
   const [city, setCity] = useState("");
@@ -106,25 +106,25 @@ const CadastroProspeccao = () => {
   }, [step]);
 
   // Garante que o mês de referência sempre coincide com o número do ID Prospeccao (001–012)
-  const prospecçãoIdNumber = useMemo(() => {
-    const m = prospecçãoId.match(/^Prospeccao-(\d{3})$/);
+  const prospeccaoIdNumber = useMemo(() => {
+    const m = prospeccaoId.match(/^Prospeccao-(\d{3})$/);
     if (!m) return null;
     const n = Number(m[1]);
     return n >= 1 && n <= 12 ? n : null;
-  }, [prospecçãoId]);
+  }, [prospeccaoId]);
 
   useEffect(() => {
-    if (prospecçãoIdNumber && executionMonth !== prospecçãoIdNumber) {
-      setExecutionMonth(prospecçãoIdNumber);
+    if (prospeccaoIdNumber && executionMonth !== prospeccaoIdNumber) {
+      setExecutionMonth(prospeccaoIdNumber);
     }
-  }, [prospecçãoIdNumber, executionMonth]);
+  }, [prospeccaoIdNumber, executionMonth]);
 
   const handleNext = () => {
-    if (!prospecçãoName.trim()) {
+    if (!prospeccaoName.trim()) {
       toast({ title: "Nome Prospeccao AJ é obrigatório", variant: "destructive" });
       return;
     }
-    if (!prospecçãoId.trim() || !prospecçãoIdNumber) {
+    if (!prospeccaoId.trim() || !prospeccaoIdNumber) {
       toast({
         title: "ID Prospeccao AJ inválido",
         description: "Selecione um ID Prospeccao AJ entre Prospeccao AJ-001 e Prospeccao AJ-012.",
@@ -136,13 +136,13 @@ const CadastroProspeccao = () => {
       toast({ title: "CNPJ inválido", description: "Informe 14 dígitos", variant: "destructive" });
       return;
     }
-    if (!executionMonth || executionMonth !== prospecçãoIdNumber) {
+    if (!executionMonth || executionMonth !== prospeccaoIdNumber) {
       toast({
         title: "Mês de referência divergente",
         description: "O mês deve coincidir com o número do ID Prospeccao AJ (001–012).",
         variant: "destructive",
       });
-      setExecutionMonth(prospecçãoIdNumber);
+      setExecutionMonth(prospeccaoIdNumber);
       return;
     }
     setStep(2);
@@ -161,7 +161,7 @@ const CadastroProspeccao = () => {
       toast({ title: "Selecione o Consultor responsável", variant: "destructive" });
       return;
     }
-    if (!prospecçãoIdNumber || executionMonth !== prospecçãoIdNumber) {
+    if (!prospeccaoIdNumber || executionMonth !== prospeccaoIdNumber) {
       toast({
         title: "Mês de referência divergente",
         description: "O mês deve coincidir com o número do ID Prospeccao AJ (001–012). Volte à etapa 1 e revise.",
@@ -176,8 +176,8 @@ const CadastroProspeccao = () => {
         .map(t => ({ number: t.number, name: t.name }));
       const company = await createCompany(
         {
-          name: prospecçãoName,
-          prospecção_id: prospecçãoId,
+          name: prospeccaoName,
+          prospeccao_id: prospeccaoId,
           cnpj,
           uf,
           city,
@@ -259,20 +259,20 @@ const CadastroProspeccao = () => {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
-                  <Label>Nome Prospeccao AJ * <span className="text-xs text-muted-foreground font-noprospecçãol">(nome da empresa)</span></Label>
+                  <Label>Nome Prospeccao AJ * <span className="text-xs text-muted-foreground font-normal">(nome da empresa)</span></Label>
                   <Input
-                    value={prospecçãoName}
+                    value={prospeccaoName}
                     onChange={(e) => setRmaName(e.target.value.toUpperCase())}
                     maxLength={200}
                     placeholder="Ex: DIPLOMATA"
                   />
                 </div>
                 <div>
-                  <Label>ID Prospeccao AJ * <span className="text-xs text-muted-foreground font-noprospecçãol">(número = mês de referência)</span></Label>
+                  <Label>ID Prospeccao AJ * <span className="text-xs text-muted-foreground font-normal">(número = mês de referência)</span></Label>
                   <div className="flex items-center gap-2">
                     <span className="px-3 h-10 inline-flex items-center rounded-md border border-input bg-muted text-sm font-mono text-foreground">Prospeccao AJ-</span>
                     <Select
-                      value={prospecçãoId.startsWith("Prospeccao-") ? prospecçãoId.slice(4) : ""}
+                      value={prospeccaoId.startsWith("Prospeccao-") ? prospeccaoId.slice(4) : ""}
                       onValueChange={(v) => {
                         setRmaId(`Prospeccao-${v}`);
                         setExecutionMonth(Number(v));
@@ -319,7 +319,7 @@ const CadastroProspeccao = () => {
                   A plataforma abre o Prospeccao no dia 1º do mês e encerra no último dia (28/29/30/31).
                   A leitura no OneDrive ocorre na pasta{" "}
                   <span className="font-mono">
-                    Projeto Prospeccao/{prospecçãoName || "Empresa"}/{executionYear}/
+                    Projeto Prospeccao/{prospeccaoName || "Empresa"}/{executionYear}/
                     {executionMonth ? `${String(executionMonth).padStart(2, "0")}.${executionYear}` : "MM.AAAA"}/
                   </span>
                   {" "}— cada subpasta é um tópico, classificado como{" "}
@@ -504,9 +504,9 @@ const CadastroProspeccao = () => {
                       <Building2 className="w-4 h-4" />
                       <span className="text-xs font-semibold uppercase tracking-wide">Empresa</span>
                     </div>
-                    <p className="text-sm font-bold text-foreground truncate">{prospecçãoName}</p>
+                    <p className="text-sm font-bold text-foreground truncate">{prospeccaoName}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {prospecçãoId || "—"} • {cnpj || "Sem CNPJ"}
+                      {prospeccaoId || "—"} • {cnpj || "Sem CNPJ"}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {city || "—"}{uf ? `/${uf}` : ""}
@@ -520,7 +520,7 @@ const CadastroProspeccao = () => {
                     </div>
                     <p className="text-3xl font-bold text-foreground leading-none">
                       {selectedTopics.size}
-                      <span className="text-base font-noprospecçãol text-muted-foreground"> / {PROSPECCAO_TOPICS.length}</span>
+                      <span className="text-base font-normal text-muted-foreground"> / {PROSPECCAO_TOPICS.length}</span>
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">tópicos atribuídos</p>
                   </div>
@@ -542,7 +542,7 @@ const CadastroProspeccao = () => {
                   <Label className="text-xs uppercase tracking-wide text-muted-foreground">Tópicos selecionados</Label>
                   <div className="mt-2 max-h-40 overflow-y-auto border rounded-lg p-3 flex flex-wrap gap-1.5">
                     {PROSPECCAO_TOPICS.filter(t => selectedTopics.has(t.number)).map(t => (
-                      <Badge key={t.number} variant="outline" className="text-[10px] font-noprospecçãol">
+                      <Badge key={t.number} variant="outline" className="text-[10px] font-normal">
                         #{t.number} {t.name}
                       </Badge>
                     ))}

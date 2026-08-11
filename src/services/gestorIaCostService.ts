@@ -54,13 +54,13 @@ export interface CostInsight {
 }
 
 export interface PlatformCounts {
-  prospecçãosTotal: number;            // Prospeccaos distintos analisados (prospecção_analysis_results)
-  prospecçãosConcluidos: number;
-  prospecçãosEmAnalise: number;
+  prospeccaosTotal: number;            // Prospeccaos distintos analisados (prospeccao_analysis_results)
+  prospeccaosConcluidos: number;
+  prospeccaosEmAnalise: number;
   balancetesRuns: number;       // balancete_runs total
   balancetesConsolidados: number;
-  relatoriosFinalizados: number;  // prospecção_documents status='finalizado'
-  relatoriosEmElaboracao: number; // prospecção_documents status<>'finalizado'
+  relatoriosFinalizados: number;  // prospeccao_documents status='finalizado'
+  relatoriosEmElaboracao: number; // prospeccao_documents status<>'finalizado'
   documentosOcr: number;        // ai_extractions distintos
 }
 
@@ -182,11 +182,11 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
   const counts = await fetchPlatformCounts(cutoff);
 
   // Custos médios por unidade real
-  const custoMedioPorProspeccao       = counts.prospecçãosTotal > 0 ? custoTotal / counts.prospecçãosTotal : 0;
+  const custoMedioPorProspeccao       = counts.prospeccaosTotal > 0 ? custoTotal / counts.prospeccaosTotal : 0;
   const custoMedioPorBalancete = counts.balancetesRuns > 0 ? custoBalancete / counts.balancetesRuns : 0;
   const totalRel = counts.relatoriosFinalizados + counts.relatoriosEmElaboracao;
   const custoMedioPorRelatorio = totalRel > 0 ? custoRelatorio / totalRel : 0;
-  const custoMedioExecucao     = counts.prospecçãosTotal > 0 ? custoTotal / counts.prospecçãosTotal : 0;
+  const custoMedioExecucao     = counts.prospeccaosTotal > 0 ? custoTotal / counts.prospeccaosTotal : 0;
 
   const totalBalancetes = counts.balancetesRuns;
   const totalRelatorios = totalRel;
@@ -262,7 +262,7 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
       level: "info",
       alerta: `Possível economia de ~${economia.toFixed(2)} USD`,
       causa: "Mais de 30% do custo está em modelo Pro.",
-      acao: "Use Pro só para insight final; mapping/noprospecçãolização pode ir para Flash.",
+      acao: "Use Pro só para insight final; mapping/normalização pode ir para Flash.",
     });
   }
 
@@ -301,20 +301,20 @@ export async function fetchPlatformCounts(cutoff: Date | null): Promise<Platform
     return count ?? 0;
   };
 
-  const [prospecçãosTotal, prospecçãosConcluidos, prospecçãosEmAnalise, balancetesRuns, balancetesConsolidados,
+  const [prospeccaosTotal, prospeccaosConcluidos, prospeccaosEmAnalise, balancetesRuns, balancetesConsolidados,
     relatoriosFinalizados, relatoriosEmElaboracao, documentosOcr] = await Promise.all([
-    cnt("prospecção_analysis_results"),
-    cnt("prospecção_analysis_results", (q: any) => q.eq("status", "concluido")),
-    cnt("prospecção_analysis_results", (q: any) => q.eq("status", "em_analise")),
+    cnt("prospeccao_analysis_results"),
+    cnt("prospeccao_analysis_results", (q: any) => q.eq("status", "concluido")),
+    cnt("prospeccao_analysis_results", (q: any) => q.eq("status", "em_analise")),
     cnt("balancete_runs"),
     cnt("balancete_consolidado"),
-    cnt("prospecção_documents", (q: any) => q.eq("status", "finalizado")),
-    cnt("prospecção_documents", (q: any) => q.neq("status", "finalizado")),
+    cnt("prospeccao_documents", (q: any) => q.eq("status", "finalizado")),
+    cnt("prospeccao_documents", (q: any) => q.neq("status", "finalizado")),
     cnt("ai_extractions"),
   ]);
 
   return {
-    prospecçãosTotal, prospecçãosConcluidos, prospecçãosEmAnalise,
+    prospeccaosTotal, prospeccaosConcluidos, prospeccaosEmAnalise,
     balancetesRuns, balancetesConsolidados,
     relatoriosFinalizados, relatoriosEmElaboracao,
     documentosOcr,

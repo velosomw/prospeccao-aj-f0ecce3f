@@ -1,5 +1,5 @@
 import { CheckCircle2, ShieldCheck, FileCheck, Award, FileText, Download, FileSpreadsheet, Package, ArrowRight } from "lucide-react";
-import ProspeccaoRelatorioFinalTab from "@/components/prospecção/ProspeccaoRelatorioFinalTab";
+import ProspeccaoRelatorioFinalTab from "@/components/prospeccao/ProspeccaoRelatorioFinalTab";
 import { useState } from "react";
 
 interface Props {

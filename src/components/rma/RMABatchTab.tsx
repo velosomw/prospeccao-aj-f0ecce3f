@@ -74,14 +74,14 @@ function statusBadge(s: string) {
 
 interface Props {
   companyId: string | null;
-  prospecçãoId?: string | null;
+  prospeccaoId?: string | null;
 }
 
 /**
  * Aba "Batch & Fila": mostra estado de processamento batch (Document AI off-peak)
  * por pasta e por arquivo. Persiste no banco — sobrevive a logout/login.
  */
-export default function ProspeccaoBatchTab({ companyId, prospecçãoId }: Props) {
+export default function ProspeccaoBatchTab({ companyId, prospeccaoId }: Props) {
   const [folders, setFolders] = useState<FolderRow[]>([]);
   const [jobs, setJobs] = useState<JobRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -95,7 +95,7 @@ export default function ProspeccaoBatchTab({ companyId, prospecçãoId }: Props)
         .from("folder_deferred_status" as never)
         .select("folder_path, in_batch_count, done_count, failed_count, total_count, earliest_eta, latest_eta")
         .eq("company_id", companyId);
-      if (prospecçãoId) fq = fq.eq("prospecção_id", prospecçãoId);
+      if (prospeccaoId) fq = fq.eq("prospeccao_id", prospeccaoId);
 
       let jq = supabase
         .from("deferred_jobs")
@@ -103,7 +103,7 @@ export default function ProspeccaoBatchTab({ companyId, prospecçãoId }: Props)
         .eq("company_id", companyId)
         .order("created_at", { ascending: false })
         .limit(200);
-      if (prospecçãoId) jq = jq.eq("prospecção_id", prospecçãoId);
+      if (prospeccaoId) jq = jq.eq("prospeccao_id", prospeccaoId);
 
       const [{ data: f }, { data: j }] = await Promise.all([fq, jq]);
       if (cancelled) return;
@@ -114,7 +114,7 @@ export default function ProspeccaoBatchTab({ companyId, prospecçãoId }: Props)
     fetchAll();
     const interval = setInterval(fetchAll, 15000);
     return () => { cancelled = true; clearInterval(interval); };
-  }, [companyId, prospecçãoId, refreshKey]);
+  }, [companyId, prospeccaoId, refreshKey]);
 
   if (!companyId) {
     return <div className="text-sm text-muted-foreground p-6">Workspace de demonstração — sem dados de batch.</div>;

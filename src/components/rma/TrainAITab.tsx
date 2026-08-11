@@ -16,7 +16,7 @@ import TrainingMetrics from "./training/TrainingMetrics";
 
 interface Props {
   companyId: string | null;
-  prospecçãoId?: string;
+  prospeccaoId?: string;
 }
 
 const CLASSES = [
@@ -38,7 +38,7 @@ interface PendingDoc {
   file_name: string | null;
 }
 
-export default function TrainAITab({ companyId, prospecçãoId }: Props) {
+export default function TrainAITab({ companyId, prospeccaoId }: Props) {
   const [classe, setClasse] = useState<string>("BALANCETE");
   const [agent, setAgent] = useState<string>("");
   const [inputText, setInputText] = useState("");
@@ -76,7 +76,7 @@ export default function TrainAITab({ companyId, prospecçãoId }: Props) {
     setLoadingPending(true);
     try {
       let q = supabase.from("vw_training_pending").select("*").limit(50);
-      if (prospecçãoId) q = q.eq("prospecção_id", prospecçãoId);
+      if (prospeccaoId) q = q.eq("prospeccao_id", prospeccaoId);
       const { data, error } = await q;
       if (error) throw error;
       setPending((data ?? []) as PendingDoc[]);
@@ -85,7 +85,7 @@ export default function TrainAITab({ companyId, prospecçãoId }: Props) {
     } finally {
       setLoadingPending(false);
     }
-  }, [prospecçãoId]);
+  }, [prospeccaoId]);
 
   useEffect(() => { loadPending(); }, [loadPending]);
 
@@ -125,7 +125,7 @@ export default function TrainAITab({ companyId, prospecçãoId }: Props) {
           output_original: selectedPending?.extracted_data ?? null,
           extraction_id: selectedPending?.extraction_id ?? null,
           document_id: selectedPending?.document_id ?? null,
-          prospecção_id: prospecçãoId ?? null,
+          prospeccao_id: prospeccaoId ?? null,
           path: selectedPending?.path ?? null,
         },
       });
@@ -183,7 +183,7 @@ export default function TrainAITab({ companyId, prospecçãoId }: Props) {
             <TabsContent value="pending" className="space-y-2 mt-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground">
-                  Docs com baixa confiança ou erro {prospecçãoId ? "neste Prospeccao" : ""}
+                  Docs com baixa confiança ou erro {prospeccaoId ? "neste Prospeccao" : ""}
                 </span>
                 <Button size="sm" variant="ghost" onClick={loadPending} disabled={loadingPending}>
                   {loadingPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}

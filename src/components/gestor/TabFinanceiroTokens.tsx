@@ -23,18 +23,18 @@ const REPORT_TYPES = [
   { key: "pre_parecer",        label: "Revisão-Parecer Técnico",          icon: ClipboardList, color: "hsl(258,90%,66%)",
     matchers: [/pre[_-]?parecer/i, /pré[-_ ]?parecer/i, /pre[_-]?relat/i] },
   { key: "pre_relatorio",      label: "Revisão-Relatório Prospeccao AJ",            icon: FileSearch,    color: "hsl(190,70%,50%)",
-    matchers: [/pre[_-]?relat/i, /pré[-_ ]?relat/i, /prospecção[_-]?mensal/i] },
+    matchers: [/pre[_-]?relat/i, /pré[-_ ]?relat/i, /prospeccao[_-]?mensal/i] },
   { key: "parecer_final",      label: "Parecer Técnico Final",            icon: FileCheck2,    color: "hsl(152,70%,45%)",
     matchers: [/parecer[_-]?final/i, /^parecer_tecnico$/i] },
   { key: "relatorio_final",    label: "Relatório Prospeccao AJ Final",                  icon: FileBarChart2, color: "hsl(38,90%,55%)",
-    matchers: [/relat[oó]rio[_-]?final/i, /prospecção[_-]?final/i] },
+    matchers: [/relat[oó]rio[_-]?final/i, /prospeccao[_-]?final/i] },
 ] as const;
 
 function classifyReportLog(l: UsageLogRow): string {
   const meta = (l.metadata ?? {}) as Record<string, unknown>;
   const hay = [
     meta.report_type, meta.documento_tipo, meta.tipo, meta.section,
-    (meta as any).prospecção_doc_tipo, (meta as any).fn, (meta as any).tool,
+    (meta as any).prospeccao_doc_tipo, (meta as any).fn, (meta as any).tool,
     (meta as any).file, l.type,
   ].map((v) => String(v ?? "")).join(" ");
   for (const rt of REPORT_TYPES) {
@@ -291,14 +291,14 @@ const TabFinanceiroTokens = () => {
           icon={Wallet}
           label="Custo Total (E2E)"
           value={data ? fmtUSDc(data.custoTotal) : "—"}
-          sub={data ? `Σ IA · ${data.counts.prospecçãosTotal} Prospeccao(s) na plataforma` : "—"}
+          sub={data ? `Σ IA · ${data.counts.prospeccaosTotal} Prospeccao(s) na plataforma` : "—"}
           color="hsl(200,80%,55%)"
         />
         <KPI
           icon={Activity}
           label="Custo Médio por Prospeccao AJ"
           value={data ? fmtUSDc(data.custoMedioPorProspeccao) : "—"}
-          sub={data ? `Custo total ÷ ${data.counts.prospecçãosTotal} Prospeccao(s) (análise → conclusão)` : "—"}
+          sub={data ? `Custo total ÷ ${data.counts.prospeccaosTotal} Prospeccao(s) (análise → conclusão)` : "—"}
           color="hsl(38,90%,55%)"
         />
         <KPI

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar, Search, FileText, RefreshCw } from "lucide-react";
-import { listMyReleases, listReleases, monthLabel, statusLabel, type ProspeccaoRelease } from "@/services/prospecçãoReleaseService";
+import { listMyReleases, listReleases, monthLabel, statusLabel, type ProspeccaoRelease } from "@/services/prospeccaoReleaseService";
 import { listCompanies, type Company } from "@/services/companiesService";
 
 interface Props {
@@ -58,7 +58,7 @@ const MyReleasesTab = ({
     if (!q) return releases;
     return releases.filter((r) => {
       const c = companiesById.get(r.company_id);
-      return [c?.name, c?.prospecção_id, c?.cnpj, monthLabel(r.month), String(r.year)]
+      return [c?.name, c?.prospeccao_id, c?.cnpj, monthLabel(r.month), String(r.year)]
         .filter(Boolean)
         .join(" ")
         .toLowerCase()
@@ -127,9 +127,9 @@ const MyReleasesTab = ({
                     <tr key={r.id} className="border-t hover:bg-muted/30">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2 flex-wrap">
-                          {c?.prospecção_id && (
+                          {c?.prospeccao_id && (
                             <Badge className="text-sm font-mono font-semibold bg-[hsl(217,91%,50%)]/10 text-[hsl(217,91%,50%)] border-0 px-2 py-0.5">
-                              {c.prospecção_id}
+                              {c.prospeccao_id}
                             </Badge>
                           )}
                           <span className="text-base font-semibold text-foreground">{c?.name || "Empresa"}</span>
@@ -161,7 +161,7 @@ const MyReleasesTab = ({
                             onClick={() =>
                               onOpenReport
                                 ? onOpenReport(r.company_id, r.year, r.month)
-                                : navigate(`/prospecção/${r.company_id}`)
+                                : navigate(`/prospeccao/${r.company_id}`)
                             }
                           >
                             <FileText className="w-3.5 h-3.5" /> Relatório

@@ -66,7 +66,7 @@ const RmaCompanySearch = ({
     const tokens = nq.split(" ").filter(Boolean);
     const scored = companies
       .map((c) => {
-        const haystack = norm(`${c.name} ${c.prospecção_id || ""} ${c.cnpj || ""} ${c.sector || ""}`);
+        const haystack = norm(`${c.name} ${c.prospeccao_id || ""} ${c.cnpj || ""} ${c.sector || ""}`);
         const ok = tokens.every((t) => haystack.includes(t));
         if (!ok) return null;
         // simples score: começa com match ganha prioridade
@@ -155,9 +155,9 @@ const RmaCompanySearch = ({
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    {c.prospecção_id && (
+                    {c.prospeccao_id && (
                       <Badge className="bg-[hsl(217,91%,50%)] text-white text-[10px] font-mono px-1.5 py-0">
-                        {c.prospecção_id}
+                        {c.prospeccao_id}
                       </Badge>
                     )}
                     <span className="text-sm font-medium text-foreground truncate">{c.name}</span>

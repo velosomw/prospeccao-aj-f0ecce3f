@@ -257,7 +257,7 @@ const UserManagement = () => {
         .filter(
           (c) =>
             c.name.toLowerCase().includes(q) ||
-            (c.prospecção_id || "").toLowerCase().includes(q) ||
+            (c.prospeccao_id || "").toLowerCase().includes(q) ||
             (c.cnpj || "").toLowerCase().includes(q)
         )
         .map((c) => c.id)
@@ -450,9 +450,9 @@ const UserManagement = () => {
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-foreground truncate">{c.name}</p>
                         <div className="flex items-center gap-2 mt-1 flex-wrap">
-                          {c.prospecção_id && (
+                          {c.prospeccao_id && (
                             <Badge variant="outline" className="text-[10px] font-mono">
-                              {c.prospecção_id}
+                              {c.prospeccao_id}
                             </Badge>
                           )}
                           {c.cnpj && (
@@ -504,7 +504,7 @@ const UserManagement = () => {
               <tbody>
                 {filteredUsers.map((user) => {
                   const isConsultor = user.role === "consultor";
-                  const prospecçãoCount = (assignmentsByConsultant.get(user.user_id) || []).length;
+                  const prospeccaoCount = (assignmentsByConsultant.get(user.user_id) || []).length;
                   const isSelected = selectedConsultant?.user_id === user.user_id;
                   return (
                   <tr
@@ -521,9 +521,9 @@ const UserManagement = () => {
                         <Badge variant="outline" className="text-xs">
                           {roleLabels[user.role] || user.role}
                         </Badge>
-                        {isConsultor && prospecçãoCount > 0 && (
+                        {isConsultor && prospeccaoCount > 0 && (
                           <Badge className="text-[10px] bg-[hsl(217,91%,50%)]/10 text-[hsl(217,91%,50%)] border-[hsl(217,91%,50%)]/30 border">
-                            <Building2 className="w-3 h-3 mr-1" /> {prospecçãoCount} Prospeccao{prospecçãoCount > 1 ? "s" : ""}
+                            <Building2 className="w-3 h-3 mr-1" /> {prospeccaoCount} Prospeccao{prospeccaoCount > 1 ? "s" : ""}
                           </Badge>
                         )}
                       </div>
@@ -687,9 +687,9 @@ const UserManagement = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-sm font-medium text-foreground">{c.name}</span>
-                            {c.prospecção_id && (
+                            {c.prospeccao_id && (
                               <Badge variant="outline" className="text-[10px] font-mono">
-                                {c.prospecção_id}
+                                {c.prospeccao_id}
                               </Badge>
                             )}
                           </div>
@@ -733,12 +733,12 @@ const UserManagement = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confiprospecçãotion Dialog */}
+      {/* Delete Confirmacaotion Dialog */}
       <Dialog open={!!deleteTarget} onOpenChange={(v) => { if (!v) setDeleteTarget(null); }}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-[hsl(0,70%,55%)]">
-              <ShieldAlert className="w-5 h-5" /> Confiprospecçãor Exclusão
+              <ShieldAlert className="w-5 h-5" /> Confirmacaor Exclusão
             </DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">

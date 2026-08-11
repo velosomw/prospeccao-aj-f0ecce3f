@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserRoles } from "@/hooks/useUserRoles";
 import { toast } from "sonner";
-import SectionPendenciesPanel from "@/components/prospecção/document/SectionPendenciesPanel";
+import SectionPendenciesPanel from "@/components/prospeccao/document/SectionPendenciesPanel";
 
 interface DocRow {
   id: string;
@@ -34,10 +34,10 @@ interface SectionRow {
   ungrounded_claims?: any;
 }
 
-type DocTipo = "parecer_tecnico" | "prospecção_mensal" | "prospecção_mensal_dip" | "prospecção_intelligence";
+type DocTipo = "parecer_tecnico" | "prospeccao_mensal" | "prospeccao_mensal_dip" | "prospeccao_intelligence";
 interface Props { tipo?: DocTipo; titulo?: string }
 
-const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospecção_intelligence", titulo = "Relatório Final Prospeccao" }: Props) => {
+const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospeccao_intelligence", titulo = "Relatório Final Prospeccao" }: Props) => {
   // Templates suportados: legado CNJ 72, DIP (Capital AJ) e Intelligence Engine (v3, padrão).
   const [tipo, setTipo] = useState<DocTipo>(tipoInicial);
   const { id = "" } = useParams();
@@ -55,9 +55,9 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospecção_intellige
   const reload = async () => {
     if (!id) return;
     const { data: d } = await supabase
-      .from("prospecção_documents")
+      .from("prospeccao_documents")
       .select("id, titulo, status, progresso, arquivo_final_url, arquivo_final_versao, arquivo_final_gerado_em, arquivo_final_pct, released_to_recuperanda_at, released_to_recuperanda_by, released_to_recuperanda_notes")
-      .eq("prospecção_id", id)
+      .eq("prospeccao_id", id)
       .eq("tipo", tipo)
       .order("created_at", { ascending: false })
       .limit(1)
@@ -65,7 +65,7 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospecção_intellige
     setDoc((d as DocRow) || null);
     if (d?.id) {
       const { data: s } = await supabase
-        .from("prospecção_document_sections")
+        .from("prospeccao_document_sections")
         .select("id, numero, titulo, conteudo_editado, conteudo_ia, status, grounding_score, ungrounded_claims")
         .eq("document_id", d.id)
         .order("ordem", { ascending: true });
@@ -83,19 +83,19 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospecção_intellige
         await reload();
         if (cancelled) return;
         // Auto-migração: template ativo = Intelligence Engine. Se ainda não há documento
-        // neste template para o Prospeccao, mas existe um legado (prospecção_mensal_dip / prospecção_mensal),
+        // neste template para o Prospeccao, mas existe um legado (prospeccao_mensal_dip / prospeccao_mensal),
         // migra automaticamente para o ajustado sem exigir clique manual.
-        if (tipo === "prospecção_intelligence" && id && canRelease) {
+        if (tipo === "prospeccao_intelligence" && id && canRelease) {
           const { data: existing } = await supabase
-            .from("prospecção_documents")
+            .from("prospeccao_documents")
             .select("id, tipo")
-            .eq("prospecção_id", id)
-            .in("tipo", ["prospecção_intelligence", "prospecção_mensal_dip", "prospecção_mensal"]);
-          const hasIntel = (existing || []).some((d: any) => d.tipo === "prospecção_intelligence");
-          const legacy = (existing || []).find((d: any) => d.tipo === "prospecção_mensal_dip")
-            || (existing || []).find((d: any) => d.tipo === "prospecção_mensal");
+            .eq("prospeccao_id", id)
+            .in("tipo", ["prospeccao_intelligence", "prospeccao_mensal_dip", "prospeccao_mensal"]);
+          const hasIntel = (existing || []).some((d: any) => d.tipo === "prospeccao_intelligence");
+          const legacy = (existing || []).find((d: any) => d.tipo === "prospeccao_mensal_dip")
+            || (existing || []).find((d: any) => d.tipo === "prospeccao_mensal");
           if (!cancelled && !hasIntel && legacy) {
-            await handleInitDip(true, "prospecção_intelligence");
+            await handleInitDip(true, "prospeccao_intelligence");
           }
         }
       } finally { if (!cancelled) setLoading(false); }
@@ -115,7 +115,7 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospecção_intellige
     if (!doc?.id) return;
     setReleasing(true);
     try {
-      const { error } = await supabase.rpc("set_prospecção_document_recuperanda_release", {
+      const { error } = await supabase.rpc("set_prospeccao_document_recuperanda_release", {
         p_document_id: doc.id,
         p_release: release,
         p_notes: null,
@@ -130,24 +130,24 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospecção_intellige
     }
   };
 
-  const handleInitDip = async (migrate: boolean, targetTipo: DocTipo = "prospecção_intelligence") => {
+  const handleInitDip = async (migrate: boolean, targetTipo: DocTipo = "prospeccao_intelligence") => {
     if (!id) return;
     setInitializing(true);
     try {
       const { data: u } = await supabase.auth.getUser();
       const tituloMap: Record<string, string> = {
-        prospecção_intelligence: "Prospeccao Mensal — Intelligence Engine (v3)",
-        prospecção_mensal_dip: "Prospeccao Mensal — DIP (Capital AJ)",
-        prospecção_mensal: "Relatório Mensal de Atividades",
+        prospeccao_intelligence: "Prospeccao Mensal — Intelligence Engine (v3)",
+        prospeccao_mensal_dip: "Prospeccao Mensal — DIP (Capital AJ)",
+        prospeccao_mensal: "Relatório Mensal de Atividades",
         parecer_tecnico: "Parecer Técnico Contábil",
       };
-      const { data, error } = await supabase.functions.invoke("prospecção-doc-init", {
+      const { data, error } = await supabase.functions.invoke("prospeccao-doc-init", {
         body: {
-          prospecção_id: id,
+          prospeccao_id: id,
           tipo: targetTipo,
           titulo: tituloMap[targetTipo],
           created_by: u?.user?.id,
-          copy_from_tipo: migrate ? (targetTipo === "prospecção_intelligence" ? "prospecção_mensal_dip" : "prospecção_mensal") : undefined,
+          copy_from_tipo: migrate ? (targetTipo === "prospeccao_intelligence" ? "prospeccao_mensal_dip" : "prospeccao_mensal") : undefined,
         },
       });
       if (error) throw error;
@@ -182,7 +182,7 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospecção_intellige
           <CardTitle className="text-base flex items-center gap-2">
             <FileText className="w-4 h-4 text-[hsl(142,76%,36%)]" /> {titulo}
             {doc && (
-              <span className="text-xs text-muted-foreground font-noprospecçãol">
+              <span className="text-xs text-muted-foreground font-normal">
                 · v{doc.arquivo_final_versao ?? 1} · {doc.progresso ?? 0}% concluído
               </span>
             )}
@@ -195,9 +195,9 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospecção_intellige
                 className="text-xs border rounded-md px-2 py-1 bg-background text-foreground"
                 title="Template do Prospeccao AJ"
               >
-                <option value="prospecção_intelligence">Prospeccao AJ Intelligence Engine (v3, padrão)</option>
-                <option value="prospecção_mensal_dip">Prospeccao AJ Mensal — DIP (Capital AJ)</option>
-                <option value="prospecção_mensal">Prospeccao AJ Mensal (CNJ 72 — legado)</option>
+                <option value="prospeccao_intelligence">Prospeccao AJ Intelligence Engine (v3, padrão)</option>
+                <option value="prospeccao_mensal_dip">Prospeccao AJ Mensal — DIP (Capital AJ)</option>
+                <option value="prospeccao_mensal">Prospeccao AJ Mensal (CNJ 72 — legado)</option>
               </select>
             )}
             {isFinalized && (
@@ -205,7 +205,7 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospecção_intellige
                 <Lock className="w-3 h-3" /> Versão Final
               </Badge>
             )}
-            {(tipo === "prospecção_mensal" || tipo === "prospecção_mensal_dip" || tipo === "prospecção_intelligence") && doc && (
+            {(tipo === "prospeccao_mensal" || tipo === "prospeccao_mensal_dip" || tipo === "prospeccao_intelligence") && doc && (
               isReleased ? (
                 <Badge className="bg-[hsl(217,91%,50%)]/15 text-[hsl(217,91%,50%)] border-0 text-xs gap-1">
                   <Unlock className="w-3 h-3" /> Liberado p/ Recuperanda
@@ -216,7 +216,7 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospecção_intellige
                 </Badge>
               )
             )}
-            {canRelease && (tipo === "prospecção_mensal" || tipo === "prospecção_mensal_dip" || tipo === "prospecção_intelligence") && doc && (
+            {canRelease && (tipo === "prospeccao_mensal" || tipo === "prospeccao_mensal_dip" || tipo === "prospeccao_intelligence") && doc && (
               <Button
                 size="sm"
                 variant={isReleased ? "outline" : "default"}
@@ -290,13 +290,13 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospecção_intellige
             <p className="text-sm text-muted-foreground">
               {tipo === "parecer_tecnico"
                 ? <>Nenhum <b>Parecer Técnico Contábil</b> criado ainda. Inicie pela aba <b>Revisão-Parecer Técnico</b>; ao atingir 100% de seções aprovadas, o Parecer Técnico Final é emitido automaticamente em .docx.</>
-                : tipo === "prospecção_intelligence"
+                : tipo === "prospeccao_intelligence"
                   ? <>Nenhum <b>Prospeccao AJ Intelligence Engine (v3)</b> criado ainda. O relatório é gerado por evidências em 5 blocos por capítulo (Dados extraídos · Evidências · Validação · Análise IA · Conclusão IA), com Sumário Executivo, Health Score e Risco Global. Ao atingir 70% de seções aprovadas, o Prospeccao AJ Final é emitido automaticamente em .docx.</>
-                  : tipo === "prospecção_mensal_dip"
-                    ? <>Nenhum <b>Prospeccao AJ Mensal — DIP (Capital AJ)</b> criado ainda. Use o template <b>prospecção_mensal_dip</b> para iniciar o documento institucional. Ao atingir 70% de seções aprovadas, o Prospeccao AJ Final é emitido automaticamente em .docx.</>
+                  : tipo === "prospeccao_mensal_dip"
+                    ? <>Nenhum <b>Prospeccao AJ Mensal — DIP (Capital AJ)</b> criado ainda. Use o template <b>prospeccao_mensal_dip</b> para iniciar o documento institucional. Ao atingir 70% de seções aprovadas, o Prospeccao AJ Final é emitido automaticamente em .docx.</>
                     : <>Nenhum <b>Relatório Mensal de Atividades</b> (CNJ 72/2020) criado ainda. Ao atingir 90% de seções aprovadas, o Prospeccao AJ Final é emitido automaticamente em .docx.</>}
             </p>
-            {(tipo === "prospecção_intelligence" || tipo === "prospecção_mensal_dip") && canRelease && (
+            {(tipo === "prospeccao_intelligence" || tipo === "prospeccao_mensal_dip") && canRelease && (
               <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">
                 <Button size="sm" onClick={() => handleInitDip(false, tipo)} disabled={initializing} className="gap-1.5">
                   <FileText className="w-3.5 h-3.5" /> Criar documento

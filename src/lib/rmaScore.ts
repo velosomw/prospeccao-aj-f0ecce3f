@@ -67,7 +67,7 @@ export function buildLiveScoreTopics(
   const cleanFiles = filterIngestibleFiles(files);
   if (cleanFiles.length === 0) return base;
 
-  // Dedup por (path noprospecçãolizado + nome) — evita inflar contagem por re-uploads.
+  // Dedup por (path normalizado + nome) — evita inflar contagem por re-uploads.
   const seen = new Set<string>();
   const dedupedFiles = cleanFiles.filter((f) => {
     const key = `${(f.path || "").toLowerCase()}::${(f.file_name || "").toLowerCase()}`;
@@ -118,7 +118,7 @@ export function computeRmaScore(topics: ScoreTopic[] | null | undefined, baselin
 }
 
 // ---------------------------------------------------------------------------
-// Endpoint único — consome o edge function `prospecção-score` para garantir que
+// Endpoint único — consome o edge function `prospeccao-score` para garantir que
 // Dashboard, Workspace e Alertas Inteligentes usem exatamente o mesmo cálculo.
 // ---------------------------------------------------------------------------
 
@@ -145,13 +145,13 @@ export async function fetchRmaScores(
       return {};
     }
     const { data, error } = await invokeAuthed<{ scores: Record<string, UnifiedRmaScore> }>(
-      "prospecção-score",
+      "prospeccao-score",
       companyIds && companyIds.length > 0 ? { companyIds } : {},
     );
     if (error) throw error;
     return (data?.scores ?? {}) as Record<string, UnifiedRmaScore>;
   } catch (e) {
-    console.warn("[prospecçãoScore] fetchRmaScores falhou, usando cálculo local:", e);
+    console.warn("[prospeccaoScore] fetchRmaScores falhou, usando cálculo local:", e);
     return {};
   }
 }

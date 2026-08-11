@@ -1,5 +1,5 @@
 /**
- * MES NOProspeccaoLIZER — Single source of truth para noprospecçãolização de período mensal.
+ * MES NOProspeccaoLIZER — Single source of truth para normalização de período mensal.
  *
  * Aceita os formatos comuns de balancete brasileiro e devolve sempre `YYYY-MM`:
  *   • "2024-03", "2024/03", "2024.03"
@@ -53,14 +53,14 @@ function buildKey(year: number, month: number): string | null {
 }
 
 /**
- * Noprospecçãoliza qualquer rótulo de período para "YYYY-MM".
+ * Noprospeccaoliza qualquer rótulo de período para "YYYY-MM".
  * Retorna null se não for possível inferir um mês válido.
  */
 export function normalizeMesKey(input: string | null | undefined): string | null {
   if (input === null || input === undefined) return null;
   const raw = String(input).trim();
   if (!raw) return null;
-  // Já noprospecçãolizado
+  // Já normalizado
   const direct = raw.match(/^(\d{4})-(0[1-9]|1[0-2])$/);
   if (direct) return `${direct[1]}-${direct[2]}`;
 
@@ -112,7 +112,7 @@ export function mesKeyToLabel(key: string): string {
 }
 
 /**
- * Versão tolerante: se não conseguir noprospecçãolizar, devolve a entrada original
+ * Versão tolerante: se não conseguir normalizar, devolve a entrada original
  * (para preservar comportamento dos callers que querem "passar adiante").
  */
 export function periodToMesKey(period: string): string {

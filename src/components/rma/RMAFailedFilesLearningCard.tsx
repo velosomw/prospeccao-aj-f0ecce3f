@@ -10,8 +10,8 @@ import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
 interface Props {
-  /** Pode passar prospecção_id direto OU companyId — se vier só companyId, resolve do banco. */
-  prospecçãoId?: string | null;
+  /** Pode passar prospeccao_id direto OU companyId — se vier só companyId, resolve do banco. */
+  prospeccaoId?: string | null;
   companyId?: string | null;
 }
 
@@ -40,24 +40,24 @@ const STATUS_COLOR: Record<string, string> = {
   pending: "bg-amber-500/15 text-amber-700",
 };
 
-export default function ProspeccaoFailedFilesLearningCard({ prospecçãoId, companyId }: Props) {
-  const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(prospecçãoId ?? null);
+export default function ProspeccaoFailedFilesLearningCard({ prospeccaoId, companyId }: Props) {
+  const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(prospeccaoId ?? null);
   const [files, setFiles] = useState<FailedFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<Record<string, boolean>>({});
   const [sending, setSending] = useState<Record<string, boolean>>({});
   const [bulkRunning, setBulkRunning] = useState(false);
 
-  // Resolve prospecção_id a partir do companyId quando necessário
+  // Resolve prospeccao_id a partir do companyId quando necessário
   useEffect(() => {
     if (resolvedRmaId || !companyId) return;
     supabase
       .from("companies")
-      .select("prospecção_id")
+      .select("prospeccao_id")
       .eq("id", companyId)
       .maybeSingle()
       .then(({ data }) => {
-        if (data?.prospecção_id) setResolvedRmaId(data.prospecção_id);
+        if (data?.prospeccao_id) setResolvedRmaId(data.prospeccao_id);
       });
   }, [companyId, resolvedRmaId]);
 
@@ -67,7 +67,7 @@ export default function ProspeccaoFailedFilesLearningCard({ prospecçãoId, comp
     const { data, error } = await supabase
       .from("onedrive_files")
       .select("file_id, file_name, path, status, mime_type, error_message")
-      .eq("prospecção_id", resolvedRmaId)
+      .eq("prospeccao_id", resolvedRmaId)
       .in("status", ["error", "tracked", "new", "updated", "pending"])
       .order("status", { ascending: true })
       .order("path", { ascending: true })
@@ -95,7 +95,7 @@ export default function ProspeccaoFailedFilesLearningCard({ prospecçãoId, comp
     setSending((s) => ({ ...s, [f.file_id]: true }));
     try {
       const { data, error } = await supabase.functions.invoke("learning-from-pipeline", {
-        body: { file_id: f.file_id, prospecção_id: resolvedRmaId },
+        body: { file_id: f.file_id, prospeccao_id: resolvedRmaId },
       });
       if (error) throw new Error(error.message);
       if (!data?.ok) throw new Error(data?.error || "Falha desconhecida");
@@ -152,7 +152,7 @@ export default function ProspeccaoFailedFilesLearningCard({ prospecçãoId, comp
               Arquivos com erro / pendentes — Enviar para Aprendizado IA
             </CardTitle>
             <p className="text-[11px] text-muted-foreground mt-1">
-              Reenvia o arquivo do OneDrive para o pipeline de aprendizado (OCR + IA + validação humana). Não consome a fila noprospecçãol nem aciona o circuit breaker.
+              Reenvia o arquivo do OneDrive para o pipeline de aprendizado (OCR + IA + validação humana). Não consome a fila normal nem aciona o circuit breaker.
             </p>
           </div>
           <div className="flex items-center gap-2">
