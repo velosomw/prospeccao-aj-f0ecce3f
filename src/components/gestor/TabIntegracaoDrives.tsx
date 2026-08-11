@@ -242,7 +242,7 @@ const SyncControls = () => {
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="space-y-1">
-          <Label className="text-xs">Prospecção AJ ID</Label>
+          <Label className="text-xs">Prospeccao AJ ID</Label>
           <Input className="h-9 text-sm" value={prospeccaoId} onChange={e => setRmaId(e.target.value)} />
         </div>
         <div className="space-y-1">
@@ -409,8 +409,8 @@ const DiagnosticsCard = () => {
   );
 };
 
-// ─── Renumber existing Prospecções from OneDrive folders ─────────────
-const RenumberProspecçõesCard = () => {
+// ─── Renumber existing Prospeccoes from OneDrive folders ─────────────
+const RenumberProspeccoesCard = () => {
   const [year, setYear] = useState(String(new Date().getFullYear()));
   const [prefix, setPrefix] = useState("Prospeccao");
   const [dryRun, setDryRun] = useState(true);
@@ -430,7 +430,7 @@ const RenumberProspecçõesCard = () => {
         toast.success(
           dryRun
             ? `Pré-visualização: ${data.totalFolders} pastas`
-            : `${data.totalFolders} Prospecções sincronizados`
+            : `${data.totalFolders} Prospeccoes sincronizados`
         );
       } else {
         toast.error(data?.error || "Falha na renumeração");
@@ -447,7 +447,7 @@ const RenumberProspecçõesCard = () => {
     <div className="bg-card rounded-xl border border-border p-5 space-y-4" style={{ borderTopWidth: 3, borderTopColor: "hsl(258,90%,66%)" }}>
       <div className="flex items-center gap-2">
         <FolderOpen className="w-4 h-4 text-[hsl(258,90%,66%)]" />
-        <h3 className="text-sm font-bold text-foreground">Renumerar Prospecções AJ existentes (OneDrive → Banco)</h3>
+        <h3 className="text-sm font-bold text-foreground">Renumerar Prospeccoes AJ existentes (OneDrive → Banco)</h3>
       </div>
       <p className="text-xs text-muted-foreground">
         Lê cada subpasta direta de <code className="bg-muted px-1 rounded">/{ONEDRIVE_CONFIG.base_path}</code>,
@@ -489,7 +489,7 @@ const RenumberProspecçõesCard = () => {
               <tr>
                 <th className="text-left px-3 py-2 font-semibold">#</th>
                 <th className="text-left px-3 py-2 font-semibold">Pasta OneDrive</th>
-                <th className="text-left px-3 py-2 font-semibold">Prospecção AJ ID</th>
+                <th className="text-left px-3 py-2 font-semibold">Prospeccao AJ ID</th>
                 <th className="text-left px-3 py-2 font-semibold">Ação</th>
                 <th className="text-left px-3 py-2 font-semibold">Link</th>
               </tr>
@@ -802,7 +802,7 @@ const TabIntegracaoDrives = ({ onBack }: { onBack: () => void }) => {
 
         <TabsContent value="sync" className="space-y-4 mt-4">
           <DiagnosticsCard />
-          <RenumberProspecçõesCard />
+          <RenumberProspeccoesCard />
           <SyncControls />
         </TabsContent>
 

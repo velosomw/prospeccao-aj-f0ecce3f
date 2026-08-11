@@ -61,7 +61,7 @@ export default function TrainAI() {
     return Array.from(names).sort((a, b) => a.localeCompare(b));
   }, [companies, filter]);
 
-  // Prospecções vinculados à empresa selecionada
+  // Prospeccoes vinculados à empresa selecionada
   const prospecçõesOfCompany = useMemo(() => {
     if (!companyName) return [];
     return companies.filter(c => c.name === companyName);

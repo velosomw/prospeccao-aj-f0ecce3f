@@ -15,12 +15,12 @@ const statusMeta: Record<string, { bg: string; fg: string }> = {
 };
 const scoreColor = (s: number) => s < 33 ? "hsl(0,84%,55%)" : s < 67 ? "hsl(38,92%,50%)" : "hsl(142,76%,40%)";
 
-export default function AdmProspecções() {
+export default function AdmProspeccoes() {
   return (
     <ConsultorPageShell
-      title="Prospecções AJ" subtitle="Relatórios de monitoramento das recuperandas administradas."
+      title="Prospeccoes AJ" subtitle="Relatórios de monitoramento das recuperandas administradas."
       kpis={[
-        { label: "Prospecções AJ Vigentes", value: 47, hint: "Em produção", icon: Briefcase, tone: "blue" },
+        { label: "Prospeccoes AJ Vigentes", value: 47, hint: "Em produção", icon: Briefcase, tone: "blue" },
         { label: "Concluídos",    value: 22, hint: "30d",         icon: CheckCircle2, tone: "green" },
         { label: "Em Revisão",    value: 6,  hint: "Coordenação", icon: Eye,         tone: "orange" },
         { label: "Em Análise",    value: 14, hint: "IA",          icon: AlertTriangle, tone: "purple" },
@@ -29,7 +29,7 @@ export default function AdmProspecções() {
       ]}
     >
       <div className="bg-white rounded-xl border">
-        <div className="p-4 border-b"><h3 className="text-sm font-semibold">Prospecções AJ em Curso</h3></div>
+        <div className="p-4 border-b"><h3 className="text-sm font-semibold">Prospeccoes AJ em Curso</h3></div>
         <table className="w-full text-sm">
           <thead className="bg-muted/40 text-xs text-muted-foreground uppercase tracking-wider">
             <tr>

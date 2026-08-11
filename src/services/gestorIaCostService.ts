@@ -54,7 +54,7 @@ export interface CostInsight {
 }
 
 export interface PlatformCounts {
-  prospecçõesTotal: number;            // Prospecções distintos analisados (prospeccao_analysis_results)
+  prospecçõesTotal: number;            // Prospeccoes distintos analisados (prospeccao_analysis_results)
   prospecçõesConcluidos: number;
   prospecçõesEmAnalise: number;
   balancetesRuns: number;       // balancete_runs total
@@ -69,8 +69,8 @@ export interface CostIndicators {
   custoBalancete: number;          // custo IA atribuído a OCR/extraction/embedding
   custoRelatorio: number;          // custo IA atribuído a geração de relatório
   custoIaOcrProcessamento: number; // OCR + extraction + embedding + classification + validation
-  custoMedioExecucao: number;      // custoTotal / Prospecções reais
-  custoMedioPorProspeccao: number;        // custoTotal / nº Prospecções
+  custoMedioExecucao: number;      // custoTotal / Prospeccoes reais
+  custoMedioPorProspeccao: number;        // custoTotal / nº Prospeccoes
   custoMedioPorBalancete: number;  // custoBalancete / nº runs balancete
   custoMedioPorRelatorio: number;  // custoRelatorio / nº relatórios (finalizados+andamento)
   totalBalancetes: number;

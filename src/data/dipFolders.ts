@@ -75,7 +75,7 @@ export const DIP_FOLDERS: DipFolder[] = [
   { id: 35, prospeccaoTopicNumber: 43, label: "Adiantamento de contrato de câmbio (ACC)",                                        agent: "AGENTE_GARANTIAS_CREDITO",        accountClass: "PASSIVO" },
   { id: 36, prospeccaoTopicNumber: 44, label: "Comprovantes de Pagamentos a credores pelo Plano de RJ",                          agent: "AGENTE_JURIDICO_OBRIGACIONAL",    accountClass: "PASSIVO" },
   { id: 37, prospeccaoTopicNumber: 15, label: "Última Alteração Contratual",                                                     agent: "AGENTE_SOCIETARIO_ESTRUTURA",     accountClass: "CADASTRO" },
-  { id: 38, prospeccaoTopicNumber: 16, label: "Informacaoções de pendência de Prospecção AJ anterior",                                        agent: "AGENTE_GENERICO",                 accountClass: "N_A" },
+  { id: 38, prospeccaoTopicNumber: 16, label: "Informacaoções de pendência de Prospeccao AJ anterior",                                        agent: "AGENTE_GENERICO",                 accountClass: "N_A" },
   { id: 39, prospeccaoTopicNumber: 45, label: "Outras Informacaoções",                                                              agent: "AGENTE_GENERICO",                 accountClass: "N_A" },
   { id: 40, prospeccaoTopicNumber: 46, label: "Situação Fiscal",                                                                 agent: "AGENTE_TRIBUTARIO",               accountClass: "FISCAL" },
   { id: 41, prospeccaoTopicNumber: 17, label: "Relação analítica de notas fiscais",                                              agent: "AGENTE_FISCAL_NFE",               accountClass: "RECEITA" },

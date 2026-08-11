@@ -56,7 +56,7 @@ export default function Dashboard() {
       title={`Olá, ${userName?.split(" ")[0] || "Coordenador"}!`}
       subtitle="Visão executiva da operação, equipe e aprovações pendentes."
       kpis={[
-        { label: "Prospecções AJ Totais",       value: stats.total,      hint: "Período atual",    icon: Briefcase,    tone: "blue" },
+        { label: "Prospeccoes AJ Totais",       value: stats.total,      hint: "Período atual",    icon: Briefcase,    tone: "blue" },
         { label: "Em Andamento",      value: stats.ativos,     hint: "Pipelines ativos", icon: Activity,     tone: "purple" },
         { label: "Aprovações",        value: stats.aprovacoes, hint: "Aguardando você",  icon: CheckCircle2, tone: "orange" },
         { label: "Equipe",            value: stats.equipe,     hint: "Consultores",      icon: Users,        tone: "blue" },
@@ -89,7 +89,7 @@ export default function Dashboard() {
         </div>
 
         <div className="bg-white rounded-xl border p-5">
-          <h3 className="text-sm font-semibold mb-3">Prospecções AJ por Consultor</h3>
+          <h3 className="text-sm font-semibold mb-3">Prospeccoes AJ por Consultor</h3>
           <div className="h-[260px]">
             <ResponsiveContainer>
               <BarChart data={equipeBar} margin={{ top: 24, right: 8, left: 0, bottom: 0 }}>
@@ -158,7 +158,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium">{c.nome}</div>
-                  <div className="text-xs text-muted-foreground">{c.prospecções} Prospecções ativos</div>
+                  <div className="text-xs text-muted-foreground">{c.prospecções} Prospeccoes ativos</div>
                 </div>
                 <div className="w-32">
                   <div className="h-1.5 bg-muted rounded-full overflow-hidden">

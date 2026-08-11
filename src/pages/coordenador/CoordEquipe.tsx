@@ -12,7 +12,7 @@ const team = [
 const statusColor = (s: string) => s === "Sobrecarga" ? { bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)" } : { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" };
 
 export default function CoordEquipe() {
-  const totalProspecções = team.reduce((s, t) => s + t.prospecções, 0);
+  const totalProspeccoes = team.reduce((s, t) => s + t.prospecções, 0);
   const avgScore  = Math.round(team.reduce((s, t) => s + t.score, 0) / team.length);
   const avgSLA    = Math.round(team.reduce((s, t) => s + t.sla, 0) / team.length);
   return (
@@ -20,7 +20,7 @@ export default function CoordEquipe() {
       title="Equipe" subtitle="Gestão de consultores, carga e performance individual."
       kpis={[
         { label: "Consultores",   value: team.length, hint: "Ativos",         icon: Users,        tone: "blue" },
-        { label: "Prospecções AJ Atribuídos", value: totalProspecções, hint: "Total da equipe",icon: Briefcase,    tone: "purple" },
+        { label: "Prospeccoes AJ Atribuídos", value: totalProspeccoes, hint: "Total da equipe",icon: Briefcase,    tone: "purple" },
         { label: "Score Médio",   value: avgScore,    hint: "Qualidade",      icon: Award,        tone: "green" },
         { label: "SLA Médio",     value: `${avgSLA}%`, hint: "Cumprimento",    icon: Activity,     tone: "blue" },
         { label: "Sobrecarga",    value: team.filter(t => t.status === "Sobrecarga").length, hint: "Atenção", icon: AlertTriangle, tone: "orange" },
@@ -38,7 +38,7 @@ export default function CoordEquipe() {
           <thead className="bg-muted/40 text-xs text-muted-foreground uppercase tracking-wider">
             <tr>
               <th className="text-left px-4 py-2.5">Consultor</th>
-              <th className="text-left px-4 py-2.5">Prospecções AJ</th>
+              <th className="text-left px-4 py-2.5">Prospeccoes AJ</th>
               <th className="text-left px-4 py-2.5">Score</th>
               <th className="text-left px-4 py-2.5">SLA</th>
               <th className="text-left px-4 py-2.5">Status</th>

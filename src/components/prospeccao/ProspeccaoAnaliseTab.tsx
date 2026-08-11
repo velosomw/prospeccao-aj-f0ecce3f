@@ -447,7 +447,7 @@ const ProspeccaoAnaliseTab = ({ prospeccao }: Props) => {
                 <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{prospeccao.empresa}</p>
               </div>
               <div className="text-center">
-                <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Prospecção AJ</p>
+                <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Prospeccao AJ</p>
                 <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{prospeccao.id}</p>
               </div>
               <div className="text-center">

@@ -17,7 +17,7 @@ const Footer = () => {
               />
             </Link>
             <p className="text-primary-foreground/60 text-sm leading-relaxed">
-              BEx Prospecção AJ — A inteligência por trás da reestruturação empresarial moderna.
+              BEx Prospeccao AJ — A inteligência por trás da reestruturação empresarial moderna.
             </p>
           </div>
 

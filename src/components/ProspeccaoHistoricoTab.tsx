@@ -284,7 +284,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
   );
 
   const yearKpiCards = [
-    { label: `Prospecções Apurados (${currentYear})`, value: yearKpis.apurados, icon: ClipboardList, color: "hsl(var(--accent))" },
+    { label: `Prospeccoes Apurados (${currentYear})`, value: yearKpis.apurados, icon: ClipboardList, color: "hsl(var(--accent))" },
     { label: "Concluídos 100%", value: yearKpis.concluidos, icon: CheckCircle2, color: "hsl(var(--primary))" },
     { label: "Incompletos", value: yearKpis.incompletos, icon: Layers, color: "hsl(var(--destructive))" },
     { label: "Empresas", value: yearKpis.empresas, icon: Building2, color: "hsl(var(--ring))" },
@@ -316,7 +316,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
-            <History className="w-4 h-4 text-accent" /> Histórico de Prospecções por Período
+            <History className="w-4 h-4 text-accent" /> Histórico de Prospeccoes por Período
           </CardTitle>
           <p className="text-xs text-muted-foreground mt-1">
             Pesquise por empresa, ano ou mês. Selecione uma empresa para ver o detalhamento mensal.
@@ -329,7 +329,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar empresa, CNPJ, Prospecção AJ-ID..."
+                placeholder="Buscar empresa, CNPJ, Prospeccao AJ-ID..."
                 className="pl-9"
               />
             </div>
@@ -372,9 +372,9 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 border-b">
                   <tr>
-                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospecção AJ · Empresa</th>
+                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospeccao AJ · Empresa</th>
                     <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">CNPJ</th>
-                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospecções AJ Apurados</th>
+                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospeccoes AJ Apurados</th>
                     <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Último Período</th>
                     <th className="text-right px-4 py-3 text-sm font-semibold text-muted-foreground">Ações</th>
                   </tr>
@@ -472,7 +472,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
             {/* KPIs da empresa */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="p-3 rounded-lg border border-border/60 bg-muted/20">
-                <p className="text-xs text-muted-foreground">Prospecções AJ Apurados</p>
+                <p className="text-xs text-muted-foreground">Prospeccoes AJ Apurados</p>
                 <p className="text-2xl font-bold text-foreground">{companyKpis.apurados}</p>
               </div>
               <div className="p-3 rounded-lg border border-border/60 bg-muted/20">

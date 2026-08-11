@@ -11,7 +11,7 @@ const events = [
 const typeMeta: Record<string, { icon: any; bg: string; fg: string; label: string }> = {
   decisao:   { icon: Gavel,         bg: "hsl(217,91%,96%)", fg: "hsl(217,91%,45%)", label: "Decisão" },
   audiencia: { icon: CheckCircle2,  bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)", label: "Audiência" },
-  prospeccao:       { icon: FileText,      bg: "hsl(258,90%,96%)", fg: "hsl(258,90%,45%)", label: "Prospecção AJ" },
+  prospeccao:       { icon: FileText,      bg: "hsl(258,90%,96%)", fg: "hsl(258,90%,45%)", label: "Prospeccao AJ" },
 };
 
 export default function MagHistorico() {
@@ -22,7 +22,7 @@ export default function MagHistorico() {
         { label: "Eventos (30d)", value: 88, hint: "Total",     icon: History,      tone: "blue" },
         { label: "Decisões",      value: 28, hint: "Proferidas",icon: Gavel,        tone: "purple" },
         { label: "Audiências",    value: 22, hint: "Realizadas",icon: CheckCircle2, tone: "green" },
-        { label: "Prospecções AJ Lidos",    value: 14, hint: "Análises",  icon: FileText,     tone: "blue" },
+        { label: "Prospeccoes AJ Lidos",    value: 14, hint: "Análises",  icon: FileText,     tone: "blue" },
         { label: "Pendências",    value: 4,  hint: "Em aberto", icon: AlertTriangle, tone: "red" },
         { label: "Usuários",      value: 1,  hint: "Gabinete",  icon: User,         tone: "slate" },
       ]}

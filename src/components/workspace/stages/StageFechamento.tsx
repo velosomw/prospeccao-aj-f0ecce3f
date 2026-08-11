@@ -46,7 +46,7 @@ export default function StageFechamento({
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
         {/* Score Final */}
         <div className="bg-white border border-border rounded-lg p-4 text-center">
-          <h3 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide mb-2">Prospecção AJ Score Final</h3>
+          <h3 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide mb-2">Prospeccao AJ Score Final</h3>
           <div className="text-4xl font-bold" style={{ color: scoreColor.ring }}>{Math.round(scoreFinal)}</div>
           <div className="text-[10px] font-bold mt-1" style={{ color: scoreColor.ring }}>{scoreColor.label}</div>
           <div className="text-[10px] text-muted-foreground mt-2">Score consolidado</div>
@@ -97,7 +97,7 @@ export default function StageFechamento({
       {showReport && (
         <div className="bg-white border border-border rounded-lg p-4">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-bold text-foreground">Relatório Prospecção AJ Final</h3>
+            <h3 className="text-sm font-bold text-foreground">Relatório Prospeccao AJ Final</h3>
             <button onClick={() => setShowReport(false)} className="text-xs text-muted-foreground hover:text-foreground">Fechar</button>
           </div>
           <ProspeccaoRelatorioFinalTab />

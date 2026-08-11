@@ -309,7 +309,7 @@ export default function RelatorioCanonicalPreview({
         <p className="text-sm text-muted-foreground mt-1">Administração Judicial · Recomendação CNJ 72/2020</p>
         <div className="mt-6 space-y-1 text-sm">
           {empresa && <p><strong>Recuperanda:</strong> {empresa}</p>}
-          {prospeccaoCode && <p><strong>Prospecção AJ:</strong> {prospeccaoCode}</p>}
+          {prospeccaoCode && <p><strong>Prospeccao AJ:</strong> {prospeccaoCode}</p>}
           {mesReferencia && <p><strong>Competência:</strong> {mesReferencia}</p>}
           {responsavel && <p><strong>Administrador Judicial:</strong> {responsavel}</p>}
         </div>
@@ -331,7 +331,7 @@ export default function RelatorioCanonicalPreview({
           {empresa ? <> DO {empresa.toUpperCase()}</> : <> DO GRUPO DIPLOMATA</>} n. {rjAutos}</strong>,
           em trâmite perante esse Juízo, por seu Responsável Técnico,{" "}
           <strong>{responsavel || "Luis Claudio Montoro Mendes"}</strong>, vem, respeitosamente,
-          apresentar <strong>RELATÓRIO MENSAL DE ATIVIDADES – Prospecção AJ</strong>, referente ao mês de{" "}
+          apresentar <strong>RELATÓRIO MENSAL DE ATIVIDADES – Prospeccao AJ</strong>, referente ao mês de{" "}
           <strong className="uppercase">{mesReferencia || "—"}</strong>, nos termos do art. 22, II,
           alínea “c” da Lei nº 11.101/2005, e alinhado às diretrizes da Recomendação nº 72/2020 do
           Conselho Nacional de Justiça.

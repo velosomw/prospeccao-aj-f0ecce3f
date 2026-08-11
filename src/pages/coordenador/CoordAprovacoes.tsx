@@ -14,7 +14,7 @@ const scoreColor = (s: number) => s < 33 ? "hsl(0,84%,55%)" : s < 67 ? "hsl(38,9
 export default function CoordAprovacoes() {
   return (
     <ConsultorPageShell
-      title="Aprovações" subtitle="Prospecções AJ aguardando sua revisão e assinatura."
+      title="Aprovações" subtitle="Prospeccoes AJ aguardando sua revisão e assinatura."
       kpis={[
         { label: "Aguardando",      value: aprovacoes.length, hint: "Total na fila",    icon: Clock,        tone: "orange" },
         { label: "Críticas",        value: aprovacoes.filter(a => a.critico).length, hint: "Vence hoje",   icon: AlertTriangle, tone: "red" },

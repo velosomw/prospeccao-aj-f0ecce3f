@@ -1,4 +1,4 @@
-// Serviço para o fluxo Prospecção AJ (uploads, linhas, jobs).
+// Serviço para o fluxo Prospeccao AJ (uploads, linhas, jobs).
 import { supabase } from "@/lib/supabase-any";
 
 export interface ProspeccaoLinha {

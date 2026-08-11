@@ -22,11 +22,11 @@ const REPORT_TYPES = [
     matchers: [/registro/i, /cobran/i] },
   { key: "pre_parecer",        label: "Revisão-Parecer Técnico",          icon: ClipboardList, color: "hsl(258,90%,66%)",
     matchers: [/pre[_-]?parecer/i, /pré[-_ ]?parecer/i, /pre[_-]?relat/i] },
-  { key: "pre_relatorio",      label: "Revisão-Relatório Prospecção AJ",            icon: FileSearch,    color: "hsl(190,70%,50%)",
+  { key: "pre_relatorio",      label: "Revisão-Relatório Prospeccao AJ",            icon: FileSearch,    color: "hsl(190,70%,50%)",
     matchers: [/pre[_-]?relat/i, /pré[-_ ]?relat/i, /prospeccao[_-]?mensal/i] },
   { key: "parecer_final",      label: "Parecer Técnico Final",            icon: FileCheck2,    color: "hsl(152,70%,45%)",
     matchers: [/parecer[_-]?final/i, /^parecer_tecnico$/i] },
-  { key: "relatorio_final",    label: "Relatório Prospecção AJ Final",                  icon: FileBarChart2, color: "hsl(38,90%,55%)",
+  { key: "relatorio_final",    label: "Relatório Prospeccao AJ Final",                  icon: FileBarChart2, color: "hsl(38,90%,55%)",
     matchers: [/relat[oó]rio[_-]?final/i, /prospeccao[_-]?final/i] },
 ] as const;
 
@@ -275,7 +275,7 @@ const TabFinanceiroTokens = () => {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <KPI
           icon={FileText}
-          label="Custo por Relatório Prospecção AJ Final"
+          label="Custo por Relatório Prospeccao AJ Final"
           value={data ? fmtUSDc(data.custoMedioPorRelatorio) : "—"}
           sub={data ? `${data.counts.relatoriosFinalizados + data.counts.relatoriosEmElaboracao} relatório(s) · ${data.counts.relatoriosFinalizados} finalizado(s)` : "—"}
           color="hsl(258,90%,66%)"
@@ -296,7 +296,7 @@ const TabFinanceiroTokens = () => {
         />
         <KPI
           icon={Activity}
-          label="Custo Médio por Prospecção AJ"
+          label="Custo Médio por Prospeccao AJ"
           value={data ? fmtUSDc(data.custoMedioPorProspeccao) : "—"}
           sub={data ? `Custo total ÷ ${data.counts.prospecçõesTotal} Prospeccao(s) (análise → conclusão)` : "—"}
           color="hsl(38,90%,55%)"
@@ -397,7 +397,7 @@ const TabFinanceiroTokens = () => {
           <div className="border-t border-border p-5">
             <table className="w-full text-sm">
               <thead><tr className="border-b border-border">
-                <th className="text-left py-2 font-semibold text-muted-foreground">Etapa do Prospecção AJ</th>
+                <th className="text-left py-2 font-semibold text-muted-foreground">Etapa do Prospeccao AJ</th>
                 <th className="text-right py-2 font-semibold text-muted-foreground">Documentos</th>
                 <th className="text-right py-2 font-semibold text-muted-foreground">Custo médio / doc</th>
                 <th className="text-right py-2 font-semibold text-muted-foreground">Total acumulado</th>
@@ -424,7 +424,7 @@ const TabFinanceiroTokens = () => {
                   );
                 })}
                 <tr className="bg-[hsl(258,90%,66%)]/10">
-                  <td className="py-2 font-bold">Total geral Prospecção AJ</td>
+                  <td className="py-2 font-bold">Total geral Prospeccao AJ</td>
                   <td className="py-2 text-right font-mono font-bold">{totalDocsProspeccaoReports}</td>
                   <td className="py-2 text-right font-mono font-bold">{fmtUSDc(custoMedioProspeccao)}</td>
                   <td className="py-2 text-right font-mono font-bold">{fmtUSDc(custoTotalProspeccaoReports)}</td>

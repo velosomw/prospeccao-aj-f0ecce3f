@@ -342,7 +342,7 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               <Select value={String(year)} disabled>
-                <SelectTrigger className="h-9 w-24 opacity-90 cursor-not-allowed" title="Período definido no cadastro do Prospecção AJ">
+                <SelectTrigger className="h-9 w-24 opacity-90 cursor-not-allowed" title="Período definido no cadastro do Prospeccao AJ">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -350,7 +350,7 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
                 </SelectContent>
               </Select>
               <Select value={String(month)} disabled>
-                <SelectTrigger className="h-9 w-32 opacity-90 cursor-not-allowed" title="Período definido no cadastro do Prospecção AJ">
+                <SelectTrigger className="h-9 w-32 opacity-90 cursor-not-allowed" title="Período definido no cadastro do Prospeccao AJ">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -411,7 +411,7 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
             </CardHeader>
             <CardContent className="space-y-3">
               {!run ? (
-                <p className="text-sm text-muted-foreground">Nenhum run para este período. Clique em <b>Atualizar Status IA</b> na aba <b>Status Prospecção AJ</b>.</p>
+                <p className="text-sm text-muted-foreground">Nenhum run para este período. Clique em <b>Atualizar Status IA</b> na aba <b>Status Prospeccao AJ</b>.</p>
               ) : (
                 <>
                   <Progress value={run.progress} className="h-2" />

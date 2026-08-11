@@ -277,7 +277,7 @@ const UserManagement = () => {
     return true;
   });
 
-  const selectedConsultantProspecções = useMemo(() => {
+  const selectedConsultantProspeccoes = useMemo(() => {
     if (!selectedConsultant) return [] as Company[];
     const ids = assignmentsByConsultant.get(selectedConsultant.user_id) || [];
     return ids.map((id) => companiesById.get(id)).filter(Boolean) as Company[];
@@ -396,7 +396,7 @@ const UserManagement = () => {
           <div className="relative">
             <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Buscar por empresa Prospecção AJ (nome, ID Prospecção AJ, CNPJ)..."
+              placeholder="Buscar por empresa Prospeccao AJ (nome, ID Prospeccao AJ, CNPJ)..."
               value={companySearch}
               onChange={(e) => setCompanySearch(e.target.value)}
               className="pl-9 pr-9"
@@ -413,7 +413,7 @@ const UserManagement = () => {
           </div>
         </div>
 
-        {/* Painel inline: Prospecções do consultor selecionado */}
+        {/* Painel inline: Prospeccoes do consultor selecionado */}
         {selectedConsultant && (
           <Card className="border-[hsl(217,91%,50%)]/30 bg-[hsl(217,91%,50%)]/5">
             <CardContent className="p-5 space-y-3">
@@ -421,10 +421,10 @@ const UserManagement = () => {
                 <div className="flex items-center gap-2">
                   <Link2 className="w-4 h-4 text-[hsl(217,91%,50%)]" />
                   <h3 className="font-semibold text-foreground">
-                    Prospecções de {selectedConsultant.full_name}
+                    Prospeccoes de {selectedConsultant.full_name}
                   </h3>
                   <Badge className="bg-[hsl(217,91%,50%)] text-white">
-                    {selectedConsultantProspecções.length}
+                    {selectedConsultantProspeccoes.length}
                   </Badge>
                 </div>
                 <div className="flex gap-2">
@@ -436,13 +436,13 @@ const UserManagement = () => {
                   </Button>
                 </div>
               </div>
-              {selectedConsultantProspecções.length === 0 ? (
+              {selectedConsultantProspeccoes.length === 0 ? (
                 <p className="text-sm text-muted-foreground py-2">
                   Nenhum Prospeccao associado. Clique em "Gerenciar vínculos" para atribuir.
                 </p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                  {selectedConsultantProspecções.map((c) => (
+                  {selectedConsultantProspeccoes.map((c) => (
                     <div
                       key={c.id}
                       className="bg-card border border-border rounded-lg p-3 flex items-start justify-between gap-2"
@@ -644,7 +644,7 @@ const UserManagement = () => {
                   <div>
                     <Label className="text-sm flex items-center gap-1.5">
                       <Link2 className="w-4 h-4 text-[hsl(217,91%,50%)]" />
-                      Prospecções vinculados a este consultor
+                      Prospeccoes vinculados a este consultor
                     </Label>
                     <p className="text-xs text-muted-foreground mt-0.5">
                       Marque para vincular. Ao vincular, o Prospeccao é movido automaticamente caso esteja com outro consultor.

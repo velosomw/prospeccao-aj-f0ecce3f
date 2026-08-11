@@ -18,7 +18,7 @@ interface Props {
 
 const MyReleasesTab = ({
   scope = "self",
-  title = "Prospecções Liberados",
+  title = "Prospeccoes Liberados",
   description = "Empresas e períodos disponíveis para visualização.",
   showActions = true,
   onOpenReport,

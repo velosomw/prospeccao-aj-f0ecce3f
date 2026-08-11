@@ -34,7 +34,7 @@ const COLOR_CYAN = "hsl(190, 90%, 50%)";
 const monthsPt = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
 const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }: Props) => {
-  // 1. Status dos Prospecções (saúde do portfólio)
+  // 1. Status dos Prospeccoes (saúde do portfólio)
   const statusData = useMemo(() => {
     const buckets: Record<string, number> = { ativo: 0, pendente: 0, inativo: 0, concluido: 0 };
     companies.forEach((c) => {
@@ -147,7 +147,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
               <Target className="w-4 h-4" style={{ color: COLOR_BLUE }} />
             </div>
             <p className="text-2xl font-bold text-foreground mt-1">{coverage}%</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">{totalAssigned} de {companies.length} Prospecções atribuídos</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">{totalAssigned} de {companies.length} Prospeccoes atribuídos</p>
           </CardContent>
         </Card>
         <Card className="border-l-4" style={{ borderLeftColor: COLOR_PURPLE }}>
@@ -157,7 +157,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
               <Layers className="w-4 h-4" style={{ color: COLOR_PURPLE }} />
             </div>
             <p className="text-2xl font-bold text-foreground mt-1">{cargaMedia}</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">Prospecções AJ por consultor ativo</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Prospeccoes AJ por consultor ativo</p>
           </CardContent>
         </Card>
         <Card className="border-l-4" style={{ borderLeftColor: COLOR_GREEN }}>
@@ -189,7 +189,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <PieIcon className="w-4 h-4" style={{ color: COLOR_BLUE }} /> Status dos Prospecções
+              <PieIcon className="w-4 h-4" style={{ color: COLOR_BLUE }} /> Status dos Prospeccoes
             </CardTitle>
             <CardDescription>Distribuição da saúde do portfólio</CardDescription>
           </CardHeader>
@@ -228,7 +228,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
             <CardTitle className="text-base flex items-center gap-2">
               <BarChart3 className="w-4 h-4" style={{ color: COLOR_PURPLE }} /> Carga por Consultor
             </CardTitle>
-            <CardDescription>Top 6 consultores por nº de Prospecções AJ</CardDescription>
+            <CardDescription>Top 6 consultores por nº de Prospeccoes AJ</CardDescription>
           </CardHeader>
           <CardContent className="h-[280px]">
             {consultorData.length === 0 ? (
@@ -255,7 +255,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
             <CardTitle className="text-base flex items-center gap-2">
               <TrendingUp className="w-4 h-4" style={{ color: COLOR_GREEN }} /> Cadastros de Prospeccao — 6 meses
             </CardTitle>
-            <CardDescription>Evolução mensal dos novos Prospecções AJ</CardDescription>
+            <CardDescription>Evolução mensal dos novos Prospeccoes AJ</CardDescription>
           </CardHeader>
           <CardContent className="h-[260px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -346,7 +346,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
             <CardTitle className="text-base flex items-center gap-2">
               <BarChart3 className="w-4 h-4" style={{ color: COLOR_NAVY }} /> Setores Atendidos
             </CardTitle>
-            <CardDescription>Top 5 setores econômicos por volume de Prospecções AJ</CardDescription>
+            <CardDescription>Top 5 setores econômicos por volume de Prospeccoes AJ</CardDescription>
           </CardHeader>
           <CardContent className="h-[280px]">
             {setorData.length === 0 ? (

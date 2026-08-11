@@ -10,7 +10,7 @@ const statusMeta: Record<string, { bg: string; fg: string }> = {
   "Visualizado":  { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
 };
 
-export default function MagProspecções() {
+export default function MagProspeccoes() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -45,7 +45,7 @@ export default function MagProspecções() {
   const columns = [
     {
       key: "info",
-      header: "Prospecção AJ",
+      header: "Prospeccao AJ",
       cell: (r: typeof rows[number]) => {
         const s = statusMeta[r.status];
         return (
@@ -86,10 +86,10 @@ export default function MagProspecções() {
 
   return (
     <ConsultorPageShell
-      title="Prospecções AJ Recebidos" subtitle="Relatórios de Monitoramento das empresas de prospeccao para análise judicial."
+      title="Prospeccoes AJ Recebidos" subtitle="Relatórios de Monitoramento das empresas de prospeccao para análise judicial."
       search={search} onSearch={(s) => { setSearch(s); setPage(1); }}
       kpis={[
-        { label: "Prospecções AJ (30d)",    value: total, hint: "Recebidos",    icon: FileText,     tone: "blue" },
+        { label: "Prospeccoes AJ (30d)",    value: total, hint: "Recebidos",    icon: FileText,     tone: "blue" },
         { label: "Para Análise",  value: paraAnalise,  hint: "Pendente",     icon: AlertTriangle, tone: "orange" },
         { label: "Visualizados",  value: 0,   hint: "Lidos",        icon: Eye,          tone: "green" },
         { label: "Score Médio",   value: 0, hint: "Qualidade",    icon: Award,        tone: "blue" },
@@ -98,7 +98,7 @@ export default function MagProspecções() {
       ]}
     >
       <div className="bg-white rounded-xl border">
-        <div className="p-4 border-b"><h3 className="text-sm font-semibold">Prospecções AJ Recebidos</h3></div>
+        <div className="p-4 border-b"><h3 className="text-sm font-semibold">Prospeccoes AJ Recebidos</h3></div>
         {isLoading && (
           <div className="text-center text-muted-foreground py-10 text-sm">Carregando…</div>
         )}

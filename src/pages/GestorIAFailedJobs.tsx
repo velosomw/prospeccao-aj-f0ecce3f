@@ -205,7 +205,7 @@ export default function GestorIAFailedJobs() {
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Buscar por file_id, Prospecção AJ, motivo ou erro…"
+              placeholder="Buscar por file_id, Prospeccao AJ, motivo ou erro…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-9"
@@ -222,7 +222,7 @@ export default function GestorIAFailedJobs() {
               <TableRow>
                 <TableHead>Falhou em</TableHead>
                 <TableHead>File ID</TableHead>
-                <TableHead>Prospecção AJ / Período</TableHead>
+                <TableHead>Prospeccao AJ / Período</TableHead>
                 <TableHead>Motivo</TableHead>
                 <TableHead className="text-center">Tentativas</TableHead>
                 <TableHead>Erro</TableHead>
@@ -318,7 +318,7 @@ export default function GestorIAFailedJobs() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-xs text-muted-foreground">Prospecção AJ</Label>
+                  <Label className="text-xs text-muted-foreground">Prospeccao AJ</Label>
                   <div>{selected.prospeccao_id ?? "—"}</div>
                 </div>
                 <div>

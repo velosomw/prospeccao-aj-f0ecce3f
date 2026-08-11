@@ -54,7 +54,7 @@ export default function ConsultorLogsIA() {
                 <th className="text-left px-4 py-2.5">Tipo</th>
                 <th className="text-left px-4 py-2.5">Agente</th>
                 <th className="text-left px-4 py-2.5">Ação</th>
-                <th className="text-left px-4 py-2.5">Prospecção AJ</th>
+                <th className="text-left px-4 py-2.5">Prospeccao AJ</th>
                 <th className="text-left px-4 py-2.5">Modelo</th>
                 <th className="text-right px-4 py-2.5">Tokens</th>
                 <th className="text-right px-4 py-2.5">Tempo</th>

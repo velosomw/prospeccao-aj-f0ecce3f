@@ -128,7 +128,7 @@ export default function ConsultorRelatorios() {
     }
     const ws = XLSX.utils.json_to_sheet(rows);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Prospecção AJ");
+    XLSX.utils.book_append_sheet(wb, ws, "Prospeccao AJ");
     XLSX.writeFile(wb, `prospeccao-aj-${new Date().toISOString().slice(0, 10)}.xlsx`);
   };
 
