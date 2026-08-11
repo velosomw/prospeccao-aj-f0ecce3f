@@ -21,7 +21,7 @@ const cards = [
   { label: "Cadastro",    desc: "Cadastre e gerencie informações de foprospeccao rápida e segura.",        icon: ClipboardList,      to: "/consultor/cadastro",    tone: "blue"   },
   { label: "Planilha",    desc: "Salva as informações e Faz Upload PDF de foprospeccao inteligente.", icon: FileBarChart,       to: "/consultor/relatorios",  tone: "green"  },
   { label: "Dashboard",   desc: "Acompanhe indicadores e métricas em tempo real.",                  icon: MonitorPlay,        to: "/consultor/dashboard",   tone: "purple" },
-  { label: "Padrão Prospeccao", desc: "Planilha padrão de prospecção do administrador judicial.",       icon: Bell,               to: "/consultor/planilha-padrao-prospeccao", tone: "orange" },
+  { label: "Padrão Prospecção", desc: "Planilha padrão de prospecção do administrador judicial.",       icon: Bell,               to: "/consultor/planilha-padrao-prospeccao", tone: "orange" },
   { label: "Planilha de Carta",    desc: "Gerencie clientes e acompanhe todas as informações.",              icon: Users,              to: "/consultor/clientes",    tone: "teal"   },
   
 ];

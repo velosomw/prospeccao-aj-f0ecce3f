@@ -26,7 +26,7 @@ interface LinhaCarta {
   historico: { data: string; evento: string; canal: string; status: "ok" | "pendente" | "falha" }[];
 }
 
-// Mockup: linhas derivadas das recuperações judiciais da Planilha Padrão Prospeccao
+// Mockup: linhas derivadas das recuperações judiciais da Planilha Padrão Prospecção
 const LINHAS: LinhaCarta[] = [];
 
 const statusPill = (s: CartaStatus) =>
@@ -106,7 +106,7 @@ export default function ConsultorClientes() {
   return (
     <ConsultorPageShell
       title="Planilha de Carta"
-      subtitle="Gestão das cartas geradas a partir das recuperações judiciais ativas na Planilha Padrão Prospeccao."
+      subtitle="Gestão das cartas geradas a partir das recuperações judiciais ativas na Planilha Padrão Prospecção."
       search={search}
       onSearch={setSearch}
       kpis={[
