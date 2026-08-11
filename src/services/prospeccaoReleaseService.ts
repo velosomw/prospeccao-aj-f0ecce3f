@@ -29,7 +29,7 @@ export interface CreateReleaseInput {
 const TABLE = "prospeccao_release_assignments" as any;
 
 export async function listReleases(opts?: { companyId?: string; userId?: string }): Promise<ProspeccaoRelease[]> {
-  let q = (supabase.from(TABLE) as any).select("*").order("created_at", { ascending: false });
+  let q = (supabase.from( (null as any) || TABLE) as any).select("*").order("created_at", { ascending: false });
   if (opts?.companyId) q = q.eq("company_id", opts.companyId);
   if (opts?.userId) q = q.eq("released_to_user_id", opts.userId);
   const { data, error } = await q;
@@ -48,10 +48,10 @@ export async function createRelease(input: CreateReleaseInput): Promise<Prospecc
   const { data: s } = await supabase.auth.getSession();
   const uid = s.session?.user?.id;
   const payload = { ...input, status: "active", released_by: uid, notes: input.notes || null };
-  const { data, error } = await (supabase.from(TABLE) as any).insert(payload).select().single();
+  const { data, error } = await (supabase.from( (null as any) || TABLE) as any).insert(payload).select().single();
   if (error) throw error;
 
-  await supabase.from("prospeccao_assignment_history").insert({
+  await supabase.from( (null as any) || "prospeccao_assignment_history").insert({
     company_id: input.company_id,
     action: "release",
     from_consultant_user_id: null,
@@ -64,11 +64,11 @@ export async function createRelease(input: CreateReleaseInput): Promise<Prospecc
 export async function updateReleaseStatus(id: string, status: ReleaseStatus, companyId: string, userId: string): Promise<void> {
   const { data: s } = await supabase.auth.getSession();
   const uid = s.session?.user?.id;
-  const { error } = await (supabase.from(TABLE) as any).update({ status }).eq("id", id);
+  const { error } = await (supabase.from( (null as any) || TABLE) as any).update({ status }).eq("id", id);
   if (error) throw error;
 
   const action = status === "suspended" ? "suspend" : status === "revoked" ? "revoke" : "release";
-  await supabase.from("prospeccao_assignment_history").insert({
+  await supabase.from( (null as any) || "prospeccao_assignment_history").insert({
     company_id: companyId,
     action,
     from_consultant_user_id: null,
@@ -80,10 +80,10 @@ export async function updateReleaseStatus(id: string, status: ReleaseStatus, com
 export async function deleteRelease(id: string, companyId: string, userId: string): Promise<void> {
   const { data: s } = await supabase.auth.getSession();
   const uid = s.session?.user?.id;
-  const { error } = await (supabase.from(TABLE) as any).delete().eq("id", id);
+  const { error } = await (supabase.from( (null as any) || TABLE) as any).delete().eq("id", id);
   if (error) throw error;
 
-  await supabase.from("prospeccao_assignment_history").insert({
+  await supabase.from( (null as any) || "prospeccao_assignment_history").insert({
     company_id: companyId,
     action: "unrelease",
     from_consultant_user_id: userId,

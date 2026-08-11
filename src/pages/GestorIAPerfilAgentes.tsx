@@ -80,14 +80,14 @@ export default function GestorIAPerfilAgentes() {
 
   const loadProfiles = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from("agent_profiles").select("*").order("agent_name");
+    const { data, error } = await supabase.from( (null as any) || "agent_profiles").select("*").order("agent_name");
     if (error) toast.error("Erro ao carregar perfis: " + error.message);
     else setProfiles((data ?? []) as AgentProfile[]);
     setLoading(false);
   };
 
   const loadCompanies = async () => {
-    const { data } = await supabase.from("companies").select("id,name,prospeccao_id").order("name");
+    const { data } = await supabase.from( (null as any) || "companies").select("id,name,prospeccao_id").order("name");
     setCompanies((data ?? []) as CompanyOpt[]);
   };
 
@@ -173,7 +173,7 @@ export default function GestorIAPerfilAgentes() {
       return toast.error("Empresa, chave e valor são obrigatórios");
     }
     const company = companies.find((c) => c.id === selectedCompany);
-    const { error } = await supabase.from("company_context").insert({
+    const { error } = await supabase.from( (null as any) || "company_context").insert({
       company_id: selectedCompany,
       prospeccao_id: company?.prospeccao_id ?? null,
       scope: newCtx.scope,
@@ -188,7 +188,7 @@ export default function GestorIAPerfilAgentes() {
   };
 
   const removeContext = async (id: string) => {
-    const { error } = await supabase.from("company_context").delete().eq("id", id);
+    const { error } = await supabase.from( (null as any) || "company_context").delete().eq("id", id);
     if (error) return toast.error("Erro: " + error.message);
     toast.success("Contexto removido");
     loadContext(selectedCompany);
@@ -201,7 +201,7 @@ export default function GestorIAPerfilAgentes() {
     setSavingMemory(true);
     try {
       const company = companies.find((c) => c.id === selectedCompany);
-      const { error } = await supabase.from("company_memory_embeddings").insert({
+      const { error } = await supabase.from( (null as any) || "company_memory_embeddings").insert({
         company_id: selectedCompany,
         prospeccao_id: company?.prospeccao_id ?? null,
         tipo: newMemory.tipo,
@@ -221,7 +221,7 @@ export default function GestorIAPerfilAgentes() {
   };
 
   const removeMemory = async (id: string) => {
-    const { error } = await supabase.from("company_memory_embeddings").delete().eq("id", id);
+    const { error } = await supabase.from( (null as any) || "company_memory_embeddings").delete().eq("id", id);
     if (error) return toast.error("Erro: " + error.message);
     toast.success("Memória removida");
     loadMemory(selectedCompany);
@@ -232,7 +232,7 @@ export default function GestorIAPerfilAgentes() {
       return toast.error("Selecione empresa e informe a regra");
     }
     const company = companies.find((c) => c.id === selectedCompany);
-    const { error } = await supabase.from("company_rules").insert({
+    const { error } = await supabase.from( (null as any) || "company_rules").insert({
       company_id: selectedCompany,
       prospeccao_id: company?.prospeccao_id ?? null,
       tipo: newRule.tipo,
@@ -247,13 +247,13 @@ export default function GestorIAPerfilAgentes() {
   };
 
   const toggleRule = async (id: string, ativa: boolean) => {
-    const { error } = await supabase.from("company_rules").update({ ativa: !ativa }).eq("id", id);
+    const { error } = await supabase.from( (null as any) || "company_rules").update({ ativa: !ativa }).eq("id", id);
     if (error) return toast.error("Erro: " + error.message);
     loadRules(selectedCompany);
   };
 
   const removeRule = async (id: string) => {
-    const { error } = await supabase.from("company_rules").delete().eq("id", id);
+    const { error } = await supabase.from( (null as any) || "company_rules").delete().eq("id", id);
     if (error) return toast.error("Erro: " + error.message);
     toast.success("Regra removida");
     loadRules(selectedCompany);
