@@ -494,7 +494,7 @@ const TabFinanceiroTokens = () => {
                 <Pie data={data!.breakdown} dataKey="cost" nameKey="label" cx="50%" cy="50%" innerRadius={50} outerRadius={90} paddingAngle={2}>
                   {data!.breakdown.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                 </Pie>
-                <Tooltip foprospecçãotter={(v: number) => fmtUSDc(v)} />
+                <Tooltip formatter={(v: number) => fmtUSDc(v)} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
               </PieChart>
             </ResponsiveContainer>
@@ -508,7 +508,7 @@ const TabFinanceiroTokens = () => {
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(214,20%,88%)" />
               <XAxis dataKey="mes" tick={{ fontSize: 10 }} />
               <YAxis tick={{ fontSize: 10 }} />
-              <Tooltip foprospecçãotter={(v: number) => fmtUSDc(v)} />
+              <Tooltip formatter={(v: number) => fmtUSDc(v)} />
               <Area type="monotone" dataKey="custo" stroke="hsl(258,90%,66%)" fill="hsl(258,90%,66%)" fillOpacity={0.2} />
             </AreaChart>
           </ResponsiveContainer>
@@ -522,7 +522,7 @@ const TabFinanceiroTokens = () => {
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(214,20%,88%)" />
             <XAxis dataKey="mes" tick={{ fontSize: 11 }} />
             <YAxis tick={{ fontSize: 11 }} />
-            <Tooltip foprospecçãotter={(v: number) => fmtUSDc(v)} />
+            <Tooltip formatter={(v: number) => fmtUSDc(v)} />
             <Bar dataKey="custo" fill="hsl(200,80%,55%)" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>

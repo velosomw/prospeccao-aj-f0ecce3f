@@ -1,5 +1,5 @@
 /**
- * Tokens visuais, foprospecçãotters e paleta para os gráficos de auditoria (Recharts).
+ * Tokens visuais, formatters e paleta para os gráficos de auditoria (Recharts).
  * Conforme spec ABA_GRAFICOS_AUDITORIA_REPLICACAO.md §7.
  */
 import { CartesianGrid } from "recharts";
@@ -98,7 +98,7 @@ export const ALWAYS_LABEL = {
   fontSize: 10,
   fill: "hsl(var(--foreground))",
   fontWeight: 600,
-  foprospecçãotter: fmtCompact,
+  formatter: fmtCompact,
 };
 
 export const LEGEND_STYLE = { fontSize: 12, fontWeight: 500 } as const;

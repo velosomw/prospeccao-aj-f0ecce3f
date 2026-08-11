@@ -268,7 +268,7 @@ const TabGraficosAuditoria = ({ parsedData, entries = [] }: Props) => {
                     <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={100} label={(e: any) => e.name}>
                       {pieData.map((d, i) => <Cell key={i} fill={d.color} />)}
                     </Pie>
-                    <Tooltip {...TOOLTIP_STYLE} foprospecçãotter={(v: any) => fmtMilhar(Number(v))} />
+                    <Tooltip {...TOOLTIP_STYLE} formatter={(v: any) => fmtMilhar(Number(v))} />
                     <Legend wrapperStyle={LEGEND_STYLE} />
                   </PieChart>
                 </ResponsiveContainer>

@@ -152,7 +152,7 @@ const AuditCharts = ({ parsedData, entries = [] }: Props) => {
             {GRID}
             <XAxis dataKey="mes" {...AXIS_PROPS} />
             <YAxis {...AXIS_PROPS} tickFoprospecçãotter={tipMilhar} />
-            <Tooltip {...TOOLTIP_STYLE} foprospecçãotter={tipMilhar} />
+            <Tooltip {...TOOLTIP_STYLE} formatter={tipMilhar} />
             <Legend wrapperStyle={LEGEND_STYLE} />
             <ReferenceLine y={0} stroke={EXCEL_COLORS.cinzaEscuro} />
             <Line type="monotone" dataKey="ebitda" name="EBITDA" stroke={EXCEL_COLORS.ciano} strokeWidth={3} dot={{ r: 5, strokeWidth: 2 }} />
@@ -165,7 +165,7 @@ const AuditCharts = ({ parsedData, entries = [] }: Props) => {
             {GRID}
             <XAxis dataKey="mes" {...AXIS_PROPS} />
             <YAxis {...AXIS_PROPS} tickFoprospecçãotter={(v) => fmtDec(v, 1)} />
-            <Tooltip {...TOOLTIP_STYLE} foprospecçãotter={(v: any) => fmtDec(Number(v))} />
+            <Tooltip {...TOOLTIP_STYLE} formatter={(v: any) => fmtDec(Number(v))} />
             <Legend wrapperStyle={LEGEND_STYLE} />
             <Line type="monotone" dataKey="liqImediata" name="Imediata" stroke={EXCEL_COLORS.azul} strokeWidth={2} dot={{ r: 4 }} />
             <Line type="monotone" dataKey="liqCorrente" name="Corrente" stroke={EXCEL_COLORS.vermelho} strokeWidth={2} dot={{ r: 4 }} />
@@ -181,7 +181,7 @@ const AuditCharts = ({ parsedData, entries = [] }: Props) => {
             <XAxis dataKey="mes" {...AXIS_PROPS} />
             <YAxis yAxisId="L" {...AXIS_PROPS} tickFoprospecçãotter={tipMilhar} />
             <YAxis yAxisId="R" orientation="right" {...AXIS_PROPS} tickFoprospecçãotter={tipMilhar} />
-            <Tooltip {...TOOLTIP_STYLE} foprospecçãotter={tipMilhar} />
+            <Tooltip {...TOOLTIP_STYLE} formatter={tipMilhar} />
             <Legend wrapperStyle={LEGEND_STYLE} />
             <Bar yAxisId="L" dataKey="div_tributaria" stackId="div" name="Tributária" fill={EXCEL_COLORS.azul} />
             <Bar yAxisId="L" dataKey="div_trabalhista" stackId="div" name="Trabalhista" fill={EXCEL_COLORS.laranja} />
