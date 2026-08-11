@@ -91,7 +91,7 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de Prospec�
     });
   }, [entries, search, filter, companiesById, profilesById]);
 
-  const foprospecçãotDate = (s: string) =>
+  const formatDate = (s: string) =>
     new Date(s).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
   const counts = useMemo(() => ({
@@ -175,7 +175,7 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de Prospec�
                   return (
                     <tr key={e.id} className="border-t hover:bg-muted/30">
                       <td className="px-3 py-2 text-xs text-muted-foreground whitespace-nowrap">
-                        {foprospecçãotDate(e.created_at)}
+                        {formatDate(e.created_at)}
                       </td>
                       <td className="px-3 py-2">
                         <span

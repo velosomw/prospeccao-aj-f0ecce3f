@@ -308,7 +308,7 @@ const ACCOUNT_PATTERNS: Array<{ nome: string; rx: RegExp }> = [
 ];
 
 const sortPeriods = (years: string[]): string[] => {
-  // Tenta detectar foprospecçãoto "YYYY-MM" / "YYYY/MM" / "YYYY" e ordenar cronologicamente
+  // Tenta detectar formato "YYYY-MM" / "YYYY/MM" / "YYYY" e ordenar cronologicamente
   return [...years].sort((a, b) => {
     const na = a.replace(/\D/g, "");
     const nb = b.replace(/\D/g, "");

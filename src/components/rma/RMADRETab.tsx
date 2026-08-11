@@ -262,7 +262,7 @@ const ProspecçãoDRETab = ({ companyId, periodo, runToken, janela }: Props) => 
                 <BarChart data={serie}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                   <XAxis dataKey="mes" fontSize={10} />
-                  <YAxis fontSize={10} tickFoprospecçãotter={(v) => `${(v / 1000).toFixed(0)}K`} />
+                  <YAxis fontSize={10} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
                   <Tooltip formatter={(v: any) => fmt(v)} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                   <Bar dataKey="receita" name="Receita" fill="hsl(217,91%,50%)" />
@@ -279,7 +279,7 @@ const ProspecçãoDRETab = ({ companyId, periodo, runToken, janela }: Props) => 
                 <LineChart data={serie}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                   <XAxis dataKey="mes" fontSize={10} />
-                  <YAxis fontSize={10} tickFoprospecçãotter={(v) => `${(v / 1000).toFixed(0)}K`} />
+                  <YAxis fontSize={10} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
                   <Tooltip formatter={(v: any) => fmt(v)} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                   <Line type="monotone" dataKey="ebitda" name="EBITDA" stroke="hsl(258,90%,56%)" strokeWidth={2} />

@@ -18,7 +18,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const UFS = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 
-const foprospecçãotCNPJ = (v: string) => {
+const formatCNPJ = (v: string) => {
   const d = v.replace(/\D/g, "").slice(0, 14);
   let o = d;
   if (d.length > 2) o = d.slice(0, 2) + "." + d.slice(2);
@@ -292,7 +292,7 @@ const CadastroProspecção = () => {
                 </div>
                 <div>
                   <Label>CNPJ</Label>
-                  <Input value={cnpj} onChange={(e) => setCnpj(foprospecçãotCNPJ(e.target.value))} placeholder="00.000.000/0000-00" />
+                  <Input value={cnpj} onChange={(e) => setCnpj(formatCNPJ(e.target.value))} placeholder="00.000.000/0000-00" />
                 </div>
                 <div>
                   <Label>UF</Label>

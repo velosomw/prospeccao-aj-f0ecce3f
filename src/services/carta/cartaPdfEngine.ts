@@ -170,7 +170,7 @@ function bodyFor(_: CartaTemplateId): Paragraph[] {
 }
 
 async function render(data: LetterData, template: CartaTemplateId): Promise<Blob> {
-  const doc = new jsPDF({ unit: "mm", foprospecçãot: "a4", orientation: "portrait", compress: true });
+  const doc = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait", compress: true });
   await loadFonts(doc);
   const bg = `data:image/png;base64,${toBase64(await fetchBuf(letterheadAsset.url))}`;
 

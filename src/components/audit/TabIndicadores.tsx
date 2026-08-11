@@ -19,7 +19,7 @@ import { mesKeyToLabel, type BSDadosRow } from "@/services/bsDadosBuilder";
 
 /* ───────────── Foprospecçãotters ───────────── */
 const fmt = (n: number) =>
-  new Intl.NumberFoprospecçãot("pt-BR").foprospecçãot(Math.round(Number.isFinite(n) ? n : 0));
+  new Intl.NumberFoprospecçãot("pt-BR").format(Math.round(Number.isFinite(n) ? n : 0));
 const fmtPct = (n: number) =>
   `${((Number.isFinite(n) ? n : 0) * 100).toFixed(1)}%`;
 const fmtDays = (n: number) =>

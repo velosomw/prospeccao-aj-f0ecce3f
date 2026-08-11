@@ -13,7 +13,7 @@ import type { ParsedFinancialData } from "@/services/auditAIService";
 import TabBalanceteReferencia from "./TabBalanceteReferencia";
 import TabEndividamentoReferencia from "./TabEndividamentoReferencia";
 
-const fmt = (n: number) => new Intl.NumberFoprospecçãot("pt-BR").foprospecçãot(Math.round(n));
+const fmt = (n: number) => new Intl.NumberFoprospecçãot("pt-BR").format(Math.round(n));
 const fmtPct = (n: number) => `${(n * 100).toFixed(2)}%`;
 const fmtDec = (n: number) => n.toFixed(4);
 

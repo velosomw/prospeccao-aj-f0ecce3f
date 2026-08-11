@@ -108,7 +108,7 @@ export default function RelatoriosContabeis() {
     if (!toKey) setToKey(periodKeys[periodKeys.length - 1]);
   }, [periodKeys, fromKey, toKey]);
 
-  const generate = async (foprospecçãoto: "docx" | "pdf") => {
+  const generate = async (formato: "docx" | "pdf") => {
     if (!selected) return;
     if (!bsRows.length) {
       toast({ title: "Sem dados", description: "Esta empresa ainda não possui balancete consolidado.", variant: "destructive" });
@@ -127,9 +127,9 @@ export default function RelatoriosContabeis() {
         toast({ title: "Intervalo vazio", description: "Nenhum período encontrado no intervalo selecionado.", variant: "destructive" });
         return;
       }
-      if (foprospecçãoto === "docx") await generateRelatorioContabilDocx(dataset);
+      if (formato === "docx") await generateRelatorioContabilDocx(dataset);
       else generateRelatorioContabilPdf(dataset);
-      toast({ title: "Relatório gerado", description: `Arquivo .${foprospecçãoto} salvo no seu dispositivo.` });
+      toast({ title: "Relatório gerado", description: `Arquivo .${formato} salvo no seu dispositivo.` });
     } catch (e: any) {
       toast({ title: "Falha ao gerar", description: String(e?.message || e), variant: "destructive" });
     } finally {

@@ -313,7 +313,7 @@ const UserManagement = () => {
   const activeUsers = filteredUsers.filter((u) => u.active).length;
   const inactiveUsers = filteredUsers.filter((u) => !u.active).length;
 
-  const foprospecçãotDate = (dateStr: string) => {
+  const formatDate = (dateStr: string) => {
     try {
       return new Date(dateStr).toLocaleDateString("pt-BR", {
         day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit",
@@ -538,7 +538,7 @@ const UserManagement = () => {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-center text-xs text-muted-foreground">
-                      {foprospecçãotDate(user.updated_at)}
+                      {formatDate(user.updated_at)}
                     </td>
                     <td className="px-4 py-3 text-center" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-center gap-1">

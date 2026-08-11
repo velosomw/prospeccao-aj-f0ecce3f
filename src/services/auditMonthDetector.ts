@@ -1,7 +1,7 @@
 /**
  * Detecção e consolidação de períodos mensais em balancetes.
  * Estratégia:
- *  1) Tenta extrair YYYY-MM do nome do arquivo (foprospecçãotos comuns BR).
+ *  1) Tenta extrair YYYY-MM do nome do arquivo (formatos comuns BR).
  *  2) Tenta detectar colunas mensais (JAN/24, 01/2024, etc.) no XLSX.
  *  3) Fallback: usa "atual" + assume mês corrente.
  *

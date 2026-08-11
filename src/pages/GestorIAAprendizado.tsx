@@ -88,7 +88,7 @@ function DocumentViewer({ url, mime, kind }: { url: string | null; mime?: string
   return (
     <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-2 p-6 text-center">
       {kind === "spreadsheet" ? <Sheet className="w-8 h-8 opacity-50" /> : <FileText className="w-8 h-8 opacity-50" />}
-      <p className="text-sm">Pré-visualização não disponível para este foprospecçãoto.</p>
+      <p className="text-sm">Pré-visualização não disponível para este formato.</p>
       <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary text-sm underline">Abrir arquivo</a>
     </div>
   );

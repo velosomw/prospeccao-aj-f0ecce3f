@@ -99,7 +99,7 @@ const Prospecção360Panel = ({ company, onClose }: Props) => {
   const coveredTopicNumbers = new Set(topics.map((t) => t.topic_number));
   const pendingTopics = Prospecção_TOPICS.filter((t) => !coveredTopicNumbers.has(t.number));
 
-  const foprospecçãotDate = (s: string) =>
+  const formatDate = (s: string) =>
     new Date(s).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
 
   return (
@@ -130,7 +130,7 @@ const Prospecção360Panel = ({ company, onClose }: Props) => {
                   </span>
                 )}
                 <span className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3" /> Cadastrada em {foprospecçãotDate(company.created_at)}
+                  <Calendar className="w-3 h-3" /> Cadastrada em {formatDate(company.created_at)}
                 </span>
               </div>
             </div>

@@ -11,7 +11,7 @@ import {
 import AuditTrail from "@/components/audit/AuditTrail";
 
 const TYPE_META: Record<MessageType, { label: string; icon: any; bg: string; fg: string }> = {
-  infoprospecçãotiva:          { label: "Infoprospecçãotiva",          icon: MessageCircle, bg: "hsl(217,91%,96%)", fg: "hsl(217,91%,45%)" },
+  informativa:          { label: "Informativa",          icon: MessageCircle, bg: "hsl(217,91%,96%)", fg: "hsl(217,91%,45%)" },
   solicitacao_correcao: { label: "Solicitação Correção", icon: FileWarning,   bg: "hsl(38,95%,95%)",  fg: "hsl(32,90%,45%)"  },
   alerta_prazo:         { label: "Alerta de Prazo",      icon: Clock,         bg: "hsl(18,90%,95%)",  fg: "hsl(18,85%,50%)"  },
   nao_conformidade:     { label: "Não Conformidade",     icon: AlertTriangle, bg: "hsl(0,84%,96%)",   fg: "hsl(0,84%,50%)"   },
@@ -30,7 +30,7 @@ export default function MessagingPanel() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
-  const [msgType, setMsgType] = useState<MessageType>("infoprospecçãotiva");
+  const [msgType, setMsgType] = useState<MessageType>("informativa");
   const [priority, setPriority] = useState<Priority>("baixa");
   const [showAudit, setShowAudit] = useState(false);
   const { messages, loading, send } = useMessages(activeId);
@@ -64,7 +64,7 @@ export default function MessagingPanel() {
     if (!draft.trim()) return;
     await send(draft, { message_type: msgType, priority });
     setDraft("");
-    setMsgType("infoprospecçãotiva");
+    setMsgType("informativa");
     setPriority("baixa");
   };
 
@@ -186,7 +186,7 @@ export default function MessagingPanel() {
           ) : (
             messages.map((m) => {
               const self = m.author_id === userId;
-              const t = TYPE_META[m.message_type] || TYPE_META.infoprospecçãotiva;
+              const t = TYPE_META[m.message_type] || TYPE_META.informativa;
               const TIcon = t.icon;
               return (
                 <div key={m.id} className={`flex ${self ? "justify-end" : ""}`}>

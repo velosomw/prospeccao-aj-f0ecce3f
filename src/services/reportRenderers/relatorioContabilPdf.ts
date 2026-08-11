@@ -171,7 +171,7 @@ function drawPeriodBlock(doc: jsPDF, c: Cursor, p: ReportPeriodBlock, blocks: Re
 
 export function generateRelatorioContabilPdf(d: ReportDataset, filename?: string): void {
   if (!d.periodos.length) throw new Error("Sem dados no intervalo selecionado.");
-  const doc = new jsPDF({ unit: "mm", foprospecçãot: "a4" });
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
   const c: Cursor = { y: 14 };
   drawHeader(doc, c);
 

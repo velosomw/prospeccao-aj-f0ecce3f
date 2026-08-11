@@ -32,7 +32,7 @@ interface JobRow {
   created_at: string;
 }
 
-function foprospecçãotEta(target: string | null): string {
+function formatEta(target: string | null): string {
   if (!target) return "—";
   const ms = new Date(target).getTime() - Date.now();
   if (ms <= 0) return "a qualquer momento";
@@ -41,7 +41,7 @@ function foprospecçãotEta(target: string | null): string {
   return `em até ${h}h`;
 }
 
-function foprospecçãotBytes(b: number | null): string {
+function formatBytes(b: number | null): string {
   if (!b) return "—";
   if (b < 1024) return `${b} B`;
   if (b < 1024 * 1024) return `${(b / 1024).toFixed(1)} KB`;
@@ -52,10 +52,10 @@ function foprospecçãotBytes(b: number | null): string {
  * Reduz um caminho completo (ex: "Projeto Prospecção/EMPRESA/2026/02.2026/04 - Nome")
  * para "/02.2026/04 - Nome" — destacando Mês.Ano e a subpasta.
  */
-function foprospecçãotFolderShort(path: string): string {
+function formatFolderShort(path: string): string {
   if (!path) return "—";
   const parts = path.split("/").filter(Boolean);
-  // procura segmento no foprospecçãoto MM.AAAA
+  // procura segmento no formato MM.AAAA
   const idx = parts.findIndex((p) => /^\d{2}\.\d{4}$/.test(p));
   if (idx >= 0) {
     return "/" + parts.slice(idx).join("/");
@@ -153,7 +153,7 @@ export default function ProspecçãoBatchTab({ companyId, prospecçãoId }: Prop
               <div className="rounded-lg border p-3">
                 <div className="text-xs text-muted-foreground">Em fila/processando</div>
                 <div className="text-2xl font-bold text-primary">{totalInBatch}</div>
-                {totalInBatch > 0 && <div className="text-xs text-muted-foreground mt-1">{foprospecçãotEta(latestEta)}</div>}
+                {totalInBatch > 0 && <div className="text-xs text-muted-foreground mt-1">{formatEta(latestEta)}</div>}
               </div>
               <div className="rounded-lg border p-3">
                 <div className="text-xs text-muted-foreground">Concluídos</div>
@@ -165,7 +165,7 @@ export default function ProspecçãoBatchTab({ companyId, prospecçãoId }: Prop
               </div>
               <div className="rounded-lg border p-3">
                 <div className="text-xs text-muted-foreground">Próxima conclusão</div>
-                <div className="text-sm font-semibold mt-1">{earliestEta ? foprospecçãotEta(earliestEta) : "—"}</div>
+                <div className="text-sm font-semibold mt-1">{earliestEta ? formatEta(earliestEta) : "—"}</div>
               </div>
             </div>
           )}
@@ -194,7 +194,7 @@ export default function ProspecçãoBatchTab({ companyId, prospecçãoId }: Prop
                   <div className="flex items-center gap-2 flex-shrink-0">
                     {f.in_batch_count > 0 && (
                       <Badge variant="outline" className="border-primary/30 bg-primary/5 text-primary gap-1">
-                        <Clock className="h-3 w-3" /> {foprospecçãotEta(f.latest_eta)}
+                        <Clock className="h-3 w-3" /> {formatEta(f.latest_eta)}
                       </Badge>
                     )}
                     {f.done_count > 0 && f.in_batch_count === 0 && (
@@ -246,13 +246,13 @@ export default function ProspecçãoBatchTab({ companyId, prospecçãoId }: Prop
                           href={`#folder=${encodeURIComponent(j.folder_path)}`}
                           className="text-primary hover:underline truncate inline-block max-w-full align-middle"
                         >
-                          {foprospecçãotFolderShort(j.folder_path)}
+                          {formatFolderShort(j.folder_path)}
                         </a>
                       ) : (
                         <span className="text-muted-foreground">—</span>
                       )}
                     </td>
-                    <td className="p-2">{foprospecçãotBytes(j.file_size_bytes)}</td>
+                    <td className="p-2">{formatBytes(j.file_size_bytes)}</td>
                     <td className="p-2">{j.page_count_estimate ?? "—"}</td>
                     <td className="p-2">{statusBadge(j.status)}</td>
                     <td className="p-2 text-muted-foreground">
@@ -260,7 +260,7 @@ export default function ProspecçãoBatchTab({ companyId, prospecçãoId }: Prop
                         ? new Date(j.completed_at).toLocaleString("pt-BR")
                         : j.status === "failed"
                           ? <span className="text-destructive">{j.error_message ?? "erro"}</span>
-                          : foprospecçãotEta(j.eta_at)}
+                          : formatEta(j.eta_at)}
                       {j.attempts > 1 && <span className="ml-1 text-[10px]">(tent. {j.attempts})</span>}
                     </td>
                   </tr>

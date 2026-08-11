@@ -52,7 +52,7 @@ const UserDashboard = () => {
     setHistory([]);
   };
 
-  const foprospecçãotFileSize = (bytes: number) => {
+  const formatFileSize = (bytes: number) => {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
@@ -151,12 +151,12 @@ const UserDashboard = () => {
                               <Badge className={`text-xs border shrink-0 ${statusConfig[audit.status].className}`}>
                                 {statusConfig[audit.status].label}
                               </Badge>
-                              <Badge variant="outline" className="text-[10px] shrink-0">{audit.foprospecçãot}</Badge>
+                              <Badge variant="outline" className="text-[10px] shrink-0">{audit.format}</Badge>
                               <Badge className={`text-[10px] border shrink-0 ${rb.className}`}>Risco: {rb.label}</Badge>
                             </div>
                             <div className="flex items-center gap-4 text-xs text-muted-foreground">
                               <span>{audit.date}</span>
-                              <span>{foprospecçãotFileSize(audit.fileSize)}</span>
+                              <span>{formatFileSize(audit.fileSize)}</span>
                               <span className="flex items-center gap-1">
                                 <TrendingUp className="w-3 h-3" /> {audit.conformidade}%
                               </span>

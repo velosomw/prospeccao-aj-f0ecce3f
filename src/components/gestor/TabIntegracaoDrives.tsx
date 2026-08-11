@@ -451,7 +451,7 @@ const RenumberProspecçãosCard = () => {
       </div>
       <p className="text-xs text-muted-foreground">
         Lê cada subpasta direta de <code className="bg-muted px-1 rounded">/{ONEDRIVE_CONFIG.base_path}</code>,
-        atribui IDs sequenciais no foprospecçãoto <code className="bg-muted px-1 rounded">{prefix}-{year}-0001…</code> em ordem
+        atribui IDs sequenciais no formato <code className="bg-muted px-1 rounded">{prefix}-{year}-0001…</code> em ordem
         alfabética e cadastra/atualiza a empresa correspondente. Conflitos por nome <strong>atualizam</strong> o <code className="bg-muted px-1 rounded">prospecção_id</code>.
       </p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

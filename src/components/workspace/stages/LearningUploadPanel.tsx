@@ -132,7 +132,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
     return () => { cancelled = true; };
   }, [prospecçãoId]);
   const folderNumbering = useMemo(() => buildFolderNumbering(appliedDipIds), [appliedDipIds]);
-  const foprospecçãotOption = (f: DipFolder) => {
+  const formatOption = (f: DipFolder) => {
     const ref = folderNumbering.get(f.id);
     const od = String(f.id).padStart(2, "0");
     const arq = ref?.fileNumber ?? "—";

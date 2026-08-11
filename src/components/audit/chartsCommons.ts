@@ -28,7 +28,7 @@ export const SERIES_COLORS = [
 export const fmtMilhar = (v: number | null | undefined) => {
   if (v == null || !Number.isFinite(v)) return "#N/D";
   const n = Math.round(v);
-  const s = new Intl.NumberFoprospecçãot("pt-BR").foprospecçãot(Math.abs(n));
+  const s = new Intl.NumberFoprospecçãot("pt-BR").format(Math.abs(n));
   return n < 0 ? `(${s})` : s;
 };
 export const fmtPct = (v: number | null | undefined, dec = 2) => {
@@ -45,7 +45,7 @@ export const fmtDec = (v: number | null | undefined, dec = 2) => {
 };
 export const fmtMoeda = (v: number | null | undefined) => {
   if (v == null || !Number.isFinite(v)) return "—";
-  return new Intl.NumberFoprospecçãot("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).foprospecçãot(v);
+  return new Intl.NumberFoprospecçãot("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(v);
 };
 export const fmtCompact = (v: any) => {
   const n = typeof v === "number" ? v : Number(v);

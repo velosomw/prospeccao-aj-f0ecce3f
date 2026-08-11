@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 /** ----- Types ----- */
 export type MessageType =
-  | "infoprospecçãotiva"
+  | "informativa"
   | "solicitacao_correcao"
   | "alerta_prazo"
   | "nao_conformidade"
@@ -189,7 +189,7 @@ export function useMessages(conversationId: string | null) {
         conversation_id: conversationId,
         author_id: user.id,
         content: trimmed,
-        message_type: opts?.message_type ?? "infoprospecçãotiva",
+        message_type: opts?.message_type ?? "informativa",
         priority: opts?.priority ?? "baixa",
         mentions: opts?.mentions ?? [],
       });

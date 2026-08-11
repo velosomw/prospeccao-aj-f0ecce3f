@@ -276,7 +276,7 @@ export function classifyDeviation(desvio: number, declaradoAusente: boolean): Gr
 export interface BalanceteEntry {
   /** Identificador do arquivo / balancete de origem */
   fileName: string;
-  /** Mês de referência atribuído pelo usuário (foprospecçãoto YYYY-MM). Pode ser null se múltiplos meses já estão no arquivo. */
+  /** Mês de referência atribuído pelo usuário (formato YYYY-MM). Pode ser null se múltiplos meses já estão no arquivo. */
   mesReferencia: string | null;
   /** Quando o usuário escolheu "auto-detect", lista de meses YYYY-MM resolvidos pelo parser. */
   mesesDetectados?: string[];
@@ -388,7 +388,7 @@ type ComponentBuckets = {
   layerByGroup: Record<string, "A" | "B" | "C">;
 };
 
-/** Resolve refs DRE em foprospecçãoto dot-decimal (10.A, 20.B, 30.C, 40.J, 50.B) → ref canônica. */
+/** Resolve refs DRE em formato dot-decimal (10.A, 20.B, 30.C, 40.J, 50.B) → ref canônica. */
 function resolveDotDRERef(ref: string): string | null {
   const m = /^(\d{1,2})\.([A-Z]\d?)$/i.exec(ref.trim());
   if (!m) return null;
@@ -414,7 +414,7 @@ function resolveKey(row: RowLike): keyof BSDadosRow | null {
   // antes do fallback por descrição (impede dupla contagem na receita_liquida).
   if (ref1 === "__IGNORE__") return null;
   if (ref1) {
-    // Noprospecçãoliza refs DRE dot-decimal (foprospecçãoto planilha XPT: "10.A", "40.J", "50.B")
+    // Noprospecçãoliza refs DRE dot-decimal (formato planilha XPT: "10.A", "40.J", "50.B")
     const dotResolved = resolveDotDRERef(String(ref1));
     if (dotResolved) ref1 = dotResolved;
     const k = REF1_MAP[toUpperNoAccent(ref1)];

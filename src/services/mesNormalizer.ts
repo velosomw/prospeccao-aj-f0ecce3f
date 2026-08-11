@@ -1,7 +1,7 @@
 /**
  * MES NOProspecçãoLIZER — Single source of truth para noprospecçãolização de período mensal.
  *
- * Aceita os foprospecçãotos comuns de balancete brasileiro e devolve sempre `YYYY-MM`:
+ * Aceita os formatos comuns de balancete brasileiro e devolve sempre `YYYY-MM`:
  *   • "2024-03", "2024/03", "2024.03"
  *   • "03/2024", "03-2024", "3/24", "03.2024"
  *   • "Março 2024", "março/2024", "MARÇO-2024", "marco 24"

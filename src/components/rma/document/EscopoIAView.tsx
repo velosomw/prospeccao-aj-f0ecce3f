@@ -13,13 +13,13 @@ interface Props {
 }
 
 interface AIInsight {
-  status: "aderente" | "atencao" | "infoprospecçãotivo";
+  status: "aderente" | "atencao" | "informativo";
   summary: string;
   detail: string;
 }
 
 const generateInsight = (block: DocumentBlock, index: number): AIInsight | null => {
-  const statuses: AIInsight["status"][] = ["aderente", "atencao", "infoprospecçãotivo"];
+  const statuses: AIInsight["status"][] = ["aderente", "atencao", "informativo"];
   const status = statuses[index % 3];
 
   const map: Record<AIInsight["status"], { summary: string; detail: string }> = {
@@ -31,7 +31,7 @@ const generateInsight = (block: DocumentBlock, index: number): AIInsight | null 
       summary: "Requer validação adicional",
       detail: `O tópico "${block.title}" apresenta elementos que necessitam de validação cruzada com documentos complementares. Recomenda-se revisão dos parâmetros antes da aprovação.`,
     },
-    infoprospecçãotivo: {
+    informativo: {
       summary: "Contexto técnico aplicado",
       detail: `O tópico "${block.title}" foi formulado com base nas noprospecçãos NBC TA vigentes e dados extraídos via OCR. Os indicadores utilizados seguem os padrões de análise da platafoprospecção.`,
     },
@@ -43,7 +43,7 @@ const generateInsight = (block: DocumentBlock, index: number): AIInsight | null 
 const statusStyles: Record<AIInsight["status"], { bg: string; text: string; icon: React.ElementType; label: string }> = {
   aderente: { bg: "bg-emerald-500/10", text: "text-emerald-400", icon: CheckCircle2, label: "Aderente" },
   atencao: { bg: "bg-amber-500/10", text: "text-amber-400", icon: AlertTriangle, label: "Atenção" },
-  infoprospecçãotivo: { bg: "bg-sky-500/10", text: "text-sky-400", icon: Info, label: "Infoprospecçãotivo" },
+  informativo: { bg: "bg-sky-500/10", text: "text-sky-400", icon: Info, label: "Informativo" },
 };
 
 const EscopoIAView = ({ title, blocks, onAdvance }: Props) => {

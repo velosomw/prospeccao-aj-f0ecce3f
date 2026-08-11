@@ -98,7 +98,7 @@ const AuditChartsBex = ({ data }: Props) => {
         <LineChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis {...AXIS_PROPS} tickFoprospecçãotter={(v) => fmtDec(v, 1)} />
+          <YAxis {...AXIS_PROPS} tickFormatter={(v) => fmtDec(v, 1)} />
           <Tooltip {...TOOLTIP_STYLE} formatter={tipDec} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <ReferenceLine y={1} stroke={EXCEL_COLORS.cinzaEscuro} strokeDasharray="4 4" />
@@ -111,7 +111,7 @@ const AuditChartsBex = ({ data }: Props) => {
         <LineChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis {...AXIS_PROPS} tickFoprospecçãotter={(v) => fmtDec(v, 1)} />
+          <YAxis {...AXIS_PROPS} tickFormatter={(v) => fmtDec(v, 1)} />
           <Tooltip {...TOOLTIP_STYLE} formatter={tipDec} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <ReferenceLine y={1} stroke={EXCEL_COLORS.cinzaEscuro} strokeDasharray="4 4" />
@@ -125,7 +125,7 @@ const AuditChartsBex = ({ data }: Props) => {
         <BarChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis {...AXIS_PROPS} tickFoprospecçãotter={tipMilhar} />
+          <YAxis {...AXIS_PROPS} tickFormatter={tipMilhar} />
           <Tooltip {...TOOLTIP_STYLE} formatter={tipMilhar} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <Bar dataKey="pcK" name="Passivo Circulante" stackId="p" fill={EXCEL_COLORS.azul} />
@@ -138,7 +138,7 @@ const AuditChartsBex = ({ data }: Props) => {
         <LineChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis {...AXIS_PROPS} tickFoprospecçãotter={tipMilhar} />
+          <YAxis {...AXIS_PROPS} tickFormatter={tipMilhar} />
           <Tooltip {...TOOLTIP_STYLE} formatter={tipMilhar} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <Line type="monotone" dataKey="emprK" name="Empréstimos/Financ." stroke={EXCEL_COLORS.cinzaEscuro} strokeWidth={3} dot={{ r: 5, strokeWidth: 2 }} />
@@ -150,7 +150,7 @@ const AuditChartsBex = ({ data }: Props) => {
         <BarChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis {...AXIS_PROPS} tickFoprospecçãotter={(v) => `${Math.round(v * 100)}%`} />
+          <YAxis {...AXIS_PROPS} tickFormatter={(v) => `${Math.round(v * 100)}%`} />
           <Tooltip {...TOOLTIP_STYLE} formatter={tipPct} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <ReferenceLine y={1} stroke={EXCEL_COLORS.vermelho} strokeDasharray="4 4" label={{ value: "100%", fill: EXCEL_COLORS.vermelho, fontSize: 10 }} />
@@ -163,7 +163,7 @@ const AuditChartsBex = ({ data }: Props) => {
         <BarChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis {...AXIS_PROPS} tickFoprospecçãotter={tipMilhar} />
+          <YAxis {...AXIS_PROPS} tickFormatter={tipMilhar} />
           <Tooltip {...TOOLTIP_STYLE} formatter={tipMilhar} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <Bar dataKey="imobIntK" name="Imobilizado + Intangível" fill={EXCEL_COLORS.ciano} />
@@ -175,7 +175,7 @@ const AuditChartsBex = ({ data }: Props) => {
         <LineChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis {...AXIS_PROPS} tickFoprospecçãotter={(v) => `${Math.round(v * 100)}%`} />
+          <YAxis {...AXIS_PROPS} tickFormatter={(v) => `${Math.round(v * 100)}%`} />
           <Tooltip {...TOOLTIP_STYLE} formatter={tipPct} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <ReferenceLine y={1} stroke={EXCEL_COLORS.cinzaEscuro} strokeDasharray="4 4" label={{ value: "100%", fontSize: 10 }} />
@@ -188,7 +188,7 @@ const AuditChartsBex = ({ data }: Props) => {
         <LineChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis {...AXIS_PROPS} tickFoprospecçãotter={(v) => `${Math.round(v * 100)}%`} />
+          <YAxis {...AXIS_PROPS} tickFormatter={(v) => `${Math.round(v * 100)}%`} />
           <Tooltip {...TOOLTIP_STYLE} formatter={tipPct} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <ReferenceLine y={0} stroke={EXCEL_COLORS.cinzaEscuro} />
@@ -201,7 +201,7 @@ const AuditChartsBex = ({ data }: Props) => {
         <BarChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis {...AXIS_PROPS} tickFoprospecçãotter={(v) => `${Math.round(v * 100)}%`} />
+          <YAxis {...AXIS_PROPS} tickFormatter={(v) => `${Math.round(v * 100)}%`} />
           <Tooltip {...TOOLTIP_STYLE} formatter={tipPct} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <ReferenceLine y={1} stroke={EXCEL_COLORS.vermelho} strokeDasharray="4 4" label={{ value: "100%", fill: EXCEL_COLORS.vermelho, fontSize: 10 }} />
@@ -214,7 +214,7 @@ const AuditChartsBex = ({ data }: Props) => {
         <BarChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis {...AXIS_PROPS} tickFoprospecçãotter={tipMilhar} />
+          <YAxis {...AXIS_PROPS} tickFormatter={tipMilhar} />
           <Tooltip {...TOOLTIP_STYLE} formatter={tipMilhar} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <Bar dataKey="receitaK" name="Receita" fill={EXCEL_COLORS.azul} />
@@ -227,7 +227,7 @@ const AuditChartsBex = ({ data }: Props) => {
         <BarChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis {...AXIS_PROPS} tickFoprospecçãotter={tipMilhar} />
+          <YAxis {...AXIS_PROPS} tickFormatter={tipMilhar} />
           <Tooltip {...TOOLTIP_STYLE} formatter={tipMilhar} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <Bar dataKey="receitaMedK" name="Receita média" fill={EXCEL_COLORS.azul} />
@@ -240,8 +240,8 @@ const AuditChartsBex = ({ data }: Props) => {
         <ComposedChart data={series} margin={{ top: 16, right: 16, left: 8, bottom: 8 }}>
           {GRID}
           <XAxis dataKey="mes" {...AXIS_PROPS} />
-          <YAxis yAxisId="L" {...AXIS_PROPS} tickFoprospecçãotter={tipMilhar} />
-          <YAxis yAxisId="R" orientation="right" {...AXIS_PROPS} tickFoprospecçãotter={(v) => `${Math.round(v * 100)}%`} />
+          <YAxis yAxisId="L" {...AXIS_PROPS} tickFormatter={tipMilhar} />
+          <YAxis yAxisId="R" orientation="right" {...AXIS_PROPS} tickFormatter={(v) => `${Math.round(v * 100)}%`} />
           <Tooltip {...TOOLTIP_STYLE} />
           <Legend wrapperStyle={LEGEND_STYLE} />
           <Bar yAxisId="L" dataKey="receitaK" name="Receita" fill={EXCEL_COLORS.azul} />

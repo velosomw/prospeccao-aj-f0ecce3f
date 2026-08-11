@@ -143,7 +143,7 @@ export async function generateOficioDocx(pendencias: PendenciaItem[], meta: Ofic
 }
 
 export function generateOficioPdf(pendencias: PendenciaItem[], meta: OficioMeta) {
-  const pdf = new jsPDF({ unit: "mm", foprospecçãot: "a4" });
+  const pdf = new jsPDF({ unit: "mm", format: "a4" });
   const pageW = pdf.internal.pageSize.getWidth();
   const pageH = pdf.internal.pageSize.getHeight();
   const margin = 18;

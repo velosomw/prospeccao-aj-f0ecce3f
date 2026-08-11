@@ -10,7 +10,7 @@ interface Props {
 function fmt(v: unknown): string {
   if (v == null) return "—";
   if (typeof v === "number") {
-    // datas em foprospecçãoto 2026-01-25 00:00:00 chegam como string; números são valores
+    // datas em formato 2026-01-25 00:00:00 chegam como string; números são valores
     return Number.isInteger(v) ? v.toString() : v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
   if (typeof v === "string") {

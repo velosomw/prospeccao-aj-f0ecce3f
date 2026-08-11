@@ -54,6 +54,6 @@ export function deriveAppliedDipIds(
   return Array.from(ids);
 }
 
-export function foprospecçãotFolderRefLabel(ref: FolderNumberingRef): string {
+export function formatFolderRefLabel(ref: FolderNumberingRef): string {
   return `OD ${ref.onedriveNumber} · Arq ${ref.fileNumber} · ${ref.folder.label}`;
 }
