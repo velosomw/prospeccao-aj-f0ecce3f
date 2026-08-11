@@ -1,6 +1,6 @@
 // Seletor compartilhado de competência (mês/ano).
 // Lista os últimos 6 meses disponíveis no consolidado e
-// destaca o período "principal" do Prospecção (definido no cadastro).
+// destaca o período "principal" do Prospeccao (definido no cadastro).
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -37,7 +37,7 @@ export default function CompetenciaSelector({
   const [periodos, setPeriodos] = useState<Competencia[]>([]);
   const [prospecçãoPeriodo, setRmaPeriodo] = useState<Competencia | null>(null);
 
-  // Carrega últimos N períodos disponíveis no consolidado + período principal do Prospecção
+  // Carrega últimos N períodos disponíveis no consolidado + período principal do Prospeccao
   useEffect(() => {
     if (!companyId) { setPeriodos([]); setRmaPeriodo(null); return; }
     let cancelled = false;
@@ -83,8 +83,8 @@ export default function CompetenciaSelector({
 
       if (preferredCompetencia) {
         setRmaPeriodo(preferredCompetencia);
-      } else if (compRes.data?.prospecção_id && /^Prospecção-DIP-\d{2}-\d{4}$/i.test(String(compRes.data.prospecção_id))) {
-        const [, mm, yyyy] = String(compRes.data.prospecção_id).match(/^Prospecção-DIP-(\d{2})-(\d{4})$/i)!;
+      } else if (compRes.data?.prospecção_id && /^Prospeccao-DIP-\d{2}-\d{4}$/i.test(String(compRes.data.prospecção_id))) {
+        const [, mm, yyyy] = String(compRes.data.prospecção_id).match(/^Prospeccao-DIP-(\d{2})-(\d{4})$/i)!;
         setRmaPeriodo(toComp(Number(yyyy), Number(mm)));
       } else if (compRes.data?.execution_year && compRes.data?.current_period_month) {
         setRmaPeriodo(toComp(
@@ -110,7 +110,7 @@ export default function CompetenciaSelector({
           <Calendar className="w-3.5 h-3.5 text-[hsl(217,91%,50%)]" />
           <span className="capitalize">{currentLabel}</span>
           {value && isRma(value) && (
-            <Badge variant="secondary" className="ml-1 h-4 px-1 text-[9px]">Prospecção AJ</Badge>
+            <Badge variant="secondary" className="ml-1 h-4 px-1 text-[9px]">Prospeccao AJ</Badge>
           )}
         </Button>
       </DropdownMenuTrigger>
@@ -131,7 +131,7 @@ export default function CompetenciaSelector({
           >
             <span>{p.label}</span>
             {isRma(p) && (
-              <Badge variant="secondary" className="h-4 px-1 text-[9px]">Prospecção AJ</Badge>
+              <Badge variant="secondary" className="h-4 px-1 text-[9px]">Prospeccao AJ</Badge>
             )}
           </DropdownMenuItem>
         ))}
@@ -141,7 +141,7 @@ export default function CompetenciaSelector({
             className="text-xs flex items-center justify-between capitalize"
           >
             <span>{prospecçãoPeriodo.label}</span>
-            <Badge variant="secondary" className="h-4 px-1 text-[9px]">Prospecção AJ</Badge>
+            <Badge variant="secondary" className="h-4 px-1 text-[9px]">Prospeccao AJ</Badge>
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />

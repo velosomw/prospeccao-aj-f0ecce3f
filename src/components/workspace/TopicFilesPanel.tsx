@@ -1,4 +1,4 @@
-// Lista de arquivos vinculados a um tópico do Prospecção — usado na aba
+// Lista de arquivos vinculados a um tópico do Prospeccao — usado na aba
 // "Revisão Inteligente" ao expandir um tópico. Mostra apenas nome do
 // arquivo + status de processamento. Reflete em tempo real quaisquer
 // mudanças feitas em /treinar-ia (mesma fonte: onedrive_files).
@@ -91,7 +91,7 @@ export default function TopicFilesPanel({ prospecçãoId, topicNumber }: Props) 
   }, [rows, topicNumber]);
 
   if (!prospecçãoId) {
-    return <div className="text-xs text-muted-foreground px-3 py-3">Prospecção AJ não definido.</div>;
+    return <div className="text-xs text-muted-foreground px-3 py-3">Prospeccao AJ não definido.</div>;
   }
 
   return (

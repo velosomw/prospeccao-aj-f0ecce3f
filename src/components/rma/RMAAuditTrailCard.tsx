@@ -65,7 +65,7 @@ function statusBadge(row: FileRow) {
   return <Badge className="bg-muted text-muted-foreground border-0 text-[10px]">{row.status}</Badge>;
 }
 
-export default function ProspecçãoAuditTrailCard({ prospecçãoId, companyId }: Props) {
+export default function ProspeccaoAuditTrailCard({ prospecçãoId, companyId }: Props) {
   const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(prospecçãoId ?? null);
   const [files, setFiles] = useState<FileRow[]>([]);
   const [queue, setQueue] = useState<QueueRow[]>([]);

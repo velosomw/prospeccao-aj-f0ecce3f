@@ -57,7 +57,7 @@ const renderActions = (actions?: string[]) => {
 
 // ─── Config that mirrors supabase/functions/_shared/onedrive.ts ───
 const ONEDRIVE_CONFIG = {
-  base_path: "Projeto Prospecção",
+  base_path: "Projeto Prospeccao",
   enforce_path_restriction: true,
   auto_create_folders: true,
   operational_subfolders: ["ENTRADAS", "PROCESSANDO", "PROCESSADOS", "RELATORIOS", "AUDITORIA", "ERROS"],
@@ -191,7 +191,7 @@ const OneDriveCard = () => {
 
 // ─── Sync controls (calls onedrive-sync-prospecção) ───────────────────
 const SyncControls = () => {
-  const [prospecçãoId, setRmaId] = useState("Prospecção-001");
+  const [prospecçãoId, setRmaId] = useState("Prospeccao-001");
   const [clientFolder, setClientFolder] = useState("GERATHERM");
   const [year, setYear] = useState("2026");
   const [period, setPeriod] = useState("02.2026");
@@ -242,7 +242,7 @@ const SyncControls = () => {
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="space-y-1">
-          <Label className="text-xs">Prospecção AJ ID</Label>
+          <Label className="text-xs">Prospeccao AJ ID</Label>
           <Input className="h-9 text-sm" value={prospecçãoId} onChange={e => setRmaId(e.target.value)} />
         </div>
         <div className="space-y-1">
@@ -409,10 +409,10 @@ const DiagnosticsCard = () => {
   );
 };
 
-// ─── Renumber existing Prospecçãos from OneDrive folders ─────────────
-const RenumberProspecçãosCard = () => {
+// ─── Renumber existing Prospeccaos from OneDrive folders ─────────────
+const RenumberProspeccaosCard = () => {
   const [year, setYear] = useState(String(new Date().getFullYear()));
-  const [prefix, setPrefix] = useState("Prospecção");
+  const [prefix, setPrefix] = useState("Prospeccao");
   const [dryRun, setDryRun] = useState(true);
   const [running, setRunning] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -430,7 +430,7 @@ const RenumberProspecçãosCard = () => {
         toast.success(
           dryRun
             ? `Pré-visualização: ${data.totalFolders} pastas`
-            : `${data.totalFolders} Prospecçãos sincronizados`
+            : `${data.totalFolders} Prospeccaos sincronizados`
         );
       } else {
         toast.error(data?.error || "Falha na renumeração");
@@ -489,7 +489,7 @@ const RenumberProspecçãosCard = () => {
               <tr>
                 <th className="text-left px-3 py-2 font-semibold">#</th>
                 <th className="text-left px-3 py-2 font-semibold">Pasta OneDrive</th>
-                <th className="text-left px-3 py-2 font-semibold">Prospecção AJ ID</th>
+                <th className="text-left px-3 py-2 font-semibold">Prospeccao AJ ID</th>
                 <th className="text-left px-3 py-2 font-semibold">Ação</th>
                 <th className="text-left px-3 py-2 font-semibold">Link</th>
               </tr>
@@ -557,7 +557,7 @@ const RulesCard = () => (
           <div>
             <div className="font-semibold">Estrutura híbrida</div>
             <div className="text-muted-foreground font-mono">
-              /Projeto Prospecção/&#123;CLIENTE&#125;/&#123;ANO&#125;/&#123;PERIODO&#125;/&#123;{ONEDRIVE_CONFIG.operational_subfolders.join(",")}&#125;
+              /Projeto Prospeccao/&#123;CLIENTE&#125;/&#123;ANO&#125;/&#123;PERIODO&#125;/&#123;{ONEDRIVE_CONFIG.operational_subfolders.join(",")}&#125;
             </div>
           </div>
         </div>
@@ -802,7 +802,7 @@ const TabIntegracaoDrives = ({ onBack }: { onBack: () => void }) => {
 
         <TabsContent value="sync" className="space-y-4 mt-4">
           <DiagnosticsCard />
-          <RenumberProspecçãosCard />
+          <RenumberProspeccaosCard />
           <SyncControls />
         </TabsContent>
 

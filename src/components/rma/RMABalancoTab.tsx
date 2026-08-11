@@ -55,7 +55,7 @@ function groupBySecaoGrupo(rows: BSRow[]) {
   return map;
 }
 
-const ProspecçãoBalancoTab = ({ companyId, periodo, runToken, janela }: Props) => {
+const ProspeccaoBalancoTab = ({ companyId, periodo, runToken, janela }: Props) => {
   // Quando há janela (3M/6M/12M), o BP usa o SALDO do mês mais recente
   // contido nela (regra contábil: saldos não somam). `bs` recebido aqui é
   // pós-filtragem da janela; precisamos isolar o mês mais recente para a
@@ -319,4 +319,4 @@ const SectionTable = ({ rows }: { rows: BSRow[] }) => {
   );
 };
 
-export default ProspecçãoBalancoTab;
+export default ProspeccaoBalancoTab;

@@ -109,7 +109,7 @@ export const REF1_MAP: Record<string, keyof BSDadosRow> = {
   "ATIVO CIRCULANTE": "ativo_circulante",
   "ATIVO NAO CIRCULANTE": "ativo_nao_circulante",
   "ATIVO NÃO CIRCULANTE": "ativo_nao_circulante",
-  "ATIVO PEProspecçãoNENTE": "ativo_nao_circulante",
+  "ATIVO PEProspeccaoNENTE": "ativo_nao_circulante",
   "PASSIVO CIRCULANTE": "passivo_circulante",
   "PASSIVO NAO CIRCULANTE": "passivo_nao_circulante",
   "PASSIVO NÃO CIRCULANTE": "passivo_nao_circulante",

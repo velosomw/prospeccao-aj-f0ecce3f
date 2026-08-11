@@ -293,7 +293,7 @@ const BalancetePreview = ({ companyId, prospecçãoId }: Props) => {
         <Card className="border-dashed">
           <CardContent className="py-12 text-center text-sm text-muted-foreground">
             Sem balancete consolidado em nenhum período.<br />
-            Execute <b>Atualizar Status IA</b> na aba Status Prospecção para extrair e consolidar a partir dos arquivos do OneDrive.
+            Execute <b>Atualizar Status IA</b> na aba Status Prospeccao para extrair e consolidar a partir dos arquivos do OneDrive.
           </CardContent>
         </Card>
       )}

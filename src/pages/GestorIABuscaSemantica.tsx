@@ -141,10 +141,10 @@ export default function GestorIABuscaSemantica() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="prospecção">Prospecção AJ ID (opcional)</Label>
+                <Label htmlFor="prospecção">Prospeccao AJ ID (opcional)</Label>
                 <Input
                   id="prospecção"
-                  placeholder="ex.: Prospecção AJ-2025-001"
+                  placeholder="ex.: Prospeccao AJ-2025-001"
                   value={prospecçãoId}
                   onChange={(e) => setRmaId(e.target.value)}
                 />

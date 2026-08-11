@@ -1,4 +1,4 @@
-// Lista canônica das 60 pastas/tópicos OneDrive — Prospecção (fonte oficial).
+// Lista canônica das 60 pastas/tópicos OneDrive — Prospeccao (fonte oficial).
 // Usada para associar documentos carregados em /gestao-agentes ao tópico
 // correspondente, alimentando o prompt builder (contexto por pasta).
 
@@ -58,7 +58,7 @@ export const PROSPECCAO_TOPICS: RmaTopic[] = [
   { id: 35, slug: "35-adiantamento-contrato-cambio-acc",        label: "Adiantamento de contrato de câmbio (ACC)", group: "Garantias" },
   { id: 36, slug: "36-comprovantes-pagamento-credores-rj",      label: "Comprovantes de Pagamentos a credores pelo Plano de RJ", group: "Garantias" },
   { id: 37, slug: "37-ultima-alteracao-contratual",             label: "Última Alteração Contratual", group: "Estrutura" },
-  { id: 38, slug: "38-pendencia-prospecção-anterior",                  label: "Infoprospecçãoções de pendência de Prospecção AJ anterior", group: "Outros" },
+  { id: 38, slug: "38-pendencia-prospecção-anterior",                  label: "Infoprospecçãoções de pendência de Prospeccao AJ anterior", group: "Outros" },
   { id: 39, slug: "39-outras-informacoes",                      label: "Outras Infoprospecçãoções", group: "Outros" },
   { id: 40, slug: "40-situacao-fiscal",                         label: "Situação Fiscal", group: "Tributário" },
   { id: 41, slug: "41-relacao-analitica-nfs",                   label: "Relação analítica de notas fiscais", group: "Tributário" },

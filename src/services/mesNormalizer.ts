@@ -1,5 +1,5 @@
 /**
- * MES NOProspecçãoLIZER — Single source of truth para noprospecçãolização de período mensal.
+ * MES NOProspeccaoLIZER — Single source of truth para noprospecçãolização de período mensal.
  *
  * Aceita os formatos comuns de balancete brasileiro e devolve sempre `YYYY-MM`:
  *   • "2024-03", "2024/03", "2024.03"

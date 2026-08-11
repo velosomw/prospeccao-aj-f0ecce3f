@@ -41,7 +41,7 @@ export function DeferredBatchIndicator({ companyId, prospecçãoId, folderPath, 
   useEffect(() => {
     let cancelled = false;
     const fetchStatus = async () => {
-      // Para prospecção-summary: agrega todas as pastas do Prospecção
+      // Para prospecção-summary: agrega todas as pastas do Prospeccao
       if (variant === "prospecção-summary") {
         let q = supabase
           .from("folder_deferred_status" as never)

@@ -15,7 +15,7 @@ const TYPE_META: Record<MessageType, { label: string; icon: any; bg: string; fg:
   solicitacao_correcao: { label: "Solicitação Correção", icon: FileWarning,   bg: "hsl(38,95%,95%)",  fg: "hsl(32,90%,45%)"  },
   alerta_prazo:         { label: "Alerta de Prazo",      icon: Clock,         bg: "hsl(18,90%,95%)",  fg: "hsl(18,85%,50%)"  },
   nao_conformidade:     { label: "Não Conformidade",     icon: AlertTriangle, bg: "hsl(0,84%,96%)",   fg: "hsl(0,84%,50%)"   },
-  prospecção:                  { label: "Prospecção AJ",                  icon: FileText,      bg: "hsl(258,90%,96%)", fg: "hsl(258,75%,55%)" },
+  prospecção:                  { label: "Prospeccao AJ",                  icon: FileText,      bg: "hsl(258,90%,96%)", fg: "hsl(258,75%,55%)" },
 };
 
 const PRIO_META: Record<Priority, { label: string; cls: string }> = {

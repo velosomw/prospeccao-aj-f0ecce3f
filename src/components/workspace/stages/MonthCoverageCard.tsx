@@ -1,7 +1,7 @@
 // Auditoria de Cobertura de Meses (estrito · 0,01%)
 // ---------------------------------------------------------------------------
 // Durante/depois do processamento manual, valida que os meses presentes na
-// plataforma Prospecção (balancete_consolidado) batem com os meses do balancete de
+// plataforma Prospeccao (balancete_consolidado) batem com os meses do balancete de
 // referência (prospecção_file_parse_cache) e do relatório de referência (lancamentos
 // com origem_arquivo). Lista meses:
 //   ✓ OK        — presente nas três fontes e equação Ativo = Passivo+PL (≤0,01%)

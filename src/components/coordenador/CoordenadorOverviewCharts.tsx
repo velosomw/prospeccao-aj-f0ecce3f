@@ -34,7 +34,7 @@ const COLOR_CYAN = "hsl(190, 90%, 50%)";
 const monthsPt = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
 const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }: Props) => {
-  // 1. Status dos Prospecçãos (saúde do portfólio)
+  // 1. Status dos Prospeccaos (saúde do portfólio)
   const statusData = useMemo(() => {
     const buckets: Record<string, number> = { ativo: 0, pendente: 0, inativo: 0, concluido: 0 };
     companies.forEach((c) => {
@@ -107,7 +107,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
       coordenador: { label: "Coordenador", color: COLOR_BLUE },
       consultor: { label: "Consultor", color: COLOR_PURPLE },
       magistrado: { label: "Magistrado", color: COLOR_NAVY },
-      recuperanda: { label: "Empresa Prospecção", color: COLOR_ORANGE },
+      recuperanda: { label: "Empresa Prospeccao", color: COLOR_ORANGE },
       gestor_ia: { label: "Gestor IA", color: COLOR_CYAN },
     };
     return Object.entries(map).map(([role, value]) => ({
@@ -147,7 +147,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
               <Target className="w-4 h-4" style={{ color: COLOR_BLUE }} />
             </div>
             <p className="text-2xl font-bold text-foreground mt-1">{coverage}%</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">{totalAssigned} de {companies.length} Prospecçãos atribuídos</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">{totalAssigned} de {companies.length} Prospeccaos atribuídos</p>
           </CardContent>
         </Card>
         <Card className="border-l-4" style={{ borderLeftColor: COLOR_PURPLE }}>
@@ -189,7 +189,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <PieIcon className="w-4 h-4" style={{ color: COLOR_BLUE }} /> Status dos Prospecçãos
+              <PieIcon className="w-4 h-4" style={{ color: COLOR_BLUE }} /> Status dos Prospeccaos
             </CardTitle>
             <CardDescription>Distribuição da saúde do portfólio</CardDescription>
           </CardHeader>
@@ -253,7 +253,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" style={{ color: COLOR_GREEN }} /> Cadastros de Prospecção — 6 meses
+              <TrendingUp className="w-4 h-4" style={{ color: COLOR_GREEN }} /> Cadastros de Prospeccao — 6 meses
             </CardTitle>
             <CardDescription>Evolução mensal dos novos Prospecções AJ</CardDescription>
           </CardHeader>

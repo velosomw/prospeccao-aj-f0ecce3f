@@ -19,10 +19,10 @@ const keyWords = (label: string) =>
 
 interface Props {
   companyId: string | null;
-  /** Filtro por competência (vem do CompetenciaSelector do Prospecção). */
+  /** Filtro por competência (vem do CompetenciaSelector do Prospeccao). */
   ano?: number | null;
   mes?: number | null;
-  /** Quando true, o seletor de mês é travado ao mês do Prospecção vinculado. */
+  /** Quando true, o seletor de mês é travado ao mês do Prospeccao vinculado. */
   lockMonth?: boolean;
 }
 
@@ -217,7 +217,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, companyId]);
 
-  // Reset override quando muda o Prospecção/competência ativa.
+  // Reset override quando muda o Prospeccao/competência ativa.
   useEffect(() => {
     setMonthOverride("auto");
   }, [companyId, ano, mes]);
@@ -233,7 +233,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
   }, [rows]);
 
   // Determina filtro de mês efetivo. Se `lockMonth=true`, ignora override do usuário
-  // e usa SEMPRE o ano/mes do Prospecção vinculado (não permite seleção divergente).
+  // e usa SEMPRE o ano/mes do Prospeccao vinculado (não permite seleção divergente).
   const effectiveMonth: string | "all" = useMemo(() => {
     if (lockMonth && ano && mes) return `${ano}-${String(mes).padStart(2, "0")}`;
     if (monthOverride !== "auto") return monthOverride;
@@ -249,9 +249,9 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
   const folderAliases = useMemo(() => buildFolderAliasMap(monthFilteredRows), [monthFilteredRows]);
 
   // Extrai o "nome curto" da pasta (último segmento do path do diretório),
-  // ex.: "Projeto Prospecção/DIPLOMATA/2025/11.2025/01 - Fluxo de Caixa" → "01 - Fluxo de Caixa".
+  // ex.: "Projeto Prospeccao/DIPLOMATA/2025/11.2025/01 - Fluxo de Caixa" → "01 - Fluxo de Caixa".
   // Usado como CHAVE de agrupamento para que variações de prefixo
-  // ("Projeto Prospecção/..." vs "DIPLOMATA/...") sejam consolidadas em UMA única pasta.
+  // ("Projeto Prospeccao/..." vs "DIPLOMATA/...") sejam consolidadas em UMA única pasta.
   const folderKey = (path: string): { key: string; full: string } => {
     const dir = getPathDirectory(path) || "/";
     const last = getPathFolderSegment(path) || dir;
@@ -317,7 +317,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
     return arr;
   }, [monthFilteredRows]);
 
-  // Numeração unificada (Nº OneDrive / Nº Arquivo) baseada nas pastas REAIS aplicadas neste Prospecção.
+  // Numeração unificada (Nº OneDrive / Nº Arquivo) baseada nas pastas REAIS aplicadas neste Prospeccao.
   const folderNumbering = useMemo(
     () => buildFolderNumbering(folders.filter((f) => !f.missing && f.dipId != null).map((f) => f.dipId!)),
     [folders],
@@ -378,10 +378,10 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
             {lockMonth ? (
               <span
                 className="text-xs px-2 py-1 rounded border border-border bg-[hsl(220,15%,96%)] text-foreground font-semibold"
-                title="Mês travado ao Prospecção AJ vinculado"
+                title="Mês travado ao Prospeccao AJ vinculado"
               >
-                {effectiveMonth === "all" ? "Prospecção sem competência definida" : monthLabel(effectiveMonth)}
-                <span className="ml-2 text-[10px] text-muted-foreground font-noprospecçãol">(Prospecção AJ)</span>
+                {effectiveMonth === "all" ? "Prospeccao sem competência definida" : monthLabel(effectiveMonth)}
+                <span className="ml-2 text-[10px] text-muted-foreground font-noprospecçãol">(Prospeccao AJ)</span>
               </span>
             ) : (
               <select
@@ -484,7 +484,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
                 {!loading && filtered.length === 0 && (
                   <tr><td colSpan={8} className="text-center py-6 text-xs text-muted-foreground">
                     {rows.length === 0
-                      ? "Nenhum arquivo encontrado no OneDrive para este Prospecção."
+                      ? "Nenhum arquivo encontrado no OneDrive para este Prospeccao."
                       : effectiveMonth !== "all"
                         ? `Nenhuma pasta encontrada para ${monthLabel(effectiveMonth)}.`
                         : "Nenhuma pasta no filtro atual."}

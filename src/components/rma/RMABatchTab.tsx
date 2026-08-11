@@ -49,7 +49,7 @@ function formatBytes(b: number | null): string {
 }
 
 /**
- * Reduz um caminho completo (ex: "Projeto Prospecção/EMPRESA/2026/02.2026/04 - Nome")
+ * Reduz um caminho completo (ex: "Projeto Prospeccao/EMPRESA/2026/02.2026/04 - Nome")
  * para "/02.2026/04 - Nome" — destacando Mês.Ano e a subpasta.
  */
 function formatFolderShort(path: string): string {
@@ -81,7 +81,7 @@ interface Props {
  * Aba "Batch & Fila": mostra estado de processamento batch (Document AI off-peak)
  * por pasta e por arquivo. Persiste no banco — sobrevive a logout/login.
  */
-export default function ProspecçãoBatchTab({ companyId, prospecçãoId }: Props) {
+export default function ProspeccaoBatchTab({ companyId, prospecçãoId }: Props) {
   const [folders, setFolders] = useState<FolderRow[]>([]);
   const [jobs, setJobs] = useState<JobRow[]>([]);
   const [loading, setLoading] = useState(true);

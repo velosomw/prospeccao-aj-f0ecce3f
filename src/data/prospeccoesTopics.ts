@@ -1,10 +1,10 @@
-export interface ProspecçãoTopic {
+export interface ProspeccaoTopic {
   number: number;
   name: string;
   category: string;
 }
 
-export const PROSPECCAO_TOPICS: ProspecçãoTopic[] = [
+export const PROSPECCAO_TOPICS: ProspeccaoTopic[] = [
   { number: 1, name: "Alteração na Atividade Empresarial", category: "Empresa" },
   { number: 2, name: "Alteração na Estrutura Societária (Organograma)", category: "Empresa" },
   { number: 3, name: "Abertura/Fechamento de Estabelecimentos ou Alteração de Endereço", category: "Empresa" },
@@ -20,7 +20,7 @@ export const PROSPECCAO_TOPICS: ProspecçãoTopic[] = [
   { number: 13, name: "Declaração de Dívidas Vencidas e Não Pagas", category: "Financeiro" },
   { number: 14, name: "Cessão Fiduciária de Títulos e Direitos Creditórios", category: "Jurídico" },
   { number: 15, name: "Última Alteração Contratual", category: "Jurídico" },
-  { number: 16, name: "Infoprospecçãoções de Pendência de Prospecção AJ Anterior", category: "Governança" },
+  { number: 16, name: "Infoprospecçãoções de Pendência de Prospeccao AJ Anterior", category: "Governança" },
   { number: 17, name: "Relação Analítica de Notas Fiscais", category: "Fiscal" },
   { number: 18, name: "Lista de Ativos Essenciais", category: "Operacional" },
   { number: 19, name: "Lista de Principais Fornecedores e Clientes", category: "Operacional" },

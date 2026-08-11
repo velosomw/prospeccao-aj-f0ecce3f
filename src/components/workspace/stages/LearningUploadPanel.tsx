@@ -32,7 +32,7 @@ interface Props {
   compact?: boolean;
   /** Máx. de arquivos por upload. 1 = modo corretivo 1:1 (ErrorFilesPanel); 5 = aba Aprendizado IA. */
   maxFiles?: number;
-  /** Mês/Ano travados ao Prospecção selecionado. Quando informados, o seletor vira chip read-only. */
+  /** Mês/Ano travados ao Prospeccao selecionado. Quando informados, o seletor vira chip read-only. */
   lockedYear?: number | null;
   lockedMonth?: number | null;
   /** Callback disparado quando o usuário (ou efeito) altera a pasta correspondente. */
@@ -73,9 +73,9 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
   // Lista de arquivos com erro da pasta selecionada (vw_training_pending) — orienta o lote.
   const [folderErrors, setFolderErrors] = useState<Array<{ extraction_id: string; file_name: string | null; path: string | null; status: string; final_confidence: number | null }>>([]);
   const [loadingFolderErrors, setLoadingFolderErrors] = useState(false);
-  // Mês/Ano de referência (obrigatório no modo lote). Quando o Prospecção fornece
+  // Mês/Ano de referência (obrigatório no modo lote). Quando o Prospeccao fornece
   // `lockedYear/lockedMonth`, esses valores travam o seletor (sem possibilidade
-  // de divergir da competência do DIP-Prospecção selecionado).
+  // de divergir da competência do DIP-Prospeccao selecionado).
   const now = new Date();
   const monthLocked = lockedYear != null && lockedMonth != null;
   const [refYear, setRefYear] = useState<number>(lockedYear ?? now.getFullYear());
@@ -85,7 +85,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
   const effectiveRefMonth = monthLocked ? lockedMonth! : refMonth;
   const effectiveRefMonthKey = `${effectiveRefYear}-${String(effectiveRefMonth).padStart(2, "0")}`;
 
-  // Mantém refYear/refMonth sincronizados ao Prospecção selecionado (travados).
+  // Mantém refYear/refMonth sincronizados ao Prospeccao selecionado (travados).
   useEffect(() => {
     if (lockedYear != null) setRefYear(lockedYear);
     if (lockedMonth != null) setRefMonth(lockedMonth);
@@ -283,7 +283,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
       return;
     }
     if (maxFiles > 1 && !refMonthKey) {
-      toast({ title: "Selecione mês/ano de referência", description: "Defina o mês cujo DIP-Prospecção AJ será atualizado por este lote.", variant: "destructive" });
+      toast({ title: "Selecione mês/ano de referência", description: "Defina o mês cujo DIP-Prospeccao AJ será atualizado por este lote.", variant: "destructive" });
       return;
     }
     const folder = selected;
@@ -506,7 +506,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
             ano: effectiveRefYear,
             mes: effectiveRefMonth,
           };
-          // Procura QUALQUER registro existente desse arquivo no Prospecção (em qualquer status)
+          // Procura QUALQUER registro existente desse arquivo no Prospeccao (em qualquer status)
           // para movê-lo à pasta selecionada — assim o Worker passa a exibi-lo na pasta certa.
           const { data: existingRows } = await supabase
             .from("onedrive_files")
@@ -846,15 +846,15 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
         {maxFiles > 1 && (
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
             <label className="text-xs font-semibold text-amber-900 whitespace-nowrap">
-              Mês/Ano de referência (DIP-Prospecção a atualizar):
+              Mês/Ano de referência (DIP-Prospeccao a atualizar):
             </label>
             {monthLocked ? (
               <span
                 className="h-9 inline-flex items-center px-3 rounded-md border border-amber-300 bg-amber-50 text-sm font-semibold text-amber-900"
-                title="Mês/Ano travados ao Prospecção AJ selecionado"
+                title="Mês/Ano travados ao Prospeccao AJ selecionado"
               >
                 {String(effectiveRefMonth).padStart(2, "0")}/{effectiveRefYear}
-                <span className="ml-2 text-[10px] font-noprospecçãol text-amber-700">(Prospecção AJ)</span>
+                <span className="ml-2 text-[10px] font-noprospecçãol text-amber-700">(Prospeccao AJ)</span>
               </span>
             ) : (
               <>
@@ -956,7 +956,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
               Pasta OneDrive: <strong className="ml-1">#{String(selected.id).padStart(2, "0")}</strong>
             </Badge>
             <Badge variant="outline" className="bg-white border-amber-300">
-              Tópico Prospecção: <strong className="ml-1">#{selected.prospeccaoTopicNumber}</strong>
+              Tópico Prospeccao: <strong className="ml-1">#{selected.prospeccaoTopicNumber}</strong>
             </Badge>
             <Badge variant="outline" className="bg-white border-amber-300">
               Agente: <strong className="ml-1">{selected.agent}</strong>

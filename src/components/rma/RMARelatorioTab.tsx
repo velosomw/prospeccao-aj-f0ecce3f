@@ -6,13 +6,13 @@ import { useParams } from "react-router-dom";
 import { useRmaDocument } from "@/hooks/useRmaDocument";
 import type { DocumentBlock, DocumentSubStep } from "@/types/documentEditor";
 
-const ProspecçãoRelatorioTab = () => {
+const ProspeccaoRelatorioTab = () => {
   const { id = "" } = useParams();
   const [subStep, setSubStep] = useState<DocumentSubStep>("escopo");
   const { sections, progresso, aprovadoPct, rules, canManualFinalize, regenerateFinal } = useRmaDocument(
     id,
     "prospecção_mensal",
-    "Revisão-Relatório Prospecção Mensal (CNJ 72/2020)",
+    "Revisão-Relatório Prospeccao Mensal (CNJ 72/2020)",
   );
   // Nota: progresso/status do documento são recalculados automaticamente
   // pelo trigger trg_prospecção_section_autosync sempre que uma seção muda.
@@ -33,8 +33,8 @@ const ProspecçãoRelatorioTab = () => {
   }));
 
   const finalHint = canManualFinalize
-    ? `${aprovadoPct}% aprovado · Prospecção Final pode ser emitido com dados parciais e atualizado incrementalmente.`
-    : `${aprovadoPct}% aprovado · necessário ${rules.minPctManualFinal}% para emitir o Prospecção Final (relatório de acompanhamento mensal).`;
+    ? `${aprovadoPct}% aprovado · Prospeccao Final pode ser emitido com dados parciais e atualizado incrementalmente.`
+    : `${aprovadoPct}% aprovado · necessário ${rules.minPctManualFinal}% para emitir o Prospeccao Final (relatório de acompanhamento mensal).`;
 
   return (
     <div className="space-y-4">
@@ -44,17 +44,17 @@ const ProspecçãoRelatorioTab = () => {
         allCompleted={progresso === 100}
       />
       {subStep === "escopo" && (
-        <RmaIntelligentEditor tipo="prospecção_mensal" titulo="Revisão-Relatório Prospecção Mensal (CNJ 72/2020)" />
+        <RmaIntelligentEditor tipo="prospecção_mensal" titulo="Revisão-Relatório Prospeccao Mensal (CNJ 72/2020)" />
       )}
       {subStep === "relatorio" && (
         <RelatorioA4View
-          documentTitle="RELATÓRIO MENSAL DE ATIVIDADES (Prospecção)"
+          documentTitle="RELATÓRIO MENSAL DE ATIVIDADES (Prospeccao)"
           documentSubtitle="Recomendação CNJ 72/2020 — Acompanhamento mensal da Administração Judicial"
           blocks={blocks}
           onUpdateBlock={() => {}}
           onAddComment={() => {}}
           onFinalize={() => regenerateFinal(true)}
-          finalLabel="Gerar Prospecção Final (.docx)"
+          finalLabel="Gerar Prospeccao Final (.docx)"
           finalDisabled={!canManualFinalize}
           finalHint={finalHint}
         />
@@ -63,4 +63,4 @@ const ProspecçãoRelatorioTab = () => {
   );
 };
 
-export default ProspecçãoRelatorioTab;
+export default ProspeccaoRelatorioTab;

@@ -20,7 +20,7 @@ export default function MagProcessos() {
       title="Processos" subtitle="Processos sob sua jurisdição."
       kpis={[
         { label: "Total Ativos", value: 33, hint: "Em curso",          icon: Gavel,        tone: "blue" },
-        { label: "Empresas Prospecção",  value: 18, hint: "Empresas",         icon: Building2,    tone: "purple" },
+        { label: "Empresas Prospeccao",  value: 18, hint: "Empresas",         icon: Building2,    tone: "purple" },
         { label: "Em AGC",        value: 7,  hint: "Assembleia",       icon: Clock,        tone: "orange" },
         { label: "Decisão",       value: 4,  hint: "Aguardando",       icon: AlertTriangle, tone: "red" },
         { label: "Encerrados",    value: 9,  hint: "Últimos 12m",      icon: CheckCircle2, tone: "green" },
@@ -33,7 +33,7 @@ export default function MagProcessos() {
           <thead className="bg-muted/40 text-xs text-muted-foreground uppercase tracking-wider">
             <tr>
               <th className="text-left px-4 py-2.5">Processo</th>
-              <th className="text-left px-4 py-2.5">Empresa de Prospecção</th>
+              <th className="text-left px-4 py-2.5">Empresa de Prospeccao</th>
               <th className="text-left px-4 py-2.5">Fase</th>
               <th className="text-left px-4 py-2.5">Início</th>
               <th className="text-left px-4 py-2.5">Status</th>

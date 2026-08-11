@@ -8,11 +8,11 @@ import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { buildLiveScoreTopics, computeRmaScore } from "@/lib/prospecçãoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
-import type { ProspecçãoEntry } from "@/types/prospecção";
-import type { RmaAnalysisResult } from "@/services/prospecçãoAnalysisService";
+import type { ProspeccaoEntry } from "@/types/prospecção";
+import type { RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
 
 interface Props {
-  prospecção: ProspecçãoEntry;
+  prospecção: ProspeccaoEntry;
   companyId?: string | null;
   onUpdateIA: () => void;
   isAnalyzing?: boolean;
@@ -23,7 +23,7 @@ type StatusFilter = "all" | "completo" | "pendente" | "incompleto";
 
 interface OneDriveFile { path: string; file_name: string; status: string | null }
 
-const ProspecçãoStatusTab = ({ prospecção, companyId, onUpdateIA, isAnalyzing = false, analysis }: Props) => {
+const ProspeccaoStatusTab = ({ prospecção, companyId, onUpdateIA, isAnalyzing = false, analysis }: Props) => {
   const [filter, setFilter] = useState<StatusFilter>("all");
   const [allFiles, setAllFiles] = useState<OneDriveFile[] | null>(null);
   const [refreshTick, setRefreshTick] = useState(0);
@@ -36,7 +36,7 @@ const ProspecçãoStatusTab = ({ prospecção, companyId, onUpdateIA, isAnalyzin
     if (!companyId) { setAllFiles(null); return; }
     let cancelled = false;
     const fetchFiles = async () => {
-      // Busca a competência ativa da empresa para limitar o escopo do Prospecção
+      // Busca a competência ativa da empresa para limitar o escopo do Prospeccao
       const { data: comp } = await supabase
         .from("companies")
         .select("execution_year, current_period_month")
@@ -105,8 +105,8 @@ const ProspecçãoStatusTab = ({ prospecção, companyId, onUpdateIA, isAnalyzin
   // Score Global unificado: `prospecção.percentual` é a fonte canônica (vinda do
   // Workspace/edge `prospecção-score`). reconcileScore garante paridade em runtime.
   const localScore = computeRmaScore(liveTopics as any, analysis?.percentual ?? 0);
-  const avgCompletude = reconcileScore("ProspecçãoStatusTab", prospecção.percentual, localScore);
-  useScoreParityGuard(prospecção.id ?? null, "ProspecçãoStatusTab", avgCompletude);
+  const avgCompletude = reconcileScore("ProspeccaoStatusTab", prospecção.percentual, localScore);
+  useScoreParityGuard(prospecção.id ?? null, "ProspeccaoStatusTab", avgCompletude);
 
   const totalProcessados = completos.length + incompletos.length;
   const totalEsperado = liveTopics.length;
@@ -149,7 +149,7 @@ const ProspecçãoStatusTab = ({ prospecção, companyId, onUpdateIA, isAnalyzin
           <div className="text-center">
             <p className="text-5xl font-bold text-[hsl(217,91%,50%)]">{avgCompletude}%</p>
             <p className="text-sm text-muted-foreground mt-1">
-              {isAnalyzing ? "IA processando documentos…" : "Status Geral do Prospecção"}
+              {isAnalyzing ? "IA processando documentos…" : "Status Geral do Prospeccao"}
             </p>
           </div>
 
@@ -251,7 +251,7 @@ const ProspecçãoStatusTab = ({ prospecção, companyId, onUpdateIA, isAnalyzin
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
-            <Clock className="w-4 h-4" /> Tópicos do Prospecção — atualização em tempo real
+            <Clock className="w-4 h-4" /> Tópicos do Prospeccao — atualização em tempo real
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
@@ -330,4 +330,4 @@ const ProspecçãoStatusTab = ({ prospecção, companyId, onUpdateIA, isAnalyzin
   );
 };
 
-export default ProspecçãoStatusTab;
+export default ProspeccaoStatusTab;

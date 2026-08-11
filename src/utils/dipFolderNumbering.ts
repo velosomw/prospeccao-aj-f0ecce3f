@@ -6,7 +6,7 @@ import { buildFolderAliasMap, getPathFolderSegment, matchDipFolderBySegment } fr
  * correspondência de pastas:
  *  - `onedriveNumber` (OD): prefixo canônico DIP (01-60). Constante por pasta.
  *  - `fileNumber`     (Arq): posição sequencial dentro do conjunto de pastas
- *                            efetivamente aplicadas no Prospecção (varia por Prospecção).
+ *                            efetivamente aplicadas no Prospeccao (varia por Prospeccao).
  */
 export interface FolderNumberingRef {
   dipId: number;

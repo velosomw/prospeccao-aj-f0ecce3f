@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useRmaDocument } from "@/hooks/useRmaDocument";
 import type { DocumentBlock, DocumentSubStep } from "@/types/documentEditor";
 
-const ProspecçãoParecerTab = () => {
+const ProspeccaoParecerTab = () => {
   const { id = "" } = useParams();
   const [subStep, setSubStep] = useState<DocumentSubStep>("escopo");
   const { sections, progresso, aprovadoPct, rules, canManualFinalize, regenerateFinal } = useRmaDocument(
@@ -60,4 +60,4 @@ const ProspecçãoParecerTab = () => {
   );
 };
 
-export default ProspecçãoParecerTab;
+export default ProspeccaoParecerTab;

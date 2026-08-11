@@ -81,7 +81,7 @@ const UserDashboard = () => {
               onClick={() => navigate("/cadastro-prospecção")}
               className="gap-1.5 border-[hsl(217,91%,50%)]/40 text-[hsl(217,91%,50%)] hover:bg-[hsl(217,91%,50%)]/10"
             >
-              <Building2 className="w-4 h-4" /> Cadastro Prospecção
+              <Building2 className="w-4 h-4" /> Cadastro Prospeccao
             </Button>
           </div>
         </div>

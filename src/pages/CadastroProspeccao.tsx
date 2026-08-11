@@ -12,7 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import PlatformLayout from "@/components/PlatformLayout";
-import { PROSPECCAO_TOPICS } from "@/data/prospecçãoTopics";
+import { PROSPECCAO_TOPICS } from "@/data/prospeccoesTopics";
 import { createCompany, assignCompanyToConsultant } from "@/services/companiesService";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -30,7 +30,7 @@ const formatCNPJ = (v: string) => {
 
 type Consultor = { user_id: string; full_name: string; email: string; role: string; active: boolean };
 
-const CadastroProspecção = () => {
+const CadastroProspeccao = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -105,9 +105,9 @@ const CadastroProspecção = () => {
       .finally(() => setLoadingConsultores(false));
   }, [step]);
 
-  // Garante que o mês de referência sempre coincide com o número do ID Prospecção (001–012)
+  // Garante que o mês de referência sempre coincide com o número do ID Prospeccao (001–012)
   const prospecçãoIdNumber = useMemo(() => {
-    const m = prospecçãoId.match(/^Prospecção-(\d{3})$/);
+    const m = prospecçãoId.match(/^Prospeccao-(\d{3})$/);
     if (!m) return null;
     const n = Number(m[1]);
     return n >= 1 && n <= 12 ? n : null;
@@ -121,13 +121,13 @@ const CadastroProspecção = () => {
 
   const handleNext = () => {
     if (!prospecçãoName.trim()) {
-      toast({ title: "Nome Prospecção AJ é obrigatório", variant: "destructive" });
+      toast({ title: "Nome Prospeccao AJ é obrigatório", variant: "destructive" });
       return;
     }
     if (!prospecçãoId.trim() || !prospecçãoIdNumber) {
       toast({
-        title: "ID Prospecção AJ inválido",
-        description: "Selecione um ID Prospecção AJ entre Prospecção AJ-001 e Prospecção AJ-012.",
+        title: "ID Prospeccao AJ inválido",
+        description: "Selecione um ID Prospeccao AJ entre Prospeccao AJ-001 e Prospeccao AJ-012.",
         variant: "destructive",
       });
       return;
@@ -139,7 +139,7 @@ const CadastroProspecção = () => {
     if (!executionMonth || executionMonth !== prospecçãoIdNumber) {
       toast({
         title: "Mês de referência divergente",
-        description: "O mês deve coincidir com o número do ID Prospecção AJ (001–012).",
+        description: "O mês deve coincidir com o número do ID Prospeccao AJ (001–012).",
         variant: "destructive",
       });
       setExecutionMonth(prospecçãoIdNumber);
@@ -150,7 +150,7 @@ const CadastroProspecção = () => {
 
   const handleNextToValidation = () => {
     if (selectedTopics.size === 0) {
-      toast({ title: "Selecione ao menos 1 tópico do Prospecção AJ", variant: "destructive" });
+      toast({ title: "Selecione ao menos 1 tópico do Prospeccao AJ", variant: "destructive" });
       return;
     }
     setStep(3);
@@ -164,7 +164,7 @@ const CadastroProspecção = () => {
     if (!prospecçãoIdNumber || executionMonth !== prospecçãoIdNumber) {
       toast({
         title: "Mês de referência divergente",
-        description: "O mês deve coincidir com o número do ID Prospecção AJ (001–012). Volte à etapa 1 e revise.",
+        description: "O mês deve coincidir com o número do ID Prospeccao AJ (001–012). Volte à etapa 1 e revise.",
         variant: "destructive",
       });
       return;
@@ -190,7 +190,7 @@ const CadastroProspecção = () => {
       );
       await assignCompanyToConsultant(company.id, selectedConsultor);
       toast({
-        title: "Prospecção AJ cadastrado e atribuído",
+        title: "Prospeccao AJ cadastrado e atribuído",
         description: `${selectedTopics.size} tópico(s) vinculados. Aguardando ativação pelo consultor.`,
       });
       navigate("/dashboard");
@@ -204,7 +204,7 @@ const CadastroProspecção = () => {
   const stepLabel = step === 1
     ? "Etapa 1 de 3 — Dados da empresa"
     : step === 2
-    ? "Etapa 2 de 3 — Seleção de tópicos do Prospecção"
+    ? "Etapa 2 de 3 — Seleção de tópicos do Prospeccao"
     : "Etapa 3 de 3 — Validação e atribuição do Consultor";
 
   const consultorSelecionado = consultores.find(c => c.user_id === selectedConsultor);
@@ -221,7 +221,7 @@ const CadastroProspecção = () => {
             <ArrowLeft className="w-4 h-4" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Cadastro Prospecção AJ</h1>
+            <h1 className="text-2xl font-bold text-foreground">Cadastro Prospeccao AJ</h1>
             <p className="text-sm text-muted-foreground">{stepLabel}</p>
           </div>
         </div>
@@ -241,7 +241,7 @@ const CadastroProspecção = () => {
               : "bg-muted text-muted-foreground"
           }`}>
             {step > 2 ? <CheckCircle2 className="w-4 h-4" /> : <ListChecks className="w-4 h-4" />}
-            <span className="text-sm font-medium">Tópicos Prospecção AJ</span>
+            <span className="text-sm font-medium">Tópicos Prospeccao AJ</span>
           </div>
           <div className="h-px w-8 bg-border" />
           <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${step === 3 ? "bg-[hsl(217,91%,50%)]/10 text-[hsl(217,91%,50%)]" : "bg-muted text-muted-foreground"}`}>
@@ -254,12 +254,12 @@ const CadastroProspecção = () => {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Dados da Empresa (Recuperanda)</CardTitle>
-              <CardDescription>O Coordenador registra o ID Prospecção AJ que vincula o Prospecção AJ Empresa na plataforma e ao Consultor.</CardDescription>
+              <CardDescription>O Coordenador registra o ID Prospeccao AJ que vincula o Prospeccao AJ Empresa na plataforma e ao Consultor.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
-                  <Label>Nome Prospecção AJ * <span className="text-xs text-muted-foreground font-noprospecçãol">(nome da empresa)</span></Label>
+                  <Label>Nome Prospeccao AJ * <span className="text-xs text-muted-foreground font-noprospecçãol">(nome da empresa)</span></Label>
                   <Input
                     value={prospecçãoName}
                     onChange={(e) => setRmaName(e.target.value.toUpperCase())}
@@ -268,13 +268,13 @@ const CadastroProspecção = () => {
                   />
                 </div>
                 <div>
-                  <Label>ID Prospecção AJ * <span className="text-xs text-muted-foreground font-noprospecçãol">(número = mês de referência)</span></Label>
+                  <Label>ID Prospeccao AJ * <span className="text-xs text-muted-foreground font-noprospecçãol">(número = mês de referência)</span></Label>
                   <div className="flex items-center gap-2">
-                    <span className="px-3 h-10 inline-flex items-center rounded-md border border-input bg-muted text-sm font-mono text-foreground">Prospecção AJ-</span>
+                    <span className="px-3 h-10 inline-flex items-center rounded-md border border-input bg-muted text-sm font-mono text-foreground">Prospeccao AJ-</span>
                     <Select
-                      value={prospecçãoId.startsWith("Prospecção-") ? prospecçãoId.slice(4) : ""}
+                      value={prospecçãoId.startsWith("Prospeccao-") ? prospecçãoId.slice(4) : ""}
                       onValueChange={(v) => {
-                        setRmaId(`Prospecção-${v}`);
+                        setRmaId(`Prospeccao-${v}`);
                         setExecutionMonth(Number(v));
                       }}
                     >
@@ -283,7 +283,7 @@ const CadastroProspecção = () => {
                         {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(3, "0")).map((n) => {
                           const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
                           return (
-                            <SelectItem key={n} value={n}>Prospecção-{n} — {meses[Number(n) - 1]}</SelectItem>
+                            <SelectItem key={n} value={n}>Prospeccao-{n} — {meses[Number(n) - 1]}</SelectItem>
                           );
                         })}
                       </SelectContent>
@@ -312,14 +312,14 @@ const CadastroProspecção = () => {
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[hsl(217,91%,50%)]" />
                   <Label className="text-sm font-semibold text-foreground">
-                    Execução automática mensal do Prospecção
+                    Execução automática mensal do Prospeccao
                   </Label>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  A plataforma abre o Prospecção no dia 1º do mês e encerra no último dia (28/29/30/31).
+                  A plataforma abre o Prospeccao no dia 1º do mês e encerra no último dia (28/29/30/31).
                   A leitura no OneDrive ocorre na pasta{" "}
                   <span className="font-mono">
-                    Projeto Prospecção/{prospecçãoName || "Empresa"}/{executionYear}/
+                    Projeto Prospeccao/{prospecçãoName || "Empresa"}/{executionYear}/
                     {executionMonth ? `${String(executionMonth).padStart(2, "0")}.${executionYear}` : "MM.AAAA"}/
                   </span>
                   {" "}— cada subpasta é um tópico, classificado como{" "}
@@ -358,7 +358,7 @@ const CadastroProspecção = () => {
                     <div className={`h-10 px-3 inline-flex items-center w-full rounded-md border bg-muted text-sm font-mono ${!executionMonth ? "border-[hsl(0,84%,60%)] text-muted-foreground" : "border-input text-foreground"}`}>
                       {executionMonth
                         ? `${String(executionMonth).padStart(2, "0")}.${executionYear} — ${["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"][executionMonth - 1]}`
-                        : "Definido pelo ID Prospecção"}
+                        : "Definido pelo ID Prospeccao"}
                     </div>
                   </div>
                   <label className="flex items-start gap-2 p-3 rounded-md border border-border bg-card cursor-pointer">
@@ -391,9 +391,9 @@ const CadastroProspecção = () => {
             <CardHeader>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
-                  <CardTitle className="text-lg">Tópicos do Prospecção AJ</CardTitle>
+                  <CardTitle className="text-lg">Tópicos do Prospeccao AJ</CardTitle>
                   <CardDescription>
-                    Selecione os tópicos que farão parte do Prospecção desta empresa. Você pode escolher quantos quiser.
+                    Selecione os tópicos que farão parte do Prospeccao desta empresa. Você pode escolher quantos quiser.
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
@@ -491,7 +491,7 @@ const CadastroProspecção = () => {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-[hsl(217,91%,50%)]" />
-                  Validação do Prospecção Empresa
+                  Validação do Prospeccao Empresa
                 </CardTitle>
                 <CardDescription>
                   Revise os dados antes de concluir e atribua o Consultor responsável pela operação.
@@ -516,7 +516,7 @@ const CadastroProspecção = () => {
                   <div className="p-4 rounded-lg bg-[hsl(258,90%,66%)]/5 border border-[hsl(258,90%,66%)]/20">
                     <div className="flex items-center gap-2 mb-2 text-[hsl(258,90%,66%)]">
                       <ListChecks className="w-4 h-4" />
-                      <span className="text-xs font-semibold uppercase tracking-wide">Tópicos Prospecção AJ</span>
+                      <span className="text-xs font-semibold uppercase tracking-wide">Tópicos Prospeccao AJ</span>
                     </div>
                     <p className="text-3xl font-bold text-foreground leading-none">
                       {selectedTopics.size}
@@ -532,7 +532,7 @@ const CadastroProspecção = () => {
                     </div>
                     <p className="text-sm font-bold text-foreground">Aguardando ativação</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      O consultor atribuído deverá ativar o Prospecção para iniciar a análise da IA.
+                      O consultor atribuído deverá ativar o Prospeccao para iniciar a análise da IA.
                     </p>
                   </div>
                 </div>
@@ -559,7 +559,7 @@ const CadastroProspecção = () => {
                   Consultor Responsável
                 </CardTitle>
                 <CardDescription>
-                  Selecione o consultor que receberá este Prospecção na plataforma.
+                  Selecione o consultor que receberá este Prospeccao na plataforma.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -567,7 +567,7 @@ const CadastroProspecção = () => {
                   <p className="text-sm text-muted-foreground py-4 text-center">Carregando consultores...</p>
                 ) : consultores.length === 0 ? (
                   <p className="text-sm text-muted-foreground py-4 text-center">
-                    Nenhum consultor ativo encontrado. Cadastre um consultor antes de atribuir o Prospecção.
+                    Nenhum consultor ativo encontrado. Cadastre um consultor antes de atribuir o Prospeccao.
                   </p>
                 ) : (
                   <Select value={selectedConsultor} onValueChange={setSelectedConsultor}>
@@ -607,7 +607,7 @@ const CadastroProspecção = () => {
                     className="bg-[hsl(217,91%,50%)] hover:bg-[hsl(217,91%,45%)] text-white gap-2"
                   >
                     <CheckCircle2 className="w-4 h-4" />
-                    {saving ? "Concluindo..." : "Concluir cadastro do Prospecção"}
+                    {saving ? "Concluindo..." : "Concluir cadastro do Prospeccao"}
                   </Button>
                 </div>
               </CardContent>
@@ -619,4 +619,4 @@ const CadastroProspecção = () => {
   );
 };
 
-export default CadastroProspecção;
+export default CadastroProspeccao;

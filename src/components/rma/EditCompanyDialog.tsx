@@ -70,7 +70,7 @@ export default function EditCompanyDialog({ company, open, onOpenChange, onSaved
     setDeleting(true);
     try {
       await deleteCompany(company.id);
-      toast({ title: "Prospecção AJ excluído", description: `${company.name} foi removido.` });
+      toast({ title: "Prospeccao AJ excluído", description: `${company.name} foi removido.` });
       onDeleted();
       onOpenChange(false);
     } catch (e: any) {
@@ -84,8 +84,8 @@ export default function EditCompanyDialog({ company, open, onOpenChange, onSaved
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Editar Empresa / Prospecção AJ</DialogTitle>
-          <DialogDescription>Ajuste os dados de cadastro ou exclua o Prospecção AJ.</DialogDescription>
+          <DialogTitle>Editar Empresa / Prospeccao AJ</DialogTitle>
+          <DialogDescription>Ajuste os dados de cadastro ou exclua o Prospeccao AJ.</DialogDescription>
         </DialogHeader>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 py-2">
@@ -94,7 +94,7 @@ export default function EditCompanyDialog({ company, open, onOpenChange, onSaved
             <Input value={form.name || ""} onChange={(e) => set("name", e.target.value)} />
           </div>
           <div>
-            <Label>ID Prospecção AJ</Label>
+            <Label>ID Prospeccao AJ</Label>
             <Input value={form.prospecção_id || ""} onChange={(e) => set("prospecção_id", e.target.value)} />
           </div>
           <div>
@@ -151,14 +151,14 @@ export default function EditCompanyDialog({ company, open, onOpenChange, onSaved
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" disabled={deleting || saving}>
-                <Trash2 className="w-4 h-4" /> Excluir Prospecção
+                <Trash2 className="w-4 h-4" /> Excluir Prospeccao
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Excluir {company.name}?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Esta ação não pode ser desfeita. O Prospecção e os dados de cadastro serão removidos peprospecçãonentemente.
+                  Esta ação não pode ser desfeita. O Prospeccao e os dados de cadastro serão removidos peprospecçãonentemente.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

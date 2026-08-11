@@ -45,7 +45,7 @@ export default function StageProcessamentoIA(p: Props) {
         </div>
       )}
 
-      {/* 4 Cards executivos — total = pastas/tópicos registrados no input do Prospecção */}
+      {/* 4 Cards executivos — total = pastas/tópicos registrados no input do Prospeccao */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
         <ScoreRingCard score={p.score} trend={p.score < 50 ? "down" : "up"} />
         <ProcessingProgressCard processados={p.completos} pendentes={p.pendentes} incompletos={p.incompletos} total={p.total} />

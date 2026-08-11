@@ -112,7 +112,7 @@ const TabPivotConsolidado = ({ companyId, runToken, fallbackRows = [] }: Props) 
     return (
       <Card className="border-dashed">
         <CardContent className="py-12 text-center text-sm text-muted-foreground">
-          Selecione um Prospecção real para visualizar o pivot consolidado.
+          Selecione um Prospeccao real para visualizar o pivot consolidado.
         </CardContent>
       </Card>
     );

@@ -52,10 +52,10 @@ function computeState(scoreFinal: number, hasReport: boolean, aprovadoPct: numbe
 }
 
 /**
- * Fase 6 — Relatório Prospecção · MD-DIP-REPORT-001
+ * Fase 6 — Relatório Prospeccao · MD-DIP-REPORT-001
  * Relatório DIP dinâmico, incremental e auditável (Em Construção → Consolidação → Final).
  */
-export default function StageRelatorioProspecção({
+export default function StageRelatorioProspeccao({
   prospecçãoId, scoreFinal, companyId, prospecçãoCode, empresa, mesReferencia, responsavel,
 }: Props) {
   const { doc, sections, progresso, aprovadoPct, regenerateFinal, buildCharts, reload } =
@@ -133,7 +133,7 @@ export default function StageRelatorioProspecção({
 
   async function runPipeline(mode: "gerar" | "atualizar") {
     if (!doc) {
-      toast({ title: "Documento Prospecção AJ não inicializado", variant: "destructive" });
+      toast({ title: "Documento Prospeccao AJ não inicializado", variant: "destructive" });
       return;
     }
     setBusy(mode);
@@ -196,7 +196,7 @@ export default function StageRelatorioProspecção({
               <FileText className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-foreground">Relatório DIP — Prospecção AJ</h2>
+              <h2 className="text-lg font-bold text-foreground">Relatório DIP — Prospeccao AJ</h2>
               <p className="text-sm text-muted-foreground max-w-2xl">
                 Relatório Mensal de Atividade (CNJ 72/2020) — objeto vivo de consolidação processual.
                 Dados extraídos são continuamente incorporados, revisados e consolidados até a versão
@@ -317,12 +317,12 @@ export default function StageRelatorioProspecção({
             <FileText className="h-10 w-10 mx-auto mb-3 opacity-40" />
             <p className="text-sm">
               Nenhum relatório gerado ainda. Clique em <strong>Gerar Relatório</strong> para
-              produzir o Prospecção com os dados atualmente carregados.
+              produzir o Prospeccao com os dados atualmente carregados.
             </p>
           </div>
         ) : (
           <iframe
-            title="Relatório Prospecção AJ"
+            title="Relatório Prospeccao AJ"
             src={`https://docs.google.com/viewer?url=${encodeURIComponent(
               doc!.arquivo_final_url!,
             )}&embedded=true`}
@@ -331,7 +331,7 @@ export default function StageRelatorioProspecção({
         )}
       </div>
 
-      {/* Prévia estruturada DIP-Prospecção — Capa → Carta ao Juízo → Sumário → Seções */}
+      {/* Prévia estruturada DIP-Prospeccao — Capa → Carta ao Juízo → Sumário → Seções */}
       <RelatorioCanonicalPreview
         empresa={empresa}
         prospecçãoCode={prospecçãoCode || prospecçãoId}

@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { Upload, FileText, CheckCircle2, AlertTriangle, XCircle, ArrowRight, Eye, Download } from "lucide-react";
 import type { ScoreFile } from "@/lib/prospecçãoScore";
-import ProspecçãoProcessamentoTab from "@/components/prospecção/ProspecçãoProcessamentoTab";
+import ProspeccaoProcessamentoTab from "@/components/prospecção/ProspeccaoProcessamentoTab";
 import OneDriveFoldersStatus from "@/components/workspace/OneDriveFoldersStatus";
 import LearningUploadPanel from "@/components/workspace/stages/LearningUploadPanel";
-import type { ProspecçãoEntry } from "@/types/prospecção";
+import type { ProspeccaoEntry } from "@/types/prospecção";
 
 interface Props {
-  prospecção: ProspecçãoEntry;
+  prospecção: ProspeccaoEntry;
   companyId: string | null;
   scoreFiles: ScoreFile[];
   ano?: number | null;
@@ -212,7 +212,7 @@ export default function StageDadosUpload({ prospecção, companyId, scoreFiles, 
           <span className="text-xs text-muted-foreground hidden group-open:inline">Recolher</span>
         </summary>
         <div className="p-4 pt-0">
-          <ProspecçãoProcessamentoTab prospecção={prospecção} companyId={companyId} />
+          <ProspeccaoProcessamentoTab prospecção={prospecção} companyId={companyId} />
         </div>
       </details>
     </div>

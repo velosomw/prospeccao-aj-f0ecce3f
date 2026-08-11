@@ -16,11 +16,11 @@ import {
 // ─── Types ───────────────────────────────────────────────────
 type Criticidade = "critico" | "medio" | "baixo";
 type EventType =
-  | "ALTERACAO_STATUS_Prospecção"
+  | "ALTERACAO_STATUS_Prospeccao"
   | "APROVACAO_DOCUMENTO"
   | "UPLOAD_DOCUMENTO"
   | "CIENCIA_DOCUMENTO"
-  | "VISUALIZACAO_Prospecção"
+  | "VISUALIZACAO_Prospeccao"
   | "EXPORT_LOGS"
   | "ALTERACAO_CADASTRAL"
   | "DECISAO_JURIDICA"
@@ -60,11 +60,11 @@ const criticidadeConfig: Record<Criticidade, { label: string; color: string; bg:
 };
 
 const eventTypeLabels: Record<EventType, string> = {
-  ALTERACAO_STATUS_Prospecção: "Alteração de Status",
+  ALTERACAO_STATUS_Prospeccao: "Alteração de Status",
   APROVACAO_DOCUMENTO: "Aprovação de Documento",
   UPLOAD_DOCUMENTO: "Upload de Documento",
   CIENCIA_DOCUMENTO: "Ciência de Documento",
-  VISUALIZACAO_Prospecção: "Visualização de Prospecção",
+  VISUALIZACAO_Prospeccao: "Visualização de Prospeccao",
   EXPORT_LOGS: "Exportação de Logs",
   ALTERACAO_CADASTRAL: "Alteração Cadastral",
   DECISAO_JURIDICA: "Decisão Jurídica",
@@ -83,7 +83,7 @@ const getPerfilColor = (perfil: string) => {
     Coordenador: "hsl(258,90%,66%)",
     Consultor: "hsl(210,80%,55%)",
     Magistrado: "hsl(0,70%,55%)",
-    "Empresa Prospecção": "hsl(38,90%,55%)",
+    "Empresa Prospeccao": "hsl(38,90%,55%)",
     "Gestor IA": "hsl(152,70%,45%)",
   };
   return map[perfil] || "hsl(215,12%,50%)";
@@ -126,7 +126,7 @@ const TabTrilhaAuditoria = () => {
   const uniqueRmas = new Set(mockLogs.filter(l => l.prospecçãoId !== "-").map(l => l.prospecçãoId)).size;
 
   const handleExportCSV = () => {
-    const headers = ["ID", "Tipo Evento", "Criticidade", "Prospecção", "Processo", "Etapa", "Usuário", "Login", "Perfil", "Ação", "Módulo", "Antes", "Depois", "Data/Hora", "IP", "Dispositivo", "Hash"];
+    const headers = ["ID", "Tipo Evento", "Criticidade", "Prospeccao", "Processo", "Etapa", "Usuário", "Login", "Perfil", "Ação", "Módulo", "Antes", "Depois", "Data/Hora", "IP", "Dispositivo", "Hash"];
     const rows = filtered.map(l => [
       l.id, eventTypeLabels[l.eventType], criticidadeConfig[l.criticidade].label,
       l.prospecçãoId, l.processoNumero, l.etapa, l.userNome, l.userLogin, l.userPerfil,
@@ -156,7 +156,7 @@ const TabTrilhaAuditoria = () => {
     URL.revokeObjectURL(url);
   };
 
-  // Unique Prospecçãos for timeline
+  // Unique Prospeccaos for timeline
   const prospecçãoTimelines = Array.from(new Set(mockLogs.filter(l => l.prospecçãoId !== "-").map(l => l.prospecçãoId)));
 
   return (
@@ -224,7 +224,7 @@ const TabTrilhaAuditoria = () => {
 
         {/* ── Tab: Linha do Tempo ── */}
         <TabsContent value="timeline" className="mt-4 space-y-4">
-          <p className="text-sm text-muted-foreground">Reconstrução cronológica completa dos eventos por processo Prospecção AJ.</p>
+          <p className="text-sm text-muted-foreground">Reconstrução cronológica completa dos eventos por processo Prospeccao AJ.</p>
           {prospecçãoTimelines.map(prospecçãoId => {
             const prospecçãoLogs = mockLogs.filter(l => l.prospecçãoId === prospecçãoId).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
             return (
@@ -324,13 +324,13 @@ const TabTrilhaAuditoria = () => {
                 <SelectItem value="Coordenador">Coordenador</SelectItem>
                 <SelectItem value="Consultor">Consultor</SelectItem>
                 <SelectItem value="Magistrado">Magistrado</SelectItem>
-                <SelectItem value="Empresa Prospecção">Empresa Prospecção</SelectItem>
+                <SelectItem value="Empresa Prospeccao">Empresa Prospeccao</SelectItem>
                 <SelectItem value="Gestor IA">Gestor IA</SelectItem>
               </SelectContent>
             </Select>
             <div className="flex items-center gap-1.5 bg-background border border-border rounded-lg px-2.5 py-1.5 max-w-[140px]">
               <input
-                placeholder="Prospecção AJ ID..."
+                placeholder="Prospeccao AJ ID..."
                 className="bg-transparent text-xs outline-none flex-1 text-foreground placeholder:text-muted-foreground w-full"
                 value={filterRma}
                 onChange={e => setFilterRma(e.target.value)}
@@ -350,7 +350,7 @@ const TabTrilhaAuditoria = () => {
                   <TableHead className="text-xs">ID</TableHead>
                   <TableHead className="text-xs">Evento</TableHead>
                   <TableHead className="text-xs">Criticidade</TableHead>
-                  <TableHead className="text-xs">Prospecção AJ</TableHead>
+                  <TableHead className="text-xs">Prospeccao AJ</TableHead>
                   <TableHead className="text-xs">Usuário</TableHead>
                   <TableHead className="text-xs">Perfil</TableHead>
                   <TableHead className="text-xs">Data/Hora</TableHead>
@@ -462,7 +462,7 @@ const TabTrilhaAuditoria = () => {
           <p className="text-sm text-muted-foreground">Registro de visualizações, ciências de decisão, aceites de termos e downloads de documentos sensíveis.</p>
           <div className="grid gap-3">
             {mockLogs
-              .filter(l => ["CIENCIA_DOCUMENTO", "VISUALIZACAO_Prospecção", "DOWNLOAD_ARQUIVO"].includes(l.eventType))
+              .filter(l => ["CIENCIA_DOCUMENTO", "VISUALIZACAO_Prospeccao", "DOWNLOAD_ARQUIVO"].includes(l.eventType))
               .map(log => {
                 const cfg = criticidadeConfig[log.criticidade];
                 return (
@@ -626,7 +626,7 @@ const TabTrilhaAuditoria = () => {
                     ["Usuário", detailLog.userNome],
                     ["Login", detailLog.userLogin],
                     ["Perfil", detailLog.userPerfil],
-                    ["Prospecção", detailLog.prospecçãoId],
+                    ["Prospeccao", detailLog.prospecçãoId],
                     ["Processo", detailLog.processoNumero],
                     ["Etapa", detailLog.etapa],
                     ["Módulo", detailLog.modulo],

@@ -4,9 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import type { ProspecçãoEntry } from "@/types/prospecção";
+import type { ProspeccaoEntry } from "@/types/prospecção";
 
-interface Props { prospecção: ProspecçãoEntry }
+interface Props { prospecção: ProspeccaoEntry }
 
 interface AuditEntry {
   id: string;
@@ -32,7 +32,7 @@ const STATUS_LABEL: Record<string, string> = {
   concluido: "Concluído",
 };
 
-const ProspecçãoEvolucaoTab = ({ prospecção }: Props) => {
+const ProspeccaoEvolucaoTab = ({ prospecção }: Props) => {
   const { id = "" } = useParams();
   const [entries, setEntries] = useState<AuditEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +42,7 @@ const ProspecçãoEvolucaoTab = ({ prospecção }: Props) => {
     let cancelled = false;
     (async () => {
       setLoading(true);
-      // Documentos do Prospecção
+      // Documentos do Prospeccao
       const { data: docs } = await supabase
         .from("prospecção_documents")
         .select("id, titulo")
@@ -154,4 +154,4 @@ const ProspecçãoEvolucaoTab = ({ prospecção }: Props) => {
   );
 };
 
-export default ProspecçãoEvolucaoTab;
+export default ProspeccaoEvolucaoTab;

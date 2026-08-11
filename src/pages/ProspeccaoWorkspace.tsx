@@ -4,30 +4,30 @@ import {
   Activity, Cpu, BookOpen, Search, BarChart3, FileText, FileCheck,
   GitBranch, Award, ShieldCheck, Database, GitMerge, Scale, LineChart, Camera
 } from "lucide-react";
-import ProspecçãoSnapshotMensalTab from "@/components/prospecção/ProspecçãoSnapshotMensalTab";
-import ProspecçãoBalancoTab from "@/components/prospecção/ProspecçãoBalancoTab";
-import ProspecçãoDRETab from "@/components/prospecção/ProspecçãoDRETab";
+import ProspeccaoSnapshotMensalTab from "@/components/prospecção/ProspeccaoSnapshotMensalTab";
+import ProspeccaoBalancoTab from "@/components/prospecção/ProspeccaoBalancoTab";
+import ProspeccaoDRETab from "@/components/prospecção/ProspeccaoDRETab";
 import CompetenciaSelector, { type Competencia } from "@/components/prospecção/CompetenciaSelector";
 import { Badge } from "@/components/ui/badge";
 import PlatformLayout from "@/components/PlatformLayout";
-import type { ProspecçãoEntry } from "@/types/prospecção";
+import type { ProspeccaoEntry } from "@/types/prospecção";
 import { supabase } from "@/integrations/supabase/client";
 import {
   startRmaAnalysis,
   getRmaAnalysis,
   type RmaAnalysisResult,
-} from "@/services/prospecçãoAnalysisService";
+} from "@/services/prospeccaoAnalysisService";
 import { buildLiveScoreTopics, computeRmaScore, fetchRmaScores, type ScoreFile } from "@/lib/prospecçãoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
-import ProspecçãoStatusTab from "@/components/prospecção/ProspecçãoStatusTab";
-import ProspecçãoProcessamentoTab from "@/components/prospecção/ProspecçãoProcessamentoTab";
-import ProspecçãoBalanceteTab from "@/components/prospecção/ProspecçãoBalanceteTab";
-import ProspecçãoAnaliseTab from "@/components/prospecção/ProspecçãoAnaliseTab";
-import ProspecçãoParecerTab from "@/components/prospecção/ProspecçãoParecerTab";
-import ProspecçãoRelatorioTab from "@/components/prospecção/ProspecçãoRelatorioTab";
-import ProspecçãoEvolucaoTab from "@/components/prospecção/ProspecçãoEvolucaoTab";
-import ProspecçãoParecerFinalTab from "@/components/prospecção/ProspecçãoParecerFinalTab";
-import ProspecçãoRelatorioFinalTab from "@/components/prospecção/ProspecçãoRelatorioFinalTab";
+import ProspeccaoStatusTab from "@/components/prospecção/ProspeccaoStatusTab";
+import ProspeccaoProcessamentoTab from "@/components/prospecção/ProspeccaoProcessamentoTab";
+import ProspeccaoBalanceteTab from "@/components/prospecção/ProspeccaoBalanceteTab";
+import ProspeccaoAnaliseTab from "@/components/prospecção/ProspeccaoAnaliseTab";
+import ProspeccaoParecerTab from "@/components/prospecção/ProspeccaoParecerTab";
+import ProspeccaoRelatorioTab from "@/components/prospecção/ProspeccaoRelatorioTab";
+import ProspeccaoEvolucaoTab from "@/components/prospecção/ProspeccaoEvolucaoTab";
+import ProspeccaoParecerFinalTab from "@/components/prospecção/ProspeccaoParecerFinalTab";
+import ProspeccaoRelatorioFinalTab from "@/components/prospecção/ProspeccaoRelatorioFinalTab";
 import { useUserRoles } from "@/hooks/useUserRoles";
 
 
@@ -48,12 +48,12 @@ import StageDadosUpload from "@/components/workspace/stages/StageDadosUpload";
 import StageProcessamentoIA from "@/components/workspace/stages/StageProcessamentoIA";
 import StageRevisaoInteligente from "@/components/workspace/stages/StageRevisaoInteligente";
 import StageFechamento from "@/components/workspace/stages/StageFechamento";
-import StageRelatorioProspecção from "@/components/workspace/stages/StageRelatorioProspecção";
+import StageRelatorioProspeccao from "@/components/workspace/stages/StageRelatorioProspeccao";
 import AuditoriaCard from "@/components/workspace/AuditoriaCard";
 
 
 const tabConfig = [
-  { value: "status", label: "Status Prospecção AJ", icon: Activity, color: "hsl(217,91%,50%)" },
+  { value: "status", label: "Status Prospeccao AJ", icon: Activity, color: "hsl(217,91%,50%)" },
   { value: "processamento", label: "Processamento IA", icon: Cpu, color: "hsl(258,90%,56%)" },
   { value: "analise", label: "Registro e Cobrança", icon: Search, color: "hsl(38,92%,50%)" },
   { value: "balancete", label: "Balancete", icon: BookOpen, color: "hsl(142,76%,36%)" },
@@ -61,17 +61,17 @@ const tabConfig = [
   { value: "pnl", label: "P&L (DRE)", icon: LineChart, color: "hsl(258,90%,56%)" },
   { value: "analise-tecnica", label: "Análise Técnica", icon: GitMerge, color: "hsl(38,92%,50%)" },
   { value: "dashboards", label: "Gráficos de Auditoria", icon: BarChart3, color: "hsl(217,91%,50%)" },
-  { value: "relatorio", label: "Revisão-Relatório Prospecção AJ", icon: FileCheck, color: "hsl(280,60%,50%)" },
-  { value: "evolucao", label: "Evolução Prospecção AJ", icon: GitBranch, color: "hsl(170,60%,40%)" },
+  { value: "relatorio", label: "Revisão-Relatório Prospeccao AJ", icon: FileCheck, color: "hsl(280,60%,50%)" },
+  { value: "evolucao", label: "Evolução Prospeccao AJ", icon: GitBranch, color: "hsl(170,60%,40%)" },
   { value: "snapshot", label: "Snapshot Mensal", icon: Camera, color: "hsl(217,91%,40%)" },
-  { value: "relatorio-final", label: "Relatório Prospecção AJ Final", icon: ShieldCheck, color: "hsl(142,76%,30%)" },
+  { value: "relatorio-final", label: "Relatório Prospeccao AJ Final", icon: ShieldCheck, color: "hsl(142,76%,30%)" },
 ];
 
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const parseDipCompetencia = (code?: string | null): Competencia | null => {
-  const match = String(code || "").match(/^Prospecção-DIP-(\d{2})-(\d{4})$/i);
+  const match = String(code || "").match(/^Prospeccao-DIP-(\d{2})-(\d{4})$/i);
   if (!match) return null;
   const mes = Number(match[1]);
   const ano = Number(match[2]);
@@ -88,7 +88,7 @@ const isRecentAnalysisRun = (updatedAt?: string | null) => {
   return Date.now() - ts < 15 * 60 * 1000;
 };
 
-const ProspecçãoWorkspace = () => {
+const ProspeccaoWorkspace = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { roles, loading: rolesLoading } = useUserRoles();
@@ -124,8 +124,8 @@ const ProspecçãoWorkspace = () => {
   }, []);
   // Resolve a janela com cadeia de fallback:
   //   1) chave composta (companyId + prospecçãoCode/id) — mais específica
-  //   2) chave por companyId — preserva escolha entre Prospecçãos da mesma empresa
-  //   3) chave por id (Prospecção) — preserva escolha mesmo sem companyId resolvido
+  //   2) chave por companyId — preserva escolha entre Prospeccaos da mesma empresa
+  //   3) chave por id (Prospeccao) — preserva escolha mesmo sem companyId resolvido
   //   4) último valor usado globalmente
   //   5) default 3M
   // Garante que o usuário SEMPRE vê uma janela válida, mesmo antes de
@@ -201,7 +201,7 @@ const ProspecçãoWorkspace = () => {
 
   // Atualiza refs e re-resolve a janela quando companyId/prospecçãoCode chegam.
   // A janela exibida sempre é válida: começa pelo fallback global e converge
-  // para a preferência específica do Prospecção assim que os IDs são carregados.
+  // para a preferência específica do Prospeccao assim que os IDs são carregados.
   useEffect(() => {
     companyIdRefForKey.current = companyId;
     prospecçãoCodeRefForKey.current = prospecçãoCode;
@@ -218,7 +218,7 @@ const ProspecçãoWorkspace = () => {
   // BS & Dados — consolidado já filtrado pela janela (alimenta Gráficos de Auditoria).
   const { parsed: bsParsed, entries: bsEntries, loading: bsLoading } = useConsolidadoBS(companyId, runToken, janelaRange);
 
-  // Route id pode ser UUID OU código prospecção_id (ex.: Prospecção-DIP-01-2026).
+  // Route id pode ser UUID OU código prospecção_id (ex.: Prospeccao-DIP-01-2026).
   // Resolvemos `companyId` (sempre UUID) consultando companies por id OU prospecção_id.
   // `isRealRma` passa a ser true SOMENTE após resolução; antes disso usamos
   // um placeholder neutro (sem dados fictícios de empresa).
@@ -245,9 +245,9 @@ const ProspecçãoWorkspace = () => {
             setCompanyId(cid);
             setCompanyName((c as any).name);
             setRmaCode((c as any).prospecção_id || id!.toUpperCase());
-            // Para Prospecção-DIP-MM-YYYY a competência vem do código (mais confiável
+            // Para Prospeccao-DIP-MM-YYYY a competência vem do código (mais confiável
             // que companies.current_period_month, que reflete o "mês corrente"
-            // global da empresa e pode divergir do Prospecção selecionado).
+            // global da empresa e pode divergir do Prospeccao selecionado).
             const officialCompetencia = parseDipCompetencia((c as any).prospecção_id || id);
             let ano: number | null = officialCompetencia?.ano ?? null;
             let mes: number | null = officialCompetencia?.mes ?? null;
@@ -323,7 +323,7 @@ const ProspecçãoWorkspace = () => {
     return () => { cancelled = true; window.clearInterval(timer); };
   }, [companyId, runToken, competencia?.ano, competencia?.mes]);
 
-  // Overview card: SEMPRE usa a competência oficial do Prospecção (companies.execution_year/current_period_month),
+  // Overview card: SEMPRE usa a competência oficial do Prospeccao (companies.execution_year/current_period_month),
   // independente do seletor de competência usado em outras abas. Evita exibir contagens de outro mês.
   useEffect(() => {
     if (!companyId || !prospecçãoPeriod) { setOverviewFiles([]); return; }
@@ -384,12 +384,12 @@ const ProspecçãoWorkspace = () => {
   const liveWorkspaceTopics = buildLiveScoreTopics(analysis?.topics as any, scoreFiles);
   const localWorkspacePct = computeRmaScore(liveWorkspaceTopics, analysis?.percentual ?? 0);
   // unifiedScore (edge `prospecção-score`) é a fonte canônica; reconcileScore garante
-  // paridade com Status Prospecção, Processamento IA e Alertas Inteligentes.
-  const liveWorkspacePercentual = reconcileScore("ProspecçãoWorkspace", unifiedScore, localWorkspacePct);
-  useScoreParityGuard(id ?? null, "ProspecçãoWorkspace", liveWorkspacePercentual);
+  // paridade com Status Prospeccao, Processamento IA e Alertas Inteligentes.
+  const liveWorkspacePercentual = reconcileScore("ProspeccaoWorkspace", unifiedScore, localWorkspacePct);
+  useScoreParityGuard(id ?? null, "ProspeccaoWorkspace", liveWorkspacePercentual);
 
-  // Constrói ProspecçãoEntry a partir da análise real (para alimentar abas existentes)
-  const realRma: ProspecçãoEntry = {
+  // Constrói ProspeccaoEntry a partir da análise real (para alimentar abas existentes)
+  const realRma: ProspeccaoEntry = {
     id: prospecçãoCode || id || "",
     empresa: companyName || "—",
     status: analysis?.status === "concluido" ? "em_processamento" : "em_processamento",
@@ -413,7 +413,7 @@ const ProspecçãoWorkspace = () => {
 
   // Placeholder neutro enquanto a empresa real não foi resolvida — sem dados
   // fictícios. Quando `isRealRma` ficar true, `realRma` substitui imediatamente.
-  const routePlaceholder: ProspecçãoEntry = {
+  const routePlaceholder: ProspeccaoEntry = {
     id: id || "—",
     empresa: "Carregando…",
     status: "em_processamento",
@@ -441,7 +441,7 @@ const ProspecçãoWorkspace = () => {
                 ? (isAnalyzing
                     ? "IA em execução — lendo OneDrive e auditando documentos…"
                     : isStaleAnalyzing
-                      ? "Último processamento pausado — dados carregados pela competência oficial do Prospecção"
+                      ? "Último processamento pausado — dados carregados pela competência oficial do Prospeccao"
                       : (analysis?.status === "erro" ? `Erro: ${analysis.error_message}` : "Análise IA concluída"))
                 : `Responsável: ${prospecção.responsavel} · Coordenador: ${prospecção.coordenador}`}
             </p>
@@ -505,7 +505,7 @@ const ProspecçãoWorkspace = () => {
             { id: 3, label: "Auditoria", status: completos > 0 ? "em_andamento" : "pendente", hint: completos > 0 ? "Indicadores prontos" : "Aguardando processamento", percent: dadosPct },
             { id: 4, label: "Revisão Inteligente", status: incompletos + pendentes > 0 ? "pendente" : "concluido", hint: `${incompletos + pendentes} pendências`, percent: 100 - dadosPct },
             { id: 5, label: "Fechamento & Assinatura", status: dadosPct === 100 ? "em_andamento" : "bloqueado", hint: dadosPct === 100 ? "Pronto para fechar" : "Pendente" },
-            { id: 6, label: "Relatório Prospecção AJ", status: dadosPct >= 80 ? "em_andamento" : "bloqueado", hint: dadosPct >= 80 ? "Pronto para gerar" : "Aguardando dados" },
+            { id: 6, label: "Relatório Prospeccao AJ", status: dadosPct >= 80 ? "em_andamento" : "bloqueado", hint: dadosPct >= 80 ? "Pronto para gerar" : "Aguardando dados" },
             
           ];
 
@@ -602,7 +602,7 @@ const ProspecçãoWorkspace = () => {
                     <div className="bg-white border border-border rounded-lg p-4">
                       <div className="flex items-center justify-between mb-3">
                         <div>
-                          <h2 className="text-base font-bold text-foreground">Tópicos do Prospecção AJ</h2>
+                          <h2 className="text-base font-bold text-foreground">Tópicos do Prospeccao AJ</h2>
                           <p className="text-xs text-muted-foreground">Priorize as pendências que mais impactam seu relatório.</p>
                         </div>
                         <span className="text-xs text-muted-foreground">{filteredTopics.length} de {topicItems.length}</span>
@@ -676,7 +676,7 @@ const ProspecçãoWorkspace = () => {
               )}
 
               {activeStage === 6 && (
-                <StageRelatorioProspecção
+                <StageRelatorioProspeccao
                   prospecçãoId={id || ""}
                   scoreFinal={liveWorkspacePercentual}
                   companyId={companyId}
@@ -695,5 +695,5 @@ const ProspecçãoWorkspace = () => {
   );
 };
 
-export default ProspecçãoWorkspace;
+export default ProspeccaoWorkspace;
 

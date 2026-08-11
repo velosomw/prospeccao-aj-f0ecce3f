@@ -113,7 +113,7 @@ export default function GestorAuditoria() {
       subtitle="Trilha imutável WORM de toda governança e interação na plataforma."
       kpis={[
         { label: "Eventos (filtro)", value: stats.total, hint: "Resultados",       icon: Activity,      tone: "blue" },
-        { label: "Mensagens",        value: stats.msgs,  hint: "Prospecção AJ & comunicação",icon: FileText,      tone: "purple" },
+        { label: "Mensagens",        value: stats.msgs,  hint: "Prospeccao AJ & comunicação",icon: FileText,      tone: "purple" },
         { label: "Conversas",        value: stats.convs, hint: "Criadas/alteradas",icon: CheckCircle2,  tone: "green" },
         { label: "Ocorrências",      value: stats.occ,   hint: "Abertas/transições",icon: AlertTriangle, tone: "red" },
         { label: "Hash Chain",       value: "OK",        hint: "Integridade",      icon: Lock,          tone: "green" },
@@ -124,7 +124,7 @@ export default function GestorAuditoria() {
       <div className="bg-white rounded-2xl border border-border p-4 mb-4">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-3">
           <div className="md:col-span-1">
-            <label className="text-[11px] font-semibold text-muted-foreground">Prospecção AJ ID</label>
+            <label className="text-[11px] font-semibold text-muted-foreground">Prospeccao AJ ID</label>
             <input value={prospecção} onChange={(e) => setRma(e.target.value)}
                    placeholder="prospecção_…"
                    className="mt-1 h-9 w-full px-2.5 rounded-lg border border-border text-sm" />

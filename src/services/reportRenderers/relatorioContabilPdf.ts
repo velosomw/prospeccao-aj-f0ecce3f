@@ -190,7 +190,7 @@ export function generateRelatorioContabilPdf(d: ReportDataset, filename?: string
   doc.setFontSize(10);
   doc.setTextColor(40);
   doc.text(`Empresa: ${d.empresaNome}${d.empresaCnpj ? ` — CNPJ ${d.empresaCnpj}` : ""}`, 14, c.y); c.y += 5;
-  if (d.prospecçãoId) { doc.setTextColor(...GRAY); doc.text(`Prospecção: ${d.prospecçãoId}`, 14, c.y); c.y += 5; }
+  if (d.prospecçãoId) { doc.setTextColor(...GRAY); doc.text(`Prospeccao: ${d.prospecçãoId}`, 14, c.y); c.y += 5; }
   doc.setTextColor(40);
   const ini = d.periodos[0].label;
   const fim = d.periodos[d.periodos.length - 1].label;

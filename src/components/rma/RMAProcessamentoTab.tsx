@@ -5,17 +5,17 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import type { ProspecçãoEntry } from "@/types/prospecção";
+import type { ProspeccaoEntry } from "@/types/prospecção";
 import { DeferredBatchIndicator } from "@/components/prospecção/DeferredBatchIndicator";
-import ProspecçãoFailedFilesLearningCard from "@/components/prospecção/ProspecçãoFailedFilesLearningCard";
-import ProspecçãoManualUploadLearningCard from "@/components/prospecção/ProspecçãoManualUploadLearningCard";
-import ProspecçãoAuditTrailCard from "@/components/prospecção/ProspecçãoAuditTrailCard";
-import ProspecçãoBatchTab from "@/components/prospecção/ProspecçãoBatchTab";
+import ProspeccaoFailedFilesLearningCard from "@/components/prospecção/ProspeccaoFailedFilesLearningCard";
+import ProspeccaoManualUploadLearningCard from "@/components/prospecção/ProspeccaoManualUploadLearningCard";
+import ProspeccaoAuditTrailCard from "@/components/prospecção/ProspeccaoAuditTrailCard";
+import ProspeccaoBatchTab from "@/components/prospecção/ProspeccaoBatchTab";
 import { computeRmaScore } from "@/lib/prospecçãoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
 
 interface Props {
-  prospecção: ProspecçãoEntry;
+  prospecção: ProspeccaoEntry;
   companyId?: string | null;
 }
 
@@ -55,7 +55,7 @@ const statusBadge = (s: "ok" | "incompleto" | "vazio") => {
   return <Badge className="bg-[hsl(0,84%,60%)]/15 text-[hsl(0,84%,60%)] border-0 text-[10px]">Vazio</Badge>;
 };
 
-const ProspecçãoProcessamentoTab = ({ prospecção, companyId }: Props) => {
+const ProspeccaoProcessamentoTab = ({ prospecção, companyId }: Props) => {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [allFiles, setAllFiles] = useState<OneDriveFile[] | null>(null);
   const [loadingFiles, setLoadingFiles] = useState(false);
@@ -152,8 +152,8 @@ const ProspecçãoProcessamentoTab = ({ prospecção, companyId }: Props) => {
     })),
     prospecção.percentual,
   );
-  const score = reconcileScore("ProspecçãoProcessamentoTab", prospecção.percentual, localScore);
-  useScoreParityGuard(prospecção.id ?? null, "ProspecçãoProcessamentoTab", score);
+  const score = reconcileScore("ProspeccaoProcessamentoTab", prospecção.percentual, localScore);
+  useScoreParityGuard(prospecção.id ?? null, "ProspeccaoProcessamentoTab", score);
 
   const okPct = total > 0 ? Math.round((okCount / total) * 100) : 0;
   const incPct = total > 0 ? Math.round((incompletoCount / total) * 100) : 0;
@@ -526,23 +526,23 @@ const ProspecçãoProcessamentoTab = ({ prospecção, companyId }: Props) => {
         </TabsContent>
 
         <TabsContent value="erros" className="mt-4">
-          {companyId && <ProspecçãoFailedFilesLearningCard companyId={companyId} />}
+          {companyId && <ProspeccaoFailedFilesLearningCard companyId={companyId} />}
         </TabsContent>
 
         <TabsContent value="manual" className="mt-4">
-          {companyId && <ProspecçãoManualUploadLearningCard companyId={companyId} />}
+          {companyId && <ProspeccaoManualUploadLearningCard companyId={companyId} />}
         </TabsContent>
 
         <TabsContent value="trilha" className="mt-4">
-          {companyId && <ProspecçãoAuditTrailCard companyId={companyId} />}
+          {companyId && <ProspeccaoAuditTrailCard companyId={companyId} />}
         </TabsContent>
 
         <TabsContent value="batch" className="mt-4">
-          <ProspecçãoBatchTab companyId={companyId ?? null} prospecçãoId={(prospecção as any).id ?? null} />
+          <ProspeccaoBatchTab companyId={companyId ?? null} prospecçãoId={(prospecção as any).id ?? null} />
         </TabsContent>
       </Tabs>
     </div>
   );
 };
 
-export default ProspecçãoProcessamentoTab;
+export default ProspeccaoProcessamentoTab;

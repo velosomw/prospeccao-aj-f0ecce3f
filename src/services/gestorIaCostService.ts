@@ -54,7 +54,7 @@ export interface CostInsight {
 }
 
 export interface PlatformCounts {
-  prospecçãosTotal: number;            // Prospecçãos distintos analisados (prospecção_analysis_results)
+  prospecçãosTotal: number;            // Prospeccaos distintos analisados (prospecção_analysis_results)
   prospecçãosConcluidos: number;
   prospecçãosEmAnalise: number;
   balancetesRuns: number;       // balancete_runs total
@@ -69,8 +69,8 @@ export interface CostIndicators {
   custoBalancete: number;          // custo IA atribuído a OCR/extraction/embedding
   custoRelatorio: number;          // custo IA atribuído a geração de relatório
   custoIaOcrProcessamento: number; // OCR + extraction + embedding + classification + validation
-  custoMedioExecucao: number;      // custoTotal / Prospecçãos reais
-  custoMedioPorProspecção: number;        // custoTotal / nº Prospecçãos
+  custoMedioExecucao: number;      // custoTotal / Prospeccaos reais
+  custoMedioPorProspeccao: number;        // custoTotal / nº Prospeccaos
   custoMedioPorBalancete: number;  // custoBalancete / nº runs balancete
   custoMedioPorRelatorio: number;  // custoRelatorio / nº relatórios (finalizados+andamento)
   totalBalancetes: number;
@@ -182,7 +182,7 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
   const counts = await fetchPlatformCounts(cutoff);
 
   // Custos médios por unidade real
-  const custoMedioPorProspecção       = counts.prospecçãosTotal > 0 ? custoTotal / counts.prospecçãosTotal : 0;
+  const custoMedioPorProspeccao       = counts.prospecçãosTotal > 0 ? custoTotal / counts.prospecçãosTotal : 0;
   const custoMedioPorBalancete = counts.balancetesRuns > 0 ? custoBalancete / counts.balancetesRuns : 0;
   const totalRel = counts.relatoriosFinalizados + counts.relatoriosEmElaboracao;
   const custoMedioPorRelatorio = totalRel > 0 ? custoRelatorio / totalRel : 0;
@@ -272,7 +272,7 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
     custoRelatorio,
     custoIaOcrProcessamento,
     custoMedioExecucao,
-    custoMedioPorProspecção,
+    custoMedioPorProspeccao,
     custoMedioPorBalancete,
     custoMedioPorRelatorio,
     totalBalancetes,

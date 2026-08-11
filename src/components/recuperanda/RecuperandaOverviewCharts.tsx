@@ -6,7 +6,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, PieChart as PieIcon, BarChart3, Activity, Target, Layers } from "lucide-react";
 import type { Company, RmaHistoryEntry } from "@/services/companiesService";
-import type { RmaAnalysisResult } from "@/services/prospecçãoAnalysisService";
+import type { RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
 
 interface Props {
   companies: Company[];
@@ -150,7 +150,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <PieIcon className="w-4 h-4" style={{ color: COLOR_BLUE }} /> Status dos Prospecçãos
+              <PieIcon className="w-4 h-4" style={{ color: COLOR_BLUE }} /> Status dos Prospeccaos
             </CardTitle>
             <CardDescription>Distribuição da saúde do portfólio</CardDescription>
           </CardHeader>
@@ -200,7 +200,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" style={{ color: COLOR_GREEN }} /> Cadastros de Prospecção — 6 meses
+              <TrendingUp className="w-4 h-4" style={{ color: COLOR_GREEN }} /> Cadastros de Prospeccao — 6 meses
             </CardTitle>
             <CardDescription>Evolução mensal dos novos Prospecções AJ</CardDescription>
           </CardHeader>

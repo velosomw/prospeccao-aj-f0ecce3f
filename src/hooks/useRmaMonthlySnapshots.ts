@@ -1,4 +1,4 @@
-// Hook para snapshots mensais consolidados do Prospecção.
+// Hook para snapshots mensais consolidados do Prospeccao.
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 

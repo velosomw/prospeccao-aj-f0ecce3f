@@ -1,5 +1,5 @@
-// Cálculo unificado do Score Global do Prospecção.
-// Usado tanto no Workspace (ProspecçãoStatusTab) quanto nos Alertas Inteligentes (Dashboard)
+// Cálculo unificado do Score Global do Prospeccao.
+// Usado tanto no Workspace (ProspeccaoStatusTab) quanto nos Alertas Inteligentes (Dashboard)
 // para garantir que os percentuais batam exatamente entre as telas.
 //
 // Fórmula (não-regressiva):
@@ -34,7 +34,7 @@ const inferTopicNumber = (topic: ScoreTopic, index: number) => {
 };
 
 import { fileMatchesTopic, filterIngestibleFiles } from "@/lib/topicMatch";
-import { PROSPECCAO_TOPICS } from "@/data/prospecçãoTopics";
+import { PROSPECCAO_TOPICS } from "@/data/prospeccoesTopics";
 
 export function buildLiveScoreTopics(
   topics: ScoreTopic[] | null | undefined,
@@ -50,7 +50,7 @@ export function buildLiveScoreTopics(
   }));
 
   // Fallback: quando a análise IA ainda não produziu tópicos, usa a lista
-  // canônica do Prospecção para que o workspace consiga refletir a presença de
+  // canônica do Prospeccao para que o workspace consiga refletir a presença de
   // arquivos no OneDrive em vez de mostrar tudo zerado.
   if (base.length === 0) {
     base = PROSPECCAO_TOPICS.map((t) => ({

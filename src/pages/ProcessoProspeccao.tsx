@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 
 // ============================================================
-// MOCKUP — Processo Prospecção por E-mail
+// MOCKUP — Processo Prospeccao por E-mail
 // Acompanhamento diário: leitura de e-mails + extração de planilhas
 // Dados fictícios para validação de conceito.
 // ============================================================

@@ -45,7 +45,7 @@ function etapaAtual(s: DocSummary, minAuto: number, minManual: number) {
   return { label: "Em produção", icon: Loader2, color: "hsl(217,91%,50%)" };
 }
 
-const ProspecçãoProgressByTypePanel = () => {
+const ProspeccaoProgressByTypePanel = () => {
   const { id = "" } = useParams();
   const [summaries, setSummaries] = useState<DocSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -183,4 +183,4 @@ const Stat = ({ label, value, color }: { label: string; value: number; color: st
   </div>
 );
 
-export default ProspecçãoProgressByTypePanel;
+export default ProspeccaoProgressByTypePanel;

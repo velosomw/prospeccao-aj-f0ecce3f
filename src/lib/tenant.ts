@@ -1,7 +1,7 @@
 /**
  * Tenant scoping para cache multi-tenant.
  *
- * O conceito de "tenant" nesta plataforma é o **Prospecção / empresa em recuperação**
+ * O conceito de "tenant" nesta plataforma é o **Prospeccao / empresa em recuperação**
  * atualmente em foco. A URL /prospecção/:id define o tenant ativo. Para perfis sem
  * tenant fixo (Gestor IA, Coordenador na home), usamos "global".
  *

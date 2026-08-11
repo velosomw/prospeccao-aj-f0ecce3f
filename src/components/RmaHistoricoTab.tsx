@@ -44,7 +44,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
     return m;
   }, [companies]);
 
-  // Carrega contagem de documentos do pipeline por Prospecção (prospecção_id) — usamos como total apurado.
+  // Carrega contagem de documentos do pipeline por Prospeccao (prospecção_id) — usamos como total apurado.
   useEffect(() => {
     const ids = Array.from(new Set(companies.map((c) => c.prospecção_id).filter(Boolean) as string[]));
     if (ids.length === 0) {
@@ -171,7 +171,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
           const label = `${String(m).padStart(2, "0")}.${year}`;
           const isDone = p && p.percentual >= 100;
           const status = !p
-            ? "Sem Prospecção"
+            ? "Sem Prospeccao"
             : p.status === "concluido" || isDone
               ? "Concluído"
               : p.status === "erro"
@@ -234,7 +234,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
                     className="text-xs h-7"
                     onClick={() => navigate(`/prospecção/${p.company_id}?period=${p.period_label}`)}
                   >
-                    Ver Prospecção
+                    Ver Prospeccao
                   </Button>
                 )}
               </div>
@@ -284,7 +284,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
   );
 
   const yearKpiCards = [
-    { label: `Prospecçãos Apurados (${currentYear})`, value: yearKpis.apurados, icon: ClipboardList, color: "hsl(var(--accent))" },
+    { label: `Prospeccaos Apurados (${currentYear})`, value: yearKpis.apurados, icon: ClipboardList, color: "hsl(var(--accent))" },
     { label: "Concluídos 100%", value: yearKpis.concluidos, icon: CheckCircle2, color: "hsl(var(--primary))" },
     { label: "Incompletos", value: yearKpis.incompletos, icon: Layers, color: "hsl(var(--destructive))" },
     { label: "Empresas", value: yearKpis.empresas, icon: Building2, color: "hsl(var(--ring))" },
@@ -316,7 +316,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
-            <History className="w-4 h-4 text-accent" /> Histórico de Prospecçãos por Período
+            <History className="w-4 h-4 text-accent" /> Histórico de Prospeccaos por Período
           </CardTitle>
           <p className="text-xs text-muted-foreground mt-1">
             Pesquise por empresa, ano ou mês. Selecione uma empresa para ver o detalhamento mensal.
@@ -329,7 +329,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar empresa, CNPJ, Prospecção AJ-ID..."
+                placeholder="Buscar empresa, CNPJ, Prospeccao AJ-ID..."
                 className="pl-9"
               />
             </div>
@@ -372,7 +372,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 border-b">
                   <tr>
-                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospecção AJ · Empresa</th>
+                    <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospeccao AJ · Empresa</th>
                     <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">CNPJ</th>
                     <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Prospecções AJ Apurados</th>
                     <th className="text-left px-4 py-3 text-sm font-semibold text-muted-foreground">Último Período</th>

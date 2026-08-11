@@ -21,7 +21,7 @@ const fmtDate = (s: string) =>
 const fmtBRL = (v: number | null | undefined) =>
   v == null ? "—" : v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 
-export default function ProspecçãoSnapshotMensalTab({ companyId, periodo }: Props) {
+export default function ProspeccaoSnapshotMensalTab({ companyId, periodo }: Props) {
   const [motivo, setMotivo] = useState("");
   const { snapshots, loading, busy, create } = useRmaMonthlySnapshots(companyId);
 
@@ -58,7 +58,7 @@ export default function ProspecçãoSnapshotMensalTab({ companyId, periodo }: Pr
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
             <Camera className="w-4 h-4 text-[hsl(217,91%,50%)]" />
-            Snapshot Mensal do Prospecção
+            Snapshot Mensal do Prospeccao
             {ano && mes && (
               <Badge variant="secondary" className="ml-2 text-[10px]">
                 {String(mes).padStart(2, "0")}/{ano}
@@ -127,7 +127,7 @@ export default function ProspecçãoSnapshotMensalTab({ companyId, periodo }: Pr
                     <th className="py-2 px-2 font-semibold">Competência</th>
                     <th className="py-2 px-2 font-semibold">Versão</th>
                     <th className="py-2 px-2 font-semibold">Gerado em</th>
-                    <th className="py-2 px-2 font-semibold text-right">% Prospecção AJ</th>
+                    <th className="py-2 px-2 font-semibold text-right">% Prospeccao AJ</th>
                     <th className="py-2 px-2 font-semibold text-right">Bal/BS/DRE</th>
                     <th className="py-2 px-2 font-semibold text-right">Ativo Total</th>
                     <th className="py-2 px-2 font-semibold text-right">Receita</th>

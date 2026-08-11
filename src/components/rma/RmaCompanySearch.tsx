@@ -31,7 +31,7 @@ const norm = (s: string | null | undefined) =>
 const RmaCompanySearch = ({
   companies,
   onSelect,
-  placeholder = "Buscar por empresa, ID Prospecção ou CNPJ...",
+  placeholder = "Buscar por empresa, ID Prospeccao ou CNPJ...",
   onClear,
   value,
   onChange,
@@ -137,7 +137,7 @@ const RmaCompanySearch = ({
         <div className="absolute z-50 mt-1 left-0 right-0 bg-popover border rounded-lg shadow-lg max-h-72 overflow-y-auto">
           {matches.length === 0 ? (
             <p className="text-xs text-muted-foreground p-3 text-center">
-              Nenhum Prospecção encontrado para "{q}".
+              Nenhum Prospeccao encontrado para "{q}".
             </p>
           ) : (
             matches.map((c, i) => (

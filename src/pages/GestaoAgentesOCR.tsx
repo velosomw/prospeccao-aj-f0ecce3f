@@ -420,7 +420,7 @@ export default function GestaoAgentesOCR() {
               </h4>
               <div className="grid md:grid-cols-3 gap-2 text-xs">
                 {[
-                  { label: "OneDrive (MS Graph)", status: "ok", note: "Conector ativo, base /Projeto Prospecção" },
+                  { label: "OneDrive (MS Graph)", status: "ok", note: "Conector ativo, base /Projeto Prospeccao" },
                   { label: "Google Drive", status: "todo", note: "Conector disponível, ingest a habilitar" },
                   { label: "Filas / Workers", status: "partial", note: "Edge functions assíncronas (BEx Cloud)" },
                   { label: "OCR Worker", status: "partial", note: "audit-parse-pdf + pipeline-search" },
@@ -428,7 +428,7 @@ export default function GestaoAgentesOCR() {
                   { label: "Validador / Análise / Antifraude", status: "ok", note: "5 estágios definidos" },
                   { label: "Postgres + pgvector", status: "ok", note: "pipeline_documents + document_embeddings" },
                   { label: "API Layer", status: "ok", note: "Edge functions REST" },
-                  { label: "Dashboard", status: "ok", note: "Gestor IA + Prospecção Workspace" },
+                  { label: "Dashboard", status: "ok", note: "Gestor IA + Prospeccao Workspace" },
                   { label: "Dataset / Treino", status: "todo", note: "Fase 12 — sintético + ground truth" },
                   { label: "Learning Loop", status: "todo", note: "Correção humana → re-prompt" },
                 ].map((row, i) => {

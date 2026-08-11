@@ -369,7 +369,7 @@ export async function listReleasedCompaniesPage(
   };
 }
 
-/** Lista as empresas (Prospecçãos) atribuídas ao consultor logado */
+/** Lista as empresas (Prospeccaos) atribuídas ao consultor logado */
 export async function listMyAssignedCompanies(): Promise<Company[]> {
   const { data: s } = await supabase.auth.getSession();
   const uid = s.session?.user?.id;
@@ -394,7 +394,7 @@ export async function updateCompanyStatus(companyId: string, status: string): Pr
   if (error) throw error;
 }
 
-/** Atualiza dados de cadastro da empresa/Prospecção. */
+/** Atualiza dados de cadastro da empresa/Prospeccao. */
 export async function updateCompany(
   companyId: string,
   patch: Partial<CreateCompanyInput>
@@ -409,13 +409,13 @@ export async function updateCompany(
   return data as Company;
 }
 
-/** Exclui uma empresa/Prospecção. */
+/** Exclui uma empresa/Prospeccao. */
 export async function deleteCompany(companyId: string): Promise<void> {
   const { error } = await supabase.from("companies").delete().eq("id", companyId);
   if (error) throw error;
 }
 
-/** Ativa um Prospecção atribuído ao consultor, com validação no backend. */
+/** Ativa um Prospeccao atribuído ao consultor, com validação no backend. */
 export async function activateAssignedRma(companyId: string): Promise<void> {
   const { error } = await supabase.functions.invoke("activate-prospecção", {
     body: { companyId },

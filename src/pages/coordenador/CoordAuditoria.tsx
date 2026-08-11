@@ -2,11 +2,11 @@ import { Shield, CheckCircle2, AlertTriangle, FileText, Lock, Activity } from "l
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
 const trilha = [
-  { id: "AUD-9001", acao: "Aprovação Prospecção-0012",       autor: "Coordenador",   hash: "0x4a8...e21f", data: "Hoje 14:32" },
+  { id: "AUD-9001", acao: "Aprovação Prospeccao-0012",       autor: "Coordenador",   hash: "0x4a8...e21f", data: "Hoje 14:32" },
   { id: "AUD-9000", acao: "Edição bloco 7 - DRE",      autor: "Ana Silva",     hash: "0x9c2...118a", data: "Hoje 13:10" },
   { id: "AUD-8999", acao: "Reprocessamento IA",        autor: "Sistema",       hash: "0x3f1...87bc", data: "Hoje 11:48" },
   { id: "AUD-8998", acao: "Reprovação bloco 5",        autor: "Coordenador",   hash: "0x7e8...a932", data: "Ontem 17:20" },
-  { id: "AUD-8997", acao: "Publicação Prospecção-0008",       autor: "Julia Pereira", hash: "0x2b4...5c19", data: "Ontem 16:10" },
+  { id: "AUD-8997", acao: "Publicação Prospeccao-0008",       autor: "Julia Pereira", hash: "0x2b4...5c19", data: "Ontem 16:10" },
 ];
 
 export default function CoordAuditoria() {

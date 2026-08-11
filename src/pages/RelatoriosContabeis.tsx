@@ -1,4 +1,4 @@
-// Página "Relatórios Contábeis" — seleciona Empresa → Prospecção → Período/Foprospecçãoto e gera o
+// Página "Relatórios Contábeis" — seleciona Empresa → Prospeccao → Período/Foprospecçãoto e gera o
 // Relatório Contábil de Dados (DOCX/PDF) usando balancete_consolidado da empresa.
 import { useEffect, useMemo, useState } from "react";
 import PlatformLayout from "@/components/PlatformLayout";
@@ -93,7 +93,7 @@ export default function RelatoriosContabeis() {
 
   const selected = companies.find(c => c.id === companyId) || null;
 
-  // Carrega dados financeiros consolidados quando empresa+Prospecção estão selecionados
+  // Carrega dados financeiros consolidados quando empresa+Prospeccao estão selecionados
   const { parsed, entries, loading: loadingDados } = useConsolidadoBS(companyId, null, null);
   const bsRows = useMemo(() => (parsed ? buildBSDados(parsed, entries) : []), [parsed, entries]);
   const periodKeys = useMemo(
@@ -161,7 +161,7 @@ export default function RelatoriosContabeis() {
               step > n ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground"
             }`}>
               <span className="font-bold">{n}</span>
-              <span>{n === 1 ? "Empresa" : n === 2 ? "Prospecção" : "Configurar"}</span>
+              <span>{n === 1 ? "Empresa" : n === 2 ? "Prospeccao" : "Configurar"}</span>
             </div>
           ))}
         </div>
@@ -178,7 +178,7 @@ export default function RelatoriosContabeis() {
               <div className="relative">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <Input
-                  placeholder="Buscar por nome ou Prospecção AJ..."
+                  placeholder="Buscar por nome ou Prospeccao AJ..."
                   value={filter}
                   onChange={e => setFilter(e.target.value)}
                   className="pl-9"
@@ -197,7 +197,7 @@ export default function RelatoriosContabeis() {
                   >
                     <span className="font-medium text-sm">{name}</span>
                     <span className="text-xs text-muted-foreground">
-                      {companies.filter(c => c.name === name).length} Prospecção(s)
+                      {companies.filter(c => c.name === name).length} Prospeccao(s)
                     </span>
                   </button>
                 ))}
@@ -206,12 +206,12 @@ export default function RelatoriosContabeis() {
           </Card>
         )}
 
-        {/* Step 2 — Prospecção */}
+        {/* Step 2 — Prospeccao */}
         {step === 2 && companyName && (
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-base flex items-center gap-2">
-                <Briefcase className="w-4 h-4" /> Prospecçãos de {companyName}
+                <Briefcase className="w-4 h-4" /> Prospeccaos de {companyName}
               </CardTitle>
               <Button variant="ghost" size="sm" onClick={() => setStep(1)}>
                 <ChevronLeft className="w-4 h-4 mr-1" /> Voltar
@@ -226,7 +226,7 @@ export default function RelatoriosContabeis() {
                     className="text-left p-4 border rounded-lg hover:border-[hsl(217,91%,50%)] hover:bg-muted/30 transition-colors"
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-semibold text-sm">{c.prospecção_id || "Prospecção sem identificador"}</span>
+                      <span className="font-semibold text-sm">{c.prospecção_id || "Prospeccao sem identificador"}</span>
                       <span className={`text-[10px] px-2 py-0.5 rounded-full ${
                         c.status === "active" ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"
                       }`}>{c.status}</span>
@@ -365,7 +365,7 @@ export default function RelatoriosContabeis() {
               <CardContent className="space-y-2 text-sm">
                 <div><b>Empresa:</b> {selected.name}</div>
                 {selected.cnpj && <div><b>CNPJ:</b> {selected.cnpj}</div>}
-                <div><b>Prospecção AJ:</b> {selected.prospecção_id || "—"}</div>
+                <div><b>Prospeccao AJ:</b> {selected.prospecção_id || "—"}</div>
                 <div><b>Agregação:</b> {AGREG_LABEL[agregacao]}</div>
                 <div><b>Períodos disponíveis:</b> {periodKeys.length}</div>
                 <div><b>Intervalo:</b> {fromKey || "—"} → {toKey || "—"}</div>

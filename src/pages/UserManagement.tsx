@@ -89,7 +89,7 @@ const UserManagement = () => {
   const [deleteTarget, setDeleteTarget] = useState<UserProfile | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  // Prospecção assignment state
+  // Prospeccao assignment state
   const [companies, setCompanies] = useState<Company[]>([]);
   const [assignments, setAssignments] = useState<CompanyConsultant[]>([]);
   const [selectedConsultant, setSelectedConsultant] = useState<UserProfile | null>(null);
@@ -277,7 +277,7 @@ const UserManagement = () => {
     return true;
   });
 
-  const selectedConsultantProspecçãos = useMemo(() => {
+  const selectedConsultantProspeccaos = useMemo(() => {
     if (!selectedConsultant) return [] as Company[];
     const ids = assignmentsByConsultant.get(selectedConsultant.user_id) || [];
     return ids.map((id) => companiesById.get(id)).filter(Boolean) as Company[];
@@ -293,7 +293,7 @@ const UserManagement = () => {
       const toAdd = [...editAssignSelected].filter((id) => !currentIds.has(id));
       const toRemove = [...currentIds].filter((id) => !editAssignSelected.has(id));
 
-      // Mover Prospecção: ao adicionar, remove esse Prospecção de outros consultores
+      // Mover Prospeccao: ao adicionar, remove esse Prospeccao de outros consultores
       for (const cid of toAdd) {
         await assignCompanyToConsultant(cid, editingUser.user_id, { moveFromOthers: true });
       }
@@ -301,7 +301,7 @@ const UserManagement = () => {
         await unassignCompanyFromConsultant(cid, editingUser.user_id);
       }
       await loadRmaData();
-      toast.success("Vínculos de Prospecção atualizados");
+      toast.success("Vínculos de Prospeccao atualizados");
     } catch (err: any) {
       toast.error("Erro ao atualizar vínculos: " + err.message);
     } finally {
@@ -396,7 +396,7 @@ const UserManagement = () => {
           <div className="relative">
             <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Buscar por empresa Prospecção AJ (nome, ID Prospecção AJ, CNPJ)..."
+              placeholder="Buscar por empresa Prospeccao AJ (nome, ID Prospeccao AJ, CNPJ)..."
               value={companySearch}
               onChange={(e) => setCompanySearch(e.target.value)}
               className="pl-9 pr-9"
@@ -413,7 +413,7 @@ const UserManagement = () => {
           </div>
         </div>
 
-        {/* Painel inline: Prospecçãos do consultor selecionado */}
+        {/* Painel inline: Prospeccaos do consultor selecionado */}
         {selectedConsultant && (
           <Card className="border-[hsl(217,91%,50%)]/30 bg-[hsl(217,91%,50%)]/5">
             <CardContent className="p-5 space-y-3">
@@ -421,10 +421,10 @@ const UserManagement = () => {
                 <div className="flex items-center gap-2">
                   <Link2 className="w-4 h-4 text-[hsl(217,91%,50%)]" />
                   <h3 className="font-semibold text-foreground">
-                    Prospecçãos de {selectedConsultant.full_name}
+                    Prospeccaos de {selectedConsultant.full_name}
                   </h3>
                   <Badge className="bg-[hsl(217,91%,50%)] text-white">
-                    {selectedConsultantProspecçãos.length}
+                    {selectedConsultantProspeccaos.length}
                   </Badge>
                 </div>
                 <div className="flex gap-2">
@@ -436,13 +436,13 @@ const UserManagement = () => {
                   </Button>
                 </div>
               </div>
-              {selectedConsultantProspecçãos.length === 0 ? (
+              {selectedConsultantProspeccaos.length === 0 ? (
                 <p className="text-sm text-muted-foreground py-2">
-                  Nenhum Prospecção associado. Clique em "Gerenciar vínculos" para atribuir.
+                  Nenhum Prospeccao associado. Clique em "Gerenciar vínculos" para atribuir.
                 </p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                  {selectedConsultantProspecçãos.map((c) => (
+                  {selectedConsultantProspeccaos.map((c) => (
                     <div
                       key={c.id}
                       className="bg-card border border-border rounded-lg p-3 flex items-start justify-between gap-2"
@@ -468,7 +468,7 @@ const UserManagement = () => {
                         onClick={async () => {
                           await unassignCompanyFromConsultant(c.id, selectedConsultant.user_id);
                           await loadRmaData();
-                          toast.success("Prospecção desvinculado");
+                          toast.success("Prospeccao desvinculado");
                         }}
                       >
                         <X className="w-3.5 h-3.5 text-[hsl(0,70%,55%)]" />
@@ -523,7 +523,7 @@ const UserManagement = () => {
                         </Badge>
                         {isConsultor && prospecçãoCount > 0 && (
                           <Badge className="text-[10px] bg-[hsl(217,91%,50%)]/10 text-[hsl(217,91%,50%)] border-[hsl(217,91%,50%)]/30 border">
-                            <Building2 className="w-3 h-3 mr-1" /> {prospecçãoCount} Prospecção{prospecçãoCount > 1 ? "s" : ""}
+                            <Building2 className="w-3 h-3 mr-1" /> {prospecçãoCount} Prospeccao{prospecçãoCount > 1 ? "s" : ""}
                           </Badge>
                         )}
                       </div>
@@ -644,10 +644,10 @@ const UserManagement = () => {
                   <div>
                     <Label className="text-sm flex items-center gap-1.5">
                       <Link2 className="w-4 h-4 text-[hsl(217,91%,50%)]" />
-                      Prospecçãos vinculados a este consultor
+                      Prospeccaos vinculados a este consultor
                     </Label>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Marque para vincular. Ao vincular, o Prospecção é movido automaticamente caso esteja com outro consultor.
+                      Marque para vincular. Ao vincular, o Prospeccao é movido automaticamente caso esteja com outro consultor.
                     </p>
                   </div>
                   <Badge className="bg-[hsl(217,91%,50%)] text-white">
@@ -657,7 +657,7 @@ const UserManagement = () => {
                 <div className="border rounded-lg max-h-72 overflow-y-auto divide-y">
                   {companies.length === 0 && (
                     <p className="text-sm text-muted-foreground p-4 text-center">
-                      Nenhuma empresa Prospecção cadastrada.
+                      Nenhuma empresa Prospeccao cadastrada.
                     </p>
                   )}
                   {companies.map((c) => {
@@ -717,7 +717,7 @@ const UserManagement = () => {
                   disabled={savingAssign}
                   className="w-full"
                 >
-                  {savingAssign ? "Aplicando vínculos..." : "Aplicar vínculos de Prospecção"}
+                  {savingAssign ? "Aplicando vínculos..." : "Aplicar vínculos de Prospeccao"}
                 </Button>
               </div>
             )}

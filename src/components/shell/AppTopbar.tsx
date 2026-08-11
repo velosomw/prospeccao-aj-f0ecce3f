@@ -13,7 +13,7 @@ const roleLabels: Record<string, string> = {
   coordenador: "Coordenador",
   consultor: "Consultor",
   magistrado: "Magistrado",
-  recuperanda: "Empresa Prospecção",
+  recuperanda: "Empresa Prospeccao",
   gestor_ia: "Gestor IA",
 };
 

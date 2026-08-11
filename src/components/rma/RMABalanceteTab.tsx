@@ -81,13 +81,13 @@ interface CompanyPeriod {
   last_analyzed_period: string | null;
 }
 
-interface ProspecçãoBalanceteTabProps {
+interface ProspeccaoBalanceteTabProps {
   initialSubtab?: typeof SUBTABS[number]["value"];
   /** Competência selecionada no header global (sobrepõe o período do cadastro). */
   periodo?: { ano: number; mes: number } | null;
 }
 
-const ProspecçãoBalanceteTab = ({ initialSubtab, periodo }: ProspecçãoBalanceteTabProps = {}) => {
+const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteTabProps = {}) => {
   const { id } = useParams<{ id: string }>();
   const isRealRma = !!id && UUID_RE.test(id);
 
@@ -96,7 +96,7 @@ const ProspecçãoBalanceteTab = ({ initialSubtab, periodo }: ProspecçãoBalanc
   const [month, setMonth] = useState<number>(1);
   const [companyPeriod, setCompanyPeriod] = useState<CompanyPeriod | null>(null);
 
-  // Carrega período fixo do Prospecção (definido na criação do cadastro)
+  // Carrega período fixo do Prospeccao (definido na criação do cadastro)
   useEffect(() => {
     if (!isRealRma || !id) return;
     let cancelled = false;
@@ -108,7 +108,7 @@ const ProspecçãoBalanceteTab = ({ initialSubtab, periodo }: ProspecçãoBalanc
         .maybeSingle();
       if (cancelled || !data) return;
       setCompanyPeriod(data as any);
-      // Aplica o período do cadastro do Prospecção
+      // Aplica o período do cadastro do Prospeccao
       let mes = data.current_period_month ?? null;
       let ano = data.execution_year ?? null;
       // Fallback: tenta last_analyzed_period (formato MM-YYYY)
@@ -280,7 +280,7 @@ const ProspecçãoBalanceteTab = ({ initialSubtab, periodo }: ProspecçãoBalanc
   }, [run?.id, run?.status, loadConsolidado, loadLancamentos, loadHistory]);
 
   // Pipeline de balancete agora é disparado automaticamente por prospecção-analyze
-  // (ver botão "Atualizar Status IA" na aba Status Prospecção).
+  // (ver botão "Atualizar Status IA" na aba Status Prospeccao).
 
 
   const reviewLancamento = async (lancId: string, novoStatus: "ok" | "manual_review" | "rejected") => {
@@ -321,7 +321,7 @@ const ProspecçãoBalanceteTab = ({ initialSubtab, periodo }: ProspecçãoBalanc
     return (
       <Card>
         <CardContent className="py-12 text-center text-muted-foreground">
-          Abra um Prospecção real (criado no banco) para usar o pipeline de balancete.
+          Abra um Prospeccao real (criado no banco) para usar o pipeline de balancete.
         </CardContent>
       </Card>
     );
@@ -342,7 +342,7 @@ const ProspecçãoBalanceteTab = ({ initialSubtab, periodo }: ProspecçãoBalanc
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               <Select value={String(year)} disabled>
-                <SelectTrigger className="h-9 w-24 opacity-90 cursor-not-allowed" title="Período definido no cadastro do Prospecção AJ">
+                <SelectTrigger className="h-9 w-24 opacity-90 cursor-not-allowed" title="Período definido no cadastro do Prospeccao AJ">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -350,7 +350,7 @@ const ProspecçãoBalanceteTab = ({ initialSubtab, periodo }: ProspecçãoBalanc
                 </SelectContent>
               </Select>
               <Select value={String(month)} disabled>
-                <SelectTrigger className="h-9 w-32 opacity-90 cursor-not-allowed" title="Período definido no cadastro do Prospecção AJ">
+                <SelectTrigger className="h-9 w-32 opacity-90 cursor-not-allowed" title="Período definido no cadastro do Prospeccao AJ">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -358,7 +358,7 @@ const ProspecçãoBalanceteTab = ({ initialSubtab, periodo }: ProspecçãoBalanc
                 </SelectContent>
               </Select>
               <Badge variant="secondary" className="text-[10px] gap-1">
-                🔒 Período do Prospecção{companyPeriod?.prospecção_id ? ` ${companyPeriod.prospecção_id}` : ""}
+                🔒 Período do Prospeccao{companyPeriod?.prospecção_id ? ` ${companyPeriod.prospecção_id}` : ""}
               </Badge>
               <Button onClick={() => { loadHistory(); loadConsolidado(); loadLancamentos(); }} variant="outline" size="sm">
                 <RefreshCw className="w-4 h-4" />
@@ -411,7 +411,7 @@ const ProspecçãoBalanceteTab = ({ initialSubtab, periodo }: ProspecçãoBalanc
             </CardHeader>
             <CardContent className="space-y-3">
               {!run ? (
-                <p className="text-sm text-muted-foreground">Nenhum run para este período. Clique em <b>Atualizar Status IA</b> na aba <b>Status Prospecção AJ</b>.</p>
+                <p className="text-sm text-muted-foreground">Nenhum run para este período. Clique em <b>Atualizar Status IA</b> na aba <b>Status Prospeccao AJ</b>.</p>
               ) : (
                 <>
                   <Progress value={run.progress} className="h-2" />
@@ -994,4 +994,4 @@ const Stat = ({ label, v, big, danger }: { label: string; v: string; big?: boole
   </div>
 );
 
-export default ProspecçãoBalanceteTab;
+export default ProspeccaoBalanceteTab;

@@ -19,13 +19,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import type { ProspecçãoEntry } from "@/types/prospecção";
+import type { ProspeccaoEntry } from "@/types/prospecção";
 import logoBrasilExpert from "@/assets/logo-bex-full.jpeg";
 import { CobrancaEmailDialog } from "./CobrancaEmailDialog";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
-  prospecção: ProspecçãoEntry;
+  prospecção: ProspeccaoEntry;
 }
 
 const COLORS = {
@@ -36,14 +36,14 @@ const COLORS = {
   navy: "hsl(222,47%,14%)",
 };
 
-// Mock determinístico de indicadores de cobrança baseado no id da Prospecção
+// Mock determinístico de indicadores de cobrança baseado no id da Prospeccao
 const hash = (s: string) => {
   let h = 0;
   for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
   return Math.abs(h);
 };
 
-const ProspecçãoAnaliseTab = ({ prospecção }: Props) => {
+const ProspeccaoAnaliseTab = ({ prospecção }: Props) => {
   const reportRef = useRef<HTMLDivElement>(null);
   const storageKey = `prospecção:relatorio-cobranca:${prospecção.id}`;
   const dataFingerprint = String(prospecção.dataAtualizacao || prospecção.percentual || "");
@@ -174,7 +174,7 @@ const ProspecçãoAnaliseTab = ({ prospecção }: Props) => {
   const fmtDate = (iso: string | null, fb: string) =>
     iso ? new Date(iso).toLocaleDateString("pt-BR") : fb;
 
-  // Contadores 100% reais (associados ao Prospecção via prospecção_cobrancas). Sem fallback mock.
+  // Contadores 100% reais (associados ao Prospeccao via prospecção_cobrancas). Sem fallback mock.
   const cobrancas = realCobrancas.total;
   const emails = realCobrancas.total;
   const anexos = realCobrancas.comAnexo;
@@ -420,7 +420,7 @@ const ProspecçãoAnaliseTab = ({ prospecção }: Props) => {
               Relatório de Registro &amp; Cobrança
             </h2>
             <p className="text-base italic text-muted-foreground mt-3">
-              Controle Documental — Prospecção Inteligente BEx
+              Controle Documental — Prospeccao Inteligente BEx
             </p>
 
             {/* Badge de status (estilo "Zona de Atenção — FI: 0.00") */}
@@ -440,14 +440,14 @@ const ProspecçãoAnaliseTab = ({ prospecção }: Props) => {
               </span>
             </div>
 
-            {/* Bloco RECUPERANDA / Prospecção / EMISSÃO */}
+            {/* Bloco RECUPERANDA / Prospeccao / EMISSÃO */}
             <div className="grid grid-cols-3 gap-8 mt-12 max-w-[600px] w-full">
               <div className="text-center">
-                <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Empresa de Prospecção</p>
+                <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Empresa de Prospeccao</p>
                 <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{prospecção.empresa}</p>
               </div>
               <div className="text-center">
-                <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Prospecção AJ</p>
+                <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Prospeccao AJ</p>
                 <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{prospecção.id}</p>
               </div>
               <div className="text-center">
@@ -488,7 +488,7 @@ const ProspecçãoAnaliseTab = ({ prospecção }: Props) => {
             <div className="flex items-center justify-between border-b-2 pb-3 mb-6" style={{ borderColor: COLORS.blue }}>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                  Brasil Expert · BEx-Prospecção
+                  Brasil Expert · BEx-Prospeccao
                 </p>
                 <h2 className="text-xl font-bold" style={{ color: COLORS.navy }}>
                   Diagnóstico da IA
@@ -538,7 +538,7 @@ const ProspecçãoAnaliseTab = ({ prospecção }: Props) => {
             <div className="flex items-center justify-between border-b-2 pb-3 mb-6" style={{ borderColor: COLORS.blue }}>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                  Brasil Expert · BEx-Prospecção
+                  Brasil Expert · BEx-Prospeccao
                 </p>
                 <h2 className="text-xl font-bold" style={{ color: COLORS.navy }}>
                   Pendências e Documentos Pendentes
@@ -677,7 +677,7 @@ const ProspecçãoAnaliseTab = ({ prospecção }: Props) => {
             {/* Rodapé do relatório */}
             <div className="mt-12 pt-4 border-t text-center">
               <p className="text-[10px] text-muted-foreground">
-                Documento gerado automaticamente pela IA · BEx-Prospecção · Brasil Expert
+                Documento gerado automaticamente pela IA · BEx-Prospeccao · Brasil Expert
               </p>
               <p className="text-[10px] text-muted-foreground">
                 {dataRelatorio} · {prospecção.id} · {prospecção.empresa}
@@ -691,4 +691,4 @@ const ProspecçãoAnaliseTab = ({ prospecção }: Props) => {
   );
 };
 
-export default ProspecçãoAnaliseTab;
+export default ProspeccaoAnaliseTab;

@@ -751,7 +751,7 @@ export default function GestorIAAprendizado() {
         <Tabs defaultValue="upload" className="space-y-4">
           <TabsList>
             <TabsTrigger value="upload" className="gap-2"><Upload className="w-4 h-4" /> Upload manual</TabsTrigger>
-            <TabsTrigger value="pending" className="gap-2"><Inbox className="w-4 h-4" /> Pendentes do Prospecção AJ</TabsTrigger>
+            <TabsTrigger value="pending" className="gap-2"><Inbox className="w-4 h-4" /> Pendentes do Prospeccao AJ</TabsTrigger>
             <TabsTrigger value="history" className="gap-2"><FileText className="w-4 h-4" /> Histórico de aprendizado</TabsTrigger>
             <TabsTrigger value="quality" className="gap-2"><ShieldAlert className="w-4 h-4" /> Qualidade & Antifraude</TabsTrigger>
           </TabsList>

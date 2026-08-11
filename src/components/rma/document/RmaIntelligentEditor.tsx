@@ -195,7 +195,7 @@ const RmaIntelligentEditor = ({ tipo, titulo }: Props) => {
             ? Math.round((sections.filter((s) => s.status === "aprovado" || s.status === "concluido").length / sections.length) * 100)
             : 0;
           const canGen = okPct >= 90;
-          const finalNome = tipo === "prospecção_mensal" ? "Prospecção Final" : "Parecer Técnico Final";
+          const finalNome = tipo === "prospecção_mensal" ? "Prospeccao Final" : "Parecer Técnico Final";
           return (
             <div className={`mt-3 flex items-center justify-between gap-3 rounded-lg border px-3 py-2 ${
               doc?.arquivo_final_url

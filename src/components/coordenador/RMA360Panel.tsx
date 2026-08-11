@@ -17,20 +17,20 @@ import {
   type CompanyTopic,
   type RmaHistoryEntry,
 } from "@/services/companiesService";
-import { PROSPECCAO_TOPICS } from "@/data/prospecçãoTopics";
+import { PROSPECCAO_TOPICS } from "@/data/prospeccoesTopics";
 
-// As 10 abas do workspace Prospecção — espelho do ProspecçãoWorkspace
+// As 10 abas do workspace Prospeccao — espelho do ProspeccaoWorkspace
 const WORKSPACE_TABS = [
-  { key: "status", label: "Status Prospecção AJ" },
+  { key: "status", label: "Status Prospeccao AJ" },
   { key: "processamento", label: "Processamento IA" },
   { key: "balancete", label: "Balancete" },
   { key: "analise", label: "Análise Técnica" },
   { key: "evolucao", label: "Evolução" },
   { key: "dashboards", label: "Dashboards" },
   { key: "parecer", label: "Revisão-Parecer Técnico" },
-  { key: "relatorio", label: "Revisão-Relatório Prospecção AJ" },
+  { key: "relatorio", label: "Revisão-Relatório Prospeccao AJ" },
   { key: "parecer-final", label: "Parecer Técnico Final" },
-  { key: "relatorio-final", label: "Relatório Prospecção AJ Final" },
+  { key: "relatorio-final", label: "Relatório Prospeccao AJ Final" },
 ];
 
 type ProfileLite = { user_id: string; full_name: string; email: string };
@@ -40,7 +40,7 @@ interface Props {
   onClose: () => void;
 }
 
-const Prospecção360Panel = ({ company, onClose }: Props) => {
+const Prospeccao360Panel = ({ company, onClose }: Props) => {
   const navigate = useNavigate();
   const [topics, setTopics] = useState<CompanyTopic[]>([]);
   const [consultants, setConsultants] = useState<ProfileLite[]>([]);
@@ -152,7 +152,7 @@ const Prospecção360Panel = ({ company, onClose }: Props) => {
         {/* Progresso geral */}
         <div className="bg-card border rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-semibold text-foreground">Progresso geral do Prospecção AJ</p>
+            <p className="text-sm font-semibold text-foreground">Progresso geral do Prospeccao AJ</p>
             <span className="text-sm font-bold text-[hsl(217,91%,50%)]">{overallProgress}%</span>
           </div>
           <Progress value={overallProgress} className="h-2" />
@@ -205,7 +205,7 @@ const Prospecção360Panel = ({ company, onClose }: Props) => {
 
           <div className="bg-card border rounded-lg p-3">
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1">
-              <ListChecks className="w-3 h-3" /> Tópicos do Prospecção
+              <ListChecks className="w-3 h-3" /> Tópicos do Prospeccao
             </p>
             <p className="text-2xl font-bold text-foreground leading-none">{topics.length}</p>
             <p className="text-[11px] text-muted-foreground mt-1">
@@ -225,7 +225,7 @@ const Prospecção360Panel = ({ company, onClose }: Props) => {
         {/* Progresso das 10 abas do workspace */}
         <div>
           <p className="text-sm font-semibold text-foreground mb-2 flex items-center gap-1.5">
-            <ListChecks className="w-4 h-4 text-[hsl(217,91%,50%)]" /> Etapas do Workspace Prospecção
+            <ListChecks className="w-4 h-4 text-[hsl(217,91%,50%)]" /> Etapas do Workspace Prospeccao
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
             {tabsProgress.map((t, idx) => {
@@ -299,11 +299,11 @@ const Prospecção360Panel = ({ company, onClose }: Props) => {
         </div>
 
         {loading && (
-          <p className="text-xs text-muted-foreground text-center">Carregando dados do Prospecção AJ...</p>
+          <p className="text-xs text-muted-foreground text-center">Carregando dados do Prospeccao AJ...</p>
         )}
       </CardContent>
     </Card>
   );
 };
 
-export default Prospecção360Panel;
+export default Prospeccao360Panel;

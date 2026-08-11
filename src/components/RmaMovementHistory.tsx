@@ -21,7 +21,7 @@ const actionConfig: Record<RmaHistoryEntry["action"], { label: string; color: st
   unassign: { label: "Desvínculo",  color: "hsl(0,70%,55%)",   Icon: UserMinus },
 };
 
-const RmaMovementHistory = ({ title = "Histórico de Movimentações de Prospecção", description, limit = 200 }: Props) => {
+const RmaMovementHistory = ({ title = "Histórico de Movimentações de Prospeccao", description, limit = 200 }: Props) => {
   const [entries, setEntries] = useState<RmaHistoryEntry[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [profiles, setProfiles] = useState<ProfileLite[]>([]);
@@ -123,7 +123,7 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de Prospec�
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar por empresa, ID Prospecção AJ, consultor ou responsável..."
+              placeholder="Buscar por empresa, ID Prospeccao AJ, consultor ou responsável..."
               className="pl-9"
             />
           </div>
@@ -162,7 +162,7 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de Prospec�
                 <tr>
                   <th className="text-left px-3 py-2 font-medium text-muted-foreground">Data</th>
                   <th className="text-left px-3 py-2 font-medium text-muted-foreground">Ação</th>
-                  <th className="text-left px-3 py-2 font-medium text-muted-foreground">Empresa Prospecção AJ</th>
+                  <th className="text-left px-3 py-2 font-medium text-muted-foreground">Empresa Prospeccao AJ</th>
                   <th className="text-left px-3 py-2 font-medium text-muted-foreground">Movimento</th>
                   <th className="text-left px-3 py-2 font-medium text-muted-foreground">Responsável</th>
                 </tr>

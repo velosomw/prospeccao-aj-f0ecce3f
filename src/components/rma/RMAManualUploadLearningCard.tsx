@@ -23,7 +23,7 @@ interface Row {
   learning_attempts: number;
 }
 
-export default function ProspecçãoManualUploadLearningCard({ prospecçãoId, companyId }: Props) {
+export default function ProspeccaoManualUploadLearningCard({ prospecçãoId, companyId }: Props) {
   const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(prospecçãoId ?? null);
   const [files, setFiles] = useState<Row[]>([]);
   const [loading, setLoading] = useState(false);

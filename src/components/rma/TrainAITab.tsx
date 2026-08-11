@@ -183,7 +183,7 @@ export default function TrainAITab({ companyId, prospecçãoId }: Props) {
             <TabsContent value="pending" className="space-y-2 mt-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground">
-                  Docs com baixa confiança ou erro {prospecçãoId ? "neste Prospecção" : ""}
+                  Docs com baixa confiança ou erro {prospecçãoId ? "neste Prospeccao" : ""}
                 </span>
                 <Button size="sm" variant="ghost" onClick={loadPending} disabled={loadingPending}>
                   {loadingPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}

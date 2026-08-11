@@ -1,4 +1,4 @@
-// Painel "Arquivos com erro" — lista docs pendentes/com falha do Prospecção selecionado,
+// Painel "Arquivos com erro" — lista docs pendentes/com falha do Prospeccao selecionado,
 // agrupa por pasta DIP (via agente) e permite abrir o LearningUploadPanel inline
 // com a pasta correspondente pré-selecionada, para reupload manual estratégico.
 import { useEffect, useMemo, useState, useCallback } from "react";
@@ -128,7 +128,7 @@ export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
         .limit(5000);
       if (prospecçãoId) doneQ = doneQ.eq("prospecção_id", prospecçãoId);
 
-      // TODOS os arquivos do Prospecção — usados para reproduzir o mesmo agrupamento
+      // TODOS os arquivos do Prospeccao — usados para reproduzir o mesmo agrupamento
       // canônico de pastas que o Worker OneDrive exibe (mesmo alias map).
       let allQ = supabase
         .from("onedrive_files")
@@ -410,7 +410,7 @@ export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
 
       {grouped.length === 0 && !loading && (
         <div className="text-center text-xs text-muted-foreground border border-dashed rounded-lg p-8">
-          Nenhum arquivo com problema neste Prospecção. 🎉
+          Nenhum arquivo com problema neste Prospeccao. 🎉
         </div>
       )}
 

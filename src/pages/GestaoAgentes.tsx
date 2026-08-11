@@ -12,7 +12,7 @@ import {
   listLearningExtractions,
   markAsCorrect,
 } from "@/services/learningService";
-import { PROSPECCAO_TOPICS, buildLearningPath, getTopicBySlug } from "@/lib/prospecçãoTopics";
+import { PROSPECCAO_TOPICS, buildLearningPath, getTopicBySlug } from "@/lib/prospeccoesTopics";
 import { getAgentForTopic } from "@/lib/specializedAgents";
 import { Loader2, FolderTree, X, Sparkles } from "lucide-react";
 import {
@@ -451,7 +451,7 @@ const TabUploadProcessamento = () => {
               </div>
               <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{agent.description}</p>
               <p className="text-[10px] text-muted-foreground/80 mt-1">
-                Cobre {agent.topics.length} tópico(s) Prospecção · Aceita: {agent.accepted_types.join(", ")}
+                Cobre {agent.topics.length} tópico(s) Prospeccao · Aceita: {agent.accepted_types.join(", ")}
               </p>
             </div>
           </div>

@@ -1,11 +1,11 @@
 /**
- * Lista oficial das 60 pastas do OneDrive · "Documentos" do Prospecção/DIP.
+ * Lista oficial das 60 pastas do OneDrive · "Documentos" do Prospeccao/DIP.
  *
  * Fonte única de verdade compartilhada entre:
- *  - estrutura física do OneDrive (`/Projeto Prospecção/{CLIENTE}/{ANO}/{PERIODO}/Documentos/NN-…`);
+ *  - estrutura física do OneDrive (`/Projeto Prospeccao/{CLIENTE}/{ANO}/{PERIODO}/Documentos/NN-…`);
  *  - extração de dados (agente especializado por pasta);
  *  - carga no balancete (classificação contábil predominante);
- *  - tópicos do Prospecção na plataforma (`src/data/prospecçãoTopics.ts`, 1-61).
+ *  - tópicos do Prospeccao na plataforma (`src/data/prospeccoesTopics.ts`, 1-61).
  *
  * Cada pasta tem:
  *  - `id`             : 1-60, igual ao prefixo numérico do nome da pasta no OneDrive.
@@ -33,7 +33,7 @@ export interface DipFolder {
   label: string;
   agent: string;
   accountClass: DipAccountClass;
-  /** Tópico correspondente em `src/data/prospecçãoTopics.ts` (PROSPECCAO_TOPICS.number, 1-61). */
+  /** Tópico correspondente em `src/data/prospeccoesTopics.ts` (PROSPECCAO_TOPICS.number, 1-61). */
   prospeccaoTopicNumber: number;
 }
 
@@ -75,7 +75,7 @@ export const DIP_FOLDERS: DipFolder[] = [
   { id: 35, prospeccaoTopicNumber: 43, label: "Adiantamento de contrato de câmbio (ACC)",                                        agent: "AGENTE_GARANTIAS_CREDITO",        accountClass: "PASSIVO" },
   { id: 36, prospeccaoTopicNumber: 44, label: "Comprovantes de Pagamentos a credores pelo Plano de RJ",                          agent: "AGENTE_JURIDICO_OBRIGACIONAL",    accountClass: "PASSIVO" },
   { id: 37, prospeccaoTopicNumber: 15, label: "Última Alteração Contratual",                                                     agent: "AGENTE_SOCIETARIO_ESTRUTURA",     accountClass: "CADASTRO" },
-  { id: 38, prospeccaoTopicNumber: 16, label: "Infoprospecçãoções de pendência de Prospecção AJ anterior",                                        agent: "AGENTE_GENERICO",                 accountClass: "N_A" },
+  { id: 38, prospeccaoTopicNumber: 16, label: "Infoprospecçãoções de pendência de Prospeccao AJ anterior",                                        agent: "AGENTE_GENERICO",                 accountClass: "N_A" },
   { id: 39, prospeccaoTopicNumber: 45, label: "Outras Infoprospecçãoções",                                                              agent: "AGENTE_GENERICO",                 accountClass: "N_A" },
   { id: 40, prospeccaoTopicNumber: 46, label: "Situação Fiscal",                                                                 agent: "AGENTE_TRIBUTARIO",               accountClass: "FISCAL" },
   { id: 41, prospeccaoTopicNumber: 17, label: "Relação analítica de notas fiscais",                                              agent: "AGENTE_FISCAL_NFE",               accountClass: "RECEITA" },
@@ -100,7 +100,7 @@ export const DIP_FOLDERS: DipFolder[] = [
   { id: 60, prospeccaoTopicNumber: 61, label: "Plano Orçamentário",                                                              agent: "AGENTE_FINANCEIRO_CONTABIL",      accountClass: "N_A" },
 ];
 
-/** Tópicos Prospecção que NÃO têm pasta no OneDrive (internos da plataforma). */
+/** Tópicos Prospeccao que NÃO têm pasta no OneDrive (internos da plataforma). */
 export const PROSPECCAO_TOPICS_WITHOUT_DIP_FOLDER: number[] = [22]; // "Tópicos Pendentes"
 
 /** Slug usado em path/metadata (ex.: "07-balancete-de-verificacao"). */
@@ -147,7 +147,7 @@ export function validateDipFolderIntegrity(
   }
   for (const t of prospeccaoTopicNumbers) {
     if (PROSPECCAO_TOPICS_WITHOUT_DIP_FOLDER.includes(t)) continue;
-    if (!dipTopics.has(t)) errors.push(`Prospecção topic ${t} sem pasta DIP correspondente`);
+    if (!dipTopics.has(t)) errors.push(`Prospeccao topic ${t} sem pasta DIP correspondente`);
   }
   for (const t of dipTopics) {
     if (!prospeccaoTopicNumbers.includes(t)) errors.push(`DIP folder mapeia topic ${t} inexistente em PROSPECCAO_TOPICS`);

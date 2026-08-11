@@ -2,11 +2,11 @@ import { History, GitCommit, User, FileText, CheckCircle2, AlertTriangle } from 
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
 const events = [
-  { id: "H-401", tipo: "publicacao", titulo: "Prospecção Maio/2026 publicado",       prospecção: "Prospecção-0012", usuario: "Coordenador", data: "Hoje 14:32" },
-  { id: "H-400", tipo: "aprovacao",  titulo: "Aprovado pelo Coordenador",     prospecção: "Prospecção-0012", usuario: "Coordenador", data: "Hoje 13:10" },
-  { id: "H-399", tipo: "edicao",     titulo: "Bloco 7 - DRE editado",         prospecção: "Prospecção-0014", usuario: "Carlos Mendes", data: "Hoje 11:48" },
-  { id: "H-398", tipo: "rejeicao",   titulo: "Bloco 5 reprovado",             prospecção: "Prospecção-0009", usuario: "Coordenador", data: "Ontem 17:20" },
-  { id: "H-397", tipo: "criacao",    titulo: "Novo Prospecção criado",               prospecção: "Prospecção-0014", usuario: "Coordenador", data: "07/05" },
+  { id: "H-401", tipo: "publicacao", titulo: "Prospeccao Maio/2026 publicado",       prospecção: "Prospeccao-0012", usuario: "Coordenador", data: "Hoje 14:32" },
+  { id: "H-400", tipo: "aprovacao",  titulo: "Aprovado pelo Coordenador",     prospecção: "Prospeccao-0012", usuario: "Coordenador", data: "Hoje 13:10" },
+  { id: "H-399", tipo: "edicao",     titulo: "Bloco 7 - DRE editado",         prospecção: "Prospeccao-0014", usuario: "Carlos Mendes", data: "Hoje 11:48" },
+  { id: "H-398", tipo: "rejeicao",   titulo: "Bloco 5 reprovado",             prospecção: "Prospeccao-0009", usuario: "Coordenador", data: "Ontem 17:20" },
+  { id: "H-397", tipo: "criacao",    titulo: "Novo Prospeccao criado",               prospecção: "Prospeccao-0014", usuario: "Coordenador", data: "07/05" },
 ];
 
 const typeMeta: Record<string, { icon: any; bg: string; fg: string; label: string }> = {

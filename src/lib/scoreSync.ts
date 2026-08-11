@@ -1,5 +1,5 @@
 // Validação em tempo real de paridade de percentual entre as superfícies que
-// exibem o "Score Global do Prospecção" (Workspace header, Status Prospecção, Processamento
+// exibem o "Score Global do Prospeccao" (Workspace header, Status Prospeccao, Processamento
 // IA e Alertas Inteligentes do Dashboard).
 //
 // Regra: a fonte de verdade é `prospecção.percentual` (vindo do edge `prospecção-score`).
@@ -34,7 +34,7 @@ export function reconcileScore(
 
 /**
  * Hook que registra o último percentual visto em cada superfície num registry
- * global e dispara aviso se duas superfícies do mesmo Prospecção divergirem.
+ * global e dispara aviso se duas superfícies do mesmo Prospeccao divergirem.
  */
 const registry: Record<string, Record<string, number>> = {};
 
@@ -55,7 +55,7 @@ export function useScoreParityGuard(prospecçãoId: string | null | undefined, s
     if (max - min > TOLERANCE) {
       // eslint-disable-next-line no-console
       console.warn(
-        `[scoreSync] percentuais divergentes para Prospecção ${prospecçãoId}:`,
+        `[scoreSync] percentuais divergentes para Prospeccao ${prospecçãoId}:`,
         Object.fromEntries(entries),
       );
     }

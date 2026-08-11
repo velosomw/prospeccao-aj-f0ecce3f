@@ -55,7 +55,7 @@ function groupByPeriod(rows: FCXRow[]) {
   return Array.from(map.values()).sort((a, b) => (a.ano - b.ano) || (a.mes - b.mes));
 }
 
-const ProspecçãoFluxoCaixaTab = ({ companyId, periodo, runToken, janela }: Props) => {
+const ProspeccaoFluxoCaixaTab = ({ companyId, periodo, runToken, janela }: Props) => {
   const { rows, allRows, loading } = useFluxoCaixa(companyId, periodo, runToken, janela ?? null);
 
   const byPeriod = useMemo(() => groupByPeriod(rows), [rows]);
@@ -199,4 +199,4 @@ const KPI = ({ label, value, color, icon }: { label: string; value: string; colo
   </Card>
 );
 
-export default ProspecçãoFluxoCaixaTab;
+export default ProspeccaoFluxoCaixaTab;

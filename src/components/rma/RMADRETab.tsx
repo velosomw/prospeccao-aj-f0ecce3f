@@ -78,7 +78,7 @@ function aggregate(rows: DRERow[]) {
   };
 }
 
-const ProspecçãoDRETab = ({ companyId, periodo, runToken, janela }: Props) => {
+const ProspeccaoDRETab = ({ companyId, periodo, runToken, janela }: Props) => {
   const { dre, allDre, loading, building, build, periodos } = useBSPNL(
     companyId, periodo, 12, runToken, janela ?? null,
   );
@@ -314,4 +314,4 @@ const KpiCard = ({ label, value, sub, color, mom, momPrev, yoy, yoyPrev }: {
   </div>
 );
 
-export default ProspecçãoDRETab;
+export default ProspeccaoDRETab;

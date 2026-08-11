@@ -19,14 +19,14 @@ interface Props {
 
 const buildDefaultBody = (companyName?: string) => `Prezados${companyName ? ` ${companyName}` : ""},
 
-Em continuidade ao processo de Registro e Cobrança do Prospecção, solicitamos o envio dos documentos pendentes para que possamos concluir a análise do período corrente.
+Em continuidade ao processo de Registro e Cobrança do Prospeccao, solicitamos o envio dos documentos pendentes para que possamos concluir a análise do período corrente.
 
 Caso já tenham sido encaminhados, favor desconsiderar este e-mail.
 
 Peprospecçãonecemos à disposição para esclarecimentos.
 
 Atenciosamente,
-Equipe BEx Prospecção IA`;
+Equipe BEx Prospeccao IA`;
 
 export function CobrancaEmailDialog({ open, onOpenChange, prospecçãoId, companyName, defaultEmail, onSent }: Props) {
   const [recipient, setRecipient] = useState(defaultEmail || "");

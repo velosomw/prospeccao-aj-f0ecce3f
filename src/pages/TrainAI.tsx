@@ -1,4 +1,4 @@
-// Página dedicada "Upload Planilha" — fora do Prospecção Workspace.
+// Página dedicada "Upload Planilha" — fora do Prospeccao Workspace.
 import { useEffect, useMemo, useState } from "react";
 import PlatformLayout from "@/components/PlatformLayout";
 import TrainAITab from "@/components/prospecção/TrainAITab";
@@ -61,13 +61,13 @@ export default function TrainAI() {
     return Array.from(names).sort((a, b) => a.localeCompare(b));
   }, [companies, filter]);
 
-  // Prospecçãos vinculados à empresa selecionada
+  // Prospeccaos vinculados à empresa selecionada
   const prospecçãosOfCompany = useMemo(() => {
     if (!companyName) return [];
     return companies.filter(c => c.name === companyName);
   }, [companies, companyName]);
 
-  // Reset Prospecção quando troca empresa
+  // Reset Prospeccao quando troca empresa
   useEffect(() => {
     setCompanyId(null);
   }, [companyName]);
@@ -226,7 +226,7 @@ export default function TrainAI() {
             </div>
             <h3 className="text-lg font-semibold">Pronto para processar</h3>
             <p className="text-sm text-muted-foreground max-w-sm mt-1">
-              Selecione a Empresa de Prospecção acima para habilitar o painel de upload e extração.
+              Selecione a Empresa de Prospeccao acima para habilitar o painel de upload e extração.
             </p>
           </div>
         )}

@@ -4,13 +4,13 @@ import ConsultorPageShell from "@/components/consultor/PageShell";
 interface Log { id: string; tipo: "info"|"success"|"warn"|"error"; agente: string; acao: string; prospecção: string; modelo: string; tokens: number; tempo: string; data: string; }
 
 const logs: Log[] = [
-  { id: "L-9001", tipo: "success", agente: "Auditor Contábil Sênior IA", acao: "Análise Balancete concluída", prospecção: "Prospecção-0012", modelo: "gemini-2.5-pro", tokens: 4820, tempo: "12.4s", data: "Há 2m" },
-  { id: "L-9000", tipo: "info",    agente: "Router IA",                  acao: "Roteamento OCR → Vision",     prospecção: "Prospecção-0014", modelo: "gemini-2.5-flash", tokens: 320, tempo: "0.8s", data: "Há 3m" },
-  { id: "L-8999", tipo: "warn",    agente: "Validador IA",               acao: "Score abaixo do threshold (62)", prospecção: "Prospecção-0009", modelo: "gemini-2.5-pro", tokens: 1240, tempo: "4.1s", data: "Há 5m" },
-  { id: "L-8998", tipo: "success", agente: "Auditor Contábil Sênior IA", acao: "DRE consolidada",             prospecção: "Prospecção-0011", modelo: "gpt-5",          tokens: 6320, tempo: "18.2s", data: "Há 8m" },
-  { id: "L-8997", tipo: "error",   agente: "OCR Vision",                 acao: "Falha ao processar PDF (timeout)", prospecção: "Prospecção-0010", modelo: "vision-doc",  tokens: 0, tempo: "30s", data: "Há 12m" },
-  { id: "L-8996", tipo: "success", agente: "GPT OSS Finance",            acao: "Cálculo Kanitz FI = 2.4",     prospecção: "Prospecção-0012", modelo: "gpt-oss",        tokens: 980, tempo: "3.0s", data: "Há 18m" },
-  { id: "L-8995", tipo: "info",    agente: "Cache Semântico",            acao: "Hit no cache LLM (-4200 tk)", prospecção: "Prospecção-0014", modelo: "—",              tokens: 0,    tempo: "0.05s", data: "Há 22m" },
+  { id: "L-9001", tipo: "success", agente: "Auditor Contábil Sênior IA", acao: "Análise Balancete concluída", prospecção: "Prospeccao-0012", modelo: "gemini-2.5-pro", tokens: 4820, tempo: "12.4s", data: "Há 2m" },
+  { id: "L-9000", tipo: "info",    agente: "Router IA",                  acao: "Roteamento OCR → Vision",     prospecção: "Prospeccao-0014", modelo: "gemini-2.5-flash", tokens: 320, tempo: "0.8s", data: "Há 3m" },
+  { id: "L-8999", tipo: "warn",    agente: "Validador IA",               acao: "Score abaixo do threshold (62)", prospecção: "Prospeccao-0009", modelo: "gemini-2.5-pro", tokens: 1240, tempo: "4.1s", data: "Há 5m" },
+  { id: "L-8998", tipo: "success", agente: "Auditor Contábil Sênior IA", acao: "DRE consolidada",             prospecção: "Prospeccao-0011", modelo: "gpt-5",          tokens: 6320, tempo: "18.2s", data: "Há 8m" },
+  { id: "L-8997", tipo: "error",   agente: "OCR Vision",                 acao: "Falha ao processar PDF (timeout)", prospecção: "Prospeccao-0010", modelo: "vision-doc",  tokens: 0, tempo: "30s", data: "Há 12m" },
+  { id: "L-8996", tipo: "success", agente: "GPT OSS Finance",            acao: "Cálculo Kanitz FI = 2.4",     prospecção: "Prospeccao-0012", modelo: "gpt-oss",        tokens: 980, tempo: "3.0s", data: "Há 18m" },
+  { id: "L-8995", tipo: "info",    agente: "Cache Semântico",            acao: "Hit no cache LLM (-4200 tk)", prospecção: "Prospeccao-0014", modelo: "—",              tokens: 0,    tempo: "0.05s", data: "Há 22m" },
 ];
 
 const typeMeta: Record<string, { bg: string; fg: string; dot: string; label: string }> = {
@@ -54,7 +54,7 @@ export default function ConsultorLogsIA() {
                 <th className="text-left px-4 py-2.5">Tipo</th>
                 <th className="text-left px-4 py-2.5">Agente</th>
                 <th className="text-left px-4 py-2.5">Ação</th>
-                <th className="text-left px-4 py-2.5">Prospecção AJ</th>
+                <th className="text-left px-4 py-2.5">Prospeccao AJ</th>
                 <th className="text-left px-4 py-2.5">Modelo</th>
                 <th className="text-right px-4 py-2.5">Tokens</th>
                 <th className="text-right px-4 py-2.5">Tempo</th>

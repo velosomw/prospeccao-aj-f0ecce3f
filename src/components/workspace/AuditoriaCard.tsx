@@ -377,7 +377,7 @@ function PanelRiscoRJ({ rows }: { rows: BSDadosRow[] }) {
   );
 }
 
-/* Relatório Final foi movido para a aba "Relatório Prospecção Final" do workspace. */
+/* Relatório Final foi movido para a aba "Relatório Prospeccao Final" do workspace. */
 
 /* ═══════════════════ Card raiz ═══════════════════ */
 export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries, prospecçãoId, loading }: AuditoriaCardProps) {
@@ -405,7 +405,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
     [allRows]
   );
 
-  // Filtro de período (de / até) — restaura do localStorage por Prospecção
+  // Filtro de período (de / até) — restaura do localStorage por Prospeccao
   const initialPeriod = useMemo<{ from: string; to: string }>(() => {
     try {
       const raw = localStorage.getItem(periodStorageKey);
@@ -426,7 +426,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
     if (to !== "__all" && !monthKeys.includes(to)) setTo("__all");
   }, [monthKeys, from, to]);
 
-  // Persistência do período por Prospecção
+  // Persistência do período por Prospeccao
   useEffect(() => {
     try { localStorage.setItem(periodStorageKey, JSON.stringify({ from, to })); } catch { /* ignore */ }
   }, [from, to, periodStorageKey]);
@@ -576,7 +576,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
               Auditoria
             </CardTitle>
             <p className="mt-1 text-xs text-muted-foreground">
-              Visões de auditoria carregadas dos MDs e do pipeline processado — gestão centralizada do Prospecção.
+              Visões de auditoria carregadas dos MDs e do pipeline processado — gestão centralizada do Prospeccao.
             </p>
           </div>
           {hasData && (

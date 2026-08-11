@@ -40,7 +40,7 @@ const STATUS_COLOR: Record<string, string> = {
   pending: "bg-amber-500/15 text-amber-700",
 };
 
-export default function ProspecçãoFailedFilesLearningCard({ prospecçãoId, companyId }: Props) {
+export default function ProspeccaoFailedFilesLearningCard({ prospecçãoId, companyId }: Props) {
   const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(prospecçãoId ?? null);
   const [files, setFiles] = useState<FailedFile[]>([]);
   const [loading, setLoading] = useState(false);
@@ -186,7 +186,7 @@ export default function ProspecçãoFailedFilesLearningCard({ prospecçãoId, co
           </div>
         ) : files.length === 0 ? (
           <div className="flex items-center gap-2 text-xs text-emerald-700 py-6 justify-center">
-            <CheckCircle2 className="w-4 h-4" /> Sem arquivos com erro/pendentes neste Prospecção.
+            <CheckCircle2 className="w-4 h-4" /> Sem arquivos com erro/pendentes neste Prospeccao.
           </div>
         ) : (
           <>

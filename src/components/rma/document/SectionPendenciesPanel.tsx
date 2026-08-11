@@ -42,7 +42,7 @@ const SOURCE_HINTS: Record<string, string> = {
   "lancamentos": "Lançamentos contábeis (Workspace › Razão)",
   "nfe_compras": "Notas Fiscais (Workspace › NF-e)",
   "prospecção_cobrancas": "Cobranças/Aging (Workspace › Aging)",
-  "prospecção_analysis_results": "Análise consolidada do Prospecção",
+  "prospecção_analysis_results": "Análise consolidada do Prospeccao",
   "company.profile": "Cadastro da empresa (CNPJ, CNAE, atividade)",
   "company.societaria": "Estrutura societária (atas, contratos sociais)",
 };

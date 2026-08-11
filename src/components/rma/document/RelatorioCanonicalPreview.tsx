@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { FileText, ScrollText, BookOpen, ChevronDown, ChevronRight, CheckCircle2, AlertTriangle, Circle } from "lucide-react";
 
 /**
- * Sumário canônico oficial do Prospecção — DIP/Capital AJ.
+ * Sumário canônico oficial do Prospeccao — DIP/Capital AJ.
  * Esta é a fonte de verdade para a visualização: TODAS as seções e
  * subseções devem aparecer, independentemente do estado dos dados.
  * Seções sem conteúdo exibem o tipo de problema e a condição para solução.
@@ -297,7 +297,7 @@ export default function RelatorioCanonicalPreview({
     <div className="bg-white border border-border rounded-lg overflow-hidden">
       <div className="bg-muted/30 px-4 py-2 border-b text-xs text-muted-foreground flex items-center justify-between flex-wrap gap-2">
         <span className="flex items-center gap-1.5">
-          <FileText className="h-3.5 w-3.5" /> Prévia estruturada — DIP/Prospecção
+          <FileText className="h-3.5 w-3.5" /> Prévia estruturada — DIP/Prospeccao
         </span>
         <span>{okCount}/{totalNodes} seções conformes</span>
       </div>
@@ -309,7 +309,7 @@ export default function RelatorioCanonicalPreview({
         <p className="text-sm text-muted-foreground mt-1">Administração Judicial · Recomendação CNJ 72/2020</p>
         <div className="mt-6 space-y-1 text-sm">
           {empresa && <p><strong>Recuperanda:</strong> {empresa}</p>}
-          {prospecçãoCode && <p><strong>Prospecção AJ:</strong> {prospecçãoCode}</p>}
+          {prospecçãoCode && <p><strong>Prospeccao AJ:</strong> {prospecçãoCode}</p>}
           {mesReferencia && <p><strong>Competência:</strong> {mesReferencia}</p>}
           {responsavel && <p><strong>Administrador Judicial:</strong> {responsavel}</p>}
         </div>
@@ -331,7 +331,7 @@ export default function RelatorioCanonicalPreview({
           {empresa ? <> DO {empresa.toUpperCase()}</> : <> DO GRUPO DIPLOMATA</>} n. {rjAutos}</strong>,
           em trâmite perante esse Juízo, por seu Responsável Técnico,{" "}
           <strong>{responsavel || "Luis Claudio Montoro Mendes"}</strong>, vem, respeitosamente,
-          apresentar <strong>RELATÓRIO MENSAL DE ATIVIDADES – Prospecção AJ</strong>, referente ao mês de{" "}
+          apresentar <strong>RELATÓRIO MENSAL DE ATIVIDADES – Prospeccao AJ</strong>, referente ao mês de{" "}
           <strong className="uppercase">{mesReferencia || "—"}</strong>, nos termos do art. 22, II,
           alínea “c” da Lei nº 11.101/2005, e alinhado às diretrizes da Recomendação nº 72/2020 do
           Conselho Nacional de Justiça.
