@@ -418,7 +418,7 @@ export async function saveGroundTruth(input: SaveCorrectionInput) {
       new_value: c.new_value as never,
       created_by: userResp?.user?.id ?? null,
     }));
-    const { error } = await supabase.from( (null as any) || "dataset_feedback").insert(rows);
+    const { error } = await supabase.from("dataset_feedback").insert(rows);
     if (error) console.warn("dataset_feedback insert:", error.message);
   }
 

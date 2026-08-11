@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -81,7 +81,7 @@ export default function ControleStatus() {
   // load authorized users (allowlist)
   useEffect(() => {
     supabase.from("control_users" as any).select("email,name").order("name").then(({ data }) => {
-      setAuthUsers((data || []) (data as any[] || []) as { email: string; name: string }[]);
+      setAuthUsers(((data as any[]) || []) as { email: string; name: string }[]);
     });
   }, []);
 
@@ -94,7 +94,7 @@ export default function ControleStatus() {
   useEffect(() => {
     if (!actor) return;
     supabase.from("control_folders" as any).select("*").order("name").then(({ data }) => {
-      const f = (data || []) (data as any[] || []) as Folder[];
+      const f = ((data as any[]) || []) as Folder[];
       setFolders(f);
       if (f.length && !selectedFolder) setSelectedFolder(f[0].id);
     });
@@ -103,7 +103,7 @@ export default function ControleStatus() {
   // load cards for folder
   const refreshCards = async (fid: string) => {
     const { data } = await supabase.from("control_cards" as any).select("*").eq("folder_id", fid).order("created_at");
-    setCards((data || []) (data as any[] || []) as Card[]);
+    setCards(((data as any[]) || []) as Card[]);
   };
   useEffect(() => { if (selectedFolder) refreshCards(selectedFolder); }, [selectedFolder]);
 
@@ -111,7 +111,7 @@ export default function ControleStatus() {
   useEffect(() => {
     if (!openCard || !showHistory) return;
     supabase.from("control_card_history" as any).select("*").eq("card_id", openCard.id).order("created_at", { ascending: false })
-      .then(({ data }) => setHistory((data || []) (data as any[] || []) as Hist[]));
+      .then(({ data }) => setHistory(((data as any[]) || []) as Hist[]));
   }, [openCard, showHistory]);
 
   const cardsByCol = useMemo(() => {
