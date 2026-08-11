@@ -8,7 +8,7 @@ const Sobre = () => {
     <>
       <HeroBanner
         title="Sobre Nós"
-        subtitle="Conheça a BEX Auditoria e nossa missão de transfoprospecçãor desafios financeiros em oportunidades de crescimento."
+        subtitle="Conheça a BEX Auditoria e nossa missão de transfoprospeccaor desafios financeiros em oportunidades de crescimento."
         videoSrc={videoSobre} />
       
 

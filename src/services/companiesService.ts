@@ -9,7 +9,7 @@ export interface Company {
   city: string | null;
   uf: string | null;
   zip: string | null;
-  prospecção_id: string | null;
+  prospeccao_id: string | null;
   address: string | null;
   contact_name: string | null;
   email: string | null;
@@ -36,7 +36,7 @@ export interface CreateCompanyInput {
   city?: string;
   uf?: string;
   zip?: string;
-  prospecção_id?: string;
+  prospeccao_id?: string;
   address?: string;
   contact_name?: string;
   email?: string;
@@ -86,7 +86,7 @@ export async function createCompany(
     city: input.city || null,
     uf: input.uf || null,
     zip: input.zip || null,
-    prospecção_id: input.prospecção_id || null,
+    prospeccao_id: input.prospeccao_id || null,
     address: input.address || null,
     contact_name: input.contact_name || null,
     email: input.email || null,
@@ -116,7 +116,7 @@ export async function createCompany(
       topic_number: t.number,
       topic_name: t.name,
     }));
-    const { error: tErr } = await supabase.from("company_prospecção_topics").insert(rows);
+    const { error: tErr } = await supabase.from("company_prospeccao_topics").insert(rows);
     if (tErr) throw tErr;
   }
 
@@ -125,7 +125,7 @@ export async function createCompany(
 
 export async function getCompanyTopics(companyId: string): Promise<CompanyTopic[]> {
   const { data, error } = await supabase
-    .from("company_prospecção_topics")
+    .from("company_prospeccao_topics")
     .select("*")
     .eq("company_id", companyId)
     .order("topic_number");
@@ -174,7 +174,7 @@ export interface PageResult<T> {
 export interface CompaniesPageOpts {
   page?: number;          // 1-based
   pageSize?: number;      // default 20
-  search?: string;        // filtra por name/cnpj/prospecção_id
+  search?: string;        // filtra por name/cnpj/prospeccao_id
   ownedOnly?: boolean;    // limita a created_by = userId
   status?: string | null; // filtro opcional por status
 }
@@ -202,7 +202,7 @@ export async function listCompaniesPage(
   if (opts.status) q = q.eq("status", opts.status);
   if (opts.search && opts.search.trim()) {
     const s = opts.search.trim().replace(/[,()]/g, " ");
-    q = q.or(`name.ilike.%${s}%,cnpj.ilike.%${s}%,prospecção_id.ilike.%${s}%`);
+    q = q.or(`name.ilike.%${s}%,cnpj.ilike.%${s}%,prospeccao_id.ilike.%${s}%`);
   }
 
   const { data, error, count } = await q;
@@ -235,7 +235,7 @@ const KNOWN_STATUSES = [
  * Roda uma query por status em paralelo + 1 query de total.
  *
  * scope: 'all' (todas), 'owned' (created_by = userId), 'assigned' (consultor),
- *        'released' (prospecção_release_assignments.released_to_user_id = userId).
+ *        'released' (prospeccao_release_assignments.released_to_user_id = userId).
  */
 export async function getCompaniesStats(
   userId: string,
@@ -250,7 +250,7 @@ export async function getCompaniesStats(
   } else if (scope === "released") {
     if (!userId) return { total: 0, byStatus: {} };
     const { data: rels } = await supabase
-      .from("prospecção_release_assignments")
+      .from("prospeccao_release_assignments")
       .select("company_id")
       .eq("released_to_user_id", userId)
       .eq("status", "active");
@@ -309,7 +309,7 @@ export async function listMyAssignedCompaniesPage(
   if (opts.status) q = q.eq("status", opts.status);
   if (opts.search && opts.search.trim()) {
     const s = opts.search.trim().replace(/[,()]/g, " ");
-    q = q.or(`name.ilike.%${s}%,cnpj.ilike.%${s}%,prospecção_id.ilike.%${s}%`);
+    q = q.or(`name.ilike.%${s}%,cnpj.ilike.%${s}%,prospeccao_id.ilike.%${s}%`);
   }
 
   const { data, error, count } = await q;
@@ -324,7 +324,7 @@ export async function listMyAssignedCompaniesPage(
 
 /**
  * Pagina empresas liberadas ao usuário (Magistrado/Recuperanda)
- * via prospecção_release_assignments, no backend.
+ * via prospeccao_release_assignments, no backend.
  */
 export async function listReleasedCompaniesPage(
   userId: string,
@@ -333,7 +333,7 @@ export async function listReleasedCompaniesPage(
   if (!userId) return { rows: [], total: 0, page: 1, pageSize: opts.pageSize ?? 20 };
 
   const { data: rels } = await supabase
-    .from("prospecção_release_assignments")
+    .from("prospeccao_release_assignments")
     .select("company_id")
     .eq("released_to_user_id", userId)
     .eq("status", "active");
@@ -356,7 +356,7 @@ export async function listReleasedCompaniesPage(
   if (opts.status) q = q.eq("status", opts.status);
   if (opts.search && opts.search.trim()) {
     const s = opts.search.trim().replace(/[,()]/g, " ");
-    q = q.or(`name.ilike.%${s}%,cnpj.ilike.%${s}%,prospecção_id.ilike.%${s}%`);
+    q = q.or(`name.ilike.%${s}%,cnpj.ilike.%${s}%,prospeccao_id.ilike.%${s}%`);
   }
 
   const { data, error, count } = await q;
@@ -369,7 +369,7 @@ export async function listReleasedCompaniesPage(
   };
 }
 
-/** Lista as empresas (Prospecçãos) atribuídas ao consultor logado */
+/** Lista as empresas (Prospeccoes) atribuídas ao consultor logado */
 export async function listMyAssignedCompanies(): Promise<Company[]> {
   const { data: s } = await supabase.auth.getSession();
   const uid = s.session?.user?.id;
@@ -394,7 +394,7 @@ export async function updateCompanyStatus(companyId: string, status: string): Pr
   if (error) throw error;
 }
 
-/** Atualiza dados de cadastro da empresa/Prospecção. */
+/** Atualiza dados de cadastro da empresa/Prospeccao. */
 export async function updateCompany(
   companyId: string,
   patch: Partial<CreateCompanyInput>
@@ -409,15 +409,15 @@ export async function updateCompany(
   return data as Company;
 }
 
-/** Exclui uma empresa/Prospecção. */
+/** Exclui uma empresa/Prospeccao. */
 export async function deleteCompany(companyId: string): Promise<void> {
   const { error } = await supabase.from("companies").delete().eq("id", companyId);
   if (error) throw error;
 }
 
-/** Ativa um Prospecção atribuído ao consultor, com validação no backend. */
+/** Ativa um Prospeccao atribuído ao consultor, com validação no backend. */
 export async function activateAssignedRma(companyId: string): Promise<void> {
-  const { error } = await supabase.functions.invoke("activate-prospecção", {
+  const { error } = await supabase.functions.invoke("activate-prospeccao", {
     body: { companyId },
   });
 
@@ -427,7 +427,7 @@ export async function activateAssignedRma(companyId: string): Promise<void> {
 /**
  * Atribui uma empresa a um consultor. Se `moveFromOthers` for true, remove
  * a associação dessa empresa com qualquer outro consultor (movimentação).
- * Registra automaticamente em `prospecção_assignment_history`.
+ * Registra automaticamente em `prospeccao_assignment_history`.
  */
 export async function assignCompanyToConsultant(
   companyId: string,
@@ -472,7 +472,7 @@ export async function assignCompanyToConsultant(
   if (error) throw error;
 
   if (!existing) {
-    await supabase.from("prospecção_assignment_history").insert({
+    await supabase.from("prospeccao_assignment_history").insert({
       company_id: companyId,
       action: previousConsultantId ? "move" : "assign",
       from_consultant_user_id: previousConsultantId,
@@ -495,7 +495,7 @@ export async function unassignCompanyFromConsultant(
     .eq("consultant_user_id", consultantUserId);
   if (error) throw error;
 
-  await supabase.from("prospecção_assignment_history").insert({
+  await supabase.from("prospeccao_assignment_history").insert({
     company_id: companyId,
     action: "unassign",
     from_consultant_user_id: consultantUserId,
@@ -516,7 +516,7 @@ export interface RmaHistoryEntry {
 
 export async function listRmaHistory(opts?: { companyId?: string; limit?: number }): Promise<RmaHistoryEntry[]> {
   let q = supabase
-    .from("prospecção_assignment_history")
+    .from("prospeccao_assignment_history")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(opts?.limit ?? 200);

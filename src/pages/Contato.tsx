@@ -71,7 +71,7 @@ const Contato = () => {
               className="space-y-8">
               
               <div>
-                <h2 className="text-2xl font-display font-bold text-foreground mb-6">Infoprospecçãoções de Contato</h2>
+                <h2 className="text-2xl font-display font-bold text-foreground mb-6">Informacaoções de Contato</h2>
                 <div className="space-y-6">
                   <div className="flex gap-4">
                     <MapPin className="w-5 h-5 text-accent shrink-0 mt-0.5" />

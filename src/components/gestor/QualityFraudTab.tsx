@@ -184,8 +184,8 @@ export default function QualityFraudTab() {
                           {alertTypeLabel(a.alert_type)}
                         </Badge>
                         {a.classe && <Badge variant="outline" className="text-xs">{a.classe}</Badge>}
-                        {a.prospecção_id && (
-                          <span className="text-xs text-muted-foreground">Prospecção: {a.prospecção_id}</span>
+                        {a.prospeccao_id && (
+                          <span className="text-xs text-muted-foreground">Prospeccao: {a.prospeccao_id}</span>
                         )}
                       </div>
                       <p className="text-sm">{a.message}</p>

@@ -2,7 +2,7 @@
  * AUDIT DATASET BUILDER — Base única mensal para todos os gráficos do relatório.
  *
  * Reproduz a lógica da aba "Dados Gráficos" do template Excel:
- *   Balancete → Classificação Contábil → Noprospecçãolização → Dataset Mensal → Engine Cálculo → Gráficos
+ *   Balancete → Classificação Contábil → Noprospeccaolização → Dataset Mensal → Engine Cálculo → Gráficos
  *
  * Saída: array MonthlyDatum[] ordenado cronologicamente, com TODAS as métricas
  * que alimentam os 6 gráficos do relatório (CMV/RL, CMV+Desp/RL, Resultado/RL,
@@ -68,7 +68,7 @@ const PATTERNS = {
   amortizacao: /\bamortiza[cç][aã]o\b/i,
   // BALANÇO — ATIVO
   ativo_circulante: /\bativo\s+circulante\b/i,
-  ativo_nao_circulante: /\bativo\s+n[aã]o[\s-]?circulante|realiz[aá]vel\s+a\s+longo\s+prazo|ativo\s+peprospecçãonente|imobilizado/i,
+  ativo_nao_circulante: /\bativo\s+n[aã]o[\s-]?circulante|realiz[aá]vel\s+a\s+longo\s+prazo|ativo\s+peprospeccaonente|imobilizado/i,
   estoques: /\bestoqu/i,
   disponivel: /\b(?:caixa|disponibilidade|disponivel|bancos?|aplica[cç][aã]o\s+financ|equivalente)/i,
   clientes: /\b(?:clientes|duplicatas?\s+a\s+receber|contas?\s+a\s+receber)\b/i,

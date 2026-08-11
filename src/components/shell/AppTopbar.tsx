@@ -13,7 +13,7 @@ const roleLabels: Record<string, string> = {
   coordenador: "Coordenador",
   consultor: "Consultor",
   magistrado: "Magistrado",
-  recuperanda: "Empresa Prospecção",
+  recuperanda: "Empresa Prospeccao",
   gestor_ia: "Gestor IA",
 };
 
@@ -57,7 +57,7 @@ export default function AppTopbar({ showBack, onBack, title }: Props) {
             <DropdownMenuLabel>
               <div className="leading-tight">
                 <div className="text-sm font-semibold">{userName || "Usuário"}</div>
-                <div className="text-xs text-muted-foreground font-noprospecçãol">{userEmail}</div>
+                <div className="text-xs text-muted-foreground font-normal">{userEmail}</div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

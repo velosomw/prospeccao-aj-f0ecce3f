@@ -396,7 +396,7 @@ export function relabelYearsAsMonths(
 
 /**
  * Consolida múltiplos arquivos. Soma valores quando o mesmo mês aparece em mais de um arquivo
- * (ex: balancete dividido em 2 abas) — mas como cada arquivo tipicamente é 1 mês, o noprospecçãol é só agregar.
+ * (ex: balancete dividido em 2 abas) — mas como cada arquivo tipicamente é 1 mês, o normal é só agregar.
  */
 export function mergeMultiMonth(
   items: Array<{ fileName: string; parsed: ParsedFinancialData; userMonth?: string | null }>,

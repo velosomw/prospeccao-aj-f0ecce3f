@@ -13,14 +13,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import PlatformLayout from "@/components/PlatformLayout";
-import RmaMovementHistory from "@/components/RmaMovementHistory";
+import ProspeccaoMovementHistory from "@/components/ProspeccaoMovementHistory";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { listCompanies, type Company } from "@/services/companiesService";
 import {
   listReleases, createRelease, updateReleaseStatus, deleteRelease,
   monthLabel, statusLabel, type ProspeccaoRelease, type ReleaseRole, type ReleaseStatus,
-} from "@/services/prospecçãoReleaseService";
+} from "@/services/prospeccaoReleaseService";
 
 type ProfileLite = { user_id: string; full_name: string; email: string; role: string; active: boolean };
 
@@ -28,7 +28,7 @@ const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 const currentYear = new Date().getFullYear();
 const YEARS = [currentYear - 2, currentYear - 1, currentYear, currentYear + 1];
 
-const LiberarProspecção = () => {
+const LiberarProspeccao = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -98,12 +98,12 @@ const LiberarProspecção = () => {
         released_to_role: targetRole,
         notes: notes || undefined,
       });
-      toast({ title: "Prospecção AJ liberado com sucesso" });
+      toast({ title: "Prospeccao AJ liberado com sucesso" });
       setNotes("");
       setTargetUserId("");
       load();
     } catch (e: any) {
-      toast({ title: "Erro ao liberar Prospecção AJ", description: e.message, variant: "destructive" });
+      toast({ title: "Erro ao liberar Prospeccao AJ", description: e.message, variant: "destructive" });
     }
   };
 
@@ -134,7 +134,7 @@ const LiberarProspecção = () => {
     return releases.filter((r) => {
       const c = companiesById.get(r.company_id);
       const u = profilesById.get(r.released_to_user_id);
-      return [c?.name, c?.prospecção_id, u?.full_name, u?.email, monthLabel(r.month), String(r.year)]
+      return [c?.name, c?.prospeccao_id, u?.full_name, u?.email, monthLabel(r.month), String(r.year)]
         .filter(Boolean).join(" ").toLowerCase().includes(q);
     });
   }, [releases, search, companiesById, profilesById]);
@@ -154,10 +154,10 @@ const LiberarProspecção = () => {
           </button>
           <div>
             <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <ShieldCheck className="w-6 h-6 text-[hsl(217,91%,50%)]" /> Liberar Prospecção
+              <ShieldCheck className="w-6 h-6 text-[hsl(217,91%,50%)]" /> Liberar Prospeccao
             </h1>
             <p className="text-sm text-muted-foreground">
-              Atribua acesso de visualização do Prospecção Empresa por período (ano/mês) para Magistrado e Recuperanda.
+              Atribua acesso de visualização do Prospeccao Empresa por período (ano/mês) para Magistrado e Recuperanda.
             </p>
           </div>
         </div>
@@ -168,7 +168,7 @@ const LiberarProspecção = () => {
               <Send className="w-3.5 h-3.5" /> Liberar / Gerenciar
             </TabsTrigger>
             <TabsTrigger value="movimentacoes" className="gap-1.5 text-xs data-[state=active]:bg-[hsl(217,91%,50%)] data-[state=active]:text-white">
-              <HistoryIcon className="w-3.5 h-3.5" /> Movimentações Prospecção
+              <HistoryIcon className="w-3.5 h-3.5" /> Movimentações Prospeccao
             </TabsTrigger>
             <TabsTrigger value="trilha" className="gap-1.5 text-xs data-[state=active]:bg-[hsl(217,91%,50%)] data-[state=active]:text-white">
               <ShieldCheck className="w-3.5 h-3.5" /> Trilha de Auditoria
@@ -180,7 +180,7 @@ const LiberarProspecção = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
-                  <Send className="w-4 h-4 text-[hsl(217,91%,50%)]" /> Nova liberação de Prospecção
+                  <Send className="w-4 h-4 text-[hsl(217,91%,50%)]" /> Nova liberação de Prospeccao
                 </CardTitle>
                 <CardDescription>
                   Selecione empresa, período e destinatário (Magistrado ou Recuperanda).
@@ -190,14 +190,14 @@ const LiberarProspecção = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   <div>
                     <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1">
-                      <Building2 className="w-3.5 h-3.5" /> Empresa Prospecção
+                      <Building2 className="w-3.5 h-3.5" /> Empresa Prospeccao
                     </label>
                     <Select value={companyId} onValueChange={setCompanyId}>
                       <SelectTrigger><SelectValue placeholder="Selecione a empresa..." /></SelectTrigger>
                       <SelectContent>
                         {companies.map((c) => (
                           <SelectItem key={c.id} value={c.id}>
-                            {c.name} {c.prospecção_id ? `· ${c.prospecção_id}` : ""}
+                            {c.name} {c.prospeccao_id ? `· ${c.prospeccao_id}` : ""}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -264,7 +264,7 @@ const LiberarProspecção = () => {
 
                 <div className="flex justify-end mt-3">
                   <Button onClick={handleRelease} className="gap-1.5">
-                    <Send className="w-4 h-4" /> Liberar Prospecção
+                    <Send className="w-4 h-4" /> Liberar Prospeccao
                   </Button>
                 </div>
               </CardContent>
@@ -298,7 +298,7 @@ const LiberarProspecção = () => {
                     <table className="w-full text-sm">
                       <thead className="bg-muted/50 border-b">
                         <tr>
-                          <th className="text-left px-3 py-2 font-medium text-muted-foreground">Empresa Prospecção AJ</th>
+                          <th className="text-left px-3 py-2 font-medium text-muted-foreground">Empresa Prospeccao AJ</th>
                           <th className="text-left px-3 py-2 font-medium text-muted-foreground">Período</th>
                           <th className="text-left px-3 py-2 font-medium text-muted-foreground">Destinatário</th>
                           <th className="text-left px-3 py-2 font-medium text-muted-foreground">Perfil</th>
@@ -317,7 +317,7 @@ const LiberarProspecção = () => {
                               <td className="px-3 py-2">
                                 <div className="flex flex-col">
                                   <span className="font-medium text-foreground">{c?.name || "Empresa"}</span>
-                                  {c?.prospecção_id && <Badge variant="outline" className="text-[10px] font-mono w-fit mt-0.5">{c.prospecção_id}</Badge>}
+                                  {c?.prospeccao_id && <Badge variant="outline" className="text-[10px] font-mono w-fit mt-0.5">{c.prospeccao_id}</Badge>}
                                 </div>
                               </td>
                               <td className="px-3 py-2">
@@ -368,8 +368,8 @@ const LiberarProspecção = () => {
           </TabsContent>
 
           <TabsContent value="movimentacoes">
-            <RmaMovementHistory
-              title="Movimentações Prospecção AJ"
+            <ProspeccaoMovementHistory
+              title="Movimentações Prospeccao AJ"
               description="Inclui atribuições, movimentações, desvínculos e liberações para Magistrado/Recuperanda."
             />
           </TabsContent>
@@ -385,7 +385,7 @@ const LiberarProspecção = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <RmaMovementHistory
+                <ProspeccaoMovementHistory
                   title="Eventos auditáveis"
                   description="Registros imutáveis de movimentações e liberações."
                 />
@@ -398,4 +398,4 @@ const LiberarProspecção = () => {
   );
 };
 
-export default LiberarProspecção;
+export default LiberarProspeccao;

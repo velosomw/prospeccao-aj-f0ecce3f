@@ -23,7 +23,7 @@ const topicDetails: Record<string, {title: string;intro: string;listTitle?: stri
     title: "Identificação de Custos Ocultos",
     intro: "Muitas empresas perdem margem sem perceber. Nossa análise identifica despesas invisíveis que impactam diretamente a lucratividade.\n\nMapeamos:",
     items: ["Desperdícios operacionais", "Contratos ineficientes", "Encargos financeiros excessivos", "Gastos recorrentes não estratégicos"],
-    conclusion: "Ao eliminar custos ocultos, a empresa aumenta sua eficiência e recupera margem de foprospecção imediata."
+    conclusion: "Ao eliminar custos ocultos, a empresa aumenta sua eficiência e recupera margem de foprospeccao imediata."
   },
   "Priorização de pagamentos": {
     title: "Priorização Estratégica de Pagamentos",
@@ -41,7 +41,7 @@ const topicDetails: Record<string, {title: string;intro: string;listTitle?: stri
     title: "Relatório Executivo com Recomendações Estratégicas",
     intro: "Ao final do diagnóstico, entregamos um relatório claro, objetivo e direcionado à tomada de decisão.\n\nO documento apresenta:",
     items: ["Panorama financeiro consolidado", "Principais riscos identificados", "Pontos críticos prioritários", "Plano de ação recomendado"],
-    conclusion: "Transfoprospecçãomos dados financeiros em decisões estratégicas."
+    conclusion: "Transfoprospeccaomos dados financeiros em decisões estratégicas."
   }
 };
 

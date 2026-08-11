@@ -22,7 +22,7 @@ const TEXT_STYLE = {
   color: "#333",
 };
 
-// ─── Foprospecçãotadores BR ─────────────────────────────────────────
+// ─── Foprospeccaotadores BR ─────────────────────────────────────────
 export const fmtMilhar = (v: number | null | undefined) => {
   if (v == null || !Number.isFinite(v)) return "—";
   const n = Math.round(v);
@@ -222,7 +222,7 @@ export function buildLiquidezOption(data: MonthlyDatum[]) {
 
   return {
     title: { text: "Índices de Liquidez", left: "center", textStyle: { ...TEXT_STYLE, fontSize: 13, fontWeight: "bold" } },
-    tooltip: { ...baseTooltip, valueFoprospecçãotter: (v: number) => fmtDec(v) },
+    tooltip: { ...baseTooltip, valueFoprospeccaotter: (v: number) => fmtDec(v) },
     legend: { bottom: 0, textStyle: TEXT_STYLE },
     grid: baseGrid,
     xAxis: { type: "category" as const, data: meses, ...baseAxis },

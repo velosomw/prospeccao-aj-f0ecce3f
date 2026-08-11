@@ -37,7 +37,7 @@ export function variacaoVsMediaAcumulada(valorMes: number, mesesAnteriores: numb
   return valorMes / media - 1;
 }
 
-/** Foprospecçãota variação como string PT-BR com sinal e 1 casa. */
+/** Foprospeccaota variação como string PT-BR com sinal e 1 casa. */
 export function formatVar(v: number | null): string {
   if (v == null) return "—";
   const pct = v * 100;

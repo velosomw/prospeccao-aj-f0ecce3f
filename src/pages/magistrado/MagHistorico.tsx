@@ -4,14 +4,14 @@ import ConsultorPageShell from "@/components/consultor/PageShell";
 const events = [
   { id: "MH-401", tipo: "decisao",   titulo: "Decisão proferida - DIPLOMATA",  proc: "RJ-2024-0012", autor: "Magistrado", data: "Hoje 14:32" },
   { id: "MH-400", tipo: "audiencia", titulo: "AGC realizada - TECNOMAX",        proc: "RJ-2024-0014", autor: "Magistrado", data: "Hoje 11:00" },
-  { id: "MH-399", tipo: "prospecção",       titulo: "Prospecção-0009 visualizado",            proc: "RJ-2024-0009", autor: "Magistrado", data: "Ontem" },
+  { id: "MH-399", tipo: "prospeccao",       titulo: "Prospeccao-0009 visualizado",            proc: "RJ-2024-0009", autor: "Magistrado", data: "Ontem" },
   { id: "MH-398", tipo: "decisao",   titulo: "Despacho assinado",               proc: "RJ-2023-0076", autor: "Magistrado", data: "07/05" },
   { id: "MH-397", tipo: "audiencia", titulo: "Audiência inicial",               proc: "RJ-2024-0014", autor: "Magistrado", data: "06/05" },
 ];
 const typeMeta: Record<string, { icon: any; bg: string; fg: string; label: string }> = {
   decisao:   { icon: Gavel,         bg: "hsl(217,91%,96%)", fg: "hsl(217,91%,45%)", label: "Decisão" },
   audiencia: { icon: CheckCircle2,  bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)", label: "Audiência" },
-  prospecção:       { icon: FileText,      bg: "hsl(258,90%,96%)", fg: "hsl(258,90%,45%)", label: "Prospecção AJ" },
+  prospeccao:       { icon: FileText,      bg: "hsl(258,90%,96%)", fg: "hsl(258,90%,45%)", label: "Prospeccao AJ" },
 };
 
 export default function MagHistorico() {

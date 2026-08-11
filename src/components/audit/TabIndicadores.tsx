@@ -17,7 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { buildIndicatorSeries, type IndicatorRow } from "@/services/indicatorsEngine";
 import { mesKeyToLabel, type BSDadosRow } from "@/services/bsDadosBuilder";
 
-/* ───────────── Foprospecçãotters ───────────── */
+/* ───────────── Foprospeccaotters ───────────── */
 const fmt = (n: number) =>
   new Intl.NumberFormat("pt-BR").format(Math.round(Number.isFinite(n) ? n : 0));
 const fmtPct = (n: number) =>

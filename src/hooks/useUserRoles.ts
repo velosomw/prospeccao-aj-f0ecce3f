@@ -49,7 +49,7 @@ export function useUserRoles(): UseUserRolesResult {
   const tenantId = useActiveTenantId();
 
   const { data, isLoading } = useQuery({
-    // tenantId no key isola cache entre clientes/Prospecçãos e evita vazamento
+    // tenantId no key isola cache entre clientes/Prospeccoes e evita vazamento
     // de permissões ao trocar de tenant em multi-tab.
     queryKey: ["user-roles", userId, tenantId],
     enabled: !!userId,

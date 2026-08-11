@@ -41,7 +41,7 @@ export interface ExtractedTextResult {
 export interface LearningExtraction {
   id: string;
   document_id: string | null;
-  prospecção_id: string | null;
+  prospeccao_id: string | null;
   path: string | null;
   classe: string | null;
   agent: string | null;
@@ -103,7 +103,7 @@ export async function uploadLearningFile(file: File): Promise<UploadedLearningFi
   };
 }
 
-// ---------- Noprospecçãolização local (espelho do edge OCR) ----------
+// ---------- Noprospeccaolização local (espelho do edge OCR) ----------
 function normalizeText(text: string): string {
   return text
     .replace(/l(?=\d)/g, "1")
@@ -389,7 +389,7 @@ export async function saveGroundTruth(input: SaveCorrectionInput) {
   const result = await submitCorrection({
     extraction_id: e.id,
     document_id: e.document_id ?? undefined,
-    prospecção_id: e.prospecção_id ?? undefined,
+    prospeccao_id: e.prospeccao_id ?? undefined,
     classe: e.classe,
     agent: e.agent ?? undefined,
     path: e.path ?? undefined,
@@ -427,7 +427,7 @@ export async function saveGroundTruth(input: SaveCorrectionInput) {
 
 /** Marca a extração como "Correta" sem alterações (atalho). */
 export async function markAsCorrect(extraction: LearningExtraction) {
-  if (!extraction.extracted_data) throw new Error("Sem JSON para confiprospecçãor");
+  if (!extraction.extracted_data) throw new Error("Sem JSON para confiprospeccaor");
   return await saveGroundTruth({
     extraction,
     correctedJson: extraction.extracted_data,

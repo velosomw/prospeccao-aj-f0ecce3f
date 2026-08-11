@@ -138,7 +138,7 @@ const App = () => (
               {/* Site público (eager) */}
               <Route path="/" element={<Index />} />
 
-              {/* Plataforma Prospecção AJ (lazy) */}
+              {/* Plataforma Prospeccao AJ (lazy) */}
               <Route path="/login" element={<Login />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/select-role" element={<RoleSelection />} />

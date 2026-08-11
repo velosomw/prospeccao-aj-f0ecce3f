@@ -7,12 +7,12 @@ interface Props {
   topics: TopicItem[];
   criticas: number;
   onOpenTopic?: (id: string) => void;
-  prospecçãoId?: string | null;
+  prospeccaoId?: string | null;
 }
 
 type Filtro = "todos" | "criticos" | "incompletos" | "pendentes" | "concluidos";
 
-export default function StageRevisaoInteligente({ topics, criticas, onOpenTopic, prospecçãoId }: Props) {
+export default function StageRevisaoInteligente({ topics, criticas, onOpenTopic, prospeccaoId }: Props) {
 
   const [filtro, setFiltro] = useState<Filtro>("todos");
   const [busca, setBusca] = useState("");
@@ -100,8 +100,8 @@ export default function StageRevisaoInteligente({ topics, criticas, onOpenTopic,
       {/* Lista + IA assistiva */}
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-3">
         <div className="bg-white border border-border rounded-lg p-4">
-          <h3 className="text-sm font-bold text-foreground mb-3">Tópicos do Prospecção AJ</h3>
-          <TopicsTaskList items={filtered} onOpen={onOpenTopic} prospecçãoId={prospecçãoId} />
+          <h3 className="text-sm font-bold text-foreground mb-3">Tópicos do Prospeccao AJ</h3>
+          <TopicsTaskList items={filtered} onOpen={onOpenTopic} prospeccaoId={prospeccaoId} />
         </div>
 
         <div className="space-y-3">

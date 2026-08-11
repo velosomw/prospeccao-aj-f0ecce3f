@@ -112,7 +112,7 @@ const TabPivotConsolidado = ({ companyId, runToken, fallbackRows = [] }: Props) 
     return (
       <Card className="border-dashed">
         <CardContent className="py-12 text-center text-sm text-muted-foreground">
-          Selecione um Prospecção real para visualizar o pivot consolidado.
+          Selecione um Prospeccao real para visualizar o pivot consolidado.
         </CardContent>
       </Card>
     );
@@ -304,7 +304,7 @@ const PivotTable = ({ rows, mesKeys }: PivotTableProps) => {
             <CardTitle className="text-base flex items-center gap-2">
               <GitMerge className="w-4 h-4 text-[hsl(258,90%,66%)]" />
               Pivot Consolidado — Código × Mês
-              <span className="text-xs text-muted-foreground font-noprospecçãol">
+              <span className="text-xs text-muted-foreground font-normal">
                 (auditoria folha-a-folha)
               </span>
             </CardTitle>

@@ -13,7 +13,7 @@ const opts = [
     to: "/consultor/cadastro/admjudicial",
   },
   {
-    label: "Empresas Prospecção",
+    label: "Empresas Prospeccao",
     desc: "Cadastre as empresas que enviam a planilha com informações",
     icon: Building2,
     tone: { bg: "hsl(142,60%,95%)", fg: "hsl(142,60%,35%)", ring: "hsl(142,60%,90%)" },
@@ -62,7 +62,7 @@ export default function ConsultorCadastro() {
 
   const dashboards = [
     { label: "Adm. Judiciais", value: stats.aj, icon: Scale, color: "text-[hsl(217,91%,45%)]", bg: "bg-[hsl(217,91%,96%)]" },
-    { label: "Empresas Prospecção", value: stats.emp, icon: Building2, color: "text-[hsl(142,60%,35%)]", bg: "bg-[hsl(142,60%,95%)]" },
+    { label: "Empresas Prospeccao", value: stats.emp, icon: Building2, color: "text-[hsl(142,60%,35%)]", bg: "bg-[hsl(142,60%,95%)]" },
     { label: "Magistrados", value: stats.mag, icon: Gavel, color: "text-[hsl(261,80%,45%)]", bg: "bg-[hsl(261,80%,96%)]" },
     { label: "Técnicos", value: stats.tec, icon: Users, color: "text-[hsl(38,92%,40%)]", bg: "bg-[hsl(38,92%,95%)]" },
   ];

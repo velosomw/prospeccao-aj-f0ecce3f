@@ -1,16 +1,16 @@
 import { History, GitCommit, User, FileText, CheckCircle2, AlertTriangle } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
-interface Ev { id: string; tipo: "criacao"|"edicao"|"aprovacao"|"publicacao"|"rejeicao"; titulo: string; prospecção: string; usuario: string; data: string; hora: string; }
+interface Ev { id: string; tipo: "criacao"|"edicao"|"aprovacao"|"publicacao"|"rejeicao"; titulo: string; prospeccao: string; usuario: string; data: string; hora: string; }
 
 const events: Ev[] = [
-  { id: "H-401", tipo: "publicacao", titulo: "Prospecção Maio/2026 publicado",       prospecção: "Prospecção-0012", usuario: "Consultor Prospecção",   data: "Hoje",       hora: "14:32" },
-  { id: "H-400", tipo: "aprovacao",  titulo: "Aprovado pelo Coordenador",     prospecção: "Prospecção-0012", usuario: "Coordenador",     data: "Hoje",       hora: "13:10" },
-  { id: "H-399", tipo: "edicao",     titulo: "Bloco 7 - DRE editado",         prospecção: "Prospecção-0014", usuario: "Consultor Prospecção",   data: "Hoje",       hora: "11:48" },
-  { id: "H-398", tipo: "rejeicao",   titulo: "Bloco 5 reprovado - dados inconsistentes", prospecção: "Prospecção-0009", usuario: "Coordenador", data: "Ontem", hora: "17:20" },
-  { id: "H-397", tipo: "edicao",     titulo: "Reprocessamento IA solicitado", prospecção: "Prospecção-0011", usuario: "Consultor Prospecção",   data: "Ontem",      hora: "15:02" },
-  { id: "H-396", tipo: "criacao",    titulo: "Novo Prospecção criado",               prospecção: "Prospecção-0014", usuario: "Coordenador",     data: "07/05",      hora: "09:15" },
-  { id: "H-395", tipo: "publicacao", titulo: "Prospecção Abril/2026 publicado",      prospecção: "Prospecção-0008", usuario: "Consultor Prospecção",   data: "06/05",      hora: "16:40" },
+  { id: "H-401", tipo: "publicacao", titulo: "Prospeccao Maio/2026 publicado",       prospeccao: "Prospeccao-0012", usuario: "Consultor Prospeccao",   data: "Hoje",       hora: "14:32" },
+  { id: "H-400", tipo: "aprovacao",  titulo: "Aprovado pelo Coordenador",     prospeccao: "Prospeccao-0012", usuario: "Coordenador",     data: "Hoje",       hora: "13:10" },
+  { id: "H-399", tipo: "edicao",     titulo: "Bloco 7 - DRE editado",         prospeccao: "Prospeccao-0014", usuario: "Consultor Prospeccao",   data: "Hoje",       hora: "11:48" },
+  { id: "H-398", tipo: "rejeicao",   titulo: "Bloco 5 reprovado - dados inconsistentes", prospeccao: "Prospeccao-0009", usuario: "Coordenador", data: "Ontem", hora: "17:20" },
+  { id: "H-397", tipo: "edicao",     titulo: "Reprocessamento IA solicitado", prospeccao: "Prospeccao-0011", usuario: "Consultor Prospeccao",   data: "Ontem",      hora: "15:02" },
+  { id: "H-396", tipo: "criacao",    titulo: "Novo Prospeccao criado",               prospeccao: "Prospeccao-0014", usuario: "Coordenador",     data: "07/05",      hora: "09:15" },
+  { id: "H-395", tipo: "publicacao", titulo: "Prospeccao Abril/2026 publicado",      prospeccao: "Prospeccao-0008", usuario: "Consultor Prospeccao",   data: "06/05",      hora: "16:40" },
 ];
 
 const typeMeta: Record<string, { icon: any; bg: string; fg: string; label: string }> = {
@@ -50,7 +50,7 @@ export default function ConsultorHistorico() {
                   <div className="bg-muted/30 rounded-lg p-3">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: m.bg, color: m.fg }}>{m.label}</span>
-                      <span className="text-xs font-mono text-primary">{e.prospecção}</span>
+                      <span className="text-xs font-mono text-primary">{e.prospeccao}</span>
                       <span className="text-xs text-muted-foreground ml-auto">{e.data} • {e.hora}</span>
                     </div>
                     <div className="text-sm font-medium text-foreground">{e.titulo}</div>

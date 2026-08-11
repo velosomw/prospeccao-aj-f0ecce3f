@@ -36,7 +36,7 @@ export default function WorkspaceOverviewDashboard({
     <div className="bg-white border border-border rounded-lg p-4">
       <div className="flex items-center justify-between mb-3">
         <div>
-          <h2 className="text-sm font-bold text-foreground">Visão geral do Prospecção AJ</h2>
+          <h2 className="text-sm font-bold text-foreground">Visão geral do Prospeccao AJ</h2>
           <p className="text-xs text-muted-foreground">
             Processamento de documentos, completude do score e status dos tópicos.
           </p>
@@ -91,7 +91,7 @@ export default function WorkspaceOverviewDashboard({
             <CheckCircle2 className="w-3.5 h-3.5" /> Status dos tópicos
           </div>
           <div className="mt-1 text-2xl font-bold tabular-nums text-foreground">
-            {topicsCompletos}<span className="text-base font-noprospecçãol text-muted-foreground">/{topicsTotal}</span>
+            {topicsCompletos}<span className="text-base font-normal text-muted-foreground">/{topicsTotal}</span>
           </div>
           <div className="mt-1 flex items-center gap-2 text-[11px]">
             <span className="text-[hsl(142,76%,30%)] font-semibold">{topicsCompletos} OK</span>

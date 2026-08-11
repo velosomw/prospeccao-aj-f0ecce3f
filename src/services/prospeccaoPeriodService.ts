@@ -37,7 +37,7 @@ export function getCurrentPeriod(): { year: number; month: number; label: string
 /** Lista o histórico de análises mensais para uma empresa (mais recentes primeiro). */
 export async function listCompanyPeriods(companyId: string): Promise<RmaPeriodAnalysis[]> {
   const { data, error } = await supabase
-    .from("prospecção_period_analyses" as any)
+    .from("prospeccao_period_analyses" as any)
     .select("*")
     .eq("company_id", companyId)
     .order("year", { ascending: false })
@@ -50,7 +50,7 @@ export async function listCompanyPeriods(companyId: string): Promise<RmaPeriodAn
 export async function listPeriodsForCompanies(companyIds: string[]): Promise<RmaPeriodAnalysis[]> {
   if (companyIds.length === 0) return [];
   const { data, error } = await supabase
-    .from("prospecção_period_analyses" as any)
+    .from("prospeccao_period_analyses" as any)
     .select("*")
     .in("company_id", companyIds)
     .order("year", { ascending: false })

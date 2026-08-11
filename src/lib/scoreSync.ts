@@ -1,8 +1,8 @@
 // Validação em tempo real de paridade de percentual entre as superfícies que
-// exibem o "Score Global do Prospecção" (Workspace header, Status Prospecção, Processamento
+// exibem o "Score Global do Prospeccao" (Workspace header, Status Prospeccao, Processamento
 // IA e Alertas Inteligentes do Dashboard).
 //
-// Regra: a fonte de verdade é `prospecção.percentual` (vindo do edge `prospecção-score`).
+// Regra: a fonte de verdade é `prospeccao.percentual` (vindo do edge `prospeccao-score`).
 // Cada superfície deve renderizar EXATAMENTE esse número. Este helper garante
 // isso em runtime: se um cálculo local divergir, emite um aviso no console e
 // retorna o valor canônico, evitando que a UI mostre números diferentes.
@@ -34,20 +34,20 @@ export function reconcileScore(
 
 /**
  * Hook que registra o último percentual visto em cada superfície num registry
- * global e dispara aviso se duas superfícies do mesmo Prospecção divergirem.
+ * global e dispara aviso se duas superfícies do mesmo Prospeccao divergirem.
  */
 const registry: Record<string, Record<string, number>> = {};
 
-export function useScoreParityGuard(prospecçãoId: string | null | undefined, surface: string, value: number) {
+export function useScoreParityGuard(prospeccaoId: string | null | undefined, surface: string, value: number) {
   const lastRef = useRef<number | null>(null);
   useEffect(() => {
-    if (!prospecçãoId) return;
+    if (!prospeccaoId) return;
     const v = Math.round(Number(value) || 0);
     if (lastRef.current === v) return;
     lastRef.current = v;
-    registry[prospecçãoId] = registry[prospecçãoId] || {};
-    registry[prospecçãoId][surface] = v;
-    const entries = Object.entries(registry[prospecçãoId]);
+    registry[prospeccaoId] = registry[prospeccaoId] || {};
+    registry[prospeccaoId][surface] = v;
+    const entries = Object.entries(registry[prospeccaoId]);
     if (entries.length < 2) return;
     const values = entries.map(([, n]) => n);
     const min = Math.min(...values);
@@ -55,9 +55,9 @@ export function useScoreParityGuard(prospecçãoId: string | null | undefined, s
     if (max - min > TOLERANCE) {
       // eslint-disable-next-line no-console
       console.warn(
-        `[scoreSync] percentuais divergentes para Prospecção ${prospecçãoId}:`,
+        `[scoreSync] percentuais divergentes para Prospeccao ${prospeccaoId}:`,
         Object.fromEntries(entries),
       );
     }
-  }, [prospecçãoId, surface, value]);
+  }, [prospeccaoId, surface, value]);
 }

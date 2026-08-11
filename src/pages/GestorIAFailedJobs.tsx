@@ -25,7 +25,7 @@ interface FailedJob {
   original_queue_id: string | null;
   file_id: string;
   company_id: string | null;
-  prospecção_id: string | null;
+  prospeccao_id: string | null;
   ano: number | null;
   mes: number | null;
   reason: string | null;
@@ -77,7 +77,7 @@ export default function GestorIAFailedJobs() {
     const s = search.toLowerCase();
     return (
       j.file_id?.toLowerCase().includes(s) ||
-      j.prospecção_id?.toLowerCase().includes(s) ||
+      j.prospeccao_id?.toLowerCase().includes(s) ||
       j.reason?.toLowerCase().includes(s) ||
       j.error_message?.toLowerCase().includes(s)
     );
@@ -205,7 +205,7 @@ export default function GestorIAFailedJobs() {
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Buscar por file_id, Prospecção AJ, motivo ou erro…"
+              placeholder="Buscar por file_id, Prospeccao AJ, motivo ou erro…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-9"
@@ -222,7 +222,7 @@ export default function GestorIAFailedJobs() {
               <TableRow>
                 <TableHead>Falhou em</TableHead>
                 <TableHead>File ID</TableHead>
-                <TableHead>Prospecção AJ / Período</TableHead>
+                <TableHead>Prospeccao AJ / Período</TableHead>
                 <TableHead>Motivo</TableHead>
                 <TableHead className="text-center">Tentativas</TableHead>
                 <TableHead>Erro</TableHead>
@@ -253,7 +253,7 @@ export default function GestorIAFailedJobs() {
                       {j.file_id}
                     </TableCell>
                     <TableCell className="text-xs">
-                      {j.prospecção_id ?? "—"}
+                      {j.prospeccao_id ?? "—"}
                       {j.ano && j.mes ? ` · ${String(j.mes).padStart(2, "0")}/${j.ano}` : ""}
                     </TableCell>
                     <TableCell className="text-xs">
@@ -318,8 +318,8 @@ export default function GestorIAFailedJobs() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-xs text-muted-foreground">Prospecção AJ</Label>
-                  <div>{selected.prospecção_id ?? "—"}</div>
+                  <Label className="text-xs text-muted-foreground">Prospeccao AJ</Label>
+                  <div>{selected.prospeccao_id ?? "—"}</div>
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">Tentativas anteriores</Label>
@@ -348,7 +348,7 @@ export default function GestorIAFailedJobs() {
             </Button>
             <Button onClick={handleRequeue} disabled={requeuing}>
               {requeuing && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-              Confiprospecçãor reprocessamento
+              Confirmacaor reprocessamento
             </Button>
           </DialogFooter>
         </DialogContent>

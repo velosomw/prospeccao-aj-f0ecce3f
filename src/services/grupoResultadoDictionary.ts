@@ -39,7 +39,7 @@ export type GrupoCanonico =
 const PATTERNS: Array<{ grupo: GrupoCanonico; re: RegExp }> = [
   // ── BALANÇO — ATIVO ─────────────────────────────────────
   { grupo: "ANC_TOTAL", re: /^ativo\s+n[aã]o[\s-]*circulante$/ },
-  { grupo: "ANC_TOTAL", re: /^ativo\s+peprospecçãonente$/ },
+  { grupo: "ANC_TOTAL", re: /^ativo\s+peprospeccaonente$/ },
   { grupo: "ANC_TOTAL", re: /^realiz[aá]vel\s+a\s+longo\s+prazo$/ },
   { grupo: "AC_TOTAL",  re: /^ativo\s+circulante$/ },
 

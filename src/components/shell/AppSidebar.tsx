@@ -30,7 +30,7 @@ const roleLabels: Record<string, string> = {
   coordenador: "Coordenador",
   consultor: "Consultor",
   magistrado: "Magistrado",
-  recuperanda: "Empresa Prospecção",
+  recuperanda: "Empresa Prospeccao",
   gestor_ia: "Gestor IA",
 };
 
@@ -54,7 +54,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         
         { label: "Planilha de Carga",  to: "/dashboard/relatorios",  icon: FileBarChart },
         { label: "Base de Dados",      to: "/consultor/base-de-dados", icon: Database },
-        { label: "Empresa Prospecção", to: "/dashboard/empresas",    icon: Building2 },
+        { label: "Empresa Prospeccao", to: "/dashboard/empresas",    icon: Building2 },
         
         { label: "Cadastros",   to: "/cadastro-prospeccao-aj", icon: FilePlus },
         { label: "Relatórios & Cartas", to: "/relatorios-contabeis", icon: FileBarChart },
@@ -77,12 +77,12 @@ const buildNav = (role: string | null): NavGroup[] => {
         
         { label: "Planilha de Carga",    to: "/consultor/relatorios",    icon: FileBarChart },
         { label: "Base de Dados",        to: "/consultor/base-de-dados",  icon: Database },
-        { label: "Planilha Padrão Prospecção", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
-        { label: "Empresa Prospecção", to: "/consultor/clientes",      icon: Building2 },
+        { label: "Planilha Padrão Prospeccao", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
+        { label: "Empresa Prospeccao", to: "/consultor/clientes",      icon: Building2 },
         
         { label: "Cadastros",     to: "/consultor/cadastro",      icon: FilePlus, children: [
           { label: "Administrador Judicial", to: "/consultor/cadastro/admjudicial" },
-          { label: "Empresa Prospecção",            to: "/consultor/cadastro/recuperandas" },
+          { label: "Empresa Prospeccao",            to: "/consultor/cadastro/recuperandas" },
           { label: "Magistrado",              to: "/consultor/cadastro/magistrados" },
           { label: "Técnicos",                to: "/consultor/cadastro/tecnicos" },
         ] },
@@ -112,7 +112,7 @@ const buildNav = (role: string | null): NavGroup[] => {
       items: [
         { label: "Processos",       to: "/magistrado/processos", icon: Gavel },
         { label: "Prospecções AJ Recebidas",  to: "/magistrado/prospeccoes-aj",      icon: FileText, badge: 7 },
-        { label: "Empresa Prospecção",    to: "/magistrado/empresas",  icon: Building2 },
+        { label: "Empresa Prospeccao",    to: "/magistrado/empresas",  icon: Building2 },
         { label: "Decisões",        to: "/magistrado/decisoes",  icon: Scale },
         { label: "Histórico",       to: "/magistrado/historico", icon: History },
       ],
@@ -121,7 +121,7 @@ const buildNav = (role: string | null): NavGroup[] => {
 
   if (role === "recuperanda") {
     groups.push({
-      label: "Minha Prospecção",
+      label: "Minha Prospeccao",
       items: [
         { label: "Documentos",   to: "/recuperanda/documentos",  icon: FolderOpen },
         { label: "Pendências",   to: "/recuperanda/pendencias",  icon: AlertTriangle, badge: 14 },
@@ -136,7 +136,7 @@ const buildNav = (role: string | null): NavGroup[] => {
     groups.push({
       label: "Administração",
       items: [
-        { label: "Empresa Prospecção", to: "/admjudicial/recuperandas", icon: Building2 },
+        { label: "Empresa Prospeccao", to: "/admjudicial/recuperandas", icon: Building2 },
         { label: "Prospecções AJ", to: "/admjudicial/prospeccoes-aj",         icon: Briefcase },
         { label: "Pendências",   to: "/admjudicial/pendencias",   icon: AlertTriangle, badge: 23 },
         { label: "Planilha de Carga",   to: "/admjudicial/relatorios",   icon: FileBarChart },
@@ -179,9 +179,9 @@ export default function AppSidebar() {
 
   const [contrast, setContrast] = useState<"dark" | "light">(() => {
     if (typeof window === "undefined") return "dark";
-    return (localStorage.getItem("prospecção:sidebar-contrast") as "dark" | "light") || "dark";
+    return (localStorage.getItem("prospeccao:sidebar-contrast") as "dark" | "light") || "dark";
   });
-  useEffect(() => { localStorage.setItem("prospecção:sidebar-contrast", contrast); }, [contrast]);
+  useEffect(() => { localStorage.setItem("prospeccao:sidebar-contrast", contrast); }, [contrast]);
   const theme = THEMES[contrast];
   const NAVY = theme.bg;
   const NAVY_SOFT = theme.soft;
@@ -224,7 +224,7 @@ export default function AppSidebar() {
             </div>
             {!collapsed && (
               <div className="leading-tight">
-                <div className={`text-base font-bold tracking-wide ${txtStrong}`}>Plataforma de Prospecção BEx</div>
+                <div className={`text-base font-bold tracking-wide ${txtStrong}`}>Plataforma de Prospeccao BEx</div>
               </div>
             )}
           </div>

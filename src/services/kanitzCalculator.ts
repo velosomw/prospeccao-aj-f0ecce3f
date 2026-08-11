@@ -6,7 +6,7 @@
  *   K = 0,05·RL + 1,65·LG + 3,55·LS − 1,06·LC − 0,33·GE
  *
  * Camadas:
- *   1. Padronização (KanitzNoprospecçãolizedInput)
+ *   1. Padronização (KanitzNoprospeccaolizedInput)
  *   2. Cálculo dos indicadores com validações
  *   3. Cálculo Kanitz (FI)
  *   4. Classificação de Risco
@@ -20,7 +20,7 @@ import type { ParsedFinancialData } from "@/services/auditAIService";
 export type KanitzClassification = "saudavel" | "atencao" | "insolvencia" | "bloqueado";
 export type KanitzOrigin = "ocr" | "ia" | "manual" | "integracao";
 
-export interface KanitzNoprospecçãolizedInput {
+export interface KanitzNoprospeccaolizedInput {
   periodo: string;
   ac: number;          // Ativo Circulante
   pc: number;          // Passivo Circulante
@@ -59,7 +59,7 @@ export interface KanitzBlock {
 
 export interface KanitzResultV2 {
   periodo: string;
-  input: KanitzNoprospecçãolizedInput;
+  input: KanitzNoprospeccaolizedInput;
   indicators: KanitzIndicators;
   validation: KanitzValidation;
   k: number;
@@ -83,13 +83,13 @@ function findValue(parsed: ParsedFinancialData, keyword: string, year: string): 
 }
 
 /**
- * Camada 1 — extrai input noprospecçãolizado a partir de ParsedFinancialData (OCR pipeline).
+ * Camada 1 — extrai input normalizado a partir de ParsedFinancialData (OCR pipeline).
  */
 export function extractFromParsed(
   parsed: ParsedFinancialData,
   year: string,
   origem: KanitzOrigin = "ocr"
-): KanitzNoprospecçãolizedInput {
+): KanitzNoprospeccaolizedInput {
   const ac = Math.abs(findValue(parsed, "total do ativo circulante", year) || findValue(parsed, "ativo circulante", year));
   const pc = Math.abs(findValue(parsed, "total do passivo circulante", year) || findValue(parsed, "passivo circulante", year));
   const elp = Math.abs(
@@ -126,7 +126,7 @@ export function extractFromParsed(
 /**
  * Camada 1 — extrai a partir do bloco aiAnalysis (fallback IA).
  */
-export function extractFromAiAnalysis(aiAnalysis: any, periodo = "Análise IA"): KanitzNoprospecçãolizedInput | null {
+export function extractFromAiAnalysis(aiAnalysis: any, periodo = "Análise IA"): KanitzNoprospeccaolizedInput | null {
   const ef = aiAnalysis?.diagnostico?.estruturaFinanceira;
   if (!ef) return null;
   return {
@@ -147,7 +147,7 @@ export function extractFromAiAnalysis(aiAnalysis: any, periodo = "Análise IA"):
 
 /* ───── Camada 5 — Regras de bloqueio ───── */
 
-export function checkBlocks(input: KanitzNoprospecçãolizedInput): KanitzBlock {
+export function checkBlocks(input: KanitzNoprospeccaolizedInput): KanitzBlock {
   const reasons: string[] = [];
   if (input.pl <= 0) reasons.push("PL ≤ 0 (patrimônio líquido nulo ou negativo)");
   if (input.pc === 0) reasons.push("PC = 0 (passivo circulante ausente)");
@@ -162,7 +162,7 @@ export function checkBlocks(input: KanitzNoprospecçãolizedInput): KanitzBlock 
 
 /* ───── Camada 2 — Indicadores ───── */
 
-export function computeIndicators(input: KanitzNoprospecçãolizedInput): KanitzIndicators {
+export function computeIndicators(input: KanitzNoprospeccaolizedInput): KanitzIndicators {
   const { ac, pc, rlp, elp, pl, estoques, lucroLiquido } = input;
   const rl = pl !== 0 ? lucroLiquido / pl : 0;
   const lg = (pc + elp) !== 0 ? (ac + rlp) / (pc + elp) : 0;
@@ -211,7 +211,7 @@ export function compareWithExcel(k: number, kExcel?: number): { diff?: number; s
 
 /* ───── Pipeline completo ───── */
 
-export function calcKanitz(input: KanitzNoprospecçãolizedInput, kExcel?: number): KanitzResultV2 {
+export function calcKanitz(input: KanitzNoprospeccaolizedInput, kExcel?: number): KanitzResultV2 {
   const block = checkBlocks(input);
   const indicators = computeIndicators(input);
   const validation = validateIndicators(indicators);

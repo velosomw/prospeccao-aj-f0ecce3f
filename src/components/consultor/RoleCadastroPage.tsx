@@ -377,7 +377,7 @@ export default function RoleCadastroPage({
       {deleting && (
         <Modal title={`Excluir ${singular}?`} onClose={() => setDeleting(null)}>
           <p className="text-sm text-muted-foreground">
-            Confiprospecção a exclusão de <strong className="text-foreground">{deleting.full_name || "—"}</strong>{" "}
+            Confirmacao a exclusão de <strong className="text-foreground">{deleting.full_name || "—"}</strong>{" "}
             (<strong className="text-foreground">{deleting.email}</strong>)? Esta ação não pode ser desfeita.
           </p>
           <div className="flex justify-end gap-3 pt-5">

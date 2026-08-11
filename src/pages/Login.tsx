@@ -114,7 +114,7 @@ const Login = () => {
             </div>
             <h1 className="text-2xl font-bold text-foreground">Plataforma</h1>
             <h2 className="text-2xl font-bold bg-gradient-to-r from-[hsl(217,91%,50%)] to-[hsl(200,98%,60%)] bg-clip-text text-transparent">
-              Prospecção IA
+              Prospeccao IA
             </h2>
           </div>
 
@@ -127,7 +127,7 @@ const Login = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="empresa@prospecção.com.br"
+                    placeholder="empresa@prospeccao.com.br"
                     className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-primary"
                     required
                   />
@@ -207,7 +207,7 @@ const Login = () => {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="empresa@prospecção.com.br"
+                        placeholder="empresa@prospeccao.com.br"
                         className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-primary"
                         required
                       />

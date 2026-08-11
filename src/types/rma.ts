@@ -1,10 +1,10 @@
-// Tipos compartilhados do domínio Prospecção. Não contém dados mockados.
+// Tipos compartilhados do domínio Prospeccao. Não contém dados mockados.
 // Reexporta os tipos do arquivo legado para permitir migração gradual
-// dos imports `@/data/prospecçãoMockData` → `@/types/prospecção`.
+// dos imports `@/data/prospeccoesMockData` → `@/types/prospeccao`.
 export type {
-  ProspecçãoDocument,
-  ProspecçãoTopic,
-  ProspecçãoEntry,
+  ProspeccaoDocument,
+  ProspeccaoTopic,
+  ProspeccaoEntry,
   BalanceteRow,
   ReviewEntry,
-} from "@/data/prospecçãoMockData";
+} from "@/data/prospeccoesMockData";

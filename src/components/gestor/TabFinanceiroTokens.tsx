@@ -16,31 +16,31 @@ import {
   type CostConfigRow, type CostIndicators, type PeriodKey, type UsageLogRow,
 } from "@/services/gestorIaCostService";
 
-// 5 tipos de relatórios Prospecção acompanhados financeiramente
+// 5 tipos de relatórios Prospeccao acompanhados financeiramente
 const REPORT_TYPES = [
   { key: "registro_cobranca",  label: "Relatório de Registro e Cobrança", icon: Receipt,       color: "hsl(200,80%,55%)",
     matchers: [/registro/i, /cobran/i] },
   { key: "pre_parecer",        label: "Revisão-Parecer Técnico",          icon: ClipboardList, color: "hsl(258,90%,66%)",
     matchers: [/pre[_-]?parecer/i, /pré[-_ ]?parecer/i, /pre[_-]?relat/i] },
-  { key: "pre_relatorio",      label: "Revisão-Relatório Prospecção AJ",            icon: FileSearch,    color: "hsl(190,70%,50%)",
-    matchers: [/pre[_-]?relat/i, /pré[-_ ]?relat/i, /prospecção[_-]?mensal/i] },
+  { key: "pre_relatorio",      label: "Revisão-Relatório Prospeccao AJ",            icon: FileSearch,    color: "hsl(190,70%,50%)",
+    matchers: [/pre[_-]?relat/i, /pré[-_ ]?relat/i, /prospeccao[_-]?mensal/i] },
   { key: "parecer_final",      label: "Parecer Técnico Final",            icon: FileCheck2,    color: "hsl(152,70%,45%)",
     matchers: [/parecer[_-]?final/i, /^parecer_tecnico$/i] },
-  { key: "relatorio_final",    label: "Relatório Prospecção AJ Final",                  icon: FileBarChart2, color: "hsl(38,90%,55%)",
-    matchers: [/relat[oó]rio[_-]?final/i, /prospecção[_-]?final/i] },
+  { key: "relatorio_final",    label: "Relatório Prospeccao AJ Final",                  icon: FileBarChart2, color: "hsl(38,90%,55%)",
+    matchers: [/relat[oó]rio[_-]?final/i, /prospeccao[_-]?final/i] },
 ] as const;
 
 function classifyReportLog(l: UsageLogRow): string {
   const meta = (l.metadata ?? {}) as Record<string, unknown>;
   const hay = [
     meta.report_type, meta.documento_tipo, meta.tipo, meta.section,
-    (meta as any).prospecção_doc_tipo, (meta as any).fn, (meta as any).tool,
+    (meta as any).prospeccao_doc_tipo, (meta as any).fn, (meta as any).tool,
     (meta as any).file, l.type,
   ].map((v) => String(v ?? "")).join(" ");
   for (const rt of REPORT_TYPES) {
     if (rt.matchers.some((re) => re.test(hay))) return rt.key;
   }
-  // Fallback: logs de extração/OCR/embedding alimentam o Revisão-Relatório Prospecção
+  // Fallback: logs de extração/OCR/embedding alimentam o Revisão-Relatório Prospeccao
   return "pre_relatorio";
 }
 
@@ -161,7 +161,7 @@ const TabFinanceiroTokens = () => {
     ? e2eTotal / (data.totalBalancetes + data.totalRelatorios)
     : 0;
 
-  // Custos por tipo de relatório Prospecção (período corrente)
+  // Custos por tipo de relatório Prospeccao (período corrente)
   const periodCutoff = useMemo(() => {
     const now = new Date();
     switch (period) {
@@ -187,19 +187,19 @@ const TabFinanceiroTokens = () => {
     return stats;
   }, [logs, periodCutoff]);
 
-  // Custo Total (E2E) = soma dos 5 relatórios (custo total acumulado da empresa no Prospecção)
-  const custoTotalProspecçãoReports = useMemo(
+  // Custo Total (E2E) = soma dos 5 relatórios (custo total acumulado da empresa no Prospeccao)
+  const custoTotalProspeccaoReports = useMemo(
     () => REPORT_TYPES.reduce((acc, rt) => acc + (reportStats[rt.key]?.total ?? 0), 0),
     [reportStats],
   );
-  const totalDocsProspecçãoReports = useMemo(() => {
+  const totalDocsProspeccaoReports = useMemo(() => {
     const all = new Set<string>();
     for (const rt of REPORT_TYPES) reportStats[rt.key]?.docs.forEach((d) => all.add(d));
     return all.size;
   }, [reportStats]);
-  const custoMedioProspecção = totalDocsProspecçãoReports > 0 ? custoTotalProspecçãoReports / totalDocsProspecçãoReports : 0;
+  const custoMedioProspeccao = totalDocsProspeccaoReports > 0 ? custoTotalProspeccaoReports / totalDocsProspeccaoReports : 0;
 
-  // Custo médio por Relatório Final (Prospecção)
+  // Custo médio por Relatório Final (Prospeccao)
   const custoRelatorioFinal = (() => {
     const s = reportStats["relatorio_final"];
     return s && s.docs.size > 0 ? s.total / s.docs.size : 0;
@@ -275,7 +275,7 @@ const TabFinanceiroTokens = () => {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <KPI
           icon={FileText}
-          label="Custo por Relatório Prospecção AJ Final"
+          label="Custo por Relatório Prospeccao AJ Final"
           value={data ? fmtUSDc(data.custoMedioPorRelatorio) : "—"}
           sub={data ? `${data.counts.relatoriosFinalizados + data.counts.relatoriosEmElaboracao} relatório(s) · ${data.counts.relatoriosFinalizados} finalizado(s)` : "—"}
           color="hsl(258,90%,66%)"
@@ -291,14 +291,14 @@ const TabFinanceiroTokens = () => {
           icon={Wallet}
           label="Custo Total (E2E)"
           value={data ? fmtUSDc(data.custoTotal) : "—"}
-          sub={data ? `Σ IA · ${data.counts.prospecçãosTotal} Prospecção(s) na plataforma` : "—"}
+          sub={data ? `Σ IA · ${data.counts.prospeccoesTotal} Prospeccao(s) na plataforma` : "—"}
           color="hsl(200,80%,55%)"
         />
         <KPI
           icon={Activity}
-          label="Custo Médio por Prospecção AJ"
-          value={data ? fmtUSDc(data.custoMedioPorProspecção) : "—"}
-          sub={data ? `Custo total ÷ ${data.counts.prospecçãosTotal} Prospecção(s) (análise → conclusão)` : "—"}
+          label="Custo Médio por Prospeccao AJ"
+          value={data ? fmtUSDc(data.custoMedioPorProspeccao) : "—"}
+          sub={data ? `Custo total ÷ ${data.counts.prospeccoesTotal} Prospeccao(s) (análise → conclusão)` : "—"}
           color="hsl(38,90%,55%)"
         />
         <KPI
@@ -310,12 +310,12 @@ const TabFinanceiroTokens = () => {
         />
       </div>
 
-      {/* Custo por tipo de Relatório Prospecção — médias acumuladas */}
+      {/* Custo por tipo de Relatório Prospeccao — médias acumuladas */}
       <div>
         <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
           <div>
             <h4 className="font-semibold text-foreground flex items-center gap-2">
-              <FileBarChart2 className="w-4 h-4 text-[hsl(258,90%,66%)]" /> Custo médio por tipo de Relatório Prospecção
+              <FileBarChart2 className="w-4 h-4 text-[hsl(258,90%,66%)]" /> Custo médio por tipo de Relatório Prospeccao
             </h4>
             <p className="text-xs text-muted-foreground">Custo acumulado ÷ documentos únicos por relatório · período: <b>{data?.periodLabel}</b></p>
           </div>
@@ -326,7 +326,7 @@ const TabFinanceiroTokens = () => {
             const docs = s?.docs.size ?? 0;
             const avg = docs > 0 ? s.total / docs : 0;
             const total = s?.total ?? 0;
-            const pct = custoTotalProspecçãoReports > 0 ? (total / custoTotalProspecçãoReports) * 100 : 0;
+            const pct = custoTotalProspeccaoReports > 0 ? (total / custoTotalProspeccaoReports) * 100 : 0;
             const Icon = rt.icon;
             return (
               <div
@@ -371,14 +371,14 @@ const TabFinanceiroTokens = () => {
         </div>
       </div>
 
-      {/* Detalhe Custo Médio por Etapa do Prospecção — colapsável */}
+      {/* Detalhe Custo Médio por Etapa do Prospeccao — colapsável */}
       <div className="bg-card rounded-xl border border-border overflow-hidden">
         <button
           onClick={() => setStageOpen((v) => !v)}
           className="w-full p-4 flex items-center justify-between hover:bg-muted/30 transition-colors"
         >
           <span className="font-semibold text-foreground flex items-center gap-2">
-            <FileBarChart2 className="w-4 h-4 text-[hsl(258,90%,66%)]" /> Custo médio por etapa do Prospecção
+            <FileBarChart2 className="w-4 h-4 text-[hsl(258,90%,66%)]" /> Custo médio por etapa do Prospeccao
           </span>
           <div className="flex items-center gap-3">
             <span className="text-xs text-muted-foreground hidden sm:inline">
@@ -397,7 +397,7 @@ const TabFinanceiroTokens = () => {
           <div className="border-t border-border p-5">
             <table className="w-full text-sm">
               <thead><tr className="border-b border-border">
-                <th className="text-left py-2 font-semibold text-muted-foreground">Etapa do Prospecção AJ</th>
+                <th className="text-left py-2 font-semibold text-muted-foreground">Etapa do Prospeccao AJ</th>
                 <th className="text-right py-2 font-semibold text-muted-foreground">Documentos</th>
                 <th className="text-right py-2 font-semibold text-muted-foreground">Custo médio / doc</th>
                 <th className="text-right py-2 font-semibold text-muted-foreground">Total acumulado</th>
@@ -409,7 +409,7 @@ const TabFinanceiroTokens = () => {
                   const docs = s?.docs.size ?? 0;
                   const total = s?.total ?? 0;
                   const avg = docs > 0 ? total / docs : 0;
-                  const pct = custoTotalProspecçãoReports > 0 ? (total / custoTotalProspecçãoReports) * 100 : 0;
+                  const pct = custoTotalProspeccaoReports > 0 ? (total / custoTotalProspeccaoReports) * 100 : 0;
                   return (
                     <tr key={rt.key} className="border-b border-border last:border-0">
                       <td className="py-2 text-foreground flex items-center gap-2">
@@ -424,10 +424,10 @@ const TabFinanceiroTokens = () => {
                   );
                 })}
                 <tr className="bg-[hsl(258,90%,66%)]/10">
-                  <td className="py-2 font-bold">Total geral Prospecção AJ</td>
-                  <td className="py-2 text-right font-mono font-bold">{totalDocsProspecçãoReports}</td>
-                  <td className="py-2 text-right font-mono font-bold">{fmtUSDc(custoMedioProspecção)}</td>
-                  <td className="py-2 text-right font-mono font-bold">{fmtUSDc(custoTotalProspecçãoReports)}</td>
+                  <td className="py-2 font-bold">Total geral Prospeccao AJ</td>
+                  <td className="py-2 text-right font-mono font-bold">{totalDocsProspeccaoReports}</td>
+                  <td className="py-2 text-right font-mono font-bold">{fmtUSDc(custoMedioProspeccao)}</td>
+                  <td className="py-2 text-right font-mono font-bold">{fmtUSDc(custoTotalProspeccaoReports)}</td>
                   <td className="py-2 text-right font-mono font-bold">100,0%</td>
                 </tr>
               </tbody>

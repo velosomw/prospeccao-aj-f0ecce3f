@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { DIP_FOLDERS, validateDipFolderIntegrity, PROSPECCAO_TOPICS_WITHOUT_DIP_FOLDER } from "@/data/dipFolders";
-import { PROSPECCAO_TOPICS } from "@/data/prospecçãoTopics";
+import { PROSPECCAO_TOPICS } from "@/data/prospeccaoTopics";
 
-describe("DIP folders ↔ Prospecção topics", () => {
+describe("DIP folders ↔ Prospeccao topics", () => {
   it("tem 60 pastas com ids sequenciais 1..60", () => {
     expect(DIP_FOLDERS).toHaveLength(60);
     expect(DIP_FOLDERS.map((f) => f.id)).toEqual(Array.from({ length: 60 }, (_, i) => i + 1));
   });
 
-  it("cobre todos os tópicos Prospecção (exceto internos)", () => {
+  it("cobre todos os tópicos Prospeccao (exceto internos)", () => {
     const topicNumbers = PROSPECCAO_TOPICS.map((t) => t.number);
     const errors = validateDipFolderIntegrity(topicNumbers);
     expect(errors).toEqual([]);

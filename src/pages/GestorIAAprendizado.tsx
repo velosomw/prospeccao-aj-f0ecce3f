@@ -313,7 +313,7 @@ function UploadTab({ onSaved }: { onSaved: () => void }) {
         extraction: {
           id: extractionId,
           document_id: null,
-          prospecção_id: null,
+          prospeccao_id: null,
           path: uploaded ? `learning-docs/${uploaded.path}` : null,
           classe,
           agent: aiResult.agent ?? null,
@@ -610,7 +610,7 @@ function PendingTab() {
                   </Badge>
                 </div>
                 <p className="text-[11px] text-muted-foreground truncate">
-                  {it.path || it.prospecção_id || it.id.slice(0, 8)}
+                  {it.path || it.prospeccao_id || it.id.slice(0, 8)}
                 </p>
                 <p className="text-[10px] text-muted-foreground">
                   {new Date(it.created_at).toLocaleString("pt-BR")}
@@ -751,7 +751,7 @@ export default function GestorIAAprendizado() {
         <Tabs defaultValue="upload" className="space-y-4">
           <TabsList>
             <TabsTrigger value="upload" className="gap-2"><Upload className="w-4 h-4" /> Upload manual</TabsTrigger>
-            <TabsTrigger value="pending" className="gap-2"><Inbox className="w-4 h-4" /> Pendentes do Prospecção AJ</TabsTrigger>
+            <TabsTrigger value="pending" className="gap-2"><Inbox className="w-4 h-4" /> Pendentes do Prospeccao AJ</TabsTrigger>
             <TabsTrigger value="history" className="gap-2"><FileText className="w-4 h-4" /> Histórico de aprendizado</TabsTrigger>
             <TabsTrigger value="quality" className="gap-2"><ShieldAlert className="w-4 h-4" /> Qualidade & Antifraude</TabsTrigger>
           </TabsList>

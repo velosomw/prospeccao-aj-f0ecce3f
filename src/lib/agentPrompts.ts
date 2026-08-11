@@ -89,7 +89,7 @@ Analise o texto OCR e extraia:
    - Despesas
    - Lucro líquido
 
-2. Noprospecçãolize:
+2. Noprospeccaolize:
    - Valores negativos entre parênteses → negativos
    - Percentuais → número decimal
 

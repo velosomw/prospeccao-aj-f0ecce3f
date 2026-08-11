@@ -15,9 +15,9 @@ import {
 // ─── Mock Data ───────────────────────────────────────────────
 const mockAccessLogs: any[] = [];
 
-const acaoOptions = ["Todas", "Login", "Logout", "Visualização de Prospecção", "Upload de documento", "Aprovação/Reprovação", "Alteração de dados", "Download de arquivos"];
-const perfilOptions = ["Todos", "Coordenador", "Consultor", "Magistrado", "Empresa Prospecção", "Gestor IA"];
-const moduloOptions = ["Todos", "Dashboard", "Prospecção", "Documentos", "Relatórios", "Gestor IA", "Financeiro"];
+const acaoOptions = ["Todas", "Login", "Logout", "Visualização de Prospeccao", "Upload de documento", "Aprovação/Reprovação", "Alteração de dados", "Download de arquivos"];
+const perfilOptions = ["Todos", "Coordenador", "Consultor", "Magistrado", "Empresa Prospeccao", "Gestor IA"];
+const moduloOptions = ["Todos", "Dashboard", "Prospeccao", "Documentos", "Relatórios", "Gestor IA", "Financeiro"];
 
 const ITEMS_PER_PAGE = 8;
 
@@ -31,7 +31,7 @@ const getAcaoIcon = (a: string) => {
   switch (a) {
     case "Login": return <LogIn className="w-3.5 h-3.5 text-[hsl(152,70%,45%)]" />;
     case "Logout": return <LogOut className="w-3.5 h-3.5 text-muted-foreground" />;
-    case "Visualização de Prospecção": return <Eye className="w-3.5 h-3.5 text-[hsl(258,90%,66%)]" />;
+    case "Visualização de Prospeccao": return <Eye className="w-3.5 h-3.5 text-[hsl(258,90%,66%)]" />;
     case "Upload de documento": return <Upload className="w-3.5 h-3.5 text-[hsl(38,90%,55%)]" />;
     case "Aprovação/Reprovação": return <CheckCircle2 className="w-3.5 h-3.5 text-[hsl(152,70%,45%)]" />;
     case "Alteração de dados": return <Edit className="w-3.5 h-3.5 text-[hsl(0,70%,55%)]" />;
@@ -45,7 +45,7 @@ const getPerfilColor = (p: string) => {
     case "Coordenador": return "bg-[hsl(258,90%,66%)]/10 text-[hsl(258,90%,66%)]";
     case "Consultor": return "bg-[hsl(210,80%,50%)]/10 text-[hsl(210,80%,50%)]";
     case "Magistrado": return "bg-[hsl(38,90%,55%)]/10 text-[hsl(38,90%,55%)]";
-    case "Empresa Prospecção": return "bg-[hsl(152,70%,45%)]/10 text-[hsl(152,70%,45%)]";
+    case "Empresa Prospeccao": return "bg-[hsl(152,70%,45%)]/10 text-[hsl(152,70%,45%)]";
     case "Gestor IA": return "bg-[hsl(0,70%,55%)]/10 text-[hsl(0,70%,55%)]";
     default: return "bg-muted text-muted-foreground";
   }
@@ -266,17 +266,17 @@ const TabRegistroAcesso = () => {
         </div>
       </div>
 
-      {/* Delete Confiprospecçãotion Dialog */}
+      {/* Delete Confirmacaotion Dialog */}
       <Dialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-[hsl(0,70%,55%)]">
-              <Trash2 className="w-5 h-5" /> Confiprospecçãor Exclusão
+              <Trash2 className="w-5 h-5" /> Confirmacaor Exclusão
             </DialogTitle>
           </DialogHeader>
           {deleteLogEntry && (
             <div className="space-y-3 text-sm">
-              <p className="text-muted-foreground">Tem certeza que deseja excluir peprospecçãonentemente este registro de acesso?</p>
+              <p className="text-muted-foreground">Tem certeza que deseja excluir permanentemente este registro de acesso?</p>
               <div className="bg-muted/30 rounded-lg border border-border p-3 space-y-1.5 text-xs">
                 <div className="flex justify-between"><span className="text-muted-foreground">Usuário:</span><span className="font-medium text-foreground">{deleteLogEntry.nome}</span></div>
                 <div className="flex justify-between"><span className="text-muted-foreground">Data:</span><span className="font-medium text-foreground">{deleteLogEntry.data} às {deleteLogEntry.horaLogin}</span></div>

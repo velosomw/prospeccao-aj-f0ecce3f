@@ -11,7 +11,7 @@ export type AiStatus = "pending" | "processing" | "completed" | "failed" | "canc
 
 export interface AiProcessInput {
   document_id?: string;
-  prospecção_id?: string;
+  prospeccao_id?: string;
   text: string;
   normalized_text?: string;
   path?: string;
@@ -213,7 +213,7 @@ export async function waitForProcessing(
       consecutiveErrors = 0;
       onProgress?.(s);
       if (isTerminal(s.status)) return s;
-      // Reset interval enquanto progride noprospecçãolmente
+      // Reset interval enquanto progride normalmente
       interval = baseInterval;
     } catch (err) {
       if ((err as { name?: string })?.name === "AbortError") throw err;
@@ -275,7 +275,7 @@ export async function retryProcessing(previousJobId: string): Promise<AiProcessA
 
   return await startAsyncProcessing({
     document_id: prev.document_id ?? undefined,
-    prospecção_id: prev.prospecção_id ?? undefined,
+    prospeccao_id: prev.prospeccao_id ?? undefined,
     text: prev.raw_text,
     normalized_text: prev.normalized_text ?? undefined,
     path: prev.path ?? undefined,
@@ -284,11 +284,11 @@ export async function retryProcessing(previousJobId: string): Promise<AiProcessA
   });
 }
 
-export async function listExtractionsByRma(prospecçãoId: string) {
+export async function listExtractionsByRma(prospeccaoId: string) {
   const { data, error } = await supabase
     .from("ai_extractions")
     .select("*")
-    .eq("prospecção_id", prospecçãoId)
+    .eq("prospeccao_id", prospeccaoId)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data;

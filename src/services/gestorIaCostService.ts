@@ -54,13 +54,13 @@ export interface CostInsight {
 }
 
 export interface PlatformCounts {
-  prospecçãosTotal: number;            // Prospecçãos distintos analisados (prospecção_analysis_results)
-  prospecçãosConcluidos: number;
-  prospecçãosEmAnalise: number;
+  prospeccoesTotal: number;            // Prospeccoes distintos analisados (prospeccao_analysis_results)
+  prospeccoesConcluidos: number;
+  prospeccoesEmAnalise: number;
   balancetesRuns: number;       // balancete_runs total
   balancetesConsolidados: number;
-  relatoriosFinalizados: number;  // prospecção_documents status='finalizado'
-  relatoriosEmElaboracao: number; // prospecção_documents status<>'finalizado'
+  relatoriosFinalizados: number;  // prospeccao_documents status='finalizado'
+  relatoriosEmElaboracao: number; // prospeccao_documents status<>'finalizado'
   documentosOcr: number;        // ai_extractions distintos
 }
 
@@ -69,8 +69,8 @@ export interface CostIndicators {
   custoBalancete: number;          // custo IA atribuído a OCR/extraction/embedding
   custoRelatorio: number;          // custo IA atribuído a geração de relatório
   custoIaOcrProcessamento: number; // OCR + extraction + embedding + classification + validation
-  custoMedioExecucao: number;      // custoTotal / Prospecçãos reais
-  custoMedioPorProspecção: number;        // custoTotal / nº Prospecçãos
+  custoMedioExecucao: number;      // custoTotal / Prospeccoes reais
+  custoMedioPorProspeccao: number;        // custoTotal / nº Prospeccoes
   custoMedioPorBalancete: number;  // custoBalancete / nº runs balancete
   custoMedioPorRelatorio: number;  // custoRelatorio / nº relatórios (finalizados+andamento)
   totalBalancetes: number;
@@ -182,11 +182,11 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
   const counts = await fetchPlatformCounts(cutoff);
 
   // Custos médios por unidade real
-  const custoMedioPorProspecção       = counts.prospecçãosTotal > 0 ? custoTotal / counts.prospecçãosTotal : 0;
+  const custoMedioPorProspeccao       = counts.prospeccoesTotal > 0 ? custoTotal / counts.prospeccoesTotal : 0;
   const custoMedioPorBalancete = counts.balancetesRuns > 0 ? custoBalancete / counts.balancetesRuns : 0;
   const totalRel = counts.relatoriosFinalizados + counts.relatoriosEmElaboracao;
   const custoMedioPorRelatorio = totalRel > 0 ? custoRelatorio / totalRel : 0;
-  const custoMedioExecucao     = counts.prospecçãosTotal > 0 ? custoTotal / counts.prospecçãosTotal : 0;
+  const custoMedioExecucao     = counts.prospeccoesTotal > 0 ? custoTotal / counts.prospeccoesTotal : 0;
 
   const totalBalancetes = counts.balancetesRuns;
   const totalRelatorios = totalRel;
@@ -262,7 +262,7 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
       level: "info",
       alerta: `Possível economia de ~${economia.toFixed(2)} USD`,
       causa: "Mais de 30% do custo está em modelo Pro.",
-      acao: "Use Pro só para insight final; mapping/noprospecçãolização pode ir para Flash.",
+      acao: "Use Pro só para insight final; mapping/normalização pode ir para Flash.",
     });
   }
 
@@ -272,7 +272,7 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
     custoRelatorio,
     custoIaOcrProcessamento,
     custoMedioExecucao,
-    custoMedioPorProspecção,
+    custoMedioPorProspeccao,
     custoMedioPorBalancete,
     custoMedioPorRelatorio,
     totalBalancetes,
@@ -301,20 +301,20 @@ export async function fetchPlatformCounts(cutoff: Date | null): Promise<Platform
     return count ?? 0;
   };
 
-  const [prospecçãosTotal, prospecçãosConcluidos, prospecçãosEmAnalise, balancetesRuns, balancetesConsolidados,
+  const [prospeccoesTotal, prospeccoesConcluidos, prospeccoesEmAnalise, balancetesRuns, balancetesConsolidados,
     relatoriosFinalizados, relatoriosEmElaboracao, documentosOcr] = await Promise.all([
-    cnt("prospecção_analysis_results"),
-    cnt("prospecção_analysis_results", (q: any) => q.eq("status", "concluido")),
-    cnt("prospecção_analysis_results", (q: any) => q.eq("status", "em_analise")),
+    cnt("prospeccao_analysis_results"),
+    cnt("prospeccao_analysis_results", (q: any) => q.eq("status", "concluido")),
+    cnt("prospeccao_analysis_results", (q: any) => q.eq("status", "em_analise")),
     cnt("balancete_runs"),
     cnt("balancete_consolidado"),
-    cnt("prospecção_documents", (q: any) => q.eq("status", "finalizado")),
-    cnt("prospecção_documents", (q: any) => q.neq("status", "finalizado")),
+    cnt("prospeccao_documents", (q: any) => q.eq("status", "finalizado")),
+    cnt("prospeccao_documents", (q: any) => q.neq("status", "finalizado")),
     cnt("ai_extractions"),
   ]);
 
   return {
-    prospecçãosTotal, prospecçãosConcluidos, prospecçãosEmAnalise,
+    prospeccoesTotal, prospeccoesConcluidos, prospeccoesEmAnalise,
     balancetesRuns, balancetesConsolidados,
     relatoriosFinalizados, relatoriosEmElaboracao,
     documentosOcr,

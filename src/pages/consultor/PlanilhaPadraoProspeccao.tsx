@@ -15,7 +15,7 @@ type Linha = {
   juiz: string | null;
 };
 
-// Dados extraídos da planilha padrão "BEx_Planilha_Padrão_Prospecção_Administrador_Judicial"
+// Dados extraídos da planilha padrão "BEx_Planilha_Padrão_Prospeccao_Administrador_Judicial"
 const LINHAS: Linha[] = [];
 
 const MESES_PT = [
@@ -94,8 +94,8 @@ export default function PlanilhaPadraoProspeccao() {
 
   return (
     <ConsultorPageShell
-      title="Planilha Padrão Prospecção"
-      subtitle="Dados da planilha padrão de prospecção para Administrador Judicial — recuperações judiciais mapeadas."
+      title="Planilha Padrão Prospeccao"
+      subtitle="Dados da planilha padrão de prospeccao para Administrador Judicial — recuperações judiciais mapeadas."
       search={search}
       onSearch={setSearch}
       kpis={[

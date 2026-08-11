@@ -19,7 +19,7 @@ const scoreColor = (s: number) => s < 33 ? "hsl(0,84%,55%)" : s < 67 ? "hsl(38,9
 export default function AdmRecuperandas() {
   return (
     <ConsultorPageShell
-      title="Empresas Prospecção" subtitle="Empresas sob sua administração judicial."
+      title="Empresas Prospeccao" subtitle="Empresas sob sua administração judicial."
       kpis={[
         { label: "Total",       value: empresas.length, hint: "Sob administração", icon: Building2, tone: "blue" },
         { label: "Saudáveis",   value: empresas.filter(e => e.status === "Saudável").length, hint: "Score ≥ 67", icon: TrendingUp, tone: "green" },
@@ -30,7 +30,7 @@ export default function AdmRecuperandas() {
       ]}
     >
       <div className="bg-white rounded-xl border">
-        <div className="p-4 border-b"><h3 className="text-sm font-semibold">Empresas Prospecção</h3></div>
+        <div className="p-4 border-b"><h3 className="text-sm font-semibold">Empresas Prospeccao</h3></div>
         <table className="w-full text-sm">
           <thead className="bg-muted/40 text-xs text-muted-foreground uppercase tracking-wider">
             <tr>

@@ -52,7 +52,7 @@ export const ARCH_BLOCKS: { key: string; label: string; phases: ArchPhase[] }[] 
   "name": "balancete.pdf"
 }`,
         notes: [
-          "Conector já implementado: Projeto Prospecção / 03-2026",
+          "Conector já implementado: Projeto Prospeccao / 03-2026",
           "Webhook = Microsoft Graph Change Notifications",
         ],
       },
@@ -152,7 +152,7 @@ export const ARCH_BLOCKS: { key: string; label: string; phases: ArchPhase[] }[] 
   },
   {
     key: "storage",
-    label: "4. Aprospecçãozenamento",
+    label: "4. Aprospeccaozenamento",
     phases: [
       {
         id: "postgres",

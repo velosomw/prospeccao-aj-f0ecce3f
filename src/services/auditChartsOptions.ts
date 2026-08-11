@@ -18,7 +18,7 @@ export const EXCEL_COLORS = {
   amarelo: "#F2C200",
 };
 
-// ─── FOProspecçãoTTERS ───────────────────────────────────────────────────────────
+// ─── FOProspeccaoTTERS ───────────────────────────────────────────────────────────
 export const fmtMilhar = (v: number | null | undefined): string => {
   if (v === null || v === undefined || !Number.isFinite(v)) return "#N/D";
   const n = Math.round(v as number);

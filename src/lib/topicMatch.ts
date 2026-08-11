@@ -1,4 +1,4 @@
-// Shared helper: matches a OneDrive file path/name against an Prospecção topic number.
+// Shared helper: matches a OneDrive file path/name against an Prospeccao topic number.
 //
 // PROBLEMA ANTERIOR:
 //   O regex /(^|\/)0?N[\s._-]/ batia em qualquer segmento numerado, incluindo

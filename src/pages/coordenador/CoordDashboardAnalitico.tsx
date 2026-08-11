@@ -16,18 +16,18 @@ const COLORS = {
 };
 
 const consultores = [
-  { nome: "Ana Silva",       prospecçãos: 12, score: 87, status: "Ativo" },
-  { nome: "Carlos Mendes",   prospecçãos: 9,  score: 74, status: "Ativo" },
-  { nome: "Fernanda Costa",  prospecçãos: 7,  score: 91, status: "Ativo" },
-  { nome: "Rafael Souza",    prospecçãos: 5,  score: 62, status: "Sobrecarga" },
-  { nome: "Julia Pereira",   prospecçãos: 4,  score: 80, status: "Ativo" },
+  { nome: "Ana Silva",       prospeccoes: 12, score: 87, status: "Ativo" },
+  { nome: "Carlos Mendes",   prospeccoes: 9,  score: 74, status: "Ativo" },
+  { nome: "Fernanda Costa",  prospeccoes: 7,  score: 91, status: "Ativo" },
+  { nome: "Rafael Souza",    prospeccoes: 5,  score: 62, status: "Sobrecarga" },
+  { nome: "Julia Pereira",   prospeccoes: 4,  score: 80, status: "Ativo" },
 ];
 
 const aprovacoes = [
-  { id: "Prospecção-0012", empresa: "DIPLOMATA",  consultor: "Ana Silva",      score: 87, sla: "Hoje" },
-  { id: "Prospecção-0014", empresa: "TECNOMAX",   consultor: "Carlos Mendes",  score: 72, sla: "Hoje" },
-  { id: "Prospecção-0009", empresa: "BENTOIA",    consultor: "Fernanda Costa", score: 91, sla: "Em 1d" },
-  { id: "Prospecção-0011", empresa: "MOVAG",      consultor: "Rafael Souza",   score: 41, sla: "Em 2d" },
+  { id: "Prospeccao-0012", empresa: "DIPLOMATA",  consultor: "Ana Silva",      score: 87, sla: "Hoje" },
+  { id: "Prospeccao-0014", empresa: "TECNOMAX",   consultor: "Carlos Mendes",  score: 72, sla: "Hoje" },
+  { id: "Prospeccao-0009", empresa: "BENTOIA",    consultor: "Fernanda Costa", score: 91, sla: "Em 1d" },
+  { id: "Prospeccao-0011", empresa: "MOVAG",      consultor: "Rafael Souza",   score: 41, sla: "Em 2d" },
 ];
 
 const distStatus = [
@@ -42,7 +42,7 @@ const evolucao = [
   { m: "Abr", v: 28 }, { m: "Mai", v: 24 },
 ];
 
-const equipeBar = consultores.map(c => ({ name: c.nome.split(" ")[0], prospecçãos: c.prospecçãos }));
+const equipeBar = consultores.map(c => ({ name: c.nome.split(" ")[0], prospeccoes: c.prospeccoes }));
 
 export default function Dashboard() {
   const { userName } = useUser();
@@ -96,8 +96,8 @@ export default function Dashboard() {
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis hide />
                 <Tooltip />
-                <Bar dataKey="prospecçãos" fill={COLORS.blue} radius={[8,8,0,0]} maxBarSize={42}>
-                  <LabelList dataKey="prospecçãos" position="top" style={{ fontSize: 11, fontWeight: 700 }} />
+                <Bar dataKey="prospeccoes" fill={COLORS.blue} radius={[8,8,0,0]} maxBarSize={42}>
+                  <LabelList dataKey="prospeccoes" position="top" style={{ fontSize: 11, fontWeight: 700 }} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -148,7 +148,7 @@ export default function Dashboard() {
 
         <div className="bg-white rounded-xl border">
           <div className="p-4 border-b">
-            <h3 className="text-sm font-semibold">Perfoprospecçãonce da Equipe</h3>
+            <h3 className="text-sm font-semibold">Perfoprospeccaonce da Equipe</h3>
           </div>
           <div className="divide-y">
             {consultores.map(c => (
@@ -158,7 +158,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium">{c.nome}</div>
-                  <div className="text-xs text-muted-foreground">{c.prospecçãos} Prospecçãos ativos</div>
+                  <div className="text-xs text-muted-foreground">{c.prospeccoes} Prospeccoes ativos</div>
                 </div>
                 <div className="w-32">
                   <div className="h-1.5 bg-muted rounded-full overflow-hidden">

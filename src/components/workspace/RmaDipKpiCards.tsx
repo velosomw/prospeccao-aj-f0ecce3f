@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useRmaDocument } from "@/hooks/useRmaDocument";
 
 interface Props {
-  prospecçãoId: string;
+  prospeccaoId: string;
   companyId: string | null;
   scoreFinal: number;
 }
@@ -17,10 +17,10 @@ const toneClass = (t: string) =>
         ? "border-rose-200 bg-rose-50 text-rose-900"
         : "border-blue-200 bg-blue-50 text-blue-900";
 
-export default function RmaDipKpiCards({ prospecçãoId, companyId, scoreFinal }: Props) {
+export default function RmaDipKpiCards({ prospeccaoId, companyId, scoreFinal }: Props) {
   const { sections, progresso, doc } = useRmaDocument(
-    prospecçãoId,
-    "prospecção_mensal",
+    prospeccaoId,
+    "prospeccao_mensal",
     "Relatório Mensal de Atividade (CNJ 72/2020)",
   );
   const [analysis, setAnalysis] = useState<any | null>(null);
@@ -30,7 +30,7 @@ export default function RmaDipKpiCards({ prospecçãoId, companyId, scoreFinal }
     let cancel = false;
     (async () => {
       const { data } = await supabase
-        .from("prospecção_analysis_results")
+        .from("prospeccao_analysis_results")
         .select("percentual, kanitz, pendencias, indicadores, score_rj, topics, diagnostico")
         .eq("company_id", companyId)
         .maybeSingle();
@@ -93,7 +93,7 @@ export default function RmaDipKpiCards({ prospecçãoId, companyId, scoreFinal }
       tone: (kanitzAtual ?? 0) > 0 ? "emerald" : (kanitzAtual ?? 0) > -3 ? "amber" : "rose",
     },
     {
-      label: "Health Score Prospecção AJ",
+      label: "Health Score Prospeccao AJ",
       value: healthScore,
       hint: `Baseado em ${scoreFinal}%`,
       tone: ["AA", "A"].includes(healthScore) ? "emerald" : healthScore === "BB" ? "amber" : "rose",

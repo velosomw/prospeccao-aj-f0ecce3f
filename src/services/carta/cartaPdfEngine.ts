@@ -42,7 +42,7 @@ async function loadFonts(doc: jsPDF): Promise<void> {
     fetchBuf(carlitoBold.url).then(toBase64),
   ]);
   doc.addFileToVFS("Carlito-Regular.ttf", reg);
-  doc.addFont("Carlito-Regular.ttf", "Carlito", "noprospecçãol");
+  doc.addFont("Carlito-Regular.ttf", "Carlito", "normal");
   doc.addFileToVFS("Carlito-Bold.ttf", bold);
   doc.addFont("Carlito-Bold.ttf", "Carlito", "bold");
 }
@@ -66,7 +66,7 @@ function newPage(ctx: Ctx, first = false): void {
   // Início do texto abaixo do timbre gráfico do template (área útil real).
   ctx.y = Math.max(L.margin.top, 48);
 
-  ctx.doc.setFont("Carlito", "noprospecçãol");
+  ctx.doc.setFont("Carlito", "normal");
   ctx.doc.setFontSize(L.body.sizePt);
   ctx.doc.setTextColor(L.body.color);
 }
@@ -86,7 +86,7 @@ function tokenize(doc: jsPDF, text: string): Token[] {
   const push = (chunk: string, bold: boolean) => {
     for (const word of chunk.split(/\s+/)) {
       if (!word) continue;
-      doc.setFont("Carlito", bold ? "bold" : "noprospecçãol");
+      doc.setFont("Carlito", bold ? "bold" : "normal");
       out.push({ text: word, bold, w: doc.getTextWidth(word) });
     }
   };
@@ -104,7 +104,7 @@ function drawParagraph(ctx: Ctx, text: string, indent: boolean): void {
   const { doc } = ctx;
   doc.setFontSize(L.body.sizePt);
   const tokens = tokenize(doc, text);
-  doc.setFont("Carlito", "noprospecçãol");
+  doc.setFont("Carlito", "normal");
   const spaceW = doc.getTextWidth(" ");
 
   const lines: { tokens: Token[]; offset: number; width: number }[] = [];
@@ -136,7 +136,7 @@ function drawParagraph(ctx: Ctx, text: string, indent: boolean): void {
     let x = L.margin.left + ln.offset;
     const baseline = ctx.y + L.body.sizePt * PT_TO_MM * 0.82;
     for (const t of ln.tokens) {
-      doc.setFont("Carlito", t.bold ? "bold" : "noprospecçãol");
+      doc.setFont("Carlito", t.bold ? "bold" : "normal");
       doc.text(t.text, x, baseline);
       x += t.w + gap;
     }
@@ -149,7 +149,7 @@ function drawParagraph(ctx: Ctx, text: string, indent: boolean): void {
 function drawLine(ctx: Ctx, text: string, opts: { bold?: boolean; align?: "left" | "right" } = {}): void {
   const { doc } = ctx;
   ensure(ctx, LINE_MM);
-  doc.setFont("Carlito", opts.bold ? "bold" : "noprospecçãol");
+  doc.setFont("Carlito", opts.bold ? "bold" : "normal");
   doc.setFontSize(L.body.sizePt);
   doc.setTextColor(L.body.color);
   const baseline = ctx.y + L.body.sizePt * PT_TO_MM * 0.82;

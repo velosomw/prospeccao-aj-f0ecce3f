@@ -12,16 +12,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import PlatformLayout from "@/components/PlatformLayout";
-import { mockProspecçãos, type ProspecçãoEntry } from "@/data/prospecçãoMockData";
+import { mockProspeccoes, type ProspeccaoEntry } from "@/data/prospeccoesMockData";
 import { listMyAssignedCompanies, activateAssignedRma, type Company } from "@/services/companiesService";
-import { startRmaAnalysis, listRmaAnalyses, type RmaAnalysisResult } from "@/services/prospecçãoAnalysisService";
-import { listPeriodsForCompanies, type RmaPeriodAnalysis } from "@/services/prospecçãoPeriodService";
-import RmaHistoricoTab from "@/components/RmaHistoricoTab";
+import { startRmaAnalysis, listRmaAnalyses, type RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
+import { listPeriodsForCompanies, type RmaPeriodAnalysis } from "@/services/prospeccaoPeriodService";
+import ProspeccaoHistoricoTab from "@/components/ProspeccaoHistoricoTab";
 import MyReleasesTab from "@/components/MyReleasesTab";
-import Prospecção360Panel from "@/components/coordenador/Prospecção360Panel";
-import { DeferredBatchIndicator } from "@/components/prospecção/DeferredBatchIndicator";
-import RmaCompanySearch from "@/components/prospecção/RmaCompanySearch";
-import { buildLiveScoreTopics, computeRmaScore, groupFilesByCompany, fetchRmaScores, type ScoreFile } from "@/lib/prospecçãoScore";
+import Prospeccao360Panel from "@/components/coordenador/Prospeccao360Panel";
+import { DeferredBatchIndicator } from "@/components/prospeccao/DeferredBatchIndicator";
+import ProspeccaoCompanySearch from "@/components/prospeccao/ProspeccaoCompanySearch";
+import { buildLiveScoreTopics, computeRmaScore, groupFilesByCompany, fetchRmaScores, type ScoreFile } from "@/lib/prospeccaoScore";
 
 const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
   em_processamento: { label: "Em Processamento", color: "text-accent", bg: "bg-accent/15" },
@@ -35,9 +35,9 @@ const EmpresaDashboard = () => {
   const { userName } = useUser();
   const { toast } = useToast();
   const firstName = userName?.split(" ")[0] || null;
-  const [prospecçãos] = useState<ProspecçãoEntry[]>([]);
+  const [prospeccoes] = useState<ProspeccaoEntry[]>([]);
 
-  // Prospecçãos atribuídos pelo Coordenador, aguardando ativação
+  // Prospeccoes atribuídos pelo Coordenador, aguardando ativação
   const [pendingCompanies, setPendingCompanies] = useState<Company[]>([]);
   const [activatedCompanies, setActivatedCompanies] = useState<Company[]>([]);
   const [analyses, setAnalyses] = useState<Record<string, RmaAnalysisResult>>({});
@@ -86,8 +86,8 @@ const EmpresaDashboard = () => {
     reloadAssigned().catch(() => {});
   }, []);
 
-  // Polling peprospecçãonente: sempre que houver Prospecção ativo, reconsulta a cada 2.5s
-  // garantindo UI viva em Alertas Inteligentes + lista de Prospecçãos.
+  // Polling peprospeccaonente: sempre que houver Prospeccao ativo, reconsulta a cada 2.5s
+  // garantindo UI viva em Alertas Inteligentes + lista de Prospeccoes.
   useEffect(() => {
     if (activatedCompanies.length === 0 && pendingCompanies.length === 0) return;
     const hasRunning = Object.values(analyses).some(a => a.status === "em_analise");
@@ -132,15 +132,15 @@ const EmpresaDashboard = () => {
         title: "Análise IA iniciada",
         description: `${company.name}: lendo pastas e documentos no OneDrive.`,
       });
-      navigate(`/prospecção/${company.id}`);
+      navigate(`/prospeccao/${company.id}`);
     } catch (e: any) {
-      toast({ title: "Erro ao ativar Prospecção AJ", description: e.message, variant: "destructive" });
+      toast({ title: "Erro ao ativar Prospeccao AJ", description: e.message, variant: "destructive" });
     } finally {
       setActivatingId(null);
     }
   };
 
-  /** Reinicia a análise IA do Prospecção, zerando o prazo de 24h da flag. */
+  /** Reinicia a análise IA do Prospeccao, zerando o prazo de 24h da flag. */
   const handleRefreshIA = async (companyId: string, companyName: string) => {
     setRefreshingId(companyId);
     try {
@@ -157,7 +157,7 @@ const EmpresaDashboard = () => {
     }
   };
 
-  // Combina Prospecçãos ativados (reais) + mocks para exibir nas abas Alertas e Prospecçãos
+  // Combina Prospeccoes ativados (reais) + mocks para exibir nas abas Alertas e Prospeccoes
   const filesByCompany = useMemo(() => groupFilesByCompany(scoreFiles), [scoreFiles]);
 
   const realRmas = useMemo(() => activatedCompanies.map(c => {
@@ -182,7 +182,7 @@ const EmpresaDashboard = () => {
         : "em_processamento";
 
     return {
-      id: c.prospecção_id || c.id.slice(0, 8).toUpperCase(),
+      id: c.prospeccao_id || c.id.slice(0, 8).toUpperCase(),
       companyId: c.id,
       empresa: c.name,
       status: mappedStatus,
@@ -198,7 +198,7 @@ const EmpresaDashboard = () => {
         : null,
     };
   }), [activatedCompanies, analyses, filesByCompany]);
-  const displayRmas: (ProspecçãoEntry & { companyId?: string; analysisStatus?: string })[] = [...realRmas as any, ...prospecçãos];
+  const displayRmas: (ProspeccaoEntry & { companyId?: string; analysisStatus?: string })[] = [...realRmas as any, ...prospeccoes];
 
   const total = displayRmas.length;
   const emProcessamento = displayRmas.filter(r => r.status === "em_processamento").length;
@@ -265,25 +265,25 @@ const EmpresaDashboard = () => {
     const items: { id: string; text: string; time: string; ts: number }[] = [];
     activatedCompanies.forEach(c => {
       const a = analyses[c.id];
-      const prospecçãoLabel = c.prospecção_id || c.name;
+      const prospeccaoLabel = c.prospeccao_id || c.name;
       if (a) {
         const ts = new Date(a.updated_at || a.started_at || c.updated_at).getTime();
         let text = "";
         if (a.status === "concluido") {
-          text = `${prospecçãoLabel} — Análise IA concluída (${Math.round(a.percentual ?? 0)}%)`;
+          text = `${prospeccaoLabel} — Análise IA concluída (${Math.round(a.percentual ?? 0)}%)`;
         } else if (a.status === "em_analise") {
-          text = `${prospecçãoLabel} — Análise IA em andamento (${Math.round(a.percentual ?? 0)}%)`;
+          text = `${prospeccaoLabel} — Análise IA em andamento (${Math.round(a.percentual ?? 0)}%)`;
         } else if (a.status === "erro") {
-          text = `${prospecçãoLabel} — Análise IA com erro — revisar`;
+          text = `${prospeccaoLabel} — Análise IA com erro — revisar`;
         } else {
-          text = `${prospecçãoLabel} — ${a.status}`;
+          text = `${prospeccaoLabel} — ${a.status}`;
         }
         items.push({ id: `a-${c.id}`, text, time: formatRelative(a.updated_at || a.started_at), ts });
       } else {
         const ts = new Date(c.updated_at || c.created_at).getTime();
         items.push({
           id: `c-${c.id}`,
-          text: `${prospecçãoLabel} — Prospecção ativado para ${c.name}`,
+          text: `${prospeccaoLabel} — Prospeccao ativado para ${c.name}`,
           time: formatRelative(c.updated_at || c.created_at),
           ts,
         });
@@ -293,7 +293,7 @@ const EmpresaDashboard = () => {
       const ts = new Date(c.updated_at || c.created_at).getTime();
       items.push({
         id: `p-${c.id}`,
-        text: `${c.prospecção_id || c.name} — Atribuído pelo Coordenador, aguardando ativação`,
+        text: `${c.prospeccao_id || c.name} — Atribuído pelo Coordenador, aguardando ativação`,
         time: formatRelative(c.updated_at || c.created_at),
         ts,
       });
@@ -303,7 +303,7 @@ const EmpresaDashboard = () => {
       if (!ts) return;
       items.push({
         id: `pe-${p.id}`,
-        text: `${companyNameById[p.company_id] || "Prospecção"} — Período ${String(p.month).padStart(2, "0")}/${p.year} atualizado (${Math.round(p.percentual ?? 0)}%)`,
+        text: `${companyNameById[p.company_id] || "Prospeccao"} — Período ${String(p.month).padStart(2, "0")}/${p.year} atualizado (${Math.round(p.percentual ?? 0)}%)`,
         time: formatRelative(p.updated_at || p.created_at),
         ts,
       });
@@ -319,10 +319,10 @@ const EmpresaDashboard = () => {
             <h1 className="text-2xl font-bold text-foreground">Olá, {firstName || "Empresa"}</h1>
             <p className="text-sm text-muted-foreground">Gestão de Prospecções AJ e acompanhamento de processos</p>
           </div>
-          <RmaCompanySearch
+          <ProspeccaoCompanySearch
             companies={[...activatedCompanies, ...pendingCompanies]}
-            onSelect={(c) => navigate(`/prospecção/${c.id}`)}
-            placeholder="Buscar por empresa, ID Prospecção AJ ou CNPJ..."
+            onSelect={(c) => navigate(`/prospeccao/${c.id}`)}
+            placeholder="Buscar por empresa, ID Prospeccao AJ ou CNPJ..."
             className="w-full md:w-96"
           />
         </div>
@@ -332,14 +332,14 @@ const EmpresaDashboard = () => {
             <TabsTrigger value="dashboard" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <BarChart3 className="w-4 h-4" /> Dashboard
             </TabsTrigger>
-            <TabsTrigger value="prospecçãos" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
-              <FileText className="w-4 h-4" /> Prospecçãos
+            <TabsTrigger value="prospeccoes" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
+              <FileText className="w-4 h-4" /> Prospeccoes
             </TabsTrigger>
             <TabsTrigger value="historico" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <History className="w-4 h-4" /> Histórico
             </TabsTrigger>
             <TabsTrigger value="liberacoes" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
-              <Calendar className="w-4 h-4" /> Prospecçãos Liberados
+              <Calendar className="w-4 h-4" /> Prospeccoes Liberados
             </TabsTrigger>
           </TabsList>
 
@@ -359,7 +359,7 @@ const EmpresaDashboard = () => {
               ))}
             </div>
 
-            {/* Prospecçãos Empresa atribuídos pelo Coordenador — aguardando ativação */}
+            {/* Prospeccoes Empresa atribuídos pelo Coordenador — aguardando ativação */}
             {pendingCompanies.length > 0 && (
               <Card className="border-2 border-accent/40 bg-gradient-to-br from-accent/5 to-transparent">
                 <CardHeader className="pb-3">
@@ -373,13 +373,13 @@ const EmpresaDashboard = () => {
                       </div>
                       <div className="text-left">
                         <CardTitle className="text-base flex items-center gap-2">
-                          Prospecçãos Empresa atribuídos
+                          Prospeccoes Empresa atribuídos
                           <Badge className="bg-accent text-accent-foreground text-[10px]">
                             {pendingCompanies.length} aguardando
                           </Badge>
                         </CardTitle>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                          Ative o Prospecção para iniciar a análise da IA e carregar o status na plataforma
+                          Ative o Prospeccao para iniciar a análise da IA e carregar o status na plataforma
                         </p>
                       </div>
                     </div>
@@ -404,9 +404,9 @@ const EmpresaDashboard = () => {
                           <div className="min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
                               <p className="text-sm font-bold text-foreground truncate">{company.name}</p>
-                              {company.prospecção_id && (
+                              {company.prospeccao_id && (
                                 <Badge className="bg-accent text-accent-foreground text-[10px] font-mono">
-                                  {company.prospecção_id}
+                                  {company.prospeccao_id}
                                 </Badge>
                               )}
                               <Badge variant="outline" className="text-[10px] border-destructive/30 text-destructive">
@@ -427,7 +427,7 @@ const EmpresaDashboard = () => {
                           className="bg-accent hover:bg-accent/90 text-accent-foreground gap-1.5 shrink-0"
                         >
                           <PlayCircle className="w-4 h-4" />
-                          {activatingId === company.id ? "Ativando..." : "Ativar Prospecção"}
+                          {activatingId === company.id ? "Ativando..." : "Ativar Prospeccao"}
                         </Button>
                       </div>
                     ))}
@@ -436,13 +436,13 @@ const EmpresaDashboard = () => {
               </Card>
             )}
 
-            {/* Alertas — Prospecçãos com atualização nas últimas 24h */}
+            {/* Alertas — Prospeccoes com atualização nas últimas 24h */}
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-destructive" /> Alertas Inteligentes
-                  <span className="text-[10px] font-noprospecçãol text-muted-foreground ml-1">
-                    (atualizações dos Prospecçãos nas últimas 24h)
+                  <span className="text-[10px] font-normal text-muted-foreground ml-1">
+                    (atualizações dos Prospeccoes nas últimas 24h)
                   </span>
                 </CardTitle>
               </CardHeader>
@@ -450,25 +450,25 @@ const EmpresaDashboard = () => {
                 {(() => {
                   const now = Date.now();
                   const DAY_MS = 24 * 60 * 60 * 1000;
-                  // Considera apenas Prospecçãos reais (com companyId) que NÃO estão concluídos
+                  // Considera apenas Prospeccoes reais (com companyId) que NÃO estão concluídos
                   const candidatos = displayRmas.filter(r => r.status !== "concluido" && r.companyId);
                   if (candidatos.length === 0) {
                     return (
                       <p className="text-xs text-muted-foreground text-center py-6">
-                        Nenhum Prospecção atualizado no momento.
+                        Nenhum Prospeccao atualizado no momento.
                       </p>
                     );
                   }
-                  return candidatos.map(prospecção => {
-                    const sc = statusConfig[prospecção.status];
-                    const pct = prospecção.percentual;
-                    const pendingCount = prospecção.topics.length > 0
-                      ? prospecção.topics.filter(t => t.status !== "completo").length
+                  return candidatos.map(prospeccao => {
+                    const sc = statusConfig[prospeccao.status];
+                    const pct = prospeccao.percentual;
+                    const pendingCount = prospeccao.topics.length > 0
+                      ? prospeccao.topics.filter(t => t.status !== "completo").length
                       : 0;
-                    const targetId = prospecção.companyId || prospecção.id;
+                    const targetId = prospeccao.companyId || prospeccao.id;
                     const company = activatedCompanies.find(c => c.id === targetId);
                     const isStatusOpen = statusCompanyId === targetId;
-                    const updatedAt = prospecção.dataAtualizacao ? new Date(prospecção.dataAtualizacao).getTime() : 0;
+                    const updatedAt = prospeccao.dataAtualizacao ? new Date(prospeccao.dataAtualizacao).getTime() : 0;
                     const ageMs = updatedAt ? now - updatedAt : Number.POSITIVE_INFINITY;
                     const isStale = ageMs > DAY_MS;
                     const hoursAgo = updatedAt ? Math.floor(ageMs / (60 * 60 * 1000)) : null;
@@ -478,11 +478,11 @@ const EmpresaDashboard = () => {
                     const serverRunning = analyses[targetId]?.status === "em_analise";
                     const isRefreshing = refreshingId === targetId || serverRunning;
                     return (
-                      <div key={(prospecção as any).companyId || prospecção.id} className="p-4 rounded-lg bg-muted/30 space-y-3">
+                      <div key={(prospeccao as any).companyId || prospeccao.id} className="p-4 rounded-lg bg-muted/30 space-y-3">
                         <div className="flex items-center justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <p className="text-sm font-bold text-foreground truncate">{prospecção.id} — {prospecção.empresa}</p>
+                              <p className="text-sm font-bold text-foreground truncate">{prospeccao.id} — {prospeccao.empresa}</p>
                               {isStale && (
                                 <Badge className="bg-destructive/15 text-destructive border-0 text-[10px] gap-1">
                                   <AlertCircle className="w-3 h-3" />
@@ -491,7 +491,7 @@ const EmpresaDashboard = () => {
                               )}
                             </div>
                             <p className="text-xs text-muted-foreground">
-                              {prospecção.analysisStatus === "em_analise"
+                              {prospeccao.analysisStatus === "em_analise"
                                 ? `${pendingCount} tópicos em processamento`
                                 : `${pendingCount} tópicos pendentes`}
                               {hoursAgo !== null && (
@@ -543,7 +543,7 @@ const EmpresaDashboard = () => {
                               size="sm"
                               variant="outline"
                               className="text-xs gap-1.5"
-                              onClick={() => handleRefreshIA(targetId, prospecção.empresa)}
+                              onClick={() => handleRefreshIA(targetId, prospeccao.empresa)}
                               disabled={isRefreshing}
                             >
                               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin" : ""}`} />
@@ -563,21 +563,21 @@ const EmpresaDashboard = () => {
                               {isStatusOpen ? "Ocultar Status" : "Status Empresa"}
                             </Button>
                           )}
-                          <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/prospecção/${targetId}`)}>
-                            Ver Prospecção
+                          <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/prospeccao/${targetId}`)}>
+                            Ver Prospeccao
                           </Button>
                         </div>
                         {/* Indicador de fila batch (arquivos grandes processados em horário off-peak) */}
                         {company && (
                           <DeferredBatchIndicator
                             companyId={targetId}
-                            prospecçãoId={prospecção.id}
-                            variant="prospecção-summary"
+                            prospeccaoId={prospeccao.id}
+                            variant="prospeccao-summary"
                           />
                         )}
                         {isStatusOpen && company && (
                           <div className="pt-2">
-                            <Prospecção360Panel company={company} onClose={() => setStatusCompanyId(null)} />
+                            <Prospeccao360Panel company={company} onClose={() => setStatusCompanyId(null)} />
                           </div>
                         )}
                       </div>
@@ -612,8 +612,8 @@ const EmpresaDashboard = () => {
             </Card>
           </TabsContent>
 
-          {/* ABA 2 - Prospecçãos */}
-          <TabsContent value="prospecçãos" className="space-y-4">
+          {/* ABA 2 - Prospeccoes */}
+          <TabsContent value="prospeccoes" className="space-y-4">
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Lista de Prospecções AJ</CardTitle>
@@ -633,16 +633,16 @@ const EmpresaDashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {displayRmas.map(prospecção => {
-                        const sc = statusConfig[prospecção.status];
+                      {displayRmas.map(prospeccao => {
+                        const sc = statusConfig[prospeccao.status];
                         return (
-                          <tr key={(prospecção as any).companyId || prospecção.id} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
-                            <td className="py-3 px-3 font-mono font-semibold text-foreground">{prospecção.id}</td>
-                            <td className="py-3 px-3 text-foreground">{prospecção.empresa}</td>
+                          <tr key={(prospeccao as any).companyId || prospeccao.id} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
+                            <td className="py-3 px-3 font-mono font-semibold text-foreground">{prospeccao.id}</td>
+                            <td className="py-3 px-3 text-foreground">{prospeccao.empresa}</td>
                             <td className="py-3 px-3">
-                              {(prospecção as any).mes ? (
+                              {(prospeccao as any).mes ? (
                                 <Badge className="bg-[hsl(258,90%,66%)]/15 text-[hsl(258,90%,56%)] font-mono text-[10px] border-0">
-                                  {(prospecção as any).mes}
+                                  {(prospeccao as any).mes}
                                 </Badge>
                               ) : (
                                 <span className="text-muted-foreground text-xs">—</span>
@@ -654,15 +654,15 @@ const EmpresaDashboard = () => {
                             <td className="py-3 px-3">
                               <div className="flex items-center gap-2">
                                 <div className="relative h-2 w-20 rounded-full bg-muted overflow-hidden">
-                                  <div className="h-full rounded-full transition-all bg-accent" style={{ width: `${prospecção.percentual}%` }} />
+                                  <div className="h-full rounded-full transition-all bg-accent" style={{ width: `${prospeccao.percentual}%` }} />
                                 </div>
-                                <span className="text-xs font-mono font-semibold text-foreground">{prospecção.percentual}%</span>
+                                <span className="text-xs font-mono font-semibold text-foreground">{prospeccao.percentual}%</span>
                               </div>
                             </td>
-                            <td className="py-3 px-3 text-xs text-muted-foreground">{prospecção.dataAtualizacao}</td>
+                            <td className="py-3 px-3 text-xs text-muted-foreground">{prospeccao.dataAtualizacao}</td>
                             <td className="py-3 px-3 text-right">
-                              <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/prospecção/${prospecção.companyId || prospecção.id}`)}>
-                                Ver Prospecção
+                              <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/prospeccao/${prospeccao.companyId || prospeccao.id}`)}>
+                                Ver Prospeccao
                               </Button>
                             </td>
                           </tr>
@@ -675,9 +675,9 @@ const EmpresaDashboard = () => {
             </Card>
           </TabsContent>
 
-          {/* ABA 3 - Histórico de Prospecçãos por período */}
+          {/* ABA 3 - Histórico de Prospeccoes por período */}
           <TabsContent value="historico" className="space-y-4">
-            <RmaHistoricoTab
+            <ProspeccaoHistoricoTab
               periods={periods}
               companies={[...activatedCompanies, ...pendingCompanies]}
             />

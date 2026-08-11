@@ -328,7 +328,7 @@ const AdminAdmjudicialLinks = () => {
                   <CardTitle className="text-base">
                     Recuperandas{" "}
                     {selectedAdm && (
-                      <span className="text-xs text-muted-foreground font-noprospecçãol">
+                      <span className="text-xs text-muted-foreground font-normal">
                         ({linkedRecsForSelected.size} vinculadas a este Admjudicial)
                       </span>
                     )}

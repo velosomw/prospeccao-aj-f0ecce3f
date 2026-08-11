@@ -57,14 +57,14 @@ const renderActions = (actions?: string[]) => {
 
 // ─── Config that mirrors supabase/functions/_shared/onedrive.ts ───
 const ONEDRIVE_CONFIG = {
-  base_path: "Projeto Prospecção",
+  base_path: "Projeto Prospeccao",
   enforce_path_restriction: true,
   auto_create_folders: true,
   operational_subfolders: ["ENTRADAS", "PROCESSANDO", "PROCESSADOS", "RELATORIOS", "AUDITORIA", "ERROS"],
   allowed_extensions: ["pdf", "docx", "xlsx", "xls", "png", "jpg", "jpeg", "csv", "txt"],
   max_file_size_mb: 50,
   share_url: "https://bexonedrive-my.sharepoint.com/:f:/g/personal/tecnico_brasilexpert_com_br/IgA6tcBZSKW9Qq9kqTMlHODwAWn9lmWTkQNwh_kj1yOvzxA",
-  account: "projetoprospecção@brasilexpert.com.br",
+  account: "projetoprospeccao@brasilexpert.com.br",
 };
 
 // ─── Provider Icon ─────────────────────────────────────────────
@@ -189,9 +189,9 @@ const OneDriveCard = () => {
   );
 };
 
-// ─── Sync controls (calls onedrive-sync-prospecção) ───────────────────
+// ─── Sync controls (calls onedrive-sync-prospeccao) ───────────────────
 const SyncControls = () => {
-  const [prospecçãoId, setRmaId] = useState("Prospecção-001");
+  const [prospeccaoId, setRmaId] = useState("Prospeccao-001");
   const [clientFolder, setClientFolder] = useState("GERATHERM");
   const [year, setYear] = useState("2026");
   const [period, setPeriod] = useState("02.2026");
@@ -204,10 +204,10 @@ const SyncControls = () => {
     setRunning(true);
     setResult(null);
     try {
-      const fn = mode === "sync" ? "onedrive-sync-prospecção" : "onedrive-poll-entradas";
+      const fn = mode === "sync" ? "onedrive-sync-prospeccao" : "onedrive-poll-entradas";
       const { data, error } = await supabase.functions.invoke(fn, {
         body: {
-          prospecçãoId,
+          prospeccaoId,
           shareUrl: ONEDRIVE_CONFIG.share_url,
           clientFolder: clientFolder || undefined,
           year, period,
@@ -242,8 +242,8 @@ const SyncControls = () => {
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="space-y-1">
-          <Label className="text-xs">Prospecção AJ ID</Label>
-          <Input className="h-9 text-sm" value={prospecçãoId} onChange={e => setRmaId(e.target.value)} />
+          <Label className="text-xs">Prospeccao AJ ID</Label>
+          <Input className="h-9 text-sm" value={prospeccaoId} onChange={e => setRmaId(e.target.value)} />
         </div>
         <div className="space-y-1">
           <Label className="text-xs">Cliente (pasta)</Label>
@@ -409,10 +409,10 @@ const DiagnosticsCard = () => {
   );
 };
 
-// ─── Renumber existing Prospecçãos from OneDrive folders ─────────────
-const RenumberProspecçãosCard = () => {
+// ─── Renumber existing Prospeccoes from OneDrive folders ─────────────
+const RenumberProspeccoesCard = () => {
   const [year, setYear] = useState(String(new Date().getFullYear()));
-  const [prefix, setPrefix] = useState("Prospecção");
+  const [prefix, setPrefix] = useState("Prospeccao");
   const [dryRun, setDryRun] = useState(true);
   const [running, setRunning] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -421,7 +421,7 @@ const RenumberProspecçãosCard = () => {
     setRunning(true);
     setResult(null);
     try {
-      const { data, error } = await supabase.functions.invoke("onedrive-renumber-prospecçãos", {
+      const { data, error } = await supabase.functions.invoke("onedrive-renumber-prospeccoes", {
         body: { path: ONEDRIVE_CONFIG.base_path, year: Number(year), prefix, dryRun },
       });
       if (error) throw error;
@@ -430,7 +430,7 @@ const RenumberProspecçãosCard = () => {
         toast.success(
           dryRun
             ? `Pré-visualização: ${data.totalFolders} pastas`
-            : `${data.totalFolders} Prospecçãos sincronizados`
+            : `${data.totalFolders} Prospeccoes sincronizados`
         );
       } else {
         toast.error(data?.error || "Falha na renumeração");
@@ -452,7 +452,7 @@ const RenumberProspecçãosCard = () => {
       <p className="text-xs text-muted-foreground">
         Lê cada subpasta direta de <code className="bg-muted px-1 rounded">/{ONEDRIVE_CONFIG.base_path}</code>,
         atribui IDs sequenciais no formato <code className="bg-muted px-1 rounded">{prefix}-{year}-0001…</code> em ordem
-        alfabética e cadastra/atualiza a empresa correspondente. Conflitos por nome <strong>atualizam</strong> o <code className="bg-muted px-1 rounded">prospecção_id</code>.
+        alfabética e cadastra/atualiza a empresa correspondente. Conflitos por nome <strong>atualizam</strong> o <code className="bg-muted px-1 rounded">prospeccao_id</code>.
       </p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="space-y-1">
@@ -489,7 +489,7 @@ const RenumberProspecçãosCard = () => {
               <tr>
                 <th className="text-left px-3 py-2 font-semibold">#</th>
                 <th className="text-left px-3 py-2 font-semibold">Pasta OneDrive</th>
-                <th className="text-left px-3 py-2 font-semibold">Prospecção AJ ID</th>
+                <th className="text-left px-3 py-2 font-semibold">Prospeccao AJ ID</th>
                 <th className="text-left px-3 py-2 font-semibold">Ação</th>
                 <th className="text-left px-3 py-2 font-semibold">Link</th>
               </tr>
@@ -499,7 +499,7 @@ const RenumberProspecçãosCard = () => {
                 <tr key={idx} className="border-t border-border/50 hover:bg-muted/20">
                   <td className="px-3 py-2 text-muted-foreground">{idx + 1}</td>
                   <td className="px-3 py-2 font-medium">{it.folderName}</td>
-                  <td className="px-3 py-2 font-mono">{it.prospecçãoId}</td>
+                  <td className="px-3 py-2 font-mono">{it.prospeccaoId}</td>
                   <td className="px-3 py-2">
                     <Badge variant="outline" className={`text-[10px] ${
                       it.action === "inserted" ? "text-[hsl(152,70%,45%)] border-[hsl(152,70%,45%)]/30" :
@@ -557,7 +557,7 @@ const RulesCard = () => (
           <div>
             <div className="font-semibold">Estrutura híbrida</div>
             <div className="text-muted-foreground font-mono">
-              /Projeto Prospecção/&#123;CLIENTE&#125;/&#123;ANO&#125;/&#123;PERIODO&#125;/&#123;{ONEDRIVE_CONFIG.operational_subfolders.join(",")}&#125;
+              /Projeto Prospeccao/&#123;CLIENTE&#125;/&#123;ANO&#125;/&#123;PERIODO&#125;/&#123;{ONEDRIVE_CONFIG.operational_subfolders.join(",")}&#125;
             </div>
           </div>
         </div>
@@ -615,7 +615,7 @@ const AuditLogsTable = () => {
       .from("pipeline_logs")
       .select("id, step, status, duration_ms, error_message, details, created_at")
       .in("step", [
-        "onedrive_sync_prospecção", "onedrive_poll_entradas",
+        "onedrive_sync_prospeccao", "onedrive_poll_entradas",
         "onedrive_poll_move", "onedrive_poll_invalid",
       ])
       .order("created_at", { ascending: false })
@@ -802,7 +802,7 @@ const TabIntegracaoDrives = ({ onBack }: { onBack: () => void }) => {
 
         <TabsContent value="sync" className="space-y-4 mt-4">
           <DiagnosticsCard />
-          <RenumberProspecçãosCard />
+          <RenumberProspeccoesCard />
           <SyncControls />
         </TabsContent>
 

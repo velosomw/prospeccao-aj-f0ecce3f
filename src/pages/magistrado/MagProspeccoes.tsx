@@ -10,7 +10,7 @@ const statusMeta: Record<string, { bg: string; fg: string }> = {
   "Visualizado":  { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
 };
 
-export default function MagProspecçãos() {
+export default function MagProspeccoes() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -24,7 +24,7 @@ export default function MagProspecçãos() {
 
   const rows = useMemo(() => {
     return (data?.rows ?? []).map((c) => ({
-      id: c.prospecção_id || `Prospecção-${c.id.slice(0, 4).toUpperCase()}`,
+      id: c.prospeccao_id || `Prospeccao-${c.id.slice(0, 4).toUpperCase()}`,
       empresa: c.name,
       proc: "—",
       periodo: c.current_period_month && c.execution_year
@@ -45,7 +45,7 @@ export default function MagProspecçãos() {
   const columns = [
     {
       key: "info",
-      header: "Prospecção AJ",
+      header: "Prospeccao AJ",
       cell: (r: typeof rows[number]) => {
         const s = statusMeta[r.status];
         return (
@@ -86,7 +86,7 @@ export default function MagProspecçãos() {
 
   return (
     <ConsultorPageShell
-      title="Prospecções AJ Recebidos" subtitle="Relatórios de Monitoramento das empresas de prospecção para análise judicial."
+      title="Prospecções AJ Recebidos" subtitle="Relatórios de Monitoramento das empresas de prospeccao para análise judicial."
       search={search} onSearch={(s) => { setSearch(s); setPage(1); }}
       kpis={[
         { label: "Prospecções AJ (30d)",    value: total, hint: "Recebidos",    icon: FileText,     tone: "blue" },

@@ -7,13 +7,13 @@ import ProfileHome from "@/components/shell/ProfileHome";
 export default function RecuperandaDashboard() {
   return (
     <ProfileHome
-      defaultName="Empresa Prospecção"
+      defaultName="Empresa Prospeccao"
       subtitle="Acompanhe seu processo e envio de documentos."
       cards={[
         { label: "Documentos",  desc: "Acervo de documentos enviados.",         icon: FolderOpen,    to: "/recuperanda/documentos",  tone: "blue"   },
         { label: "Pendências",  desc: "Documentos que faltam enviar.",          icon: AlertTriangle, to: "/recuperanda/pendencias",  tone: "red"    },
         { label: "Relatórios",  desc: "Prospecções AJ publicadas sobre sua empresa.",     icon: FileBarChart,  to: "/recuperanda/relatorios",  tone: "green"  },
-        { label: "Cronograma",  desc: "Prazos do processo de prospecção.",        icon: Calendar,      to: "/recuperanda/cronograma",  tone: "purple" },
+        { label: "Cronograma",  desc: "Prazos do processo de prospeccao.",        icon: Calendar,      to: "/recuperanda/cronograma",  tone: "purple" },
         { label: "Upload",      desc: "Envie novos documentos agora.",          icon: Upload,        to: "/recuperanda/documentos",  tone: "teal"   },
       ]}
       summary={[
@@ -28,7 +28,7 @@ export default function RecuperandaDashboard() {
         { icon: AlertTriangle, tone: "red",    title: "Envie o Balancete de Maio/2026", sub: "Vencimento em 8 dias", time: "Hoje" },
         { icon: Clock,         tone: "orange", title: "DRE 04/2026 aguardando revisão", sub: "Status: pendente assinatura", time: "Ontem" },
         { icon: MessageCircle, tone: "blue",   title: "Nova mensagem do AJ",            sub: "Sobre conciliação bancária", time: "Ontem" },
-        { icon: CheckCircle2,  tone: "green",  title: "Prospecção AJ 03/2026 aprovado",           sub: "Publicado no processo", time: "12/06" },
+        { icon: CheckCircle2,  tone: "green",  title: "Prospeccao AJ 03/2026 aprovado",           sub: "Publicado no processo", time: "12/06" },
       ]}
     />
   );

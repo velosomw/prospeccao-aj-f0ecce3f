@@ -11,7 +11,7 @@ const opts = [
     to: "/dashboard/cadastro/admjudicial",
   },
   {
-    label: "Empresas Prospecção",
+    label: "Empresas Prospeccao",
     desc: "Cadastre e gerencie usuários com perfil de Empresa Externa.",
     icon: Building2,
     tone: { bg: "hsl(142,60%,95%)", fg: "hsl(142,60%,35%)", ring: "hsl(142,60%,90%)" },

@@ -17,7 +17,7 @@ const stageMeta: Record<string, { label: string; bg: string; fg: string }> = {
   pendente:         { label: "Pendente",      bg: "hsl(0,84%,95%)",   fg: "hsl(0,84%,45%)"   },
 };
 
-export default function ConsultorProspecçãos() {
+export default function ConsultorProspeccoes() {
   const navigate = useNavigate();
   const [filter, setFilter] = useState<Filter>("todos");
   const [search, setSearch] = useState("");
@@ -40,7 +40,7 @@ export default function ConsultorProspecçãos() {
 
   const rows = useMemo(() => {
     return (data?.rows ?? []).map((c) => ({
-      id: c.prospecção_id || `Prospecção-${c.id.slice(0, 4).toUpperCase()}`,
+      id: c.prospeccao_id || `Prospeccao-${c.id.slice(0, 4).toUpperCase()}`,
       empresa: c.name,
       status: (c.status === "pendente_ativacao" ? "pendente" :
                c.status === "ativa" ? "em_processamento" :
@@ -67,8 +67,8 @@ export default function ConsultorProspecçãos() {
     };
   }, [backendStats, bs, total]);
 
-  const openProspecção = (companyId?: string) => {
-    if (companyId) navigate(`/prospecção/${companyId}`);
+  const openProspeccao = (companyId?: string) => {
+    if (companyId) navigate(`/prospeccao/${companyId}`);
   };
 
   const columns = [
@@ -76,7 +76,7 @@ export default function ConsultorProspecçãos() {
       key: "id",
       header: "ID",
       cell: (r: typeof rows[number]) => (
-        <button onClick={() => navigate(`/prospecção/${r.id}`)} className="font-mono text-primary font-semibold hover:underline">
+        <button onClick={() => navigate(`/prospeccao/${r.id}`)} className="font-mono text-primary font-semibold hover:underline">
           {r.id}
         </button>
       ),
@@ -115,7 +115,7 @@ export default function ConsultorProspecçãos() {
       header: <span className="text-right w-full block" />,
       cell: (r: typeof rows[number]) => (
         <div className="inline-flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-          <button onClick={() => openProspecção(r.id)} className="text-muted-foreground hover:text-foreground"><Eye className="w-4 h-4" /></button>
+          <button onClick={() => openProspeccao(r.id)} className="text-muted-foreground hover:text-foreground"><Eye className="w-4 h-4" /></button>
           <button className="text-muted-foreground hover:text-foreground"><BarChart3 className="w-4 h-4" /></button>
           <button className="text-muted-foreground hover:text-foreground"><MoreVertical className="w-4 h-4" /></button>
         </div>
@@ -172,7 +172,7 @@ export default function ConsultorProspecçãos() {
             onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
             headerClassName="bg-muted/40 text-xs text-muted-foreground uppercase tracking-wider"
             rowClassName={(_r, i) => `border-t hover:bg-muted/40 transition-colors ${i % 2 === 0 ? "bg-white" : "bg-muted/30"}`}
-            onRowClick={(r) => openProspecção(r.id)}
+            onRowClick={(r) => openProspeccao(r.id)}
           />
 
         )}
