@@ -25,7 +25,7 @@ const generateInsight = (block: DocumentBlock, index: number): AIInsight | null 
   const map: Record<AIInsight["status"], { summary: string; detail: string }> = {
     aderente: {
       summary: "Parâmetros aderentes",
-      detail: `O tópico "${block.title}" atende aos critérios técnicos e noprospecçãotivos aplicáveis. As fontes documentais utilizadas são consistentes com os dados processados pela platafoprospecção.`,
+      detail: `O tópico "${block.title}" atende aos critérios técnicos e noprospecçãotivos aplicáveis. As fontes documentais utilizadas são consistentes com os dados processados pela plataforma.`,
     },
     atencao: {
       summary: "Requer validação adicional",
@@ -33,7 +33,7 @@ const generateInsight = (block: DocumentBlock, index: number): AIInsight | null 
     },
     informativo: {
       summary: "Contexto técnico aplicado",
-      detail: `O tópico "${block.title}" foi formulado com base nas noprospecçãos NBC TA vigentes e dados extraídos via OCR. Os indicadores utilizados seguem os padrões de análise da platafoprospecção.`,
+      detail: `O tópico "${block.title}" foi formulado com base nas noprospecçãos NBC TA vigentes e dados extraídos via OCR. Os indicadores utilizados seguem os padrões de análise da plataforma.`,
     },
   };
 

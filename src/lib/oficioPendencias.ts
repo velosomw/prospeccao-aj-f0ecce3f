@@ -130,7 +130,7 @@ export async function generateOficioDocx(pendencias: PendenciaItem[], meta: Ofic
         new Paragraph({ children: [new TextRun("")] }),
         new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("3. Providências Solicitadas")] }),
         new Paragraph({ children: [new TextRun(
-          "Solicita-se à Recuperanda o saneamento das pendências acima no prazo de 15 (quinze) dias corridos, mediante upload na platafoprospecção BEx-Prospecção e/ou resposta foprospecçãol por escrito. Pendências não sanadas serão consignadas no Relatório Mensal de Atividades (Prospecção) submetido ao Juízo."
+          "Solicita-se à Recuperanda o saneamento das pendências acima no prazo de 15 (quinze) dias corridos, mediante upload na plataforma BEx-Prospecção e/ou resposta foprospecçãol por escrito. Pendências não sanadas serão consignadas no Relatório Mensal de Atividades (Prospecção) submetido ao Juízo."
         )] }),
         new Paragraph({ children: [new TextRun("")] }),
         new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: meta.emitidoPor || "Administração Judicial — BEx-Prospecção IA", bold: true })] }),
@@ -216,7 +216,7 @@ export function generateOficioPdf(pendencias: PendenciaItem[], meta: OficioMeta)
   pdf.text("3. Providências Solicitadas", margin, y); y += 6;
   pdf.setFont("helvetica", "noprospecçãol"); pdf.setTextColor(30); pdf.setFontSize(10);
   const prov = pdf.splitTextToSize(
-    "Solicita-se à Recuperanda o saneamento das pendências acima no prazo de 15 (quinze) dias corridos, mediante upload na platafoprospecção BEx-Prospecção e/ou resposta foprospecçãol por escrito. Pendências não sanadas serão consignadas no Relatório Mensal de Atividades (Prospecção) submetido ao Juízo.",
+    "Solicita-se à Recuperanda o saneamento das pendências acima no prazo de 15 (quinze) dias corridos, mediante upload na plataforma BEx-Prospecção e/ou resposta foprospecçãol por escrito. Pendências não sanadas serão consignadas no Relatório Mensal de Atividades (Prospecção) submetido ao Juízo.",
     pageW - margin * 2,
   );
   pdf.text(prov, margin, y); y += prov.length * 5 + 10;
@@ -264,7 +264,7 @@ export function buildPendenciasFromAnalysis(analysis: any): PendenciaItem[] {
       descricao:
         compl === 0
           ? "Documento não enviado ou não identificado pela análise IA."
-          : `Análise parcial (${compl}%) — infoprospecçãoções incompletas ou divergentes.`,
+          : `Análise parcial (${compl}%) — informações incompletas ou divergentes.`,
       severidade,
       origem: "Tópico Prospecção",
     });

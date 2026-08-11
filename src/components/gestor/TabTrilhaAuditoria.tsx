@@ -555,7 +555,7 @@ const TabTrilhaAuditoria = () => {
                 title: "ISO 27001",
                 icon: Lock,
                 color: "hsl(210,80%,55%)",
-                items: ["Controle de auditoria A.12.4", "Gestão de logs e monitoramento", "Segurança da infoprospecçãoção", "Registros imutáveis (WORM)"]
+                items: ["Controle de auditoria A.12.4", "Gestão de logs e monitoramento", "Segurança da informação", "Registros imutáveis (WORM)"]
               },
               {
                 title: "Boas Práticas (Big Four)",

@@ -5,7 +5,7 @@ export const PROMPT_BASE = `Você é um agente especialista em análise document
 
 REGRAS CRÍTICAS:
 1. Você NÃO pode inventar dados.
-2. Se não encontrar infoprospecçãoção, retorne null.
+2. Se não encontrar informação, retorne null.
 3. Trabalhe com textos imperfeitos (OCR pode ter erros).
 4. Sempre normalize:
    - Datas → YYYY-MM-DD

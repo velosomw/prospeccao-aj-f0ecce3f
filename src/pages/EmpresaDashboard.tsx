@@ -379,7 +379,7 @@ const EmpresaDashboard = () => {
                           </Badge>
                         </CardTitle>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                          Ative o Prospecção para iniciar a análise da IA e carregar o status na platafoprospecção
+                          Ative o Prospecção para iniciar a análise da IA e carregar o status na plataforma
                         </p>
                       </div>
                     </div>

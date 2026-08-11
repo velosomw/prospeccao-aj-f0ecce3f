@@ -4,7 +4,7 @@ export interface ProspecçãoTopic {
   category: string;
 }
 
-export const Prospecção_TOPICS: ProspecçãoTopic[] = [
+export const PROSPECCAO_TOPICS: ProspecçãoTopic[] = [
   { number: 1, name: "Alteração na Atividade Empresarial", category: "Empresa" },
   { number: 2, name: "Alteração na Estrutura Societária (Organograma)", category: "Empresa" },
   { number: 3, name: "Abertura/Fechamento de Estabelecimentos ou Alteração de Endereço", category: "Empresa" },

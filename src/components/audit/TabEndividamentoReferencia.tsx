@@ -291,7 +291,7 @@ const TabEndividamentoReferencia = () => {
                 </table>
               </div>
               <p className="text-[11px] text-muted-foreground mt-3">
-                Tolerância: 0,5pp para ratios. Quando "Recalculado" diverge do "Relatório", indica que o relatório-fonte e o motor da platafoprospecção estão usando bases distintas — investigar o motor de indicadores.
+                Tolerância: 0,5pp para ratios. Quando "Recalculado" diverge do "Relatório", indica que o relatório-fonte e o motor da plataforma estão usando bases distintas — investigar o motor de indicadores.
               </p>
             </TabsContent>
           </Tabs>

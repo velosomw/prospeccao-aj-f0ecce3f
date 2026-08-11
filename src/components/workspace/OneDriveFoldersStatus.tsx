@@ -121,7 +121,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
 
   const fileKey = (r: FileRow) => r.file_id || r.path;
 
-  // Move o arquivo para outra pasta DIP — apenas no banco da platafoprospecção (path + metadata).
+  // Move o arquivo para outra pasta DIP — apenas no banco da plataforma (path + metadata).
   // Não toca no OneDrive.
   const moveFile = async (r: FileRow, targetId: number) => {
     if (!r.file_id) { toast.error("Arquivo sem file_id; não é possível mover."); return; }
@@ -203,7 +203,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
         .delete()
         .eq("file_id", r.file_id);
       if (error) throw error;
-      toast.success("Arquivo excluído da platafoprospecção.");
+      toast.success("Arquivo excluído da plataforma.");
       setPendingDelete(null);
       setSelectedFile(null);
       await load();

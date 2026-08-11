@@ -271,7 +271,7 @@ const TabFinanceiroTokens = () => {
         </div>
       </div>
 
-      {/* KPIs principais — médias REAIS por unidade da platafoprospecção */}
+      {/* KPIs principais — médias REAIS por unidade da plataforma */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <KPI
           icon={FileText}
@@ -291,7 +291,7 @@ const TabFinanceiroTokens = () => {
           icon={Wallet}
           label="Custo Total (E2E)"
           value={data ? fmtUSDc(data.custoTotal) : "—"}
-          sub={data ? `Σ IA · ${data.counts.prospecçãosTotal} Prospecção(s) na platafoprospecção` : "—"}
+          sub={data ? `Σ IA · ${data.counts.prospecçãosTotal} Prospecção(s) na plataforma` : "—"}
           color="hsl(200,80%,55%)"
         />
         <KPI

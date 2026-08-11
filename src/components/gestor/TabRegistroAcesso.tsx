@@ -107,7 +107,7 @@ const TabRegistroAcesso = () => {
             <Shield className="w-5 h-5 text-[hsl(258,90%,66%)]" />
             Registro de Acesso
           </h3>
-          <p className="text-xs text-muted-foreground mt-0.5">Monitoramento e auditoria de acessos à platafoprospecção</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Monitoramento e auditoria de acessos à plataforma</p>
         </div>
         <Button size="sm" onClick={handleExportCSV} className="bg-[hsl(152,70%,45%)] hover:bg-[hsl(152,70%,38%)] text-white gap-1.5">
           <Download className="w-3.5 h-3.5" /> Exportar CSV

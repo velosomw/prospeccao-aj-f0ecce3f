@@ -5,7 +5,7 @@
  *  - estrutura física do OneDrive (`/Projeto Prospecção/{CLIENTE}/{ANO}/{PERIODO}/Documentos/NN-…`);
  *  - extração de dados (agente especializado por pasta);
  *  - carga no balancete (classificação contábil predominante);
- *  - tópicos do Prospecção na platafoprospecção (`src/data/prospecçãoTopics.ts`, 1-61).
+ *  - tópicos do Prospecção na plataforma (`src/data/prospecçãoTopics.ts`, 1-61).
  *
  * Cada pasta tem:
  *  - `id`             : 1-60, igual ao prefixo numérico do nome da pasta no OneDrive.
@@ -14,7 +14,7 @@
  *  - `accountClass`   : classificação contábil predominante carregada no balancete
  *                       (ATIVO, PASSIVO, PATRIMONIO_LIQUIDO, RECEITA, DESPESA, FISCAL,
  *                       CADASTRO, N_A).
- *  - `prospeccaoTopicNumber` : número do tópico correspondente em `Prospecção_TOPICS` (1-61).
+ *  - `prospeccaoTopicNumber` : número do tópico correspondente em `PROSPECCAO_TOPICS` (1-61).
  *                       O tópico 22 ("Tópicos Pendentes") é interno e não tem pasta.
  */
 
@@ -33,7 +33,7 @@ export interface DipFolder {
   label: string;
   agent: string;
   accountClass: DipAccountClass;
-  /** Tópico correspondente em `src/data/prospecçãoTopics.ts` (Prospecção_TOPICS.number, 1-61). */
+  /** Tópico correspondente em `src/data/prospecçãoTopics.ts` (PROSPECCAO_TOPICS.number, 1-61). */
   prospeccaoTopicNumber: number;
 }
 
@@ -41,7 +41,7 @@ export const DIP_FOLDERS: DipFolder[] = [
   { id: 1,  prospeccaoTopicNumber: 1,  label: "Alteração na Atividade Empresarial",                                              agent: "AGENTE_SOCIETARIO_ESTRUTURA",     accountClass: "CADASTRO" },
   { id: 2,  prospeccaoTopicNumber: 2,  label: "Alteração na Estrutura Societária / Organograma",                                 agent: "AGENTE_SOCIETARIO_ESTRUTURA",     accountClass: "CADASTRO" },
   { id: 3,  prospeccaoTopicNumber: 3,  label: "Abertura/fechamento de estabelecimentos ou alteração de endereço",                agent: "AGENTE_SOCIETARIO_ESTRUTURA",     accountClass: "CADASTRO" },
-  { id: 4,  prospeccaoTopicNumber: 4,  label: "Segmento de atuação / fontes de infoprospecçãoção sobre o segmento",                     agent: "AGENTE_SOCIETARIO_ESTRUTURA",     accountClass: "CADASTRO" },
+  { id: 4,  prospeccaoTopicNumber: 4,  label: "Segmento de atuação / fontes de informação sobre o segmento",                     agent: "AGENTE_SOCIETARIO_ESTRUTURA",     accountClass: "CADASTRO" },
   { id: 5,  prospeccaoTopicNumber: 23, label: "Fluxo de Caixa",                                                                  agent: "AGENTE_FINANCEIRO_CONTABIL",      accountClass: "ATIVO" },
   { id: 6,  prospeccaoTopicNumber: 24, label: "Fluxo de Caixa Projetado 6 meses",                                                agent: "AGENTE_FINANCEIRO_CONTABIL",      accountClass: "N_A" },
   { id: 7,  prospeccaoTopicNumber: 5,  label: "Balancete de Verificação",                                                        agent: "AGENTE_FINANCEIRO_CONTABIL",      accountClass: "ATIVO" },
@@ -100,8 +100,8 @@ export const DIP_FOLDERS: DipFolder[] = [
   { id: 60, prospeccaoTopicNumber: 61, label: "Plano Orçamentário",                                                              agent: "AGENTE_FINANCEIRO_CONTABIL",      accountClass: "N_A" },
 ];
 
-/** Tópicos Prospecção que NÃO têm pasta no OneDrive (internos da platafoprospecção). */
-export const Prospecção_TOPICS_WITHOUT_DIP_FOLDER: number[] = [22]; // "Tópicos Pendentes"
+/** Tópicos Prospecção que NÃO têm pasta no OneDrive (internos da plataforma). */
+export const PROSPECCAO_TOPICS_WITHOUT_DIP_FOLDER: number[] = [22]; // "Tópicos Pendentes"
 
 /** Slug usado em path/metadata (ex.: "07-balancete-de-verificacao"). */
 export function dipFolderSlug(f: DipFolder): string {
@@ -124,10 +124,10 @@ export function getDipFolderByProspeccaoTopic(prospeccaoTopicNumber: number): Di
 }
 
 /**
- * Valida em runtime que a lista DIP está padronizada com Prospecção_TOPICS:
+ * Valida em runtime que a lista DIP está padronizada com PROSPECCAO_TOPICS:
  *  - ids 1..60 únicos e sequenciais;
  *  - prospeccaoTopicNumber únicos e cobrindo todos os tópicos 1..61 exceto os listados
- *    em `Prospecção_TOPICS_WITHOUT_DIP_FOLDER`.
+ *    em `PROSPECCAO_TOPICS_WITHOUT_DIP_FOLDER`.
  * Retorna a lista de inconsistências (vazia = padronizado).
  */
 export function validateDipFolderIntegrity(
@@ -146,11 +146,11 @@ export function validateDipFolderIntegrity(
     errors.push("prospeccaoTopicNumber duplicado em DIP_FOLDERS");
   }
   for (const t of prospeccaoTopicNumbers) {
-    if (Prospecção_TOPICS_WITHOUT_DIP_FOLDER.includes(t)) continue;
+    if (PROSPECCAO_TOPICS_WITHOUT_DIP_FOLDER.includes(t)) continue;
     if (!dipTopics.has(t)) errors.push(`Prospecção topic ${t} sem pasta DIP correspondente`);
   }
   for (const t of dipTopics) {
-    if (!prospeccaoTopicNumbers.includes(t)) errors.push(`DIP folder mapeia topic ${t} inexistente em Prospecção_TOPICS`);
+    if (!prospeccaoTopicNumbers.includes(t)) errors.push(`DIP folder mapeia topic ${t} inexistente em PROSPECCAO_TOPICS`);
   }
   return errors;
 }

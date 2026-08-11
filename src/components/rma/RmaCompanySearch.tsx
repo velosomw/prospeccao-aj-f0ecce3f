@@ -10,7 +10,7 @@ interface Props {
   placeholder?: string;
   /** Quando true, exibe um botão "limpar" ao lado e dispara onClear */
   onClear?: () => void;
-  /** Valor controlado opcional (texto) — quando infoprospecçãodo, controla o input */
+  /** Valor controlado opcional (texto) — quando informado, controla o input */
   value?: string;
   onChange?: (v: string) => void;
   className?: string;

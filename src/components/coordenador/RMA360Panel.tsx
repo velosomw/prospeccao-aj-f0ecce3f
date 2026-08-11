@@ -17,7 +17,7 @@ import {
   type CompanyTopic,
   type RmaHistoryEntry,
 } from "@/services/companiesService";
-import { Prospecção_TOPICS } from "@/data/prospecçãoTopics";
+import { PROSPECCAO_TOPICS } from "@/data/prospecçãoTopics";
 
 // As 10 abas do workspace Prospecção — espelho do ProspecçãoWorkspace
 const WORKSPACE_TABS = [
@@ -97,7 +97,7 @@ const Prospecção360Panel = ({ company, onClose }: Props) => {
   }, [tabsProgress]);
 
   const coveredTopicNumbers = new Set(topics.map((t) => t.topic_number));
-  const pendingTopics = Prospecção_TOPICS.filter((t) => !coveredTopicNumbers.has(t.number));
+  const pendingTopics = PROSPECCAO_TOPICS.filter((t) => !coveredTopicNumbers.has(t.number));
 
   const formatDate = (s: string) =>
     new Date(s).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
@@ -209,7 +209,7 @@ const Prospecção360Panel = ({ company, onClose }: Props) => {
             </p>
             <p className="text-2xl font-bold text-foreground leading-none">{topics.length}</p>
             <p className="text-[11px] text-muted-foreground mt-1">
-              de {Prospecção_TOPICS.length} disponíveis ({Math.round((topics.length / Prospecção_TOPICS.length) * 100)}%)
+              de {PROSPECCAO_TOPICS.length} disponíveis ({Math.round((topics.length / PROSPECCAO_TOPICS.length) * 100)}%)
             </p>
           </div>
 

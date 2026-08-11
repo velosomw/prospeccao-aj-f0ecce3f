@@ -32,7 +32,7 @@ interface Props {
   compact?: boolean;
   /** Máx. de arquivos por upload. 1 = modo corretivo 1:1 (ErrorFilesPanel); 5 = aba Aprendizado IA. */
   maxFiles?: number;
-  /** Mês/Ano travados ao Prospecção selecionado. Quando infoprospecçãodos, o seletor vira chip read-only. */
+  /** Mês/Ano travados ao Prospecção selecionado. Quando informados, o seletor vira chip read-only. */
   lockedYear?: number | null;
   lockedMonth?: number | null;
   /** Callback disparado quando o usuário (ou efeito) altera a pasta correspondente. */

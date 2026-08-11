@@ -126,7 +126,7 @@ export default function BaseDeDados() {
       value: definitions.some(d => d.last_download_at) 
         ? format(new Date(Math.max(...definitions.filter(d => d.last_download_at).map(d => new Date(d.last_download_at!).getTime()))), "dd/MM HH:mm")
         : "Nenhum", 
-      hint: "Geral da platafoprospecção", 
+      hint: "Geral da plataforma", 
       icon: Clock, 
       tone: "orange" as const 
     },
@@ -142,7 +142,7 @@ export default function BaseDeDados() {
   return (
     <ConsultorPageShell
       title="Base de Dados"
-      subtitle="Atualize e exporte bases consolidadas da platafoprospecção em arquivos Excel padronizados."
+      subtitle="Atualize e exporte bases consolidadas da plataforma em arquivos Excel padronizados."
       search={search}
       onSearch={setSearch}
       kpis={kpis}

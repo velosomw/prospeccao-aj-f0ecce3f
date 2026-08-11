@@ -337,7 +337,7 @@ const UserManagement = () => {
             </button>
             <div>
               <h1 className="text-2xl font-bold text-foreground">{pageTitle}</h1>
-              <p className="text-sm text-muted-foreground">Gerencie os usuários cadastrados na platafoprospecção</p>
+              <p className="text-sm text-muted-foreground">Gerencie os usuários cadastrados na plataforma</p>
             </div>
           </div>
           <Button className="bg-primary hover:bg-primary/90 gap-1.5" onClick={startCreate}>

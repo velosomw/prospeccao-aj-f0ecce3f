@@ -34,7 +34,7 @@ const inferTopicNumber = (topic: ScoreTopic, index: number) => {
 };
 
 import { fileMatchesTopic, filterIngestibleFiles } from "@/lib/topicMatch";
-import { Prospecção_TOPICS } from "@/data/prospecçãoTopics";
+import { PROSPECCAO_TOPICS } from "@/data/prospecçãoTopics";
 
 export function buildLiveScoreTopics(
   topics: ScoreTopic[] | null | undefined,
@@ -53,7 +53,7 @@ export function buildLiveScoreTopics(
   // canônica do Prospecção para que o workspace consiga refletir a presença de
   // arquivos no OneDrive em vez de mostrar tudo zerado.
   if (base.length === 0) {
-    base = Prospecção_TOPICS.map((t) => ({
+    base = PROSPECCAO_TOPICS.map((t) => ({
       id: `t${t.number}`,
       number: t.number,
       name: t.name,
