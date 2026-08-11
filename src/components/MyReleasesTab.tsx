@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar, Search, FileText, RefreshCw } from "lucide-react";
-import { listMyReleases, listReleases, monthLabel, statusLabel, type RmaRelease } from "@/services/prospecçãoReleaseService";
+import { listMyReleases, listReleases, monthLabel, statusLabel, type ProspeccaoRelease } from "@/services/prospecçãoReleaseService";
 import { listCompanies, type Company } from "@/services/companiesService";
 
 interface Props {
@@ -24,7 +24,7 @@ const MyReleasesTab = ({
   onOpenReport,
 }: Props) => {
   const navigate = useNavigate();
-  const [releases, setReleases] = useState<RmaRelease[]>([]);
+  const [releases, setReleases] = useState<ProspeccaoRelease[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);

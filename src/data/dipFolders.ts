@@ -119,7 +119,7 @@ export function getDipFolderById(id: number): DipFolder | undefined {
   return DIP_FOLDERS.find((f) => f.id === id);
 }
 
-export function getDipFolderByRmaTopic(prospecçãoTopicNumber: number): DipFolder | undefined {
+export function getDipFolderByProspeccaoTopic(prospecçãoTopicNumber: number): DipFolder | undefined {
   return DIP_FOLDERS.find((f) => f.prospecçãoTopicNumber === prospecçãoTopicNumber);
 }
 
