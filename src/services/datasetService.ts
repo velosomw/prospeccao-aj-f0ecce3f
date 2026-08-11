@@ -9,7 +9,7 @@ export interface PendingExtraction {
   agent: string | null;
   path: string | null;
   raw_text: string;
-  normalized_text: string | null;
+  noprospecçãolized_text: string | null;
   extracted_data: Record<string, unknown> | null;
   validation: { valido: boolean; correcoes: unknown[]; confianca: number } | null;
   final_confidence: number | null;
@@ -30,12 +30,12 @@ export interface QualityScore {
 export interface SubmitCorrectionInput {
   extraction_id?: string;
   document_id?: string;
-  rma_id?: string;
+  prospecção_id?: string;
   classe: string;
   agent?: string;
   path?: string;
   input_text: string;
-  normalized_text?: string;
+  noprospecçãolized_text?: string;
   output_original?: Record<string, unknown>;
   output_correto: Record<string, unknown>;
   corrections?: Array<{

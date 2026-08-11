@@ -10,7 +10,7 @@ const statusMeta: Record<string, { bg: string; fg: string }> = {
   "Visualizado":  { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
 };
 
-export default function MagRMAs() {
+export default function MagProspecçãos() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -24,7 +24,7 @@ export default function MagRMAs() {
 
   const rows = useMemo(() => {
     return (data?.rows ?? []).map((c) => ({
-      id: c.rma_id || `RMA-${c.id.slice(0, 4).toUpperCase()}`,
+      id: c.prospecção_id || `Prospecção-${c.id.slice(0, 4).toUpperCase()}`,
       empresa: c.name,
       proc: "—",
       periodo: c.current_period_month && c.execution_year

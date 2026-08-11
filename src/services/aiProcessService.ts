@@ -11,9 +11,9 @@ export type AiStatus = "pending" | "processing" | "completed" | "failed" | "canc
 
 export interface AiProcessInput {
   document_id?: string;
-  rma_id?: string;
+  prospecção_id?: string;
   text: string;
-  normalized_text?: string;
+  noprospecçãolized_text?: string;
   path?: string;
   ocr_confidence?: number;
   async?: boolean;
@@ -213,7 +213,7 @@ export async function waitForProcessing(
       consecutiveErrors = 0;
       onProgress?.(s);
       if (isTerminal(s.status)) return s;
-      // Reset interval enquanto progride normalmente
+      // Reset interval enquanto progride noprospecçãolmente
       interval = baseInterval;
     } catch (err) {
       if ((err as { name?: string })?.name === "AbortError") throw err;
@@ -275,20 +275,20 @@ export async function retryProcessing(previousJobId: string): Promise<AiProcessA
 
   return await startAsyncProcessing({
     document_id: prev.document_id ?? undefined,
-    rma_id: prev.rma_id ?? undefined,
+    prospecção_id: prev.prospecção_id ?? undefined,
     text: prev.raw_text,
-    normalized_text: prev.normalized_text ?? undefined,
+    noprospecçãolized_text: prev.noprospecçãolized_text ?? undefined,
     path: prev.path ?? undefined,
     ocr_confidence: prev.ocr_confidence ?? undefined,
     resume_from_id: previousJobId,
   });
 }
 
-export async function listExtractionsByRma(rmaId: string) {
+export async function listExtractionsByRma(prospecçãoId: string) {
   const { data, error } = await supabase
     .from("ai_extractions")
     .select("*")
-    .eq("rma_id", rmaId)
+    .eq("prospecção_id", prospecçãoId)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data;

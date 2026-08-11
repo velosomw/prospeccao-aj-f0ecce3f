@@ -6,16 +6,16 @@ import { useParams } from "react-router-dom";
 import { useRmaDocument } from "@/hooks/useRmaDocument";
 import type { DocumentBlock, DocumentSubStep } from "@/types/documentEditor";
 
-const RMARelatorioTab = () => {
+const ProspecçãoRelatorioTab = () => {
   const { id = "" } = useParams();
   const [subStep, setSubStep] = useState<DocumentSubStep>("escopo");
   const { sections, progresso, aprovadoPct, rules, canManualFinalize, regenerateFinal } = useRmaDocument(
     id,
-    "rma_mensal",
-    "Revisão-Relatório RMA Mensal (CNJ 72/2020)",
+    "prospecção_mensal",
+    "Revisão-Relatório Prospecção Mensal (CNJ 72/2020)",
   );
   // Nota: progresso/status do documento são recalculados automaticamente
-  // pelo trigger trg_rma_section_autosync sempre que uma seção muda.
+  // pelo trigger trg_prospecção_section_autosync sempre que uma seção muda.
   // O .docx Final é regenerado em tempo real via setStatus → regenerateFinal.
 
   const blocks: DocumentBlock[] = sections.map((s) => ({
@@ -33,8 +33,8 @@ const RMARelatorioTab = () => {
   }));
 
   const finalHint = canManualFinalize
-    ? `${aprovadoPct}% aprovado · RMA Final pode ser emitido com dados parciais e atualizado incrementalmente.`
-    : `${aprovadoPct}% aprovado · necessário ${rules.minPctManualFinal}% para emitir o RMA Final (relatório de acompanhamento mensal).`;
+    ? `${aprovadoPct}% aprovado · Prospecção Final pode ser emitido com dados parciais e atualizado incrementalmente.`
+    : `${aprovadoPct}% aprovado · necessário ${rules.minPctManualFinal}% para emitir o Prospecção Final (relatório de acompanhamento mensal).`;
 
   return (
     <div className="space-y-4">
@@ -44,17 +44,17 @@ const RMARelatorioTab = () => {
         allCompleted={progresso === 100}
       />
       {subStep === "escopo" && (
-        <RmaIntelligentEditor tipo="rma_mensal" titulo="Revisão-Relatório RMA Mensal (CNJ 72/2020)" />
+        <RmaIntelligentEditor tipo="prospecção_mensal" titulo="Revisão-Relatório Prospecção Mensal (CNJ 72/2020)" />
       )}
       {subStep === "relatorio" && (
         <RelatorioA4View
-          documentTitle="RELATÓRIO MENSAL DE ATIVIDADES (RMA)"
+          documentTitle="RELATÓRIO MENSAL DE ATIVIDADES (Prospecção)"
           documentSubtitle="Recomendação CNJ 72/2020 — Acompanhamento mensal da Administração Judicial"
           blocks={blocks}
           onUpdateBlock={() => {}}
           onAddComment={() => {}}
           onFinalize={() => regenerateFinal(true)}
-          finalLabel="Gerar RMA Final (.docx)"
+          finalLabel="Gerar Prospecção Final (.docx)"
           finalDisabled={!canManualFinalize}
           finalHint={finalHint}
         />
@@ -63,4 +63,4 @@ const RMARelatorioTab = () => {
   );
 };
 
-export default RMARelatorioTab;
+export default ProspecçãoRelatorioTab;

@@ -14,7 +14,7 @@ const opts = [
   },
   {
     label: "Empresas Prospecção",
-    desc: "Cadastre as empresas que enviam a planilha com informações",
+    desc: "Cadastre as empresas que enviam a planilha com infoprospecçãoções",
     icon: Building2,
     tone: { bg: "hsl(142,60%,95%)", fg: "hsl(142,60%,35%)", ring: "hsl(142,60%,90%)" },
     to: "/consultor/cadastro/recuperandas",
@@ -71,7 +71,7 @@ export default function ConsultorCadastro() {
     <CadastroPageShell
       breadcrumb={[{ label: "Cadastro de Perfis" }]}
       title="Cadastro de Perfis"
-      subtitle="Gerencie usuários e perfis da plataforma."
+      subtitle="Gerencie usuários e perfis da platafoprospecção."
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {dashboards.map((d) => (

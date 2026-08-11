@@ -14,7 +14,7 @@ export interface JanelaConsolidado {
 
 const REALTIME_TABLES = [
   "balancete_consolidado",
-  "rma_file_parse_cache",
+  "prospecção_file_parse_cache",
   "lancamentos",
   "bs_consolidado",
   "dre_consolidado",
@@ -46,7 +46,7 @@ interface CacheRow {
   dre: unknown;
 }
 
-function normalizeCacheRows(rows: CacheRow[], janela?: JanelaConsolidado | null) {
+function noprospecçãolizeCacheRows(rows: CacheRow[], janela?: JanelaConsolidado | null) {
   const yearsSet = new Set<string>();
   const balanco: ParsedRow[] = [];
   const dre: ParsedRow[] = [];
@@ -116,7 +116,7 @@ export function useConsolidadoBS(
           .eq("company_id", companyId)
           .not("origem_arquivo", "is", null),
         supabase
-          .from("rma_file_parse_cache")
+          .from("prospecção_file_parse_cache")
           .select("ano, mes, tipo, file_name, balanco, dre")
           .eq("company_id", companyId)
           .is("error_message", null)
@@ -162,7 +162,7 @@ export function useConsolidadoBS(
           const k = `${c.ano}-${String(c.mes).padStart(2, "0")}`;
           return !coveredMonths.has(k);
         });
-        const fallback = normalizeCacheRows(cacheRows, janela);
+        const fallback = noprospecçãolizeCacheRows(cacheRows, janela);
         const mergedYears = Array.from(new Set([...primary.parsed.years, ...fallback.parsed.years])).sort();
         const mergedParsed: ParsedFinancialData = {
           years: mergedYears,

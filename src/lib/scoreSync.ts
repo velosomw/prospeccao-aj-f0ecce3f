@@ -1,8 +1,8 @@
 // Validação em tempo real de paridade de percentual entre as superfícies que
-// exibem o "Score Global do RMA" (Workspace header, Status RMA, Processamento
+// exibem o "Score Global do Prospecção" (Workspace header, Status Prospecção, Processamento
 // IA e Alertas Inteligentes do Dashboard).
 //
-// Regra: a fonte de verdade é `rma.percentual` (vindo do edge `rma-score`).
+// Regra: a fonte de verdade é `prospecção.percentual` (vindo do edge `prospecção-score`).
 // Cada superfície deve renderizar EXATAMENTE esse número. Este helper garante
 // isso em runtime: se um cálculo local divergir, emite um aviso no console e
 // retorna o valor canônico, evitando que a UI mostre números diferentes.
@@ -34,20 +34,20 @@ export function reconcileScore(
 
 /**
  * Hook que registra o último percentual visto em cada superfície num registry
- * global e dispara aviso se duas superfícies do mesmo RMA divergirem.
+ * global e dispara aviso se duas superfícies do mesmo Prospecção divergirem.
  */
 const registry: Record<string, Record<string, number>> = {};
 
-export function useScoreParityGuard(rmaId: string | null | undefined, surface: string, value: number) {
+export function useScoreParityGuard(prospecçãoId: string | null | undefined, surface: string, value: number) {
   const lastRef = useRef<number | null>(null);
   useEffect(() => {
-    if (!rmaId) return;
+    if (!prospecçãoId) return;
     const v = Math.round(Number(value) || 0);
     if (lastRef.current === v) return;
     lastRef.current = v;
-    registry[rmaId] = registry[rmaId] || {};
-    registry[rmaId][surface] = v;
-    const entries = Object.entries(registry[rmaId]);
+    registry[prospecçãoId] = registry[prospecçãoId] || {};
+    registry[prospecçãoId][surface] = v;
+    const entries = Object.entries(registry[prospecçãoId]);
     if (entries.length < 2) return;
     const values = entries.map(([, n]) => n);
     const min = Math.min(...values);
@@ -55,9 +55,9 @@ export function useScoreParityGuard(rmaId: string | null | undefined, surface: s
     if (max - min > TOLERANCE) {
       // eslint-disable-next-line no-console
       console.warn(
-        `[scoreSync] percentuais divergentes para RMA ${rmaId}:`,
+        `[scoreSync] percentuais divergentes para Prospecção ${prospecçãoId}:`,
         Object.fromEntries(entries),
       );
     }
-  }, [rmaId, surface, value]);
+  }, [prospecçãoId, surface, value]);
 }

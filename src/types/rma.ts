@@ -1,10 +1,10 @@
-// Tipos compartilhados do domínio RMA. Não contém dados mockados.
+// Tipos compartilhados do domínio Prospecção. Não contém dados mockados.
 // Reexporta os tipos do arquivo legado para permitir migração gradual
-// dos imports `@/data/rmaMockData` → `@/types/rma`.
+// dos imports `@/data/prospecçãoMockData` → `@/types/prospecção`.
 export type {
-  RMADocument,
-  RMATopic,
-  RMAEntry,
+  ProspecçãoDocument,
+  ProspecçãoTopic,
+  ProspecçãoEntry,
   BalanceteRow,
   ReviewEntry,
-} from "@/data/rmaMockData";
+} from "@/data/prospecçãoMockData";

@@ -1,8 +1,8 @@
 // Auditoria de Cobertura de Meses (estrito · 0,01%)
 // ---------------------------------------------------------------------------
 // Durante/depois do processamento manual, valida que os meses presentes na
-// plataforma RMA (balancete_consolidado) batem com os meses do balancete de
-// referência (rma_file_parse_cache) e do relatório de referência (lancamentos
+// platafoprospecção Prospecção (balancete_consolidado) batem com os meses do balancete de
+// referência (prospecção_file_parse_cache) e do relatório de referência (lancamentos
 // com origem_arquivo). Lista meses:
 //   ✓ OK        — presente nas três fontes e equação Ativo = Passivo+PL (≤0,01%)
 //   ⏳ Em proc. — presente no cache OU em onedrive_files=processing, ainda não consolidado
@@ -14,7 +14,7 @@ import { Loader2, CheckCircle2, AlertTriangle, XCircle, Clock, Copy } from "luci
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { mesKeyToLabel } from "@/services/bsDados/mesNormalizer";
+import { mesKeyToLabel } from "@/services/bsDados/mesNoprospecçãolizer";
 
 interface Props {
   companyId: string | null;
@@ -74,7 +74,7 @@ export default function MonthCoverageCard({ companyId, refreshKey }: Props) {
           .eq("company_id", companyId)
           .limit(20000),
         supabase
-          .from("rma_file_parse_cache")
+          .from("prospecção_file_parse_cache")
           .select("ano, mes, tipo")
           .eq("company_id", companyId)
           .is("error_message", null)
@@ -157,7 +157,7 @@ export default function MonthCoverageCard({ companyId, refreshKey }: Props) {
     const ch = supabase
       .channel(`coverage:${companyId}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "balancete_consolidado", filter: `company_id=eq.${companyId}` }, () => setTick((t) => t + 1))
-      .on("postgres_changes", { event: "*", schema: "public", table: "rma_file_parse_cache", filter: `company_id=eq.${companyId}` }, () => setTick((t) => t + 1))
+      .on("postgres_changes", { event: "*", schema: "public", table: "prospecção_file_parse_cache", filter: `company_id=eq.${companyId}` }, () => setTick((t) => t + 1))
       .subscribe();
     return () => { supabase.removeChannel(ch); };
   }, [companyId]);
@@ -231,7 +231,7 @@ export default function MonthCoverageCard({ companyId, refreshKey }: Props) {
         </div>
       )}
       <div className="text-[10px] text-muted-foreground mt-2">
-        Compara <strong>balancete consolidado</strong> (plataforma) com <strong>rma_file_parse_cache</strong> (referência parsed) e <strong>onedrive_files</strong> em processamento.
+        Compara <strong>balancete consolidado</strong> (platafoprospecção) com <strong>prospecção_file_parse_cache</strong> (referência parsed) e <strong>onedrive_files</strong> em processamento.
         Critério estrito: |Ativo − (Passivo+PL)| ≤ 0,01%.
       </div>
     </div>

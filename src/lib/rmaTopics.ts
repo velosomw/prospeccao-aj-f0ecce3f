@@ -1,4 +1,4 @@
-// Lista canônica das 60 pastas/tópicos OneDrive — RMA (fonte oficial).
+// Lista canônica das 60 pastas/tópicos OneDrive — Prospecção (fonte oficial).
 // Usada para associar documentos carregados em /gestao-agentes ao tópico
 // correspondente, alimentando o prompt builder (contexto por pasta).
 
@@ -20,11 +20,11 @@ export interface RmaTopic {
     | "Outros";
 }
 
-export const RMA_TOPICS: RmaTopic[] = [
+export const Prospecção_TOPICS: RmaTopic[] = [
   { id: 1,  slug: "01-alteracao-atividade-empresarial",         label: "Alteração na Atividade Empresarial", group: "Estrutura" },
   { id: 2,  slug: "02-alteracao-estrutura-societaria",          label: "Alteração na Estrutura Societária ou nos orgãos da Administração (Organograma)", group: "Estrutura" },
   { id: 3,  slug: "03-abertura-fechamento-estabelecimentos",    label: "Abertura ou fechamento de estabelecimentos ou alteração de endereço", group: "Estrutura" },
-  { id: 4,  slug: "04-segmento-atuacao-recuperanda",            label: "Segmento de atuação ou fontes de informação sobre o segmento da recuperanda", group: "Estrutura" },
+  { id: 4,  slug: "04-segmento-atuacao-recuperanda",            label: "Segmento de atuação ou fontes de infoprospecçãoção sobre o segmento da recuperanda", group: "Estrutura" },
   { id: 5,  slug: "05-fluxo-de-caixa",                          label: "Fluxo de Caixa", group: "Financeiro" },
   { id: 6,  slug: "06-fluxo-caixa-projetado-6m",                label: "Fluxo de Caixa Projetado 6 meses", group: "Financeiro" },
   { id: 7,  slug: "07-balancete-de-verificacao",                label: "Balancete de Verificação", group: "Financeiro" },
@@ -58,8 +58,8 @@ export const RMA_TOPICS: RmaTopic[] = [
   { id: 35, slug: "35-adiantamento-contrato-cambio-acc",        label: "Adiantamento de contrato de câmbio (ACC)", group: "Garantias" },
   { id: 36, slug: "36-comprovantes-pagamento-credores-rj",      label: "Comprovantes de Pagamentos a credores pelo Plano de RJ", group: "Garantias" },
   { id: 37, slug: "37-ultima-alteracao-contratual",             label: "Última Alteração Contratual", group: "Estrutura" },
-  { id: 38, slug: "38-pendencia-rma-anterior",                  label: "Informações de pendência de Prospecção AJ anterior", group: "Outros" },
-  { id: 39, slug: "39-outras-informacoes",                      label: "Outras Informações", group: "Outros" },
+  { id: 38, slug: "38-pendencia-prospecção-anterior",                  label: "Infoprospecçãoções de pendência de Prospecção AJ anterior", group: "Outros" },
+  { id: 39, slug: "39-outras-infoprospecçãocoes",                      label: "Outras Infoprospecçãoções", group: "Outros" },
   { id: 40, slug: "40-situacao-fiscal",                         label: "Situação Fiscal", group: "Tributário" },
   { id: 41, slug: "41-relacao-analitica-nfs",                   label: "Relação analítica de notas fiscais", group: "Tributário" },
   { id: 42, slug: "42-razao-fiscal-impostos",                   label: "Razão Fiscal — composição apurada dos impostos por competência", group: "Tributário" },
@@ -85,7 +85,7 @@ export const RMA_TOPICS: RmaTopic[] = [
 
 export function getTopicBySlug(slug: string | null | undefined): RmaTopic | null {
   if (!slug) return null;
-  return RMA_TOPICS.find((t) => t.slug === slug) || null;
+  return Prospecção_TOPICS.find((t) => t.slug === slug) || null;
 }
 
 /** Path lógico = pasta OneDrive equivalente. Alimenta o contexto do prompt builder. */

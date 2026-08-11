@@ -21,7 +21,7 @@ const actionConfig: Record<RmaHistoryEntry["action"], { label: string; color: st
   unassign: { label: "Desvínculo",  color: "hsl(0,70%,55%)",   Icon: UserMinus },
 };
 
-const RmaMovementHistory = ({ title = "Histórico de Movimentações de RMA", description, limit = 200 }: Props) => {
+const RmaMovementHistory = ({ title = "Histórico de Movimentações de Prospecção", description, limit = 200 }: Props) => {
   const [entries, setEntries] = useState<RmaHistoryEntry[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [profiles, setProfiles] = useState<ProfileLite[]>([]);
@@ -82,7 +82,7 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de RMA", de
       if (!q) return true;
       const c = companiesById.get(e.company_id);
       const txt = [
-        c?.name, c?.rma_id, c?.cnpj,
+        c?.name, c?.prospecção_id, c?.cnpj,
         nameOf(e.from_consultant_user_id),
         nameOf(e.to_consultant_user_id),
         nameOf(e.changed_by),
@@ -91,7 +91,7 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de RMA", de
     });
   }, [entries, search, filter, companiesById, profilesById]);
 
-  const formatDate = (s: string) =>
+  const foprospecçãotDate = (s: string) =>
     new Date(s).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
   const counts = useMemo(() => ({
@@ -175,7 +175,7 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de RMA", de
                   return (
                     <tr key={e.id} className="border-t hover:bg-muted/30">
                       <td className="px-3 py-2 text-xs text-muted-foreground whitespace-nowrap">
-                        {formatDate(e.created_at)}
+                        {foprospecçãotDate(e.created_at)}
                       </td>
                       <td className="px-3 py-2">
                         <span
@@ -188,9 +188,9 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de RMA", de
                       <td className="px-3 py-2">
                         <div className="flex flex-col">
                           <span className="font-medium text-foreground">{c?.name || "Empresa removida"}</span>
-                          {c?.rma_id && (
+                          {c?.prospecção_id && (
                             <Badge variant="outline" className="text-[10px] font-mono w-fit mt-0.5">
-                              {c.rma_id}
+                              {c.prospecção_id}
                             </Badge>
                           )}
                         </div>

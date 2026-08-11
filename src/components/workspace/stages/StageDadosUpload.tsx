@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { Upload, FileText, CheckCircle2, AlertTriangle, XCircle, ArrowRight, Eye, Download } from "lucide-react";
-import type { ScoreFile } from "@/lib/rmaScore";
-import RMAProcessamentoTab from "@/components/rma/RMAProcessamentoTab";
+import type { ScoreFile } from "@/lib/prospecçãoScore";
+import ProspecçãoProcessamentoTab from "@/components/prospecção/ProspecçãoProcessamentoTab";
 import OneDriveFoldersStatus from "@/components/workspace/OneDriveFoldersStatus";
 import LearningUploadPanel from "@/components/workspace/stages/LearningUploadPanel";
-import type { RMAEntry } from "@/types/rma";
+import type { ProspecçãoEntry } from "@/types/prospecção";
 
 interface Props {
-  rma: RMAEntry;
+  prospecção: ProspecçãoEntry;
   companyId: string | null;
   scoreFiles: ScoreFile[];
   ano?: number | null;
@@ -40,7 +40,7 @@ const fmtDate = (iso?: string | null) => {
   }
 };
 
-export default function StageDadosUpload({ rma, companyId, scoreFiles, ano, mes }: Props) {
+export default function StageDadosUpload({ prospecção, companyId, scoreFiles, ano, mes }: Props) {
   const stats = useMemo(() => {
     const total = scoreFiles.length;
     let validos = 0, pendentes = 0, rejeitados = 0;
@@ -191,7 +191,7 @@ export default function StageDadosUpload({ rma, companyId, scoreFiles, ano, mes 
             </div>
           </div>
           <LearningUploadPanel
-            rmaId={rma.id}
+            prospecçãoId={prospecção.id}
             companyId={companyId}
             compact
             maxFiles={10}
@@ -212,7 +212,7 @@ export default function StageDadosUpload({ rma, companyId, scoreFiles, ano, mes 
           <span className="text-xs text-muted-foreground hidden group-open:inline">Recolher</span>
         </summary>
         <div className="p-4 pt-0">
-          <RMAProcessamentoTab rma={rma} companyId={companyId} />
+          <ProspecçãoProcessamentoTab prospecção={prospecção} companyId={companyId} />
         </div>
       </details>
     </div>

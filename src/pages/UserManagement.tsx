@@ -89,7 +89,7 @@ const UserManagement = () => {
   const [deleteTarget, setDeleteTarget] = useState<UserProfile | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  // RMA assignment state
+  // Prospecção assignment state
   const [companies, setCompanies] = useState<Company[]>([]);
   const [assignments, setAssignments] = useState<CompanyConsultant[]>([]);
   const [selectedConsultant, setSelectedConsultant] = useState<UserProfile | null>(null);
@@ -257,7 +257,7 @@ const UserManagement = () => {
         .filter(
           (c) =>
             c.name.toLowerCase().includes(q) ||
-            (c.rma_id || "").toLowerCase().includes(q) ||
+            (c.prospecção_id || "").toLowerCase().includes(q) ||
             (c.cnpj || "").toLowerCase().includes(q)
         )
         .map((c) => c.id)
@@ -277,7 +277,7 @@ const UserManagement = () => {
     return true;
   });
 
-  const selectedConsultantRMAs = useMemo(() => {
+  const selectedConsultantProspecçãos = useMemo(() => {
     if (!selectedConsultant) return [] as Company[];
     const ids = assignmentsByConsultant.get(selectedConsultant.user_id) || [];
     return ids.map((id) => companiesById.get(id)).filter(Boolean) as Company[];
@@ -293,7 +293,7 @@ const UserManagement = () => {
       const toAdd = [...editAssignSelected].filter((id) => !currentIds.has(id));
       const toRemove = [...currentIds].filter((id) => !editAssignSelected.has(id));
 
-      // Mover RMA: ao adicionar, remove esse RMA de outros consultores
+      // Mover Prospecção: ao adicionar, remove esse Prospecção de outros consultores
       for (const cid of toAdd) {
         await assignCompanyToConsultant(cid, editingUser.user_id, { moveFromOthers: true });
       }
@@ -301,7 +301,7 @@ const UserManagement = () => {
         await unassignCompanyFromConsultant(cid, editingUser.user_id);
       }
       await loadRmaData();
-      toast.success("Vínculos de RMA atualizados");
+      toast.success("Vínculos de Prospecção atualizados");
     } catch (err: any) {
       toast.error("Erro ao atualizar vínculos: " + err.message);
     } finally {
@@ -313,7 +313,7 @@ const UserManagement = () => {
   const activeUsers = filteredUsers.filter((u) => u.active).length;
   const inactiveUsers = filteredUsers.filter((u) => !u.active).length;
 
-  const formatDate = (dateStr: string) => {
+  const foprospecçãotDate = (dateStr: string) => {
     try {
       return new Date(dateStr).toLocaleDateString("pt-BR", {
         day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit",
@@ -337,7 +337,7 @@ const UserManagement = () => {
             </button>
             <div>
               <h1 className="text-2xl font-bold text-foreground">{pageTitle}</h1>
-              <p className="text-sm text-muted-foreground">Gerencie os usuários cadastrados na plataforma</p>
+              <p className="text-sm text-muted-foreground">Gerencie os usuários cadastrados na platafoprospecção</p>
             </div>
           </div>
           <Button className="bg-primary hover:bg-primary/90 gap-1.5" onClick={startCreate}>
@@ -413,7 +413,7 @@ const UserManagement = () => {
           </div>
         </div>
 
-        {/* Painel inline: RMAs do consultor selecionado */}
+        {/* Painel inline: Prospecçãos do consultor selecionado */}
         {selectedConsultant && (
           <Card className="border-[hsl(217,91%,50%)]/30 bg-[hsl(217,91%,50%)]/5">
             <CardContent className="p-5 space-y-3">
@@ -421,10 +421,10 @@ const UserManagement = () => {
                 <div className="flex items-center gap-2">
                   <Link2 className="w-4 h-4 text-[hsl(217,91%,50%)]" />
                   <h3 className="font-semibold text-foreground">
-                    RMAs de {selectedConsultant.full_name}
+                    Prospecçãos de {selectedConsultant.full_name}
                   </h3>
                   <Badge className="bg-[hsl(217,91%,50%)] text-white">
-                    {selectedConsultantRMAs.length}
+                    {selectedConsultantProspecçãos.length}
                   </Badge>
                 </div>
                 <div className="flex gap-2">
@@ -436,13 +436,13 @@ const UserManagement = () => {
                   </Button>
                 </div>
               </div>
-              {selectedConsultantRMAs.length === 0 ? (
+              {selectedConsultantProspecçãos.length === 0 ? (
                 <p className="text-sm text-muted-foreground py-2">
-                  Nenhum RMA associado. Clique em "Gerenciar vínculos" para atribuir.
+                  Nenhum Prospecção associado. Clique em "Gerenciar vínculos" para atribuir.
                 </p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                  {selectedConsultantRMAs.map((c) => (
+                  {selectedConsultantProspecçãos.map((c) => (
                     <div
                       key={c.id}
                       className="bg-card border border-border rounded-lg p-3 flex items-start justify-between gap-2"
@@ -450,9 +450,9 @@ const UserManagement = () => {
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-foreground truncate">{c.name}</p>
                         <div className="flex items-center gap-2 mt-1 flex-wrap">
-                          {c.rma_id && (
+                          {c.prospecção_id && (
                             <Badge variant="outline" className="text-[10px] font-mono">
-                              {c.rma_id}
+                              {c.prospecção_id}
                             </Badge>
                           )}
                           {c.cnpj && (
@@ -468,7 +468,7 @@ const UserManagement = () => {
                         onClick={async () => {
                           await unassignCompanyFromConsultant(c.id, selectedConsultant.user_id);
                           await loadRmaData();
-                          toast.success("RMA desvinculado");
+                          toast.success("Prospecção desvinculado");
                         }}
                       >
                         <X className="w-3.5 h-3.5 text-[hsl(0,70%,55%)]" />
@@ -504,7 +504,7 @@ const UserManagement = () => {
               <tbody>
                 {filteredUsers.map((user) => {
                   const isConsultor = user.role === "consultor";
-                  const rmaCount = (assignmentsByConsultant.get(user.user_id) || []).length;
+                  const prospecçãoCount = (assignmentsByConsultant.get(user.user_id) || []).length;
                   const isSelected = selectedConsultant?.user_id === user.user_id;
                   return (
                   <tr
@@ -521,9 +521,9 @@ const UserManagement = () => {
                         <Badge variant="outline" className="text-xs">
                           {roleLabels[user.role] || user.role}
                         </Badge>
-                        {isConsultor && rmaCount > 0 && (
+                        {isConsultor && prospecçãoCount > 0 && (
                           <Badge className="text-[10px] bg-[hsl(217,91%,50%)]/10 text-[hsl(217,91%,50%)] border-[hsl(217,91%,50%)]/30 border">
-                            <Building2 className="w-3 h-3 mr-1" /> {rmaCount} RMA{rmaCount > 1 ? "s" : ""}
+                            <Building2 className="w-3 h-3 mr-1" /> {prospecçãoCount} Prospecção{prospecçãoCount > 1 ? "s" : ""}
                           </Badge>
                         )}
                       </div>
@@ -538,7 +538,7 @@ const UserManagement = () => {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-center text-xs text-muted-foreground">
-                      {formatDate(user.updated_at)}
+                      {foprospecçãotDate(user.updated_at)}
                     </td>
                     <td className="px-4 py-3 text-center" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-center gap-1">
@@ -644,10 +644,10 @@ const UserManagement = () => {
                   <div>
                     <Label className="text-sm flex items-center gap-1.5">
                       <Link2 className="w-4 h-4 text-[hsl(217,91%,50%)]" />
-                      RMAs vinculados a este consultor
+                      Prospecçãos vinculados a este consultor
                     </Label>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Marque para vincular. Ao vincular, o RMA é movido automaticamente caso esteja com outro consultor.
+                      Marque para vincular. Ao vincular, o Prospecção é movido automaticamente caso esteja com outro consultor.
                     </p>
                   </div>
                   <Badge className="bg-[hsl(217,91%,50%)] text-white">
@@ -657,7 +657,7 @@ const UserManagement = () => {
                 <div className="border rounded-lg max-h-72 overflow-y-auto divide-y">
                   {companies.length === 0 && (
                     <p className="text-sm text-muted-foreground p-4 text-center">
-                      Nenhuma empresa RMA cadastrada.
+                      Nenhuma empresa Prospecção cadastrada.
                     </p>
                   )}
                   {companies.map((c) => {
@@ -687,9 +687,9 @@ const UserManagement = () => {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-sm font-medium text-foreground">{c.name}</span>
-                            {c.rma_id && (
+                            {c.prospecção_id && (
                               <Badge variant="outline" className="text-[10px] font-mono">
-                                {c.rma_id}
+                                {c.prospecção_id}
                               </Badge>
                             )}
                           </div>
@@ -717,7 +717,7 @@ const UserManagement = () => {
                   disabled={savingAssign}
                   className="w-full"
                 >
-                  {savingAssign ? "Aplicando vínculos..." : "Aplicar vínculos de RMA"}
+                  {savingAssign ? "Aplicando vínculos..." : "Aplicar vínculos de Prospecção"}
                 </Button>
               </div>
             )}
@@ -733,12 +733,12 @@ const UserManagement = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
+      {/* Delete Confiprospecçãotion Dialog */}
       <Dialog open={!!deleteTarget} onOpenChange={(v) => { if (!v) setDeleteTarget(null); }}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-[hsl(0,70%,55%)]">
-              <ShieldAlert className="w-5 h-5" /> Confirmar Exclusão
+              <ShieldAlert className="w-5 h-5" /> Confiprospecçãor Exclusão
             </DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">

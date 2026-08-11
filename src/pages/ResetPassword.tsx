@@ -124,7 +124,7 @@ const ResetPassword = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-muted-foreground text-sm">Confirmar Nova Senha</Label>
+                  <Label className="text-muted-foreground text-sm">Confiprospecçãor Nova Senha</Label>
                   <Input
                     type={showPassword ? "text" : "password"}
                     value={confirmPassword}

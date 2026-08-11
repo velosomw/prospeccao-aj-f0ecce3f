@@ -13,27 +13,27 @@ interface Props {
 }
 
 interface AIInsight {
-  status: "aderente" | "atencao" | "informativo";
+  status: "aderente" | "atencao" | "infoprospecçãotivo";
   summary: string;
   detail: string;
 }
 
 const generateInsight = (block: DocumentBlock, index: number): AIInsight | null => {
-  const statuses: AIInsight["status"][] = ["aderente", "atencao", "informativo"];
+  const statuses: AIInsight["status"][] = ["aderente", "atencao", "infoprospecçãotivo"];
   const status = statuses[index % 3];
 
   const map: Record<AIInsight["status"], { summary: string; detail: string }> = {
     aderente: {
       summary: "Parâmetros aderentes",
-      detail: `O tópico "${block.title}" atende aos critérios técnicos e normativos aplicáveis. As fontes documentais utilizadas são consistentes com os dados processados pela plataforma.`,
+      detail: `O tópico "${block.title}" atende aos critérios técnicos e noprospecçãotivos aplicáveis. As fontes documentais utilizadas são consistentes com os dados processados pela platafoprospecção.`,
     },
     atencao: {
       summary: "Requer validação adicional",
       detail: `O tópico "${block.title}" apresenta elementos que necessitam de validação cruzada com documentos complementares. Recomenda-se revisão dos parâmetros antes da aprovação.`,
     },
-    informativo: {
+    infoprospecçãotivo: {
       summary: "Contexto técnico aplicado",
-      detail: `O tópico "${block.title}" foi formulado com base nas normas NBC TA vigentes e dados extraídos via OCR. Os indicadores utilizados seguem os padrões de análise da plataforma.`,
+      detail: `O tópico "${block.title}" foi formulado com base nas noprospecçãos NBC TA vigentes e dados extraídos via OCR. Os indicadores utilizados seguem os padrões de análise da platafoprospecção.`,
     },
   };
 
@@ -43,7 +43,7 @@ const generateInsight = (block: DocumentBlock, index: number): AIInsight | null 
 const statusStyles: Record<AIInsight["status"], { bg: string; text: string; icon: React.ElementType; label: string }> = {
   aderente: { bg: "bg-emerald-500/10", text: "text-emerald-400", icon: CheckCircle2, label: "Aderente" },
   atencao: { bg: "bg-amber-500/10", text: "text-amber-400", icon: AlertTriangle, label: "Atenção" },
-  informativo: { bg: "bg-sky-500/10", text: "text-sky-400", icon: Info, label: "Informativo" },
+  infoprospecçãotivo: { bg: "bg-sky-500/10", text: "text-sky-400", icon: Info, label: "Infoprospecçãotivo" },
 };
 
 const EscopoIAView = ({ title, blocks, onAdvance }: Props) => {

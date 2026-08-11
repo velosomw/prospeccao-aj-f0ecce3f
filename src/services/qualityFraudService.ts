@@ -5,7 +5,7 @@ export interface FraudAlert {
   id: string;
   extraction_id: string | null;
   document_id: string | null;
-  rma_id: string | null;
+  prospecção_id: string | null;
   classe: string | null;
   alert_type: "duplicate" | "outlier" | "inconsistency";
   severity: "low" | "medium" | "high";

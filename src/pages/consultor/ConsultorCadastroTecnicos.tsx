@@ -5,7 +5,7 @@ export default function ConsultorCadastroTecnicos() {
     <RoleCadastroPage
       role="consultor"
       title="Técnicos"
-      subtitle="Corpo técnico BEx cadastrados na plataforma."
+      subtitle="Corpo técnico BEx cadastrados na platafoprospecção."
       singular="Técnico"
       breadcrumbLabel="Técnicos"
       backTo="/consultor/cadastro"

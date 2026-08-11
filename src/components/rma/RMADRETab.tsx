@@ -78,7 +78,7 @@ function aggregate(rows: DRERow[]) {
   };
 }
 
-const RMADRETab = ({ companyId, periodo, runToken, janela }: Props) => {
+const ProspecçãoDRETab = ({ companyId, periodo, runToken, janela }: Props) => {
   const { dre, allDre, loading, building, build, periodos } = useBSPNL(
     companyId, periodo, 12, runToken, janela ?? null,
   );
@@ -157,7 +157,7 @@ const RMADRETab = ({ companyId, periodo, runToken, janela }: Props) => {
               <CardTitle className="text-base flex items-center gap-2">
                 <BarChart3 className="w-4 h-4 text-[hsl(258,90%,56%)]" />
                 Demonstração de Resultados (P&amp;L)
-                <span className="text-xs text-muted-foreground font-normal">
+                <span className="text-xs text-muted-foreground font-noprospecçãol">
                   {periodos.length} {periodos.length === 1 ? "competência" : "competências"}
                 </span>
               </CardTitle>
@@ -262,8 +262,8 @@ const RMADRETab = ({ companyId, periodo, runToken, janela }: Props) => {
                 <BarChart data={serie}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                   <XAxis dataKey="mes" fontSize={10} />
-                  <YAxis fontSize={10} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
-                  <Tooltip formatter={(v: any) => fmt(v)} />
+                  <YAxis fontSize={10} tickFoprospecçãotter={(v) => `${(v / 1000).toFixed(0)}K`} />
+                  <Tooltip foprospecçãotter={(v: any) => fmt(v)} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                   <Bar dataKey="receita" name="Receita" fill="hsl(217,91%,50%)" />
                   <Bar dataKey="custos" name="Custos" fill="hsl(0,84%,55%)" />
@@ -279,8 +279,8 @@ const RMADRETab = ({ companyId, periodo, runToken, janela }: Props) => {
                 <LineChart data={serie}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                   <XAxis dataKey="mes" fontSize={10} />
-                  <YAxis fontSize={10} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
-                  <Tooltip formatter={(v: any) => fmt(v)} />
+                  <YAxis fontSize={10} tickFoprospecçãotter={(v) => `${(v / 1000).toFixed(0)}K`} />
+                  <Tooltip foprospecçãotter={(v: any) => fmt(v)} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                   <Line type="monotone" dataKey="ebitda" name="EBITDA" stroke="hsl(258,90%,56%)" strokeWidth={2} />
                   <Line type="monotone" dataKey="resultado" name="Resultado" stroke="hsl(142,76%,36%)" strokeWidth={2} />
@@ -314,4 +314,4 @@ const KpiCard = ({ label, value, sub, color, mom, momPrev, yoy, yoyPrev }: {
   </div>
 );
 
-export default RMADRETab;
+export default ProspecçãoDRETab;

@@ -38,7 +38,7 @@ const isStructuredEdgeError = (value: unknown): value is EdgeDiagnosticPayload =
   return "success" in value && "error" in value;
 };
 
-const normalizeInvokeError = (data: any, error: any): EdgeDiagnosticPayload | null => {
+const noprospecçãolizeInvokeError = (data: any, error: any): EdgeDiagnosticPayload | null => {
   if (isStructuredEdgeError(data)) return data;
   if (isStructuredEdgeError(error?.context)) return error.context;
   return null;
@@ -57,14 +57,14 @@ const renderActions = (actions?: string[]) => {
 
 // ─── Config that mirrors supabase/functions/_shared/onedrive.ts ───
 const ONEDRIVE_CONFIG = {
-  base_path: "Projeto RMA",
+  base_path: "Projeto Prospecção",
   enforce_path_restriction: true,
   auto_create_folders: true,
   operational_subfolders: ["ENTRADAS", "PROCESSANDO", "PROCESSADOS", "RELATORIOS", "AUDITORIA", "ERROS"],
   allowed_extensions: ["pdf", "docx", "xlsx", "xls", "png", "jpg", "jpeg", "csv", "txt"],
   max_file_size_mb: 50,
   share_url: "https://bexonedrive-my.sharepoint.com/:f:/g/personal/tecnico_brasilexpert_com_br/IgA6tcBZSKW9Qq9kqTMlHODwAWn9lmWTkQNwh_kj1yOvzxA",
-  account: "projetorma@brasilexpert.com.br",
+  account: "projetoprospecção@brasilexpert.com.br",
 };
 
 // ─── Provider Icon ─────────────────────────────────────────────
@@ -103,7 +103,7 @@ const OneDriveCard = () => {
       const { data, error } = await supabase.functions.invoke("onedrive-list", {
         body: { path: "me", method: "GET" },
       });
-      const structuredError = normalizeInvokeError(data, error);
+      const structuredError = noprospecçãolizeInvokeError(data, error);
       if (structuredError) {
         setAccountInfo(null);
         setStatus("error");
@@ -189,9 +189,9 @@ const OneDriveCard = () => {
   );
 };
 
-// ─── Sync controls (calls onedrive-sync-rma) ───────────────────
+// ─── Sync controls (calls onedrive-sync-prospecção) ───────────────────
 const SyncControls = () => {
-  const [rmaId, setRmaId] = useState("RMA-001");
+  const [prospecçãoId, setRmaId] = useState("Prospecção-001");
   const [clientFolder, setClientFolder] = useState("GERATHERM");
   const [year, setYear] = useState("2026");
   const [period, setPeriod] = useState("02.2026");
@@ -204,10 +204,10 @@ const SyncControls = () => {
     setRunning(true);
     setResult(null);
     try {
-      const fn = mode === "sync" ? "onedrive-sync-rma" : "onedrive-poll-entradas";
+      const fn = mode === "sync" ? "onedrive-sync-prospecção" : "onedrive-poll-entradas";
       const { data, error } = await supabase.functions.invoke(fn, {
         body: {
-          rmaId,
+          prospecçãoId,
           shareUrl: ONEDRIVE_CONFIG.share_url,
           clientFolder: clientFolder || undefined,
           year, period,
@@ -215,7 +215,7 @@ const SyncControls = () => {
           persist,
         },
       });
-      const structuredError = normalizeInvokeError(data, error);
+      const structuredError = noprospecçãolizeInvokeError(data, error);
       if (structuredError) {
         setResult(structuredError);
         toast.error(structuredError.hint || structuredError.error || "Falha na integração com Microsoft Graph");
@@ -243,7 +243,7 @@ const SyncControls = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="space-y-1">
           <Label className="text-xs">Prospecção AJ ID</Label>
-          <Input className="h-9 text-sm" value={rmaId} onChange={e => setRmaId(e.target.value)} />
+          <Input className="h-9 text-sm" value={prospecçãoId} onChange={e => setRmaId(e.target.value)} />
         </div>
         <div className="space-y-1">
           <Label className="text-xs">Cliente (pasta)</Label>
@@ -301,7 +301,7 @@ const DiagnosticsCard = () => {
       const { data, error } = await supabase.functions.invoke("onedrive-diagnostics", {
         body: includeShare ? { shareUrl: ONEDRIVE_CONFIG.share_url } : {},
       });
-      const structuredError = normalizeInvokeError(data, error);
+      const structuredError = noprospecçãolizeInvokeError(data, error);
       if (structuredError) {
         setReport(structuredError);
         toast.error(structuredError.hint || structuredError.error || "Falha ao rodar diagnóstico");
@@ -409,10 +409,10 @@ const DiagnosticsCard = () => {
   );
 };
 
-// ─── Renumber existing RMAs from OneDrive folders ─────────────
-const RenumberRMAsCard = () => {
+// ─── Renumber existing Prospecçãos from OneDrive folders ─────────────
+const RenumberProspecçãosCard = () => {
   const [year, setYear] = useState(String(new Date().getFullYear()));
-  const [prefix, setPrefix] = useState("RMA");
+  const [prefix, setPrefix] = useState("Prospecção");
   const [dryRun, setDryRun] = useState(true);
   const [running, setRunning] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -421,7 +421,7 @@ const RenumberRMAsCard = () => {
     setRunning(true);
     setResult(null);
     try {
-      const { data, error } = await supabase.functions.invoke("onedrive-renumber-rmas", {
+      const { data, error } = await supabase.functions.invoke("onedrive-renumber-prospecçãos", {
         body: { path: ONEDRIVE_CONFIG.base_path, year: Number(year), prefix, dryRun },
       });
       if (error) throw error;
@@ -430,7 +430,7 @@ const RenumberRMAsCard = () => {
         toast.success(
           dryRun
             ? `Pré-visualização: ${data.totalFolders} pastas`
-            : `${data.totalFolders} RMAs sincronizados`
+            : `${data.totalFolders} Prospecçãos sincronizados`
         );
       } else {
         toast.error(data?.error || "Falha na renumeração");
@@ -451,8 +451,8 @@ const RenumberRMAsCard = () => {
       </div>
       <p className="text-xs text-muted-foreground">
         Lê cada subpasta direta de <code className="bg-muted px-1 rounded">/{ONEDRIVE_CONFIG.base_path}</code>,
-        atribui IDs sequenciais no formato <code className="bg-muted px-1 rounded">{prefix}-{year}-0001…</code> em ordem
-        alfabética e cadastra/atualiza a empresa correspondente. Conflitos por nome <strong>atualizam</strong> o <code className="bg-muted px-1 rounded">rma_id</code>.
+        atribui IDs sequenciais no foprospecçãoto <code className="bg-muted px-1 rounded">{prefix}-{year}-0001…</code> em ordem
+        alfabética e cadastra/atualiza a empresa correspondente. Conflitos por nome <strong>atualizam</strong> o <code className="bg-muted px-1 rounded">prospecção_id</code>.
       </p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="space-y-1">
@@ -499,7 +499,7 @@ const RenumberRMAsCard = () => {
                 <tr key={idx} className="border-t border-border/50 hover:bg-muted/20">
                   <td className="px-3 py-2 text-muted-foreground">{idx + 1}</td>
                   <td className="px-3 py-2 font-medium">{it.folderName}</td>
-                  <td className="px-3 py-2 font-mono">{it.rmaId}</td>
+                  <td className="px-3 py-2 font-mono">{it.prospecçãoId}</td>
                   <td className="px-3 py-2">
                     <Badge variant="outline" className={`text-[10px] ${
                       it.action === "inserted" ? "text-[hsl(152,70%,45%)] border-[hsl(152,70%,45%)]/30" :
@@ -557,7 +557,7 @@ const RulesCard = () => (
           <div>
             <div className="font-semibold">Estrutura híbrida</div>
             <div className="text-muted-foreground font-mono">
-              /Projeto RMA/&#123;CLIENTE&#125;/&#123;ANO&#125;/&#123;PERIODO&#125;/&#123;{ONEDRIVE_CONFIG.operational_subfolders.join(",")}&#125;
+              /Projeto Prospecção/&#123;CLIENTE&#125;/&#123;ANO&#125;/&#123;PERIODO&#125;/&#123;{ONEDRIVE_CONFIG.operational_subfolders.join(",")}&#125;
             </div>
           </div>
         </div>
@@ -615,7 +615,7 @@ const AuditLogsTable = () => {
       .from("pipeline_logs")
       .select("id, step, status, duration_ms, error_message, details, created_at")
       .in("step", [
-        "onedrive_sync_rma", "onedrive_poll_entradas",
+        "onedrive_sync_prospecção", "onedrive_poll_entradas",
         "onedrive_poll_move", "onedrive_poll_invalid",
       ])
       .order("created_at", { ascending: false })
@@ -802,7 +802,7 @@ const TabIntegracaoDrives = ({ onBack }: { onBack: () => void }) => {
 
         <TabsContent value="sync" className="space-y-4 mt-4">
           <DiagnosticsCard />
-          <RenumberRMAsCard />
+          <RenumberProspecçãosCard />
           <SyncControls />
         </TabsContent>
 

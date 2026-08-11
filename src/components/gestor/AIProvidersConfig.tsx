@@ -66,7 +66,7 @@ const PROVIDERS: ProviderMeta[] = [
     icon: Cloud,
     color: "hsl(258,90%,66%)",
     description:
-      "API key gerenciada pela plataforma. Sem configuração — usa Gemini e GPT via gateway seguro.",
+      "API key gerenciada pela platafoprospecção. Sem configuração — usa Gemini e GPT via gateway seguro.",
     capabilities: ["reasoning", "report"],
     fields: ["model"],
     models: [
@@ -239,7 +239,7 @@ const AIProvidersConfig = () => {
             Provedores de IA & Pipeline
           </h3>
           <p className="text-sm text-muted-foreground">
-            Configure todas as APIs de IA da plataforma. BEx AI fica ativo em produção;
+            Configure todas as APIs de IA da platafoprospecção. BEx AI fica ativo em produção;
             os demais provedores ficam em standby até serem ligados manualmente.
           </p>
         </div>
@@ -267,7 +267,7 @@ const AIProvidersConfig = () => {
             </span>
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            A plataforma está operando com <strong>BEx AI</strong> (Gemini gerenciado).
+            A platafoprospecção está operando com <strong>BEx AI</strong> (Gemini gerenciado).
             {standbyProviders.length > 0 && (
               <>
                 {" "}As demais APIs ({standbyProviders.map((p) => p.name).join(", ")}) ficam em

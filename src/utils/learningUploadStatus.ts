@@ -1,7 +1,7 @@
 export type LearningUploadStatus = "processing" | "done" | "error";
 
 export interface LearningUploadStatusRecord {
-  rmaId: string;
+  prospecçãoId: string;
   fileName: string;
   path?: string | null;
   folderId?: number | null;
@@ -34,14 +34,14 @@ function writeAll(rows: LearningUploadStatusRecord[]) {
   window.dispatchEvent(new CustomEvent(EVENT));
 }
 
-export function listLearningUploadStatuses(rmaId: string): LearningUploadStatusRecord[] {
-  return readAll().filter((r) => r.rmaId === rmaId);
+export function listLearningUploadStatuses(prospecçãoId: string): LearningUploadStatusRecord[] {
+  return readAll().filter((r) => r.prospecçãoId === prospecçãoId);
 }
 
 export function recordLearningUploadStatus(input: Omit<LearningUploadStatusRecord, "updatedAt">) {
   const key = input.fileName.toLowerCase();
   const next: LearningUploadStatusRecord = { ...input, updatedAt: new Date().toISOString() };
-  const rows = readAll().filter((r) => !(r.rmaId === input.rmaId && r.fileName.toLowerCase() === key));
+  const rows = readAll().filter((r) => !(r.prospecçãoId === input.prospecçãoId && r.fileName.toLowerCase() === key));
   writeAll([next, ...rows].slice(0, 200));
 }
 

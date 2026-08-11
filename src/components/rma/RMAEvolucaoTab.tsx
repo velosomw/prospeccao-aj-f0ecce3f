@@ -4,9 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import type { RMAEntry } from "@/types/rma";
+import type { ProspecçãoEntry } from "@/types/prospecção";
 
-interface Props { rma: RMAEntry }
+interface Props { prospecção: ProspecçãoEntry }
 
 interface AuditEntry {
   id: string;
@@ -32,7 +32,7 @@ const STATUS_LABEL: Record<string, string> = {
   concluido: "Concluído",
 };
 
-const RMAEvolucaoTab = ({ rma }: Props) => {
+const ProspecçãoEvolucaoTab = ({ prospecção }: Props) => {
   const { id = "" } = useParams();
   const [entries, setEntries] = useState<AuditEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,11 +42,11 @@ const RMAEvolucaoTab = ({ rma }: Props) => {
     let cancelled = false;
     (async () => {
       setLoading(true);
-      // Documentos do RMA
+      // Documentos do Prospecção
       const { data: docs } = await supabase
-        .from("rma_documents")
+        .from("prospecção_documents")
         .select("id, titulo")
-        .eq("rma_id", id);
+        .eq("prospecção_id", id);
       const docIds = (docs || []).map((d) => d.id);
       const docMap = new Map((docs || []).map((d) => [d.id, d.titulo]));
       if (docIds.length === 0) {
@@ -54,7 +54,7 @@ const RMAEvolucaoTab = ({ rma }: Props) => {
         return;
       }
       const { data: log } = await supabase
-        .from("rma_section_audit_log")
+        .from("prospecção_section_audit_log")
         .select("*")
         .in("document_id", docIds)
         .order("created_at", { ascending: false })
@@ -66,7 +66,7 @@ const RMAEvolucaoTab = ({ rma }: Props) => {
           ? supabase.from("profiles").select("user_id, full_name, email").in("user_id", userIds)
           : Promise.resolve({ data: [] as any[] }),
         sectionIds.length
-          ? supabase.from("rma_document_sections").select("id, titulo, numero").in("id", sectionIds)
+          ? supabase.from("prospecção_document_sections").select("id, titulo, numero").in("id", sectionIds)
           : Promise.resolve({ data: [] as any[] }),
       ]);
       const userMap = new Map((profilesRes.data || []).map((p: any) => [p.user_id, p.full_name || p.email]));
@@ -154,4 +154,4 @@ const RMAEvolucaoTab = ({ rma }: Props) => {
   );
 };
 
-export default RMAEvolucaoTab;
+export default ProspecçãoEvolucaoTab;

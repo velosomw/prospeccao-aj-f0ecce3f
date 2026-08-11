@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { AlertTriangle, AlertCircle, Clock, CheckCircle2, Building2, ArrowRight } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
-import { mockRMAs } from "@/data/rmaMockData";
+import { mockProspecçãos } from "@/data/prospecçãoMockData";
 
 type Sev = "critica" | "alta" | "media" | "baixa";
 const sevMeta: Record<Sev, { label: string; bg: string; fg: string; ring: string }> = {
@@ -11,16 +11,16 @@ const sevMeta: Record<Sev, { label: string; bg: string; fg: string; ring: string
   baixa:   { label: "Baixa",   bg: "hsl(220,15%,93%)",fg: "hsl(220,15%,40%)",ring: "hsl(220,15%,55%)" },
 };
 
-interface Pend { id: string; titulo: string; rma: string; empresa: string; severidade: Sev; sla: string; topic: string; }
+interface Pend { id: string; titulo: string; prospecção: string; empresa: string; severidade: Sev; sla: string; topic: string; }
 
 const pendMock: Pend[] = [
-  { id: "P-2103", titulo: "Balancete Maio incompleto", rma: "RMA-0012", empresa: "DIPLOMATA", severidade: "critica", sla: "Vence em 2h", topic: "Pasta 5 - Balancetes" },
-  { id: "P-2104", titulo: "DRE 2025 sem assinatura",   rma: "RMA-0014", empresa: "TECNOMAX",  severidade: "critica", sla: "Vence hoje", topic: "Pasta 7 - DRE" },
-  { id: "P-2105", titulo: "Folha de pagamento ausente", rma: "RMA-0009", empresa: "BENTOIA",  severidade: "alta",   sla: "Vence em 1d", topic: "Pasta 12 - Folha" },
-  { id: "P-2106", titulo: "Notas fiscais sem OCR válido", rma: "RMA-0011", empresa: "MOVAG",  severidade: "alta",   sla: "Vence em 1d", topic: "Pasta 18 - NFs" },
-  { id: "P-2107", titulo: "Contratos expirados",       rma: "RMA-0008", empresa: "CONSTRUTEX", severidade: "media", sla: "Vence em 3d", topic: "Pasta 22 - Contratos" },
-  { id: "P-2108", titulo: "Inventário desatualizado",  rma: "RMA-0010", empresa: "AGRIBEN",  severidade: "media",   sla: "Vence em 4d", topic: "Pasta 31 - Estoques" },
-  { id: "P-2109", titulo: "Conciliação bancária pendente", rma: "RMA-0013", empresa: "DIPLOMATA", severidade: "baixa", sla: "Vence em 7d", topic: "Pasta 9 - Bancos" },
+  { id: "P-2103", titulo: "Balancete Maio incompleto", prospecção: "Prospecção-0012", empresa: "DIPLOMATA", severidade: "critica", sla: "Vence em 2h", topic: "Pasta 5 - Balancetes" },
+  { id: "P-2104", titulo: "DRE 2025 sem assinatura",   prospecção: "Prospecção-0014", empresa: "TECNOMAX",  severidade: "critica", sla: "Vence hoje", topic: "Pasta 7 - DRE" },
+  { id: "P-2105", titulo: "Folha de pagamento ausente", prospecção: "Prospecção-0009", empresa: "BENTOIA",  severidade: "alta",   sla: "Vence em 1d", topic: "Pasta 12 - Folha" },
+  { id: "P-2106", titulo: "Notas fiscais sem OCR válido", prospecção: "Prospecção-0011", empresa: "MOVAG",  severidade: "alta",   sla: "Vence em 1d", topic: "Pasta 18 - NFs" },
+  { id: "P-2107", titulo: "Contratos expirados",       prospecção: "Prospecção-0008", empresa: "CONSTRUTEX", severidade: "media", sla: "Vence em 3d", topic: "Pasta 22 - Contratos" },
+  { id: "P-2108", titulo: "Inventário desatualizado",  prospecção: "Prospecção-0010", empresa: "AGRIBEN",  severidade: "media",   sla: "Vence em 4d", topic: "Pasta 31 - Estoques" },
+  { id: "P-2109", titulo: "Conciliação bancária pendente", prospecção: "Prospecção-0013", empresa: "DIPLOMATA", severidade: "baixa", sla: "Vence em 7d", topic: "Pasta 9 - Bancos" },
 ];
 
 export default function ConsultorPendencias() {
@@ -72,7 +72,7 @@ export default function ConsultorPendencias() {
                   <div className="text-sm font-semibold text-foreground truncate">{p.titulo}</div>
                   <div className="text-xs text-muted-foreground flex items-center gap-3 mt-1">
                     <span className="flex items-center gap-1"><Building2 className="w-3 h-3" />{p.empresa}</span>
-                    <span>•</span><span className="text-primary font-mono">{p.rma}</span>
+                    <span>•</span><span className="text-primary font-mono">{p.prospecção}</span>
                     <span>•</span><span>{p.topic}</span>
                   </div>
                 </div>

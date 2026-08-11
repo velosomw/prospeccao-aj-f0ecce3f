@@ -22,7 +22,7 @@ const TEXT_STYLE = {
   color: "#333",
 };
 
-// ─── Formatadores BR ─────────────────────────────────────────
+// ─── Foprospecçãotadores BR ─────────────────────────────────────────
 export const fmtMilhar = (v: number | null | undefined) => {
   if (v == null || !Number.isFinite(v)) return "—";
   const n = Math.round(v);
@@ -38,10 +38,10 @@ export const fmtDec = (v: number | null | undefined, dec = 2) => {
   return v.toFixed(dec).replace(".", ",");
 };
 
-const labelBox = (formatter: any, position: any = "top") => ({
+const labelBox = (foprospecçãotter: any, position: any = "top") => ({
   show: true,
   position,
-  formatter,
+  foprospecçãotter,
   fontSize: 10,
   fontFamily: TEXT_STYLE.fontFamily,
   color: "#333",
@@ -83,8 +83,8 @@ export function buildCMVOption(data: MonthlyDatum[]) {
     grid: baseGrid,
     xAxis: { type: "category" as const, data: meses, ...baseAxis },
     yAxis: [
-      { type: "value" as const, name: "R$ x 1.000", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, formatter: (v: number) => fmtMilhar(v) } },
-      { type: "value" as const, name: "%", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, formatter: (v: number) => fmtPct(v, 0) } },
+      { type: "value" as const, name: "R$ x 1.000", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, foprospecçãotter: (v: number) => fmtMilhar(v) } },
+      { type: "value" as const, name: "%", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, foprospecçãotter: (v: number) => fmtPct(v, 0) } },
     ],
     series: [
       { name: "Receita Líquida", type: "bar", data: receita, itemStyle: { color: EXCEL_COLORS.azul }, label: labelBox((p: any) => fmtMilhar(p.value)) },
@@ -117,8 +117,8 @@ export function buildCMVDespesaOption(data: MonthlyDatum[]) {
     grid: baseGrid,
     xAxis: { type: "category" as const, data: meses, ...baseAxis },
     yAxis: [
-      { type: "value" as const, name: "R$ x 1.000", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, formatter: (v: number) => fmtMilhar(v) } },
-      { type: "value" as const, name: "%", max: 1.5, ...baseAxis, axisLabel: { ...baseAxis.axisLabel, formatter: (v: number) => fmtPct(v, 0) } },
+      { type: "value" as const, name: "R$ x 1.000", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, foprospecçãotter: (v: number) => fmtMilhar(v) } },
+      { type: "value" as const, name: "%", max: 1.5, ...baseAxis, axisLabel: { ...baseAxis.axisLabel, foprospecçãotter: (v: number) => fmtPct(v, 0) } },
     ],
     series: [
       { name: "Receita Líquida", type: "bar", stack: "rec", data: receita, itemStyle: { color: EXCEL_COLORS.azul } },
@@ -131,7 +131,7 @@ export function buildCMVDespesaOption(data: MonthlyDatum[]) {
         markLine: {
           silent: true,
           symbol: "none",
-          data: [{ yAxis: 1, lineStyle: { type: "dashed", color: EXCEL_COLORS.cinzaEscuro }, label: { show: true, formatter: "100%" } }],
+          data: [{ yAxis: 1, lineStyle: { type: "dashed", color: EXCEL_COLORS.cinzaEscuro }, label: { show: true, foprospecçãotter: "100%" } }],
         },
         label: labelBox((p: any) => fmtPct(p.value)),
       },
@@ -155,8 +155,8 @@ export function buildResultadoOption(data: MonthlyDatum[]) {
     grid: baseGrid,
     xAxis: { type: "category" as const, data: meses, ...baseAxis },
     yAxis: [
-      { type: "value" as const, name: "R$ x 1.000", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, formatter: (v: number) => fmtMilhar(v) } },
-      { type: "value" as const, name: "Margem %", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, formatter: (v: number) => fmtPct(v, 0) } },
+      { type: "value" as const, name: "R$ x 1.000", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, foprospecçãotter: (v: number) => fmtMilhar(v) } },
+      { type: "value" as const, name: "Margem %", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, foprospecçãotter: (v: number) => fmtPct(v, 0) } },
     ],
     series: [
       { name: "Receita Líquida", type: "bar", data: receita, itemStyle: { color: EXCEL_COLORS.azul } },
@@ -190,7 +190,7 @@ export function buildEBITDAOption(data: MonthlyDatum[]) {
     legend: { bottom: 0, textStyle: TEXT_STYLE },
     grid: baseGrid,
     xAxis: { type: "category" as const, data: meses, ...baseAxis },
-    yAxis: { type: "value" as const, name: "R$ x 1.000", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, formatter: (v: number) => fmtMilhar(v) } },
+    yAxis: { type: "value" as const, name: "R$ x 1.000", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, foprospecçãotter: (v: number) => fmtMilhar(v) } },
     series: [
       {
         name: "EBITDA", type: "line", data: ebitda,
@@ -222,11 +222,11 @@ export function buildLiquidezOption(data: MonthlyDatum[]) {
 
   return {
     title: { text: "Índices de Liquidez", left: "center", textStyle: { ...TEXT_STYLE, fontSize: 13, fontWeight: "bold" } },
-    tooltip: { ...baseTooltip, valueFormatter: (v: number) => fmtDec(v) },
+    tooltip: { ...baseTooltip, valueFoprospecçãotter: (v: number) => fmtDec(v) },
     legend: { bottom: 0, textStyle: TEXT_STYLE },
     grid: baseGrid,
     xAxis: { type: "category" as const, data: meses, ...baseAxis },
-    yAxis: { type: "value" as const, ...baseAxis, axisLabel: { ...baseAxis.axisLabel, formatter: (v: number) => fmtDec(v) } },
+    yAxis: { type: "value" as const, ...baseAxis, axisLabel: { ...baseAxis.axisLabel, foprospecçãotter: (v: number) => fmtDec(v) } },
     series: [
       { name: "Liquidez Corrente (LC)", type: "line", data: lc, lineStyle: { color: EXCEL_COLORS.azul, width: 2 }, itemStyle: { color: EXCEL_COLORS.azul }, symbol: "circle", label: labelBox((p: any) => fmtDec(p.value)) },
       { name: "Liquidez Seca (LS)", type: "line", data: ls, lineStyle: { color: EXCEL_COLORS.laranja, width: 2 }, itemStyle: { color: EXCEL_COLORS.laranja }, symbol: "rect" },
@@ -255,8 +255,8 @@ export function buildEndividamentoOption(data: MonthlyDatum[]) {
     grid: baseGrid,
     xAxis: { type: "category" as const, data: meses, ...baseAxis },
     yAxis: [
-      { type: "value" as const, name: "R$ x 1.000", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, formatter: (v: number) => fmtMilhar(v) } },
-      { type: "value" as const, name: "Total", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, formatter: (v: number) => fmtMilhar(v) } },
+      { type: "value" as const, name: "R$ x 1.000", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, foprospecçãotter: (v: number) => fmtMilhar(v) } },
+      { type: "value" as const, name: "Total", ...baseAxis, axisLabel: { ...baseAxis.axisLabel, foprospecçãotter: (v: number) => fmtMilhar(v) } },
     ],
     series: [
       { name: "Tributária", type: "bar", stack: "div", data: trib, itemStyle: { color: EXCEL_COLORS.vermelho } },

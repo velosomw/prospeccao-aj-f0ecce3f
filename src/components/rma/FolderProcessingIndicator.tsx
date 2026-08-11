@@ -16,12 +16,12 @@ interface FolderStatus {
 
 interface Props {
   companyId: string;
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
   folderPath: string;
   pollMs?: number;
 }
 
-function formatCountdown(target: string | null): string {
+function foprospecçãotCountdown(target: string | null): string {
   if (!target) return "";
   const ms = new Date(target).getTime() - Date.now();
   if (ms <= 0) return "liberando…";
@@ -31,7 +31,7 @@ function formatCountdown(target: string | null): string {
   return `${m}m${s % 60}s`;
 }
 
-export function FolderProcessingIndicator({ companyId, rmaId, folderPath, pollMs = 15000 }: Props) {
+export function FolderProcessingIndicator({ companyId, prospecçãoId, folderPath, pollMs = 15000 }: Props) {
   const [status, setStatus] = useState<FolderStatus | null>(null);
   const [tick, setTick] = useState(0);
 
@@ -43,7 +43,7 @@ export function FolderProcessingIndicator({ companyId, rmaId, folderPath, pollMs
         .select("*")
         .eq("company_id", companyId)
         .eq("folder_path", folderPath);
-      if (rmaId) q = q.eq("rma_id", rmaId);
+      if (prospecçãoId) q = q.eq("prospecção_id", prospecçãoId);
       const { data } = await q.maybeSingle();
       if (!cancelled) setStatus((data as FolderStatus | null) ?? null);
     };
@@ -55,7 +55,7 @@ export function FolderProcessingIndicator({ companyId, rmaId, folderPath, pollMs
       clearInterval(interval);
       clearInterval(ticker);
     };
-  }, [companyId, rmaId, folderPath, pollMs]);
+  }, [companyId, prospecçãoId, folderPath, pollMs]);
 
   if (!status || status.total_count === 0) return null;
 
@@ -78,7 +78,7 @@ export function FolderProcessingIndicator({ companyId, rmaId, folderPath, pollMs
       {status.rate_limited_count > 0 && (
         <Badge variant="outline" className="gap-1 border-orange-300 text-orange-700">
           <Hourglass className="h-3 w-3" />
-          {status.rate_limited_count} aguardando rate-limit ({formatCountdown(status.rate_limit_until)})
+          {status.rate_limited_count} aguardando rate-limit ({foprospecçãotCountdown(status.rate_limit_until)})
         </Badge>
       )}
 

@@ -77,7 +77,7 @@ const InlineLoginCard = ({ onClose }: InlineLoginCardProps) => {
 
       <div className="text-center mb-6">
         <h2 className="text-2xl font-display font-bold text-white mb-1">Bem-vindo(a)</h2>
-        <p className="text-sm text-white/80">Acesse a Plataforma Prospecção AJ</p>
+        <p className="text-sm text-white/80">Acesse a Platafoprospecção Prospecção AJ</p>
       </div>
 
       <form onSubmit={handleLogin} className="space-y-4">
@@ -87,7 +87,7 @@ const InlineLoginCard = ({ onClose }: InlineLoginCardProps) => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="empresa@rma.com.br"
+            placeholder="empresa@prospecção.com.br"
             className="bg-white/80 border-white/40 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
             required
           />

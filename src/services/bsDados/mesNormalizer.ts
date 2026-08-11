@@ -1,10 +1,10 @@
-// Normalização e detecção de meses YYYY-MM
+// Noprospecçãolização e detecção de meses YYYY-MM
 const MES_PT = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
 ];
 
-export function normalizeMesKey(input: string | null | undefined): string | null {
+export function noprospecçãolizeMesKey(input: string | null | undefined): string | null {
   if (!input) return null;
   const s = String(input).trim();
 

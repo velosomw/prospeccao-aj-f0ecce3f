@@ -19,13 +19,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import type { RMAEntry } from "@/types/rma";
+import type { ProspecçãoEntry } from "@/types/prospecção";
 import logoBrasilExpert from "@/assets/logo-bex-full.jpeg";
 import { CobrancaEmailDialog } from "./CobrancaEmailDialog";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
-  rma: RMAEntry;
+  prospecção: ProspecçãoEntry;
 }
 
 const COLORS = {
@@ -36,17 +36,17 @@ const COLORS = {
   navy: "hsl(222,47%,14%)",
 };
 
-// Mock determinístico de indicadores de cobrança baseado no id da RMA
+// Mock determinístico de indicadores de cobrança baseado no id da Prospecção
 const hash = (s: string) => {
   let h = 0;
   for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
   return Math.abs(h);
 };
 
-const RMAAnaliseTab = ({ rma }: Props) => {
+const ProspecçãoAnaliseTab = ({ prospecção }: Props) => {
   const reportRef = useRef<HTMLDivElement>(null);
-  const storageKey = `rma:relatorio-cobranca:${rma.id}`;
-  const dataFingerprint = String(rma.dataAtualizacao || rma.percentual || "");
+  const storageKey = `prospecção:relatorio-cobranca:${prospecção.id}`;
+  const dataFingerprint = String(prospecção.dataAtualizacao || prospecção.percentual || "");
 
   const [generatedAt, setGeneratedAt] = useState<string | null>(null);
   const [generatedFingerprint, setGeneratedFingerprint] = useState<string | null>(null);
@@ -99,7 +99,7 @@ const RMAAnaliseTab = ({ rma }: Props) => {
     const styles = Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
       .map((el) => el.outerHTML)
       .join("\n");
-    win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Relatório de Registro & Cobrança — ${rma.id}</title>${styles}
+    win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Relatório de Registro & Cobrança — ${prospecção.id}</title>${styles}
       <style>
         @page { size: A4; margin: 0; }
         body { margin: 0; background: #fff; }
@@ -120,33 +120,33 @@ const RMAAnaliseTab = ({ rma }: Props) => {
     const styles = Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
       .map((el) => el.outerHTML)
       .join("\n");
-    const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Relatório de Registro & Cobrança — ${rma.id}</title>${styles}
+    const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Relatório de Registro & Cobrança — ${prospecção.id}</title>${styles}
       <style>@page{size:A4;margin:0}body{margin:0;background:#fff}.page-break{page-break-after:always;break-after:page}</style>
     </head><body>${node.outerHTML}</body></html>`;
     const blob = new Blob([html], { type: "text/html;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `Relatorio-Registro-Cobranca-${rma.id}-${new Date().toISOString().slice(0,10)}.html`;
+    a.download = `Relatorio-Registro-Cobranca-${prospecção.id}-${new Date().toISOString().slice(0,10)}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 
-  const completos = rma.topics.filter((t: any) => (t.completude ?? 0) === 100);
-  const vazios = rma.topics.filter((t: any) => (t.completude ?? 0) === 0);
-  const parciais = rma.topics.filter(
+  const completos = prospecção.topics.filter((t: any) => (t.completude ?? 0) === 100);
+  const vazios = prospecção.topics.filter((t: any) => (t.completude ?? 0) === 0);
+  const parciais = prospecção.topics.filter(
     (t: any) => (t.completude ?? 0) > 0 && (t.completude ?? 0) < 100
   );
-  const total = rma.topics.length;
+  const total = prospecção.topics.length;
   const score = total > 0
     ? Math.round(((completos.length + parciais.length - vazios.length) / total) * 100)
     : 0;
   const scoreSafe = Math.max(0, score);
 
-  // Reais (rma_cobrancas) + fallback determinístico para histórico antigo
-  const seed = hash(String(rma.id || rma.empresa || "rma"));
+  // Reais (prospecção_cobrancas) + fallback determinístico para histórico antigo
+  const seed = hash(String(prospecção.id || prospecção.empresa || "prospecção"));
   const [realCobrancas, setRealCobrancas] = useState<{
     total: number;
     comAnexo: number;
@@ -156,9 +156,9 @@ const RMAAnaliseTab = ({ rma }: Props) => {
 
   const fetchCobrancas = async () => {
     const { data, error } = await supabase
-      .from("rma_cobrancas")
+      .from("prospecção_cobrancas")
       .select("created_at, has_attachment")
-      .eq("rma_id", rma.id)
+      .eq("prospecção_id", prospecção.id)
       .order("created_at", { ascending: false });
     if (error || !data) return;
     const comAnexo = data.filter((d: any) => d.has_attachment).length;
@@ -169,12 +169,12 @@ const RMAAnaliseTab = ({ rma }: Props) => {
 
   useEffect(() => {
     fetchCobrancas();
-  }, [rma.id]);
+  }, [prospecção.id]);
 
   const fmtDate = (iso: string | null, fb: string) =>
     iso ? new Date(iso).toLocaleDateString("pt-BR") : fb;
 
-  // Contadores 100% reais (associados ao RMA via rma_cobrancas). Sem fallback mock.
+  // Contadores 100% reais (associados ao Prospecção via prospecção_cobrancas). Sem fallback mock.
   const cobrancas = realCobrancas.total;
   const emails = realCobrancas.total;
   const anexos = realCobrancas.comAnexo;
@@ -354,8 +354,8 @@ const RMAAnaliseTab = ({ rma }: Props) => {
       <CobrancaEmailDialog
         open={emailOpen}
         onOpenChange={setEmailOpen}
-        rmaId={rma.id}
-        companyName={rma.empresa}
+        prospecçãoId={prospecção.id}
+        companyName={prospecção.empresa}
         onSent={fetchCobrancas}
       />
 
@@ -420,7 +420,7 @@ const RMAAnaliseTab = ({ rma }: Props) => {
               Relatório de Registro &amp; Cobrança
             </h2>
             <p className="text-base italic text-muted-foreground mt-3">
-              Controle Documental — RMA Inteligente BEx
+              Controle Documental — Prospecção Inteligente BEx
             </p>
 
             {/* Badge de status (estilo "Zona de Atenção — FI: 0.00") */}
@@ -440,15 +440,15 @@ const RMAAnaliseTab = ({ rma }: Props) => {
               </span>
             </div>
 
-            {/* Bloco RECUPERANDA / RMA / EMISSÃO */}
+            {/* Bloco RECUPERANDA / Prospecção / EMISSÃO */}
             <div className="grid grid-cols-3 gap-8 mt-12 max-w-[600px] w-full">
               <div className="text-center">
                 <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Empresa de Prospecção</p>
-                <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{rma.empresa}</p>
+                <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{prospecção.empresa}</p>
               </div>
               <div className="text-center">
                 <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Prospecção AJ</p>
-                <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{rma.id}</p>
+                <p className="text-sm font-semibold leading-tight" style={{ color: COLORS.navy }}>{prospecção.id}</p>
               </div>
               <div className="text-center">
                 <p className="text-[9px] uppercase tracking-widest text-muted-foreground mb-1.5">Emissão</p>
@@ -467,7 +467,7 @@ const RMAAnaliseTab = ({ rma }: Props) => {
                 Auditor Contábil Sênior IA
               </p>
               <p className="text-[10px] text-muted-foreground mt-0.5">
-                Plataforma BEx — Brasil Expert
+                Platafoprospecção BEx — Brasil Expert
               </p>
             </div>
           </div>
@@ -488,7 +488,7 @@ const RMAAnaliseTab = ({ rma }: Props) => {
             <div className="flex items-center justify-between border-b-2 pb-3 mb-6" style={{ borderColor: COLORS.blue }}>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                  Brasil Expert · BEx-RMA
+                  Brasil Expert · BEx-Prospecção
                 </p>
                 <h2 className="text-xl font-bold" style={{ color: COLORS.navy }}>
                   Diagnóstico da IA
@@ -507,10 +507,10 @@ const RMAAnaliseTab = ({ rma }: Props) => {
               </div>
               <p className="text-sm leading-relaxed text-foreground/90">
                 A análise técnica realizada pela IA da <strong>Brasil Expert</strong> sobre as pastas do
-                OneDrive da recuperanda <strong>{rma.empresa}</strong> identificou <strong>{total} tópicos</strong> documentais.
+                OneDrive da recuperanda <strong>{prospecção.empresa}</strong> identificou <strong>{total} tópicos</strong> documentais.
                 Destes, <strong style={{ color: COLORS.ok }}>{completos.length} estão completos</strong>,{" "}
                 <strong style={{ color: COLORS.incompleto }}>{parciais.length} parcialmente documentados</strong> e{" "}
-                <strong style={{ color: COLORS.vazio }}>{vazios.length} permanecem vazios</strong>.
+                <strong style={{ color: COLORS.vazio }}>{vazios.length} peprospecçãonecem vazios</strong>.
                 O <strong>score global de recebimento</strong> é de{" "}
                 <strong style={{ color: scoreSafe >= 67 ? COLORS.ok : scoreSafe >= 33 ? COLORS.incompleto : COLORS.vazio }}>
                   {scoreSafe}%
@@ -527,7 +527,7 @@ const RMAAnaliseTab = ({ rma }: Props) => {
               </p>
               <p className="text-xs text-foreground/80 leading-relaxed">
                 {vazios.length > 0
-                  ? `Priorize cobrança ativa das ${vazios.length} pasta(s) sem qualquer documento. Recomenda-se enviar e-mail formal e registrar nova cobrança nas próximas 48h.`
+                  ? `Priorize cobrança ativa das ${vazios.length} pasta(s) sem qualquer documento. Recomenda-se enviar e-mail foprospecçãol e registrar nova cobrança nas próximas 48h.`
                   : `Todas as pastas possuem ao menos um documento. Foque em complementar as ${parciais.length} pasta(s) parciais para liberar a auditoria.`}
               </p>
             </div>
@@ -538,7 +538,7 @@ const RMAAnaliseTab = ({ rma }: Props) => {
             <div className="flex items-center justify-between border-b-2 pb-3 mb-6" style={{ borderColor: COLORS.blue }}>
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                  Brasil Expert · BEx-RMA
+                  Brasil Expert · BEx-Prospecção
                 </p>
                 <h2 className="text-xl font-bold" style={{ color: COLORS.navy }}>
                   Pendências e Documentos Pendentes
@@ -659,7 +659,7 @@ const RMAAnaliseTab = ({ rma }: Props) => {
               </div>
               <p className="text-xs text-foreground/85 leading-relaxed mb-3">
                 Foram efetuadas <strong>{cobrancas} cobranças</strong> e enviados{" "}
-                <strong>{emails} e-mails</strong> à recuperanda <strong>{rma.empresa}</strong>,
+                <strong>{emails} e-mails</strong> à recuperanda <strong>{prospecção.empresa}</strong>,
                 resultando em <strong>{anexos} anexos</strong> recebidos via OneDrive.
                 A taxa de resposta atual é de <strong style={{ color: COLORS.ok }}>{taxaResposta}%</strong>,
                 e o score global de recebimento documental encontra-se em{" "}
@@ -677,10 +677,10 @@ const RMAAnaliseTab = ({ rma }: Props) => {
             {/* Rodapé do relatório */}
             <div className="mt-12 pt-4 border-t text-center">
               <p className="text-[10px] text-muted-foreground">
-                Documento gerado automaticamente pela IA · BEx-RMA · Brasil Expert
+                Documento gerado automaticamente pela IA · BEx-Prospecção · Brasil Expert
               </p>
               <p className="text-[10px] text-muted-foreground">
-                {dataRelatorio} · {rma.id} · {rma.empresa}
+                {dataRelatorio} · {prospecção.id} · {prospecção.empresa}
               </p>
             </div>
           </div>
@@ -691,4 +691,4 @@ const RMAAnaliseTab = ({ rma }: Props) => {
   );
 };
 
-export default RMAAnaliseTab;
+export default ProspecçãoAnaliseTab;

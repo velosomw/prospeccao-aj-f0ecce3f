@@ -1,9 +1,9 @@
-// Página dedicada "Upload Planilha" — fora do RMA Workspace.
+// Página dedicada "Upload Planilha" — fora do Prospecção Workspace.
 import { useEffect, useMemo, useState } from "react";
 import PlatformLayout from "@/components/PlatformLayout";
-import TrainAITab from "@/components/rma/TrainAITab";
+import TrainAITab from "@/components/prospecção/TrainAITab";
 import LearningUploadPanel from "@/components/workspace/stages/LearningUploadPanel";
-import ErrorFilesPanel from "@/components/rma/training/ErrorFilesPanel";
+import ErrorFilesPanel from "@/components/prospecção/training/ErrorFilesPanel";
 import ProspeccaoUploadCard from "@/components/prospeccao/ProspeccaoUploadCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -55,19 +55,19 @@ export default function TrainAI() {
     companies.forEach(c => {
       const name = c.name || "";
       if (!name) return;
-      if (q && !name.toLowerCase().includes(q) && !(c.rma_id || "").toLowerCase().includes(q)) return;
+      if (q && !name.toLowerCase().includes(q) && !(c.prospecção_id || "").toLowerCase().includes(q)) return;
       names.add(name);
     });
     return Array.from(names).sort((a, b) => a.localeCompare(b));
   }, [companies, filter]);
 
-  // RMAs vinculados à empresa selecionada
-  const rmasOfCompany = useMemo(() => {
+  // Prospecçãos vinculados à empresa selecionada
+  const prospecçãosOfCompany = useMemo(() => {
     if (!companyName) return [];
     return companies.filter(c => c.name === companyName);
   }, [companies, companyName]);
 
-  // Reset RMA quando troca empresa
+  // Reset Prospecção quando troca empresa
   useEffect(() => {
     setCompanyId(null);
   }, [companyName]);
@@ -136,12 +136,12 @@ export default function TrainAI() {
                     <SelectValue placeholder={!companyName ? "Selecione a empresa primeiro" : "Arquivo"} />
                   </SelectTrigger>
                   <SelectContent className="max-h-80">
-                    {rmasOfCompany.length === 0 && (
+                    {prospecçãosOfCompany.length === 0 && (
                       <div className="px-2 py-4 text-xs text-muted-foreground text-center">
                         Nenhuma planilha vinculada.
                       </div>
                     )}
-                    {rmasOfCompany.map(c => (
+                    {prospecçãosOfCompany.map(c => (
                       <SelectItem key={c.id} value={c.id}>
                         Arquivo
                       </SelectItem>
@@ -187,7 +187,7 @@ export default function TrainAI() {
 
             {view === "erros" ? (
               <ErrorFilesPanel
-                rmaId={selected?.rma_id || companyId}
+                prospecçãoId={selected?.prospecção_id || companyId}
                 companyId={companyId}
               />
             ) : (

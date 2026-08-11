@@ -1,10 +1,10 @@
-export interface RMATopic {
+export interface ProspecçãoTopic {
   number: number;
   name: string;
   category: string;
 }
 
-export const RMA_TOPICS: RMATopic[] = [
+export const Prospecção_TOPICS: ProspecçãoTopic[] = [
   { number: 1, name: "Alteração na Atividade Empresarial", category: "Empresa" },
   { number: 2, name: "Alteração na Estrutura Societária (Organograma)", category: "Empresa" },
   { number: 3, name: "Abertura/Fechamento de Estabelecimentos ou Alteração de Endereço", category: "Empresa" },
@@ -20,7 +20,7 @@ export const RMA_TOPICS: RMATopic[] = [
   { number: 13, name: "Declaração de Dívidas Vencidas e Não Pagas", category: "Financeiro" },
   { number: 14, name: "Cessão Fiduciária de Títulos e Direitos Creditórios", category: "Jurídico" },
   { number: 15, name: "Última Alteração Contratual", category: "Jurídico" },
-  { number: 16, name: "Informações de Pendência de Prospecção AJ Anterior", category: "Governança" },
+  { number: 16, name: "Infoprospecçãoções de Pendência de Prospecção AJ Anterior", category: "Governança" },
   { number: 17, name: "Relação Analítica de Notas Fiscais", category: "Fiscal" },
   { number: 18, name: "Lista de Ativos Essenciais", category: "Operacional" },
   { number: 19, name: "Lista de Principais Fornecedores e Clientes", category: "Operacional" },
@@ -49,7 +49,7 @@ export const RMA_TOPICS: RMATopic[] = [
   { number: 42, name: "Arrendamento Mercantil", category: "Jurídico" },
   { number: 43, name: "Adiantamento de Contrato de Câmbio ACC", category: "Financeiro" },
   { number: 44, name: "Comprovantes de Pagamentos a Credores pelo Plano de RJ", category: "Recuperação Judicial" },
-  { number: 45, name: "Outras Informações", category: "Outros" },
+  { number: 45, name: "Outras Infoprospecçãoções", category: "Outros" },
   { number: 46, name: "Situação Fiscal", category: "Fiscal" },
   { number: 47, name: "Razão Fiscal — Composição Apurada dos Impostos", category: "Fiscal" },
   { number: 48, name: "Leilões", category: "Operacional" },

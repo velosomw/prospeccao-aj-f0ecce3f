@@ -123,7 +123,7 @@ const TabBSDados = ({ parsedData, entries = [], companyId = null, runToken }: Ta
               <CardTitle className="text-base flex items-center gap-2">
                 <Database className="w-4 h-4 text-[hsl(258,90%,66%)]" />
                 BS &amp; Dados — Base Consolidada
-                <span className="text-xs text-muted-foreground font-normal">
+                <span className="text-xs text-muted-foreground font-noprospecçãol">
                   (Single Source of Truth)
                 </span>
               </CardTitle>

@@ -1,7 +1,7 @@
 /**
- * MES NORMALIZER — Single source of truth para normalização de período mensal.
+ * MES NOProspecçãoLIZER — Single source of truth para noprospecçãolização de período mensal.
  *
- * Aceita os formatos comuns de balancete brasileiro e devolve sempre `YYYY-MM`:
+ * Aceita os foprospecçãotos comuns de balancete brasileiro e devolve sempre `YYYY-MM`:
  *   • "2024-03", "2024/03", "2024.03"
  *   • "03/2024", "03-2024", "3/24", "03.2024"
  *   • "Março 2024", "março/2024", "MARÇO-2024", "marco 24"
@@ -29,7 +29,7 @@ const MES_LONG: Record<string, number> = {
 };
 
 const stripAccents = (s: string) =>
-  (s || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  (s || "").toString().noprospecçãolize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const norm = (s: string) =>
   stripAccents(s).toLowerCase().trim().replace(/\s+/g, " ");
@@ -53,14 +53,14 @@ function buildKey(year: number, month: number): string | null {
 }
 
 /**
- * Normaliza qualquer rótulo de período para "YYYY-MM".
+ * Noprospecçãoliza qualquer rótulo de período para "YYYY-MM".
  * Retorna null se não for possível inferir um mês válido.
  */
-export function normalizeMesKey(input: string | null | undefined): string | null {
+export function noprospecçãolizeMesKey(input: string | null | undefined): string | null {
   if (input === null || input === undefined) return null;
   const raw = String(input).trim();
   if (!raw) return null;
-  // Já normalizado
+  // Já noprospecçãolizado
   const direct = raw.match(/^(\d{4})-(0[1-9]|1[0-2])$/);
   if (direct) return `${direct[1]}-${direct[2]}`;
 
@@ -112,11 +112,11 @@ export function mesKeyToLabel(key: string): string {
 }
 
 /**
- * Versão tolerante: se não conseguir normalizar, devolve a entrada original
+ * Versão tolerante: se não conseguir noprospecçãolizar, devolve a entrada original
  * (para preservar comportamento dos callers que querem "passar adiante").
  */
 export function periodToMesKey(period: string): string {
-  const k = normalizeMesKey(period);
+  const k = noprospecçãolizeMesKey(period);
   return k ?? (period || "").trim();
 }
 

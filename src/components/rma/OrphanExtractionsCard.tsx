@@ -8,17 +8,17 @@ import { toast } from "sonner";
 
 interface OrphanCardProps {
   companyId: string;
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
   onConsolidated?: () => void;
 }
 
 interface OrphansResponse {
   orphans: Array<{ extraction_id: string; document_id: string; file_name: string; classe: string; period_key: string }>;
   byPeriod: Record<string, { count: number; files: string[] }>;
-  rmaId: string | null;
+  prospecçãoId: string | null;
 }
 
-const OrphanExtractionsCard = ({ companyId, rmaId, onConsolidated }: OrphanCardProps) => {
+const OrphanExtractionsCard = ({ companyId, prospecçãoId, onConsolidated }: OrphanCardProps) => {
   const [data, setData] = useState<OrphansResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [running, setRunning] = useState(false);
@@ -28,7 +28,7 @@ const OrphanExtractionsCard = ({ companyId, rmaId, onConsolidated }: OrphanCardP
     setLoading(true);
     try {
       const projectRef = (import.meta as any).env?.VITE_SUPABASE_PROJECT_ID;
-      const url = `https://${projectRef}.supabase.co/functions/v1/balancete-build?action=orphans&company_id=${encodeURIComponent(companyId)}${rmaId ? `&rma_id=${encodeURIComponent(rmaId)}` : ""}`;
+      const url = `https://${projectRef}.supabase.co/functions/v1/balancete-build?action=orphans&company_id=${encodeURIComponent(companyId)}${prospecçãoId ? `&prospecção_id=${encodeURIComponent(prospecçãoId)}` : ""}`;
       const session = (await supabase.auth.getSession()).data.session;
       const res = await fetch(url, { headers: { Authorization: `Bearer ${session?.access_token || ""}` } });
       const j = await res.json();
@@ -40,7 +40,7 @@ const OrphanExtractionsCard = ({ companyId, rmaId, onConsolidated }: OrphanCardP
     } finally {
       setLoading(false);
     }
-  }, [companyId, rmaId]);
+  }, [companyId, prospecçãoId]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -48,7 +48,7 @@ const OrphanExtractionsCard = ({ companyId, rmaId, onConsolidated }: OrphanCardP
     setRunning(true);
     try {
       const { data: resp, error } = await supabase.functions.invoke("balancete-build", {
-        body: { company_id: companyId, rma_id: rmaId, auto_period: true, action: "backfill", force: true },
+        body: { company_id: companyId, prospecção_id: prospecçãoId, auto_period: true, action: "backfill", force: true },
       });
       if (error) throw error;
       const periodos = resp?.periods_detected ?? 0;

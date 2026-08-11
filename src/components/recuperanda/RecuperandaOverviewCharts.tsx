@@ -6,7 +6,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, PieChart as PieIcon, BarChart3, Activity, Target, Layers } from "lucide-react";
 import type { Company, RmaHistoryEntry } from "@/services/companiesService";
-import type { RmaAnalysisResult } from "@/services/rmaAnalysisService";
+import type { RmaAnalysisResult } from "@/services/prospecçãoAnalysisService";
 
 interface Props {
   companies: Company[];
@@ -54,7 +54,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
   // Cadastros por mês (6m)
   const cadastrosData = useMemo(() => {
     const now = new Date();
-    const out: { month: string; rmas: number }[] = [];
+    const out: { month: string; prospecçãos: number }[] = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const next = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
@@ -62,7 +62,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
         const t = new Date(c.created_at).getTime();
         return t >= d.getTime() && t < next.getTime();
       }).length;
-      out.push({ month: monthsPt[d.getMonth()], rmas: count });
+      out.push({ month: monthsPt[d.getMonth()], prospecçãos: count });
     }
     return out;
   }, [companies]);
@@ -150,7 +150,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <PieIcon className="w-4 h-4" style={{ color: COLOR_BLUE }} /> Status dos RMAs
+              <PieIcon className="w-4 h-4" style={{ color: COLOR_BLUE }} /> Status dos Prospecçãos
             </CardTitle>
             <CardDescription>Distribuição da saúde do portfólio</CardDescription>
           </CardHeader>
@@ -187,7 +187,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
                   <XAxis dataKey="name" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
-                  <Tooltip cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }} formatter={(v: any) => `${v}%`} />
+                  <Tooltip cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }} foprospecçãotter={(v: any) => `${v}%`} />
                   <Bar dataKey="pct" fill={COLOR_PURPLE} radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -200,7 +200,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" style={{ color: COLOR_GREEN }} /> Cadastros de RMA — 6 meses
+              <TrendingUp className="w-4 h-4" style={{ color: COLOR_GREEN }} /> Cadastros de Prospecção — 6 meses
             </CardTitle>
             <CardDescription>Evolução mensal dos novos Prospecções AJ</CardDescription>
           </CardHeader>
@@ -211,7 +211,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
                 <XAxis dataKey="month" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                 <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                 <Tooltip />
-                <Line type="monotone" dataKey="rmas" stroke={COLOR_BLUE} strokeWidth={3} dot={{ r: 5, fill: COLOR_BLUE }} activeDot={{ r: 7 }} />
+                <Line type="monotone" dataKey="prospecçãos" stroke={COLOR_BLUE} strokeWidth={3} dot={{ r: 5, fill: COLOR_BLUE }} activeDot={{ r: 7 }} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>

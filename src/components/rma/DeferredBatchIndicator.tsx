@@ -15,13 +15,13 @@ interface DeferredFolderStatus {
 
 interface Props {
   companyId: string;
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
   folderPath?: string | null;
-  variant?: "folder" | "rma-summary";
+  variant?: "folder" | "prospecção-summary";
   pollMs?: number;
 }
 
-function formatEta(target: string | null): string {
+function foprospecçãotEta(target: string | null): string {
   if (!target) return "";
   const ms = new Date(target).getTime() - Date.now();
   if (ms <= 0) return "a qualquer momento";
@@ -33,21 +33,21 @@ function formatEta(target: string | null): string {
 /**
  * Indicador de arquivos em fila batch (Document AI, até 24h, ~50% mais barato).
  * Variant 'folder': badge compacto na linha da pasta
- * Variant 'rma-summary': barra agregada para topo do workspace
+ * Variant 'prospecção-summary': barra agregada para topo do workspace
  */
-export function DeferredBatchIndicator({ companyId, rmaId, folderPath, variant = "folder", pollMs = 15000 }: Props) {
+export function DeferredBatchIndicator({ companyId, prospecçãoId, folderPath, variant = "folder", pollMs = 15000 }: Props) {
   const [status, setStatus] = useState<DeferredFolderStatus | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     const fetchStatus = async () => {
-      // Para rma-summary: agrega todas as pastas do RMA
-      if (variant === "rma-summary") {
+      // Para prospecção-summary: agrega todas as pastas do Prospecção
+      if (variant === "prospecção-summary") {
         let q = supabase
           .from("folder_deferred_status" as never)
           .select("in_batch_count, done_count, failed_count, total_count, earliest_eta, latest_eta")
           .eq("company_id", companyId);
-        if (rmaId) q = q.eq("rma_id", rmaId);
+        if (prospecçãoId) q = q.eq("prospecção_id", prospecçãoId);
         const { data } = await q;
         if (cancelled) return;
         const rows = (data ?? []) as DeferredFolderStatus[];
@@ -70,19 +70,19 @@ export function DeferredBatchIndicator({ companyId, rmaId, folderPath, variant =
         .select("*")
         .eq("company_id", companyId)
         .eq("folder_path", folderPath);
-      if (rmaId) q = q.eq("rma_id", rmaId);
+      if (prospecçãoId) q = q.eq("prospecção_id", prospecçãoId);
       const { data } = await q.maybeSingle();
       if (!cancelled) setStatus((data as DeferredFolderStatus | null) ?? null);
     };
     fetchStatus();
     const interval = setInterval(fetchStatus, pollMs);
     return () => { cancelled = true; clearInterval(interval); };
-  }, [companyId, rmaId, folderPath, pollMs, variant]);
+  }, [companyId, prospecçãoId, folderPath, pollMs, variant]);
 
   if (!status || status.total_count === 0) return null;
   if (status.in_batch_count === 0 && status.done_count === 0) return null;
 
-  if (variant === "rma-summary") {
+  if (variant === "prospecção-summary") {
     return (
       <div className="flex flex-wrap items-center gap-2 rounded-lg border bg-muted/40 px-3 py-2 text-xs">
         <Hourglass className="h-4 w-4 text-primary" />
@@ -90,7 +90,7 @@ export function DeferredBatchIndicator({ companyId, rmaId, folderPath, variant =
         {status.in_batch_count > 0 && (
           <Badge variant="secondary" className="gap-1">
             <Clock className="h-3 w-3" />
-            {status.in_batch_count} arquivo(s) {formatEta(status.latest_eta)}
+            {status.in_batch_count} arquivo(s) {foprospecçãotEta(status.latest_eta)}
           </Badge>
         )}
         {status.done_count > 0 && (
@@ -114,7 +114,7 @@ export function DeferredBatchIndicator({ companyId, rmaId, folderPath, variant =
         <TooltipTrigger asChild>
           <Badge variant="outline" className="gap-1 border-primary/30 bg-primary/5 text-primary">
             <Hourglass className="h-3 w-3" />
-            {status.in_batch_count} batch · {formatEta(status.latest_eta)}
+            {status.in_batch_count} batch · {foprospecçãotEta(status.latest_eta)}
           </Badge>
         </TooltipTrigger>
         <TooltipContent>
@@ -161,11 +161,11 @@ export function DeferredFileBadge({ fileId }: { fileId: string }) {
         <TooltipTrigger asChild>
           <Badge variant="outline" className="gap-1 border-primary/30 bg-primary/5 text-primary text-[10px]">
             <Hourglass className="h-2.5 w-2.5" />
-            Batch · {formatEta(job.eta_at)}
+            Batch · {foprospecçãotEta(job.eta_at)}
           </Badge>
         </TooltipTrigger>
         <TooltipContent>
-          <div className="text-xs">Arquivo grande — processamento econômico em lote ({formatEta(job.eta_at)})</div>
+          <div className="text-xs">Arquivo grande — processamento econômico em lote ({foprospecçãotEta(job.eta_at)})</div>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// 12 Agentes Especializados × 60 Tópicos RMA
+// 12 Agentes Especializados × 60 Tópicos Prospecção
 // Cada agente concentra extrações de mesma natureza (mesmo OCR, mesmas entidades,
 // mesmas regras de validação) e responde por 1..N tópicos da lista canônica
-// (ver `src/lib/rmaTopics.ts`).
+// (ver `src/lib/prospecçãoTopics.ts`).
 //
 // Como é usado:
 //  1. Usuário escolhe um tópico (id 1..60) na tela de Upload.
@@ -35,7 +35,7 @@ export interface SpecializedAgent {
   name: string;
   /** Descrição funcional do agente */
   description: string;
-  /** IDs dos tópicos RMA cobertos */
+  /** IDs dos tópicos Prospecção cobertos */
   topics: number[];
   /** Modelo IA padrão (override possível via ocr_agents) */
   ai_model: string;
@@ -50,7 +50,7 @@ export interface SpecializedAgent {
 const PROMPT_HEADER = `Você é um agente OCR especializado.
 REGRAS:
 1) Não invente dados — se não encontrar, retorne null.
-2) Trabalhe com OCR imperfeito; normalize datas (YYYY-MM-DD), valores (decimal),
+2) Trabalhe com OCR imperfeito; noprospecçãolize datas (YYYY-MM-DD), valores (decimal),
    CNPJ/CPF (apenas dígitos) e percentuais (decimal).
 3) Sempre responda em JSON válido — nunca explique fora do JSON.
 4) Confiança alta apenas com evidência clara no texto.`;
@@ -96,7 +96,7 @@ EXTRAIA:
 - saldo_inicial, saldo_final
 - lancamentos: [{ data, descricao, documento, valor, tipo: "D"|"C", saldo }]
 - totais: { creditos, debitos, num_lancamentos }
-NORMALIZAÇÕES:
+NOProspecçãoLIZAÇÕES:
 - Datas DD/MM/YYYY → YYYY-MM-DD
 - Valores entre parênteses ou com "-" → negativos
 - "C"/"D" no final da linha indica natureza
@@ -190,7 +190,7 @@ SAÍDA: { notas[], totais_por_cfop, totais_impostos, alertas[], confianca }`,
   {
     key: "AGENTE_NFE_COMPRAS_READER",
     name: "Agente NF-e Compras Reader",
-    description: "Lê RELAÇÃO de Notas Fiscais de Compras (planilhas/PDFs tabulares). Extrai linha-a-linha com schema canônico, normaliza datas/valores/CNPJ e persiste em nfe_compras.",
+    description: "Lê RELAÇÃO de Notas Fiscais de Compras (planilhas/PDFs tabulares). Extrai linha-a-linha com schema canônico, noprospecçãoliza datas/valores/CNPJ e persiste em nfe_compras.",
     topics: [11], // Reforça especialização do tópico 11 (Relação NFs de Compras)
     ai_model: "google/gemini-2.5-pro",
     temperature: 0.15,
@@ -206,7 +206,7 @@ EXTRAIA cada linha como uma nota:
 - impostos: icms, ipi, pis, cofins, st
 - cfop, ncm, natureza_operacao, descricao, categoria
 - origem_arquivo, linha_origem
-NORMALIZAÇÕES: datas YYYY-MM-DD, números float (vírgula→ponto), CNPJ só dígitos, CFOP 4 dígitos.
+NOProspecçãoLIZAÇÕES: datas YYYY-MM-DD, números float (vírgula→ponto), CNPJ só dígitos, CFOP 4 dígitos.
 VALIDAÇÕES: data_emissao ≤ data_entrada; valor_total > 0; CNPJ 14 dígitos. Linhas TOTAL/SUBTOTAL → ignorar.
 APRENDIZADO: usa document_patterns por (empresa, fornecedor, layout) — embedding 768D para reaproveitar parsing.
 SAÍDA: { notas[], totais{num_notas,valor_total_geral,icms_total,ipi_total}, alertas[], confianca }`,
@@ -337,7 +337,7 @@ SAÍDA: { categoria, itens[], total_mensal, total_anual, alertas[], confianca }`
   {
     key: "AGENTE_GENERICO",
     name: "Agente Genérico (Fallback)",
-    description: "Pendência de Prospecção AJ anterior, outras informações e documentos não-classificáveis.",
+    description: "Pendência de Prospecção AJ anterior, outras infoprospecçãoções e documentos não-classificáveis.",
     topics: [38, 39],
     ai_model: "google/gemini-2.5-flash",
     temperature: 0.3,
@@ -350,7 +350,7 @@ EXTRAIA:
 - entidades_principais (pessoas, empresas, valores, datas)
 - assunto_resumido (≤ 200 chars)
 - categoria_inferida (tente classificar entre: financeiro, juridico, operacional, fiscal, outro)
-- referencias_externas (números de processo, contratos, RMAs anteriores)
+- referencias_externas (números de processo, contratos, Prospecçãos anteriores)
 SAÍDA: { titulo, resumo, entidades[], categoria_inferida, referencias[], confianca }`,
   },
 ];

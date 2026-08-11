@@ -93,7 +93,7 @@ const TabGraficosAuditoria = ({ parsedData, entries = [] }: Props) => {
   const kanitzClass = fi > 0 ? { nome: "Solvência", cor: COLOR_GREEN }
                     : fi < -3 ? { nome: "Insolvência", cor: COLOR_RED }
                               : { nome: "Penumbra", cor: COLOR_AMBER };
-  const fiNormalized = Math.max(-7, Math.min(7, fi)) + 7;
+  const fiNoprospecçãolized = Math.max(-7, Math.min(7, fi)) + 7;
 
   // Pie estrutura de custos
   const pieData = kpis ? [
@@ -236,7 +236,7 @@ const TabGraficosAuditoria = ({ parsedData, entries = [] }: Props) => {
                   <RadialBarChart
                     innerRadius="65%" outerRadius="100%"
                     startAngle={180} endAngle={0}
-                    data={[{ name: "FI", value: fiNormalized, fill: kanitzClass.cor }]}
+                    data={[{ name: "FI", value: fiNoprospecçãolized, fill: kanitzClass.cor }]}
                   >
                     <RadialBar dataKey="value" background={{ fill: "hsl(var(--muted))" }} />
                     <Tooltip {...TOOLTIP_STYLE} />
@@ -268,7 +268,7 @@ const TabGraficosAuditoria = ({ parsedData, entries = [] }: Props) => {
                     <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={100} label={(e: any) => e.name}>
                       {pieData.map((d, i) => <Cell key={i} fill={d.color} />)}
                     </Pie>
-                    <Tooltip {...TOOLTIP_STYLE} formatter={(v: any) => fmtMilhar(Number(v))} />
+                    <Tooltip {...TOOLTIP_STYLE} foprospecçãotter={(v: any) => fmtMilhar(Number(v))} />
                     <Legend wrapperStyle={LEGEND_STYLE} />
                   </PieChart>
                 </ResponsiveContainer>

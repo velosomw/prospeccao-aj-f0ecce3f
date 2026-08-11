@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Building2, Calendar, CheckCircle2, ClipboardList, FileText, History, Layers, Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Company } from "@/services/companiesService";
-import type { RmaPeriodAnalysis } from "@/services/rmaPeriodService";
+import type { RmaPeriodAnalysis } from "@/services/prospecçãoPeriodService";
 
 interface Props {
   periods: RmaPeriodAnalysis[];
@@ -44,9 +44,9 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
     return m;
   }, [companies]);
 
-  // Carrega contagem de documentos do pipeline por RMA (rma_id) — usamos como total apurado.
+  // Carrega contagem de documentos do pipeline por Prospecção (prospecção_id) — usamos como total apurado.
   useEffect(() => {
-    const ids = Array.from(new Set(companies.map((c) => c.rma_id).filter(Boolean) as string[]));
+    const ids = Array.from(new Set(companies.map((c) => c.prospecção_id).filter(Boolean) as string[]));
     if (ids.length === 0) {
       setDocCounts({});
       return;
@@ -54,11 +54,11 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
     (async () => {
       const { data } = await supabase
         .from("pipeline_documents")
-        .select("rma_id")
-        .in("rma_id", ids);
+        .select("prospecção_id")
+        .in("prospecção_id", ids);
       const counts: Record<string, number> = {};
       (data || []).forEach((r: any) => {
-        counts[r.rma_id] = (counts[r.rma_id] || 0) + 1;
+        counts[r.prospecção_id] = (counts[r.prospecção_id] || 0) + 1;
       });
       setDocCounts(counts);
     })();
@@ -107,7 +107,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
 
       // Busca textual
       if (q) {
-        const blob = [c.name, c.cnpj, c.rma_id].filter(Boolean).join(" ").toLowerCase();
+        const blob = [c.name, c.cnpj, c.prospecção_id].filter(Boolean).join(" ").toLowerCase();
         if (!blob.includes(q)) return false;
       }
       return true;
@@ -134,7 +134,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
     const apurados = focusPeriods.length;
     const concluidos = focusPeriods.filter((p) => p.percentual >= 100).length;
     const incompletos = apurados - concluidos;
-    const docs = focusCompany?.rma_id ? docCounts[focusCompany.rma_id] || 0 : 0;
+    const docs = focusCompany?.prospecção_id ? docCounts[focusCompany.prospecção_id] || 0 : 0;
     return {
       apurados,
       concluidosPct: apurados > 0 ? Math.round((concluidos / apurados) * 100) : 0,
@@ -171,7 +171,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
           const label = `${String(m).padStart(2, "0")}.${year}`;
           const isDone = p && p.percentual >= 100;
           const status = !p
-            ? "Sem RMA"
+            ? "Sem Prospecção"
             : p.status === "concluido" || isDone
               ? "Concluído"
               : p.status === "erro"
@@ -224,7 +224,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
               </div>
               <div className="col-span-2 text-xs text-muted-foreground flex items-center gap-1.5">
                 <FileText className="w-3 h-3" />
-                {p && focusCompany?.rma_id ? docCounts[focusCompany.rma_id] || 0 : 0} docs
+                {p && focusCompany?.prospecção_id ? docCounts[focusCompany.prospecção_id] || 0 : 0} docs
               </div>
               <div className="col-span-2 text-right">
                 {p && (
@@ -232,9 +232,9 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
                     size="sm"
                     variant="outline"
                     className="text-xs h-7"
-                    onClick={() => navigate(`/rma/${p.company_id}?period=${p.period_label}`)}
+                    onClick={() => navigate(`/prospecção/${p.company_id}?period=${p.period_label}`)}
                   >
-                    Ver RMA
+                    Ver Prospecção
                   </Button>
                 )}
               </div>
@@ -284,7 +284,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
   );
 
   const yearKpiCards = [
-    { label: `RMAs Apurados (${currentYear})`, value: yearKpis.apurados, icon: ClipboardList, color: "hsl(var(--accent))" },
+    { label: `Prospecçãos Apurados (${currentYear})`, value: yearKpis.apurados, icon: ClipboardList, color: "hsl(var(--accent))" },
     { label: "Concluídos 100%", value: yearKpis.concluidos, icon: CheckCircle2, color: "hsl(var(--primary))" },
     { label: "Incompletos", value: yearKpis.incompletos, icon: Layers, color: "hsl(var(--destructive))" },
     { label: "Empresas", value: yearKpis.empresas, icon: Building2, color: "hsl(var(--ring))" },
@@ -316,7 +316,7 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
-            <History className="w-4 h-4 text-accent" /> Histórico de RMAs por Período
+            <History className="w-4 h-4 text-accent" /> Histórico de Prospecçãos por Período
           </CardTitle>
           <p className="text-xs text-muted-foreground mt-1">
             Pesquise por empresa, ano ou mês. Selecione uma empresa para ver o detalhamento mensal.
@@ -396,9 +396,9 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
                       >
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2 flex-wrap">
-                            {c.rma_id && (
+                            {c.prospecção_id && (
                               <Badge className="text-sm font-mono font-semibold bg-[hsl(217,91%,50%)]/10 text-[hsl(217,91%,50%)] border-0 px-2 py-0.5">
-                                {c.rma_id}
+                                {c.prospecção_id}
                               </Badge>
                             )}
                             <span className="text-base font-semibold text-foreground">{c.name}</span>
@@ -452,8 +452,8 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
                   <Building2 className="w-5 h-5 text-accent" /> {focusCompany.name}
                 </CardTitle>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  {focusCompany.rma_id && (
-                    <Badge variant="outline" className="text-[10px] font-mono">{focusCompany.rma_id}</Badge>
+                  {focusCompany.prospecção_id && (
+                    <Badge variant="outline" className="text-[10px] font-mono">{focusCompany.prospecção_id}</Badge>
                   )}
                   {focusCompany.cnpj && (
                     <span className="text-xs text-muted-foreground">CNPJ {focusCompany.cnpj}</span>

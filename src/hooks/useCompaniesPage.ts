@@ -40,7 +40,7 @@ function useCurrentUserId(): string | null {
 }
 
 /**
- * Hook React Query para paginação backend de empresas/RMAs.
+ * Hook React Query para paginação backend de empresas/Prospecçãos.
  *
  * O queryKey inclui SEMPRE [tenantId, userId, mode, page, pageSize, search, status]
  * para garantir isolamento entre clientes/usuários (multi-tenant) e evitar

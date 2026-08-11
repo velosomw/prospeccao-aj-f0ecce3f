@@ -39,7 +39,7 @@ export type GrupoCanonico =
 const PATTERNS: Array<{ grupo: GrupoCanonico; re: RegExp }> = [
   // ── BALANÇO — ATIVO ─────────────────────────────────────
   { grupo: "ANC_TOTAL", re: /^ativo\s+n[aã]o[\s-]*circulante$/ },
-  { grupo: "ANC_TOTAL", re: /^ativo\s+permanente$/ },
+  { grupo: "ANC_TOTAL", re: /^ativo\s+peprospecçãonente$/ },
   { grupo: "ANC_TOTAL", re: /^realiz[aá]vel\s+a\s+longo\s+prazo$/ },
   { grupo: "AC_TOTAL",  re: /^ativo\s+circulante$/ },
 
@@ -68,7 +68,7 @@ const PATTERNS: Array<{ grupo: GrupoCanonico; re: RegExp }> = [
 ];
 
 const stripAccents = (s: string) =>
-  (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+  (s || "").toLowerCase().noprospecçãolize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
 /**
  * Retorna o Grupo de Resultado canônico se a descrição bate com algum

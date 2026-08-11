@@ -10,13 +10,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 import OficioPendenciasCard from "./OficioPendenciasCard";
-import RelatorioCanonicalPreview from "@/components/rma/document/RelatorioCanonicalPreview";
+import RelatorioCanonicalPreview from "@/components/prospecção/document/RelatorioCanonicalPreview";
 
 interface Props {
-  rmaId: string;
+  prospecçãoId: string;
   scoreFinal: number;
   companyId: string | null;
-  rmaCode?: string;
+  prospecçãoCode?: string;
   empresa?: string;
   mesReferencia?: string;
   responsavel?: string;
@@ -52,14 +52,14 @@ function computeState(scoreFinal: number, hasReport: boolean, aprovadoPct: numbe
 }
 
 /**
- * Fase 6 — Relatório RMA · MD-DIP-REPORT-001
+ * Fase 6 — Relatório Prospecção · MD-DIP-REPORT-001
  * Relatório DIP dinâmico, incremental e auditável (Em Construção → Consolidação → Final).
  */
-export default function StageRelatorioRMA({
-  rmaId, scoreFinal, companyId, rmaCode, empresa, mesReferencia, responsavel,
+export default function StageRelatorioProspecção({
+  prospecçãoId, scoreFinal, companyId, prospecçãoCode, empresa, mesReferencia, responsavel,
 }: Props) {
   const { doc, sections, progresso, aprovadoPct, regenerateFinal, buildCharts, reload } =
-    useRmaDocument(rmaId, "rma_mensal", "Relatório Mensal de Atividade (CNJ 72/2020)");
+    useRmaDocument(prospecçãoId, "prospecção_mensal", "Relatório Mensal de Atividade (CNJ 72/2020)");
 
   const [busy, setBusy] = useState<null | "gerar" | "atualizar">(null);
   const [phase, setPhase] = useState<string>("");
@@ -84,7 +84,7 @@ export default function StageRelatorioRMA({
     let cancel = false;
     (async () => {
       const { data } = await supabase
-        .from("rma_analysis_results")
+        .from("prospecção_analysis_results")
         .select("percentual, kanitz, pendencias, indicadores, score_rj, topics, diagnostico")
         .eq("company_id", companyId)
         .maybeSingle();
@@ -103,7 +103,7 @@ export default function StageRelatorioRMA({
     scoreFinal - (doc.arquivo_final_pct ?? 0) >= 5;
 
   // KPIs do Dashboard
-  // FONTE CANÔNICA: rma_analysis_results.diagnostico.pipeline reflete o pipeline real
+  // FONTE CANÔNICA: prospecção_analysis_results.diagnostico.pipeline reflete o pipeline real
   // (onedrive_files únicos: ok / total / manual / pending). Somar por tópico contaria
   // o mesmo arquivo várias vezes (um arquivo pode pertencer a N tópicos) — por isso
   // víamos "174/258" enquanto o real é 173/189 para 01/2026 — DIPLOMATA.
@@ -145,7 +145,7 @@ export default function StageRelatorioRMA({
       // Agrupa todas as seções num único request — reduz overhead, reaproveita
       // dados da empresa e maximiza HIT do llm_response_cache.
       const { data: batchData, error: batchErr } = await supabase.functions.invoke(
-        "rma-doc-section-regenerate",
+        "prospecção-doc-section-regenerate",
         { body: { section_ids: sections.map((s) => s.id), force: true } },
       );
       const falhas = batchErr
@@ -182,7 +182,7 @@ export default function StageRelatorioRMA({
       {/* Ofício de Pendências — emissão independente */}
       <OficioPendenciasCard
         analysis={analysis}
-        rmaCode={rmaCode || rmaId}
+        prospecçãoCode={prospecçãoCode || prospecçãoId}
         mesReferencia={mesReferencia}
         empresa={empresa}
         responsavel={responsavel}
@@ -317,7 +317,7 @@ export default function StageRelatorioRMA({
             <FileText className="h-10 w-10 mx-auto mb-3 opacity-40" />
             <p className="text-sm">
               Nenhum relatório gerado ainda. Clique em <strong>Gerar Relatório</strong> para
-              produzir o RMA com os dados atualmente carregados.
+              produzir o Prospecção com os dados atualmente carregados.
             </p>
           </div>
         ) : (
@@ -331,10 +331,10 @@ export default function StageRelatorioRMA({
         )}
       </div>
 
-      {/* Prévia estruturada DIP-RMA — Capa → Carta ao Juízo → Sumário → Seções */}
+      {/* Prévia estruturada DIP-Prospecção — Capa → Carta ao Juízo → Sumário → Seções */}
       <RelatorioCanonicalPreview
         empresa={empresa}
-        rmaCode={rmaCode || rmaId}
+        prospecçãoCode={prospecçãoCode || prospecçãoId}
         mesReferencia={mesReferencia}
         responsavel={responsavel}
         sections={sections as any}

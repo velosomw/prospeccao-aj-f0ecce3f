@@ -18,7 +18,7 @@ import {
   ExternalLink
 } from "lucide-react";
 import { databaseExportService, ExportDefinition } from "@/services/databaseExportService";
-import { format } from "date-fns";
+import { foprospecçãot } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -124,9 +124,9 @@ export default function BaseDeDados() {
     { 
       label: "Último download", 
       value: definitions.some(d => d.last_download_at) 
-        ? format(new Date(Math.max(...definitions.filter(d => d.last_download_at).map(d => new Date(d.last_download_at!).getTime()))), "dd/MM HH:mm")
+        ? foprospecçãot(new Date(Math.max(...definitions.filter(d => d.last_download_at).map(d => new Date(d.last_download_at!).getTime()))), "dd/MM HH:mm")
         : "Nenhum", 
-      hint: "Geral da plataforma", 
+      hint: "Geral da platafoprospecção", 
       icon: Clock, 
       tone: "orange" as const 
     },
@@ -142,7 +142,7 @@ export default function BaseDeDados() {
   return (
     <ConsultorPageShell
       title="Base de Dados"
-      subtitle="Atualize e exporte bases consolidadas da plataforma em arquivos Excel padronizados."
+      subtitle="Atualize e exporte bases consolidadas da platafoprospecção em arquivos Excel padronizados."
       search={search}
       onSearch={setSearch}
       kpis={kpis}
@@ -202,7 +202,7 @@ export default function BaseDeDados() {
                     <td className="px-6 py-4 text-gray-600">
                       {def.last_updated_at ? (
                         <div className="flex flex-col">
-                          <span>{format(new Date(def.last_updated_at), "dd/MM/yyyy HH:mm")}</span>
+                          <span>{foprospecçãot(new Date(def.last_updated_at), "dd/MM/yyyy HH:mm")}</span>
                           <span className="text-[10px] text-gray-400">por {def.updated_by_name || "Sistema"}</span>
                         </div>
                       ) : (
@@ -213,7 +213,7 @@ export default function BaseDeDados() {
                       {def.last_download_at ? (
                         <div className="flex items-center gap-1.5">
                           <Download className="w-3.5 h-3.5 text-gray-400" />
-                          <span>{format(new Date(def.last_download_at), "dd/MM HH:mm")}</span>
+                          <span>{foprospecçãot(new Date(def.last_download_at), "dd/MM HH:mm")}</span>
                         </div>
                       ) : (
                         <span className="text-gray-300">Nenhum</span>

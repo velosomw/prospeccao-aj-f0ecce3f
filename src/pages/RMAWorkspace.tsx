@@ -4,36 +4,36 @@ import {
   Activity, Cpu, BookOpen, Search, BarChart3, FileText, FileCheck,
   GitBranch, Award, ShieldCheck, Database, GitMerge, Scale, LineChart, Camera
 } from "lucide-react";
-import RMASnapshotMensalTab from "@/components/rma/RMASnapshotMensalTab";
-import RMABalancoTab from "@/components/rma/RMABalancoTab";
-import RMADRETab from "@/components/rma/RMADRETab";
-import CompetenciaSelector, { type Competencia } from "@/components/rma/CompetenciaSelector";
+import ProspecçãoSnapshotMensalTab from "@/components/prospecção/ProspecçãoSnapshotMensalTab";
+import ProspecçãoBalancoTab from "@/components/prospecção/ProspecçãoBalancoTab";
+import ProspecçãoDRETab from "@/components/prospecção/ProspecçãoDRETab";
+import CompetenciaSelector, { type Competencia } from "@/components/prospecção/CompetenciaSelector";
 import { Badge } from "@/components/ui/badge";
 import PlatformLayout from "@/components/PlatformLayout";
-import type { RMAEntry } from "@/types/rma";
+import type { ProspecçãoEntry } from "@/types/prospecção";
 import { supabase } from "@/integrations/supabase/client";
 import {
   startRmaAnalysis,
   getRmaAnalysis,
   type RmaAnalysisResult,
-} from "@/services/rmaAnalysisService";
-import { buildLiveScoreTopics, computeRmaScore, fetchRmaScores, type ScoreFile } from "@/lib/rmaScore";
+} from "@/services/prospecçãoAnalysisService";
+import { buildLiveScoreTopics, computeRmaScore, fetchRmaScores, type ScoreFile } from "@/lib/prospecçãoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
-import RMAStatusTab from "@/components/rma/RMAStatusTab";
-import RMAProcessamentoTab from "@/components/rma/RMAProcessamentoTab";
-import RMABalanceteTab from "@/components/rma/RMABalanceteTab";
-import RMAAnaliseTab from "@/components/rma/RMAAnaliseTab";
-import RMAParecerTab from "@/components/rma/RMAParecerTab";
-import RMARelatorioTab from "@/components/rma/RMARelatorioTab";
-import RMAEvolucaoTab from "@/components/rma/RMAEvolucaoTab";
-import RMAParecerFinalTab from "@/components/rma/RMAParecerFinalTab";
-import RMARelatorioFinalTab from "@/components/rma/RMARelatorioFinalTab";
+import ProspecçãoStatusTab from "@/components/prospecção/ProspecçãoStatusTab";
+import ProspecçãoProcessamentoTab from "@/components/prospecção/ProspecçãoProcessamentoTab";
+import ProspecçãoBalanceteTab from "@/components/prospecção/ProspecçãoBalanceteTab";
+import ProspecçãoAnaliseTab from "@/components/prospecção/ProspecçãoAnaliseTab";
+import ProspecçãoParecerTab from "@/components/prospecção/ProspecçãoParecerTab";
+import ProspecçãoRelatorioTab from "@/components/prospecção/ProspecçãoRelatorioTab";
+import ProspecçãoEvolucaoTab from "@/components/prospecção/ProspecçãoEvolucaoTab";
+import ProspecçãoParecerFinalTab from "@/components/prospecção/ProspecçãoParecerFinalTab";
+import ProspecçãoRelatorioFinalTab from "@/components/prospecção/ProspecçãoRelatorioFinalTab";
 import { useUserRoles } from "@/hooks/useUserRoles";
 
 
-import FinancialInsightsPanel from "@/components/rma/FinancialInsightsPanel";
+import FinancialInsightsPanel from "@/components/prospecção/FinancialInsightsPanel";
 import { useConsolidadoBS } from "@/hooks/useConsolidadoBS";
-import WindowSelector, { type Janela, computeJanelaRange, janelaLabel } from "@/components/rma/WindowSelector";
+import WindowSelector, { type Janela, computeJanelaRange, janelaLabel } from "@/components/prospecção/WindowSelector";
 
 import JourneyStepper, { type JourneyStep } from "@/components/shell/JourneyStepper";
 import ScoreRingCard from "@/components/workspace/ScoreRingCard";
@@ -48,7 +48,7 @@ import StageDadosUpload from "@/components/workspace/stages/StageDadosUpload";
 import StageProcessamentoIA from "@/components/workspace/stages/StageProcessamentoIA";
 import StageRevisaoInteligente from "@/components/workspace/stages/StageRevisaoInteligente";
 import StageFechamento from "@/components/workspace/stages/StageFechamento";
-import StageRelatorioRMA from "@/components/workspace/stages/StageRelatorioRMA";
+import StageRelatorioProspecção from "@/components/workspace/stages/StageRelatorioProspecção";
 import AuditoriaCard from "@/components/workspace/AuditoriaCard";
 
 
@@ -71,7 +71,7 @@ const tabConfig = [
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const parseDipCompetencia = (code?: string | null): Competencia | null => {
-  const match = String(code || "").match(/^RMA-DIP-(\d{2})-(\d{4})$/i);
+  const match = String(code || "").match(/^Prospecção-DIP-(\d{2})-(\d{4})$/i);
   if (!match) return null;
   const mes = Number(match[1]);
   const ano = Number(match[2]);
@@ -88,7 +88,7 @@ const isRecentAnalysisRun = (updatedAt?: string | null) => {
   return Date.now() - ts < 15 * 60 * 1000;
 };
 
-const RMAWorkspace = () => {
+const ProspecçãoWorkspace = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { roles, loading: rolesLoading } = useUserRoles();
@@ -111,7 +111,7 @@ const RMAWorkspace = () => {
     setActiveTab(isMagistrado ? "relatorio-final" : isRecuperanda ? "processamento" : "status");
   }, [rolesLoading, isMagistrado, isRecuperanda, activeTab, visibleTabs]);
   const [competencia, setCompetencia] = useState<Competencia | null>(null);
-  // Persistência da janela com cadeia de fallback (composite > company > rma > last > default).
+  // Persistência da janela com cadeia de fallback (composite > company > prospecção > last > default).
   // Lê uma janela válida no localStorage para a chave dada. Retorna null se ausente/inválida.
   const readStoredJanelaRaw = useCallback((key: string): Janela | null => {
     try {
@@ -123,19 +123,19 @@ const RMAWorkspace = () => {
     return null;
   }, []);
   // Resolve a janela com cadeia de fallback:
-  //   1) chave composta (companyId + rmaCode/id) — mais específica
-  //   2) chave por companyId — preserva escolha entre RMAs da mesma empresa
-  //   3) chave por id (RMA) — preserva escolha mesmo sem companyId resolvido
+  //   1) chave composta (companyId + prospecçãoCode/id) — mais específica
+  //   2) chave por companyId — preserva escolha entre Prospecçãos da mesma empresa
+  //   3) chave por id (Prospecção) — preserva escolha mesmo sem companyId resolvido
   //   4) último valor usado globalmente
   //   5) default 3M
   // Garante que o usuário SEMPRE vê uma janela válida, mesmo antes de
-  // companyId/rmaCode carregarem; quando carregam, atualiza automaticamente.
+  // companyId/prospecçãoCode carregarem; quando carregam, atualiza automaticamente.
   const resolveJanela = useCallback(
     (cid: string | null, rcode: string | null): Janela => {
-      const composite = `bex:rma:janela:${cid || "nocid"}:${rcode || id || "mock"}`;
-      const byCompany = cid ? `bex:rma:janela:${cid}:_any` : null;
-      const byRma = `bex:rma:janela:nocid:${rcode || id || "mock"}`;
-      const last = `bex:rma:janela:_last`;
+      const composite = `bex:prospecção:janela:${cid || "nocid"}:${rcode || id || "mock"}`;
+      const byCompany = cid ? `bex:prospecção:janela:${cid}:_any` : null;
+      const byRma = `bex:prospecção:janela:nocid:${rcode || id || "mock"}`;
+      const last = `bex:prospecção:janela:_last`;
       return (
         readStoredJanelaRaw(composite) ??
         (byCompany ? readStoredJanelaRaw(byCompany) : null) ??
@@ -150,24 +150,24 @@ const RMAWorkspace = () => {
   const handleJanelaChange = (v: Janela) => {
     setJanela(v);
     const cid = companyIdRefForKey.current;
-    const rcode = rmaCodeRefForKey.current;
+    const rcode = prospecçãoCodeRefForKey.current;
     try {
       // Persiste em todas as variantes para alimentar a cadeia de fallback.
-      localStorage.setItem(`bex:rma:janela:${cid || "nocid"}:${rcode || id || "mock"}`, String(v));
-      if (cid) localStorage.setItem(`bex:rma:janela:${cid}:_any`, String(v));
-      localStorage.setItem(`bex:rma:janela:nocid:${rcode || id || "mock"}`, String(v));
-      localStorage.setItem(`bex:rma:janela:_last`, String(v));
+      localStorage.setItem(`bex:prospecção:janela:${cid || "nocid"}:${rcode || id || "mock"}`, String(v));
+      if (cid) localStorage.setItem(`bex:prospecção:janela:${cid}:_any`, String(v));
+      localStorage.setItem(`bex:prospecção:janela:nocid:${rcode || id || "mock"}`, String(v));
+      localStorage.setItem(`bex:prospecção:janela:_last`, String(v));
     } catch {}
   };
   const companyIdRefForKey = useRef<string | null>(null);
-  const rmaCodeRefForKey = useRef<string | null>(null);
+  const prospecçãoCodeRefForKey = useRef<string | null>(null);
 
   const [companyId, setCompanyId] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState<string | null>(null);
-  const [rmaCode, setRmaCode] = useState<string | null>(null);
+  const [prospecçãoCode, setRmaCode] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<RmaAnalysisResult | null>(null);
   const [scoreFiles, setScoreFiles] = useState<ScoreFile[]>([]);
-  const [rmaPeriod, setRmaPeriod] = useState<{ ano: number; mes: number } | null>(null);
+  const [prospecçãoPeriod, setRmaPeriod] = useState<{ ano: number; mes: number } | null>(null);
   const [overviewFiles, setOverviewFiles] = useState<ScoreFile[]>([]);
   const [unifiedScore, setUnifiedScore] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -199,14 +199,14 @@ const RMAWorkspace = () => {
     setRunToken("initial");
   }, [id]);
 
-  // Atualiza refs e re-resolve a janela quando companyId/rmaCode chegam.
+  // Atualiza refs e re-resolve a janela quando companyId/prospecçãoCode chegam.
   // A janela exibida sempre é válida: começa pelo fallback global e converge
-  // para a preferência específica do RMA assim que os IDs são carregados.
+  // para a preferência específica do Prospecção assim que os IDs são carregados.
   useEffect(() => {
     companyIdRefForKey.current = companyId;
-    rmaCodeRefForKey.current = rmaCode;
-    setJanela(resolveJanela(companyId, rmaCode));
-  }, [id, companyId, rmaCode, resolveJanela]);
+    prospecçãoCodeRefForKey.current = prospecçãoCode;
+    setJanela(resolveJanela(companyId, prospecçãoCode));
+  }, [id, companyId, prospecçãoCode, resolveJanela]);
 
   // Intervalo derivado da janela global, ancorado na competência selecionada.
   // Memoizado para que mudanças em `competencia` ou `janela` propaguem
@@ -218,8 +218,8 @@ const RMAWorkspace = () => {
   // BS & Dados — consolidado já filtrado pela janela (alimenta Gráficos de Auditoria).
   const { parsed: bsParsed, entries: bsEntries, loading: bsLoading } = useConsolidadoBS(companyId, runToken, janelaRange);
 
-  // Route id pode ser UUID OU código rma_id (ex.: RMA-DIP-01-2026).
-  // Resolvemos `companyId` (sempre UUID) consultando companies por id OU rma_id.
+  // Route id pode ser UUID OU código prospecção_id (ex.: Prospecção-DIP-01-2026).
+  // Resolvemos `companyId` (sempre UUID) consultando companies por id OU prospecção_id.
   // `isRealRma` passa a ser true SOMENTE após resolução; antes disso usamos
   // um placeholder neutro (sem dados fictícios de empresa).
   const isUuidRoute = !!id && UUID_RE.test(id);
@@ -237,22 +237,22 @@ const RMAWorkspace = () => {
         if (!cid) {
           let q = supabase
             .from("companies")
-            .select("id, name, rma_id, execution_year, current_period_month");
-          q = isUuidRoute ? q.eq("id", id!) : q.eq("rma_id", id!);
+            .select("id, name, prospecção_id, execution_year, current_period_month");
+          q = isUuidRoute ? q.eq("id", id!) : q.eq("prospecção_id", id!);
           const { data: c } = await q.maybeSingle();
           if (c && !cancelled) {
             cid = (c as any).id as string;
             setCompanyId(cid);
             setCompanyName((c as any).name);
-            setRmaCode((c as any).rma_id || id!.toUpperCase());
-            // Para RMA-DIP-MM-YYYY a competência vem do código (mais confiável
+            setRmaCode((c as any).prospecção_id || id!.toUpperCase());
+            // Para Prospecção-DIP-MM-YYYY a competência vem do código (mais confiável
             // que companies.current_period_month, que reflete o "mês corrente"
-            // global da empresa e pode divergir do RMA selecionado).
-            const officialCompetencia = parseDipCompetencia((c as any).rma_id || id);
+            // global da empresa e pode divergir do Prospecção selecionado).
+            const officialCompetencia = parseDipCompetencia((c as any).prospecção_id || id);
             let ano: number | null = officialCompetencia?.ano ?? null;
             let mes: number | null = officialCompetencia?.mes ?? null;
             if (officialCompetencia) {
-              const officialRouteKey = `${id || (c as any).rma_id}:${officialCompetencia.key}`;
+              const officialRouteKey = `${id || (c as any).prospecção_id}:${officialCompetencia.key}`;
               if (officialCompetenciaAppliedRef.current !== officialRouteKey) {
                 officialCompetenciaAppliedRef.current = officialRouteKey;
                 setCompetencia(officialCompetencia);
@@ -323,18 +323,18 @@ const RMAWorkspace = () => {
     return () => { cancelled = true; window.clearInterval(timer); };
   }, [companyId, runToken, competencia?.ano, competencia?.mes]);
 
-  // Overview card: SEMPRE usa a competência oficial do RMA (companies.execution_year/current_period_month),
+  // Overview card: SEMPRE usa a competência oficial do Prospecção (companies.execution_year/current_period_month),
   // independente do seletor de competência usado em outras abas. Evita exibir contagens de outro mês.
   useEffect(() => {
-    if (!companyId || !rmaPeriod) { setOverviewFiles([]); return; }
+    if (!companyId || !prospecçãoPeriod) { setOverviewFiles([]); return; }
     let cancelled = false;
     const load = async () => {
       const { data } = await supabase
         .from("onedrive_files")
         .select("company_id, path, file_name, status, last_processed_at, ano, mes")
         .eq("company_id", companyId)
-        .eq("ano", rmaPeriod.ano)
-        .eq("mes", rmaPeriod.mes)
+        .eq("ano", prospecçãoPeriod.ano)
+        .eq("mes", prospecçãoPeriod.mes)
         .neq("status", "inactive")
         .limit(5000);
       if (!cancelled) setOverviewFiles((data as any) || []);
@@ -342,7 +342,7 @@ const RMAWorkspace = () => {
     load();
     const timer = window.setInterval(load, 5000);
     return () => { cancelled = true; window.clearInterval(timer); };
-  }, [companyId, rmaPeriod?.ano, rmaPeriod?.mes, runToken]);
+  }, [companyId, prospecçãoPeriod?.ano, prospecçãoPeriod?.mes, runToken]);
 
   const handleUpdateIA = useCallback(async () => {
     if (!companyId) {
@@ -383,14 +383,14 @@ const RMAWorkspace = () => {
 
   const liveWorkspaceTopics = buildLiveScoreTopics(analysis?.topics as any, scoreFiles);
   const localWorkspacePct = computeRmaScore(liveWorkspaceTopics, analysis?.percentual ?? 0);
-  // unifiedScore (edge `rma-score`) é a fonte canônica; reconcileScore garante
-  // paridade com Status RMA, Processamento IA e Alertas Inteligentes.
-  const liveWorkspacePercentual = reconcileScore("RMAWorkspace", unifiedScore, localWorkspacePct);
-  useScoreParityGuard(id ?? null, "RMAWorkspace", liveWorkspacePercentual);
+  // unifiedScore (edge `prospecção-score`) é a fonte canônica; reconcileScore garante
+  // paridade com Status Prospecção, Processamento IA e Alertas Inteligentes.
+  const liveWorkspacePercentual = reconcileScore("ProspecçãoWorkspace", unifiedScore, localWorkspacePct);
+  useScoreParityGuard(id ?? null, "ProspecçãoWorkspace", liveWorkspacePercentual);
 
-  // Constrói RMAEntry a partir da análise real (para alimentar abas existentes)
-  const realRma: RMAEntry = {
-    id: rmaCode || id || "",
+  // Constrói ProspecçãoEntry a partir da análise real (para alimentar abas existentes)
+  const realRma: ProspecçãoEntry = {
+    id: prospecçãoCode || id || "",
     empresa: companyName || "—",
     status: analysis?.status === "concluido" ? "em_processamento" : "em_processamento",
     percentual: liveWorkspacePercentual,
@@ -413,7 +413,7 @@ const RMAWorkspace = () => {
 
   // Placeholder neutro enquanto a empresa real não foi resolvida — sem dados
   // fictícios. Quando `isRealRma` ficar true, `realRma` substitui imediatamente.
-  const routePlaceholder: RMAEntry = {
+  const routePlaceholder: ProspecçãoEntry = {
     id: id || "—",
     empresa: "Carregando…",
     status: "em_processamento",
@@ -424,7 +424,7 @@ const RMAWorkspace = () => {
     coordenador: "—",
     topics: [],
   };
-  const rma = isRealRma ? realRma : routePlaceholder;
+  const prospecção = isRealRma ? realRma : routePlaceholder;
   const isStaleAnalyzing = analysis?.status === "em_analise" && !isRecentAnalysisRun(analysis?.updated_at);
   const isAnalyzing = loading || (analysis?.status === "em_analise" && !isStaleAnalyzing);
   const activeIndex = visibleTabs.findIndex(t => t.value === activeTab);
@@ -435,15 +435,15 @@ const RMAWorkspace = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-xl font-bold text-foreground">{rma.id} — {rma.empresa}</h1>
+            <h1 className="text-xl font-bold text-foreground">{prospecção.id} — {prospecção.empresa}</h1>
             <p className="text-sm text-muted-foreground">
               {isRealRma
                 ? (isAnalyzing
                     ? "IA em execução — lendo OneDrive e auditando documentos…"
                     : isStaleAnalyzing
-                      ? "Último processamento pausado — dados carregados pela competência oficial do RMA"
+                      ? "Último processamento pausado — dados carregados pela competência oficial do Prospecção"
                       : (analysis?.status === "erro" ? `Erro: ${analysis.error_message}` : "Análise IA concluída"))
-                : `Responsável: ${rma.responsavel} · Coordenador: ${rma.coordenador}`}
+                : `Responsável: ${prospecção.responsavel} · Coordenador: ${prospecção.coordenador}`}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -454,11 +454,11 @@ const RMAWorkspace = () => {
                   value={competencia}
                   onChange={setCompetencia}
                   refreshKey={runToken}
-                  preferredCompetencia={rmaPeriod ? {
-                    ano: rmaPeriod.ano,
-                    mes: rmaPeriod.mes,
-                    key: `${rmaPeriod.ano}-${String(rmaPeriod.mes).padStart(2, "0")}`,
-                    label: new Date(rmaPeriod.ano, rmaPeriod.mes - 1, 1).toLocaleDateString("pt-BR", { month: "short", year: "numeric" }),
+                  preferredCompetencia={prospecçãoPeriod ? {
+                    ano: prospecçãoPeriod.ano,
+                    mes: prospecçãoPeriod.mes,
+                    key: `${prospecçãoPeriod.ano}-${String(prospecçãoPeriod.mes).padStart(2, "0")}`,
+                    label: new Date(prospecçãoPeriod.ano, prospecçãoPeriod.mes - 1, 1).toLocaleDateString("pt-BR", { month: "short", year: "numeric" }),
                   } : null}
                 />
                 <WindowSelector value={janela} onChange={handleJanelaChange} />
@@ -479,7 +479,7 @@ const RMAWorkspace = () => {
               </Badge>
             )}
             <Badge className="text-xs bg-[hsl(217,91%,50%)]/15 text-[hsl(217,91%,50%)] border-0">
-              {rma.percentual}% completo
+              {prospecção.percentual}% completo
             </Badge>
           </div>
         </div>
@@ -559,7 +559,7 @@ const RMAWorkspace = () => {
                 <>
                   {(() => {
                     // Contagem canônica: alinhada ao "pipeline floor" usado por
-                    // rma-analyze (diagnostico.pipeline). "Processado" = OneDrive
+                    // prospecção-analyze (diagnostico.pipeline). "Processado" = OneDrive
                     // status === "processed" (ignora manual_upload_required, tracked
                     // e manual_uploaded — esses ainda não foram lidos pela IA).
                     const filesTotalOD = overviewFiles.length;
@@ -621,7 +621,7 @@ const RMAWorkspace = () => {
               )}
 
               {activeStage === 1 && (
-                <StageDadosUpload rma={rma} companyId={companyId} scoreFiles={scoreFiles} ano={competencia?.ano ?? null} mes={competencia?.mes ?? null} />
+                <StageDadosUpload prospecção={prospecção} companyId={companyId} scoreFiles={scoreFiles} ano={competencia?.ano ?? null} mes={competencia?.mes ?? null} />
               )}
 
               {activeStage === 2 && (
@@ -645,7 +645,7 @@ const RMAWorkspace = () => {
                   janela={janelaRange}
                   bsParsed={bsParsed}
                   bsEntries={bsEntries}
-                  rmaId={id || ""}
+                  prospecçãoId={id || ""}
                 />
               )}
 
@@ -655,13 +655,13 @@ const RMAWorkspace = () => {
                   runToken={runToken}
                   bsParsed={bsParsed}
                   bsEntries={bsEntries}
-                  rmaId={id}
+                  prospecçãoId={id}
                   loading={bsLoading}
                 />
               )}
 
               {activeStage === 4 && (
-                <StageRevisaoInteligente topics={topicItems} criticas={criticas} rmaId={rmaCode} />
+                <StageRevisaoInteligente topics={topicItems} criticas={criticas} prospecçãoId={prospecçãoCode} />
               )}
 
               {activeStage === 5 && (
@@ -671,19 +671,19 @@ const RMAWorkspace = () => {
                   pendencias={incompletos + pendentes}
                   documentosTotal={total}
                   documentosValidados={completos}
-                  responsavel={rma.responsavel}
+                  responsavel={prospecção.responsavel}
                 />
               )}
 
               {activeStage === 6 && (
-                <StageRelatorioRMA
-                  rmaId={id || ""}
+                <StageRelatorioProspecção
+                  prospecçãoId={id || ""}
                   scoreFinal={liveWorkspacePercentual}
                   companyId={companyId}
-                  rmaCode={rmaCode || rma.id}
-                  empresa={companyName || rma.empresa}
+                  prospecçãoCode={prospecçãoCode || prospecção.id}
+                  empresa={companyName || prospecção.empresa}
                   mesReferencia={typeof competencia === "string" ? competencia : undefined}
-                  responsavel={rma.responsavel}
+                  responsavel={prospecção.responsavel}
                 />
               )}
 
@@ -695,5 +695,5 @@ const RMAWorkspace = () => {
   );
 };
 
-export default RMAWorkspace;
+export default ProspecçãoWorkspace;
 

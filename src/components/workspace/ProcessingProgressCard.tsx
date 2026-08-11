@@ -14,7 +14,7 @@ export default function ProcessingProgressCard({ processados, pendentes, incompl
       </h3>
       <div className="flex-1 flex flex-col justify-center">
         <div className="text-3xl font-bold text-foreground">
-          {processados} <span className="text-base font-normal text-muted-foreground">de {total}</span>
+          {processados} <span className="text-base font-noprospecçãol text-muted-foreground">de {total}</span>
         </div>
         <div className="text-xs text-muted-foreground mb-3">Tópicos processados</div>
         <div className="w-full h-2 rounded-full bg-[hsl(220,15%,92%)] overflow-hidden">

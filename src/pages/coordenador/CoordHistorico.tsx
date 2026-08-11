@@ -2,11 +2,11 @@ import { History, GitCommit, User, FileText, CheckCircle2, AlertTriangle } from 
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
 const events = [
-  { id: "H-401", tipo: "publicacao", titulo: "RMA Maio/2026 publicado",       rma: "RMA-0012", usuario: "Coordenador", data: "Hoje 14:32" },
-  { id: "H-400", tipo: "aprovacao",  titulo: "Aprovado pelo Coordenador",     rma: "RMA-0012", usuario: "Coordenador", data: "Hoje 13:10" },
-  { id: "H-399", tipo: "edicao",     titulo: "Bloco 7 - DRE editado",         rma: "RMA-0014", usuario: "Carlos Mendes", data: "Hoje 11:48" },
-  { id: "H-398", tipo: "rejeicao",   titulo: "Bloco 5 reprovado",             rma: "RMA-0009", usuario: "Coordenador", data: "Ontem 17:20" },
-  { id: "H-397", tipo: "criacao",    titulo: "Novo RMA criado",               rma: "RMA-0014", usuario: "Coordenador", data: "07/05" },
+  { id: "H-401", tipo: "publicacao", titulo: "Prospecção Maio/2026 publicado",       prospecção: "Prospecção-0012", usuario: "Coordenador", data: "Hoje 14:32" },
+  { id: "H-400", tipo: "aprovacao",  titulo: "Aprovado pelo Coordenador",     prospecção: "Prospecção-0012", usuario: "Coordenador", data: "Hoje 13:10" },
+  { id: "H-399", tipo: "edicao",     titulo: "Bloco 7 - DRE editado",         prospecção: "Prospecção-0014", usuario: "Carlos Mendes", data: "Hoje 11:48" },
+  { id: "H-398", tipo: "rejeicao",   titulo: "Bloco 5 reprovado",             prospecção: "Prospecção-0009", usuario: "Coordenador", data: "Ontem 17:20" },
+  { id: "H-397", tipo: "criacao",    titulo: "Novo Prospecção criado",               prospecção: "Prospecção-0014", usuario: "Coordenador", data: "07/05" },
 ];
 
 const typeMeta: Record<string, { icon: any; bg: string; fg: string; label: string }> = {
@@ -45,7 +45,7 @@ export default function CoordHistorico() {
                   <div className="bg-muted/30 rounded-lg p-3">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: m.bg, color: m.fg }}>{m.label}</span>
-                      <span className="text-xs font-mono text-primary">{e.rma}</span>
+                      <span className="text-xs font-mono text-primary">{e.prospecção}</span>
                       <span className="text-xs text-muted-foreground ml-auto">{e.data}</span>
                     </div>
                     <div className="text-sm font-medium">{e.titulo}</div>

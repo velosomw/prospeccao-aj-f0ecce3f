@@ -2,7 +2,7 @@
  * AuditoriaCard — Card consolidado de Auditoria exibido após o Processamento da IA.
  *
  * Melhorias v3:
- *  - Persistência da aba ativa por rmaId em localStorage + URL (?atab=).
+ *  - Persistência da aba ativa por prospecçãoId em localStorage + URL (?atab=).
  *  - Filtro de período (de/até) + atalhos rápidos (3m / 6m / 12m / YTD).
  *  - Exportação CSV das tabelas e Export XLSX consolidado (multi-aba).
  *  - Cards-resumo no topo de Indicadores (KPIs com Δ vs mês anterior).
@@ -35,7 +35,7 @@ interface AuditoriaCardProps {
   runToken: string;
   bsParsed: any;
   bsEntries: any;
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
   loading?: boolean;
 }
 
@@ -377,13 +377,13 @@ function PanelRiscoRJ({ rows }: { rows: BSDadosRow[] }) {
   );
 }
 
-/* Relatório Final foi movido para a aba "Relatório RMA Final" do workspace. */
+/* Relatório Final foi movido para a aba "Relatório Prospecção Final" do workspace. */
 
 /* ═══════════════════ Card raiz ═══════════════════ */
-export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries, rmaId, loading }: AuditoriaCardProps) {
+export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries, prospecçãoId, loading }: AuditoriaCardProps) {
   const [params, setParams] = useSearchParams();
-  const storageKey = `auditoria-tab:${rmaId ?? "global"}`;
-  const periodStorageKey = `auditoria-period:${rmaId ?? "global"}`;
+  const storageKey = `auditoria-tab:${prospecçãoId ?? "global"}`;
+  const periodStorageKey = `auditoria-period:${prospecçãoId ?? "global"}`;
 
   // Aba inicial: URL > localStorage > "indicadores"
   const initial = useMemo<TabKey>(() => {
@@ -405,7 +405,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
     [allRows]
   );
 
-  // Filtro de período (de / até) — restaura do localStorage por RMA
+  // Filtro de período (de / até) — restaura do localStorage por Prospecção
   const initialPeriod = useMemo<{ from: string; to: string }>(() => {
     try {
       const raw = localStorage.getItem(periodStorageKey);
@@ -426,7 +426,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
     if (to !== "__all" && !monthKeys.includes(to)) setTo("__all");
   }, [monthKeys, from, to]);
 
-  // Persistência do período por RMA
+  // Persistência do período por Prospecção
   useEffect(() => {
     try { localStorage.setItem(periodStorageKey, JSON.stringify({ from, to })); } catch { /* ignore */ }
   }, [from, to, periodStorageKey]);
@@ -467,7 +467,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
     bsdados: kpi.errors ? String(kpi.errors) : "",
   };
 
-  const formatMonthLabel = (mk: string) => {
+  const foprospecçãotMonthLabel = (mk: string) => {
     const found = allRows.find(r => r.mesKey === mk);
     return found?.mes ?? mk;
   };
@@ -509,7 +509,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
     const patBody = PAT_ROWS.map(([label, field]) => [label, ...sortedPat.map(r => patValue(r, field))]);
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([patHeader, ...patBody]), "Patrimonial");
 
-    const tag = rmaId ? `rma-${rmaId.slice(0, 8)}` : "auditoria";
+    const tag = prospecçãoId ? `prospecção-${prospecçãoId.slice(0, 8)}` : "auditoria";
     XLSX.writeFile(wb, `auditoria-${tag}.xlsx`);
   };
 
@@ -576,7 +576,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
               Auditoria
             </CardTitle>
             <p className="mt-1 text-xs text-muted-foreground">
-              Visões de auditoria carregadas dos MDs e do pipeline processado — gestão centralizada do RMA.
+              Visões de auditoria carregadas dos MDs e do pipeline processado — gestão centralizada do Prospecção.
             </p>
           </div>
           {hasData && (
@@ -640,7 +640,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
               <SelectTrigger className="h-7 w-[160px] text-xs"><SelectValue placeholder="De" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="__all">Início</SelectItem>
-                {monthKeys.map(k => <SelectItem key={k} value={k}>{formatMonthLabel(k)}</SelectItem>)}
+                {monthKeys.map(k => <SelectItem key={k} value={k}>{foprospecçãotMonthLabel(k)}</SelectItem>)}
               </SelectContent>
             </Select>
             <span className="text-muted-foreground">até</span>
@@ -648,7 +648,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
               <SelectTrigger className="h-7 w-[160px] text-xs"><SelectValue placeholder="Até" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="__all">Fim</SelectItem>
-                {monthKeys.map(k => <SelectItem key={k} value={k}>{formatMonthLabel(k)}</SelectItem>)}
+                {monthKeys.map(k => <SelectItem key={k} value={k}>{foprospecçãotMonthLabel(k)}</SelectItem>)}
               </SelectContent>
             </Select>
             <div className="mx-1 h-4 w-px bg-border" />

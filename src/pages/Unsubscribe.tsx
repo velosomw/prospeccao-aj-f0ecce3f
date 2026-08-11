@@ -44,7 +44,7 @@ export default function Unsubscribe() {
         {state === "valid" && (
           <>
             <p className="text-sm text-muted-foreground">Confirme o cancelamento para deixar de receber estes e-mails.</p>
-            <Button onClick={confirm} className="w-full">Confirmar cancelamento</Button>
+            <Button onClick={confirm} className="w-full">Confiprospecçãor cancelamento</Button>
           </>
         )}
         {state === "submitting" && <Loader2 className="w-8 h-8 mx-auto animate-spin text-muted-foreground" />}

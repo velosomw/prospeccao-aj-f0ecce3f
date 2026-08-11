@@ -112,9 +112,9 @@ const Login = () => {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[hsl(217,91%,50%)] mb-4">
               <Shield className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-foreground">Plataforma</h1>
+            <h1 className="text-2xl font-bold text-foreground">Platafoprospecção</h1>
             <h2 className="text-2xl font-bold bg-gradient-to-r from-[hsl(217,91%,50%)] to-[hsl(200,98%,60%)] bg-clip-text text-transparent">
-              RMA IA
+              Prospecção IA
             </h2>
           </div>
 
@@ -127,7 +127,7 @@ const Login = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="empresa@rma.com.br"
+                    placeholder="empresa@prospecção.com.br"
                     className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-primary"
                     required
                   />
@@ -207,7 +207,7 @@ const Login = () => {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="empresa@rma.com.br"
+                        placeholder="empresa@prospecção.com.br"
                         className="bg-muted/50 border-border text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-primary"
                         required
                       />

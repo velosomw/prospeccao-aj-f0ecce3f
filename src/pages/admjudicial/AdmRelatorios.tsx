@@ -2,10 +2,10 @@ import { FileBarChart, CheckCircle2, Eye, Download, FileText, Clock } from "luci
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
 const rels = [
-  { id: "REL-104", titulo: "RMA Maio/2026 - DIPLOMATA",  empresa: "DIPLOMATA",  status: "Publicado", score: 87, data: "Há 4h" },
-  { id: "REL-103", titulo: "RMA Abril/2026 - TECNOMAX",  empresa: "TECNOMAX",   status: "Publicado", score: 72, data: "Há 1d" },
-  { id: "REL-102", titulo: "RMA Maio/2026 - BENTOIA",    empresa: "BENTOIA",    status: "Em Revisão",score: 91, data: "Há 2d" },
-  { id: "REL-101", titulo: "RMA Maio/2026 - MOVAG",      empresa: "MOVAG",      status: "Rascunho",  score: 41, data: "Há 3d" },
+  { id: "REL-104", titulo: "Prospecção Maio/2026 - DIPLOMATA",  empresa: "DIPLOMATA",  status: "Publicado", score: 87, data: "Há 4h" },
+  { id: "REL-103", titulo: "Prospecção Abril/2026 - TECNOMAX",  empresa: "TECNOMAX",   status: "Publicado", score: 72, data: "Há 1d" },
+  { id: "REL-102", titulo: "Prospecção Maio/2026 - BENTOIA",    empresa: "BENTOIA",    status: "Em Revisão",score: 91, data: "Há 2d" },
+  { id: "REL-101", titulo: "Prospecção Maio/2026 - MOVAG",      empresa: "MOVAG",      status: "Rascunho",  score: 41, data: "Há 3d" },
 ];
 const statusMeta: Record<string, { bg: string; fg: string }> = {
   "Publicado":   { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },

@@ -16,31 +16,31 @@ import {
   type CostConfigRow, type CostIndicators, type PeriodKey, type UsageLogRow,
 } from "@/services/gestorIaCostService";
 
-// 5 tipos de relatórios RMA acompanhados financeiramente
+// 5 tipos de relatórios Prospecção acompanhados financeiramente
 const REPORT_TYPES = [
   { key: "registro_cobranca",  label: "Relatório de Registro e Cobrança", icon: Receipt,       color: "hsl(200,80%,55%)",
     matchers: [/registro/i, /cobran/i] },
   { key: "pre_parecer",        label: "Revisão-Parecer Técnico",          icon: ClipboardList, color: "hsl(258,90%,66%)",
     matchers: [/pre[_-]?parecer/i, /pré[-_ ]?parecer/i, /pre[_-]?relat/i] },
   { key: "pre_relatorio",      label: "Revisão-Relatório Prospecção AJ",            icon: FileSearch,    color: "hsl(190,70%,50%)",
-    matchers: [/pre[_-]?relat/i, /pré[-_ ]?relat/i, /rma[_-]?mensal/i] },
+    matchers: [/pre[_-]?relat/i, /pré[-_ ]?relat/i, /prospecção[_-]?mensal/i] },
   { key: "parecer_final",      label: "Parecer Técnico Final",            icon: FileCheck2,    color: "hsl(152,70%,45%)",
     matchers: [/parecer[_-]?final/i, /^parecer_tecnico$/i] },
   { key: "relatorio_final",    label: "Relatório Prospecção AJ Final",                  icon: FileBarChart2, color: "hsl(38,90%,55%)",
-    matchers: [/relat[oó]rio[_-]?final/i, /rma[_-]?final/i] },
+    matchers: [/relat[oó]rio[_-]?final/i, /prospecção[_-]?final/i] },
 ] as const;
 
 function classifyReportLog(l: UsageLogRow): string {
   const meta = (l.metadata ?? {}) as Record<string, unknown>;
   const hay = [
     meta.report_type, meta.documento_tipo, meta.tipo, meta.section,
-    (meta as any).rma_doc_tipo, (meta as any).fn, (meta as any).tool,
+    (meta as any).prospecção_doc_tipo, (meta as any).fn, (meta as any).tool,
     (meta as any).file, l.type,
   ].map((v) => String(v ?? "")).join(" ");
   for (const rt of REPORT_TYPES) {
     if (rt.matchers.some((re) => re.test(hay))) return rt.key;
   }
-  // Fallback: logs de extração/OCR/embedding alimentam o Revisão-Relatório RMA
+  // Fallback: logs de extração/OCR/embedding alimentam o Revisão-Relatório Prospecção
   return "pre_relatorio";
 }
 
@@ -161,7 +161,7 @@ const TabFinanceiroTokens = () => {
     ? e2eTotal / (data.totalBalancetes + data.totalRelatorios)
     : 0;
 
-  // Custos por tipo de relatório RMA (período corrente)
+  // Custos por tipo de relatório Prospecção (período corrente)
   const periodCutoff = useMemo(() => {
     const now = new Date();
     switch (period) {
@@ -187,19 +187,19 @@ const TabFinanceiroTokens = () => {
     return stats;
   }, [logs, periodCutoff]);
 
-  // Custo Total (E2E) = soma dos 5 relatórios (custo total acumulado da empresa no RMA)
-  const custoTotalRMAReports = useMemo(
+  // Custo Total (E2E) = soma dos 5 relatórios (custo total acumulado da empresa no Prospecção)
+  const custoTotalProspecçãoReports = useMemo(
     () => REPORT_TYPES.reduce((acc, rt) => acc + (reportStats[rt.key]?.total ?? 0), 0),
     [reportStats],
   );
-  const totalDocsRMAReports = useMemo(() => {
+  const totalDocsProspecçãoReports = useMemo(() => {
     const all = new Set<string>();
     for (const rt of REPORT_TYPES) reportStats[rt.key]?.docs.forEach((d) => all.add(d));
     return all.size;
   }, [reportStats]);
-  const custoMedioRMA = totalDocsRMAReports > 0 ? custoTotalRMAReports / totalDocsRMAReports : 0;
+  const custoMedioProspecção = totalDocsProspecçãoReports > 0 ? custoTotalProspecçãoReports / totalDocsProspecçãoReports : 0;
 
-  // Custo médio por Relatório Final (RMA)
+  // Custo médio por Relatório Final (Prospecção)
   const custoRelatorioFinal = (() => {
     const s = reportStats["relatorio_final"];
     return s && s.docs.size > 0 ? s.total / s.docs.size : 0;
@@ -271,7 +271,7 @@ const TabFinanceiroTokens = () => {
         </div>
       </div>
 
-      {/* KPIs principais — médias REAIS por unidade da plataforma */}
+      {/* KPIs principais — médias REAIS por unidade da platafoprospecção */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         <KPI
           icon={FileText}
@@ -291,14 +291,14 @@ const TabFinanceiroTokens = () => {
           icon={Wallet}
           label="Custo Total (E2E)"
           value={data ? fmtUSDc(data.custoTotal) : "—"}
-          sub={data ? `Σ IA · ${data.counts.rmasTotal} RMA(s) na plataforma` : "—"}
+          sub={data ? `Σ IA · ${data.counts.prospecçãosTotal} Prospecção(s) na platafoprospecção` : "—"}
           color="hsl(200,80%,55%)"
         />
         <KPI
           icon={Activity}
           label="Custo Médio por Prospecção AJ"
-          value={data ? fmtUSDc(data.custoMedioPorRMA) : "—"}
-          sub={data ? `Custo total ÷ ${data.counts.rmasTotal} RMA(s) (análise → conclusão)` : "—"}
+          value={data ? fmtUSDc(data.custoMedioPorProspecção) : "—"}
+          sub={data ? `Custo total ÷ ${data.counts.prospecçãosTotal} Prospecção(s) (análise → conclusão)` : "—"}
           color="hsl(38,90%,55%)"
         />
         <KPI
@@ -310,12 +310,12 @@ const TabFinanceiroTokens = () => {
         />
       </div>
 
-      {/* Custo por tipo de Relatório RMA — médias acumuladas */}
+      {/* Custo por tipo de Relatório Prospecção — médias acumuladas */}
       <div>
         <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
           <div>
             <h4 className="font-semibold text-foreground flex items-center gap-2">
-              <FileBarChart2 className="w-4 h-4 text-[hsl(258,90%,66%)]" /> Custo médio por tipo de Relatório RMA
+              <FileBarChart2 className="w-4 h-4 text-[hsl(258,90%,66%)]" /> Custo médio por tipo de Relatório Prospecção
             </h4>
             <p className="text-xs text-muted-foreground">Custo acumulado ÷ documentos únicos por relatório · período: <b>{data?.periodLabel}</b></p>
           </div>
@@ -326,7 +326,7 @@ const TabFinanceiroTokens = () => {
             const docs = s?.docs.size ?? 0;
             const avg = docs > 0 ? s.total / docs : 0;
             const total = s?.total ?? 0;
-            const pct = custoTotalRMAReports > 0 ? (total / custoTotalRMAReports) * 100 : 0;
+            const pct = custoTotalProspecçãoReports > 0 ? (total / custoTotalProspecçãoReports) * 100 : 0;
             const Icon = rt.icon;
             return (
               <div
@@ -371,14 +371,14 @@ const TabFinanceiroTokens = () => {
         </div>
       </div>
 
-      {/* Detalhe Custo Médio por Etapa do RMA — colapsável */}
+      {/* Detalhe Custo Médio por Etapa do Prospecção — colapsável */}
       <div className="bg-card rounded-xl border border-border overflow-hidden">
         <button
           onClick={() => setStageOpen((v) => !v)}
           className="w-full p-4 flex items-center justify-between hover:bg-muted/30 transition-colors"
         >
           <span className="font-semibold text-foreground flex items-center gap-2">
-            <FileBarChart2 className="w-4 h-4 text-[hsl(258,90%,66%)]" /> Custo médio por etapa do RMA
+            <FileBarChart2 className="w-4 h-4 text-[hsl(258,90%,66%)]" /> Custo médio por etapa do Prospecção
           </span>
           <div className="flex items-center gap-3">
             <span className="text-xs text-muted-foreground hidden sm:inline">
@@ -409,7 +409,7 @@ const TabFinanceiroTokens = () => {
                   const docs = s?.docs.size ?? 0;
                   const total = s?.total ?? 0;
                   const avg = docs > 0 ? total / docs : 0;
-                  const pct = custoTotalRMAReports > 0 ? (total / custoTotalRMAReports) * 100 : 0;
+                  const pct = custoTotalProspecçãoReports > 0 ? (total / custoTotalProspecçãoReports) * 100 : 0;
                   return (
                     <tr key={rt.key} className="border-b border-border last:border-0">
                       <td className="py-2 text-foreground flex items-center gap-2">
@@ -425,9 +425,9 @@ const TabFinanceiroTokens = () => {
                 })}
                 <tr className="bg-[hsl(258,90%,66%)]/10">
                   <td className="py-2 font-bold">Total geral Prospecção AJ</td>
-                  <td className="py-2 text-right font-mono font-bold">{totalDocsRMAReports}</td>
-                  <td className="py-2 text-right font-mono font-bold">{fmtUSDc(custoMedioRMA)}</td>
-                  <td className="py-2 text-right font-mono font-bold">{fmtUSDc(custoTotalRMAReports)}</td>
+                  <td className="py-2 text-right font-mono font-bold">{totalDocsProspecçãoReports}</td>
+                  <td className="py-2 text-right font-mono font-bold">{fmtUSDc(custoMedioProspecção)}</td>
+                  <td className="py-2 text-right font-mono font-bold">{fmtUSDc(custoTotalProspecçãoReports)}</td>
                   <td className="py-2 text-right font-mono font-bold">100,0%</td>
                 </tr>
               </tbody>
@@ -494,7 +494,7 @@ const TabFinanceiroTokens = () => {
                 <Pie data={data!.breakdown} dataKey="cost" nameKey="label" cx="50%" cy="50%" innerRadius={50} outerRadius={90} paddingAngle={2}>
                   {data!.breakdown.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                 </Pie>
-                <Tooltip formatter={(v: number) => fmtUSDc(v)} />
+                <Tooltip foprospecçãotter={(v: number) => fmtUSDc(v)} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
               </PieChart>
             </ResponsiveContainer>
@@ -508,7 +508,7 @@ const TabFinanceiroTokens = () => {
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(214,20%,88%)" />
               <XAxis dataKey="mes" tick={{ fontSize: 10 }} />
               <YAxis tick={{ fontSize: 10 }} />
-              <Tooltip formatter={(v: number) => fmtUSDc(v)} />
+              <Tooltip foprospecçãotter={(v: number) => fmtUSDc(v)} />
               <Area type="monotone" dataKey="custo" stroke="hsl(258,90%,66%)" fill="hsl(258,90%,66%)" fillOpacity={0.2} />
             </AreaChart>
           </ResponsiveContainer>
@@ -522,7 +522,7 @@ const TabFinanceiroTokens = () => {
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(214,20%,88%)" />
             <XAxis dataKey="mes" tick={{ fontSize: 11 }} />
             <YAxis tick={{ fontSize: 11 }} />
-            <Tooltip formatter={(v: number) => fmtUSDc(v)} />
+            <Tooltip foprospecçãotter={(v: number) => fmtUSDc(v)} />
             <Bar dataKey="custo" fill="hsl(200,80%,55%)" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>

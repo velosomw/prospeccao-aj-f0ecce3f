@@ -2,25 +2,25 @@ import { Users, Award, Activity, Briefcase, AlertTriangle, Plus } from "lucide-r
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
 const team = [
-  { nome: "Ana Silva",      email: "ana@bex.com",      rmas: 12, score: 87, sla: 96, status: "Ativo" },
-  { nome: "Carlos Mendes",  email: "carlos@bex.com",   rmas: 9,  score: 74, sla: 90, status: "Ativo" },
-  { nome: "Fernanda Costa", email: "fernanda@bex.com", rmas: 7,  score: 91, sla: 98, status: "Ativo" },
-  { nome: "Rafael Souza",   email: "rafael@bex.com",   rmas: 5,  score: 62, sla: 84, status: "Sobrecarga" },
-  { nome: "Julia Pereira",  email: "julia@bex.com",    rmas: 4,  score: 80, sla: 92, status: "Ativo" },
+  { nome: "Ana Silva",      email: "ana@bex.com",      prospecçãos: 12, score: 87, sla: 96, status: "Ativo" },
+  { nome: "Carlos Mendes",  email: "carlos@bex.com",   prospecçãos: 9,  score: 74, sla: 90, status: "Ativo" },
+  { nome: "Fernanda Costa", email: "fernanda@bex.com", prospecçãos: 7,  score: 91, sla: 98, status: "Ativo" },
+  { nome: "Rafael Souza",   email: "rafael@bex.com",   prospecçãos: 5,  score: 62, sla: 84, status: "Sobrecarga" },
+  { nome: "Julia Pereira",  email: "julia@bex.com",    prospecçãos: 4,  score: 80, sla: 92, status: "Ativo" },
 ];
 
 const statusColor = (s: string) => s === "Sobrecarga" ? { bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)" } : { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" };
 
 export default function CoordEquipe() {
-  const totalRMAs = team.reduce((s, t) => s + t.rmas, 0);
+  const totalProspecçãos = team.reduce((s, t) => s + t.prospecçãos, 0);
   const avgScore  = Math.round(team.reduce((s, t) => s + t.score, 0) / team.length);
   const avgSLA    = Math.round(team.reduce((s, t) => s + t.sla, 0) / team.length);
   return (
     <ConsultorPageShell
-      title="Equipe" subtitle="Gestão de consultores, carga e performance individual."
+      title="Equipe" subtitle="Gestão de consultores, carga e perfoprospecçãonce individual."
       kpis={[
         { label: "Consultores",   value: team.length, hint: "Ativos",         icon: Users,        tone: "blue" },
-        { label: "Prospecções AJ Atribuídos", value: totalRMAs, hint: "Total da equipe",icon: Briefcase,    tone: "purple" },
+        { label: "Prospecções AJ Atribuídos", value: totalProspecçãos, hint: "Total da equipe",icon: Briefcase,    tone: "purple" },
         { label: "Score Médio",   value: avgScore,    hint: "Qualidade",      icon: Award,        tone: "green" },
         { label: "SLA Médio",     value: `${avgSLA}%`, hint: "Cumprimento",    icon: Activity,     tone: "blue" },
         { label: "Sobrecarga",    value: team.filter(t => t.status === "Sobrecarga").length, hint: "Atenção", icon: AlertTriangle, tone: "orange" },
@@ -58,7 +58,7 @@ export default function CoordEquipe() {
                       <div className="text-xs text-muted-foreground">{t.email}</div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 font-semibold">{t.rmas}</td>
+                  <td className="px-4 py-3 font-semibold">{t.prospecçãos}</td>
                   <td className="px-4 py-3"><span className="font-semibold">{t.score}</span></td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2 w-32">

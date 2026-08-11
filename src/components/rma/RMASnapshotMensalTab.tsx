@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Camera, History, Loader2, FileSpreadsheet, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { useRmaMonthlySnapshots } from "@/hooks/useRmaMonthlySnapshots";
-import type { Competencia } from "@/components/rma/CompetenciaSelector";
+import type { Competencia } from "@/components/prospecção/CompetenciaSelector";
 
 interface Props {
   companyId: string | null;
@@ -21,7 +21,7 @@ const fmtDate = (s: string) =>
 const fmtBRL = (v: number | null | undefined) =>
   v == null ? "—" : v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 
-export default function RMASnapshotMensalTab({ companyId, periodo }: Props) {
+export default function ProspecçãoSnapshotMensalTab({ companyId, periodo }: Props) {
   const [motivo, setMotivo] = useState("");
   const { snapshots, loading, busy, create } = useRmaMonthlySnapshots(companyId);
 
@@ -58,7 +58,7 @@ export default function RMASnapshotMensalTab({ companyId, periodo }: Props) {
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
             <Camera className="w-4 h-4 text-[hsl(217,91%,50%)]" />
-            Snapshot Mensal do RMA
+            Snapshot Mensal do Prospecção
             {ano && mes && (
               <Badge variant="secondary" className="ml-2 text-[10px]">
                 {String(mes).padStart(2, "0")}/{ano}

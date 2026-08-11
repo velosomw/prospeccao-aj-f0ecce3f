@@ -15,14 +15,14 @@ import {
 
 interface Props {
   analysis: any;
-  rmaCode: string;
+  prospecçãoCode: string;
   mesReferencia?: string;
   empresa?: string;
   responsavel?: string;
 }
 
 export default function OficioPendenciasCard({
-  analysis, rmaCode, mesReferencia, empresa, responsavel,
+  analysis, prospecçãoCode, mesReferencia, empresa, responsavel,
 }: Props) {
   const pendencias = useMemo(() => buildPendenciasFromAnalysis(analysis), [analysis]);
   const [busy, setBusy] = useState<null | "pdf" | "docx">(null);
@@ -34,7 +34,7 @@ export default function OficioPendenciasCard({
   const baixas = pendencias.filter((p) => p.severidade === "baixa").length;
   const total = pendencias.length;
 
-  const meta: OficioMeta = { rmaCode, mesReferencia, empresa, responsavel };
+  const meta: OficioMeta = { prospecçãoCode, mesReferencia, empresa, responsavel };
 
   const handle = async (fmt: "pdf" | "docx") => {
     setBusy(fmt);
@@ -43,7 +43,7 @@ export default function OficioPendenciasCard({
       else generateOficioPdf(pendencias, meta);
       toast({
         title: "Ofício gerado",
-        description: `${total} pendências · formato ${fmt.toUpperCase()}`,
+        description: `${total} pendências · foprospecçãoto ${fmt.toUpperCase()}`,
       });
     } catch (e: any) {
       toast({ title: "Falha ao gerar ofício", description: e?.message, variant: "destructive" });
@@ -68,7 +68,7 @@ export default function OficioPendenciasCard({
           <div>
             <h2 className="text-lg font-bold text-foreground">Ofício de Pendências</h2>
             <p className="text-sm text-muted-foreground max-w-2xl">
-              Documento formal endereçado à Recuperanda consolidando pendências, inconsistências e
+              Documento foprospecçãol endereçado à Recuperanda consolidando pendências, inconsistências e
               documentos faltantes identificados pela análise IA. Pode ser emitido a qualquer
               momento e regenerado conforme novas evidências são incorporadas.
             </p>
@@ -129,7 +129,7 @@ export default function OficioPendenciasCard({
           <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
           <div>
             <strong>Nenhuma pendência identificada nesta data.</strong> Você pode emitir um ofício
-            informativo (atestando ausência de pendências) ou aguardar nova incorporação de dados.
+            infoprospecçãotivo (atestando ausência de pendências) ou aguardar nova incorporação de dados.
           </div>
         </div>
       ) : (
@@ -144,7 +144,7 @@ export default function OficioPendenciasCard({
               {showPreview ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
               Prévia · primeiras {Math.min(5, pendencias.length)} de {pendencias.length}
             </span>
-            <span className="text-[10px] normal-case font-normal text-muted-foreground/80">
+            <span className="text-[10px] noprospecçãol-case font-noprospecçãol text-muted-foreground/80">
               {showPreview ? "Ocultar" : "Mostrar"}
             </span>
           </button>

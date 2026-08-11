@@ -1,4 +1,4 @@
-// Painel "Arquivos com erro" — lista docs pendentes/com falha do RMA selecionado,
+// Painel "Arquivos com erro" — lista docs pendentes/com falha do Prospecção selecionado,
 // agrupa por pasta DIP (via agente) e permite abrir o LearningUploadPanel inline
 // com a pasta correspondente pré-selecionada, para reupload manual estratégico.
 import { useEffect, useMemo, useState, useCallback } from "react";
@@ -14,7 +14,7 @@ import { buildFolderAliasMap, buildPathInFolder, findFolderLocationForDip, getPa
 import { buildFolderNumbering } from "@/utils/dipFolderNumbering";
 
 interface Props {
-  rmaId: string;
+  prospecçãoId: string;
   companyId: string | null;
 }
 
@@ -78,7 +78,7 @@ const MONTH_LABEL: Record<string, string> = {
 };
 const fmtMonth = (k: string) => `${MONTH_LABEL[k.slice(5, 7)]}/${k.slice(0, 4)}`;
 
-export default function ErrorFilesPanel({ rmaId, companyId }: Props) {
+export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
   const [loading, setLoading] = useState(false);
   const [docs, setDocs] = useState<PendingDoc[]>([]);
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
@@ -88,13 +88,13 @@ export default function ErrorFilesPanel({ rmaId, companyId }: Props) {
   // o arquivo para a pasta correspondente no OneDrive.
   const [folderOverrides, setFolderOverrides] = useState<Record<string, number>>({});
   const [aliasMap, setAliasMap] = useState<Map<string, string>>(new Map());
-  const [localStatuses, setLocalStatuses] = useState(() => listLearningUploadStatuses(rmaId));
+  const [localStatuses, setLocalStatuses] = useState(() => listLearningUploadStatuses(prospecçãoId));
 
   useEffect(() => {
-    const refresh = () => setLocalStatuses(listLearningUploadStatuses(rmaId));
+    const refresh = () => setLocalStatuses(listLearningUploadStatuses(prospecçãoId));
     refresh();
     return subscribeLearningUploadStatuses(refresh);
-  }, [rmaId]);
+  }, [prospecçãoId]);
 
   const [monthFilter, setMonthFilter] = useState<string>("all");
 
@@ -106,7 +106,7 @@ export default function ErrorFilesPanel({ rmaId, companyId }: Props) {
         .from("vw_training_pending")
         .select("extraction_id, path, classe, agent, status, final_confidence, file_name")
         .limit(500);
-      if (rmaId) q = q.eq("rma_id", rmaId);
+      if (prospecçãoId) q = q.eq("prospecção_id", prospecçãoId);
 
       // Inclui qualquer arquivo do OneDrive que NÃO esteja finalizado:
       // processando, na fila, novo, atualizado, falho ou parado sem status final.
@@ -117,7 +117,7 @@ export default function ErrorFilesPanel({ rmaId, companyId }: Props) {
         .select("file_id, file_name, path, status, last_learning_at, last_learning_error, metadata, updated_at")
         .not("status", "in", "(done,completed,processed,manual_uploaded,ignored,inactive)")
         .limit(500);
-      if (rmaId) pq = pq.eq("rma_id", rmaId);
+      if (prospecçãoId) pq = pq.eq("prospecção_id", prospecçãoId);
 
       // Arquivos JÁ finalizados — usados para deduplicar entradas antigas de
       // "falha" que continuam na view pendente. Inclui `processed` (sucesso pipeline).
@@ -126,15 +126,15 @@ export default function ErrorFilesPanel({ rmaId, companyId }: Props) {
         .select("file_name, path")
         .in("status", ["done", "completed", "processed", "manual_uploaded"])
         .limit(5000);
-      if (rmaId) doneQ = doneQ.eq("rma_id", rmaId);
+      if (prospecçãoId) doneQ = doneQ.eq("prospecção_id", prospecçãoId);
 
-      // TODOS os arquivos do RMA — usados para reproduzir o mesmo agrupamento
+      // TODOS os arquivos do Prospecção — usados para reproduzir o mesmo agrupamento
       // canônico de pastas que o Worker OneDrive exibe (mesmo alias map).
       let allQ = supabase
         .from("onedrive_files")
         .select("path, metadata")
         .limit(5000);
-      if (rmaId) allQ = allQ.eq("rma_id", rmaId);
+      if (prospecçãoId) allQ = allQ.eq("prospecção_id", prospecçãoId);
 
       const [{ data, error }, { data: procRows, error: procErr }, { data: doneRows }, { data: allRows }] =
         await Promise.all([q, pq, doneQ, allQ]);
@@ -203,7 +203,7 @@ export default function ErrorFilesPanel({ rmaId, companyId }: Props) {
     } finally {
       setLoading(false);
     }
-  }, [rmaId, localStatuses]);
+  }, [prospecçãoId, localStatuses]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -410,7 +410,7 @@ export default function ErrorFilesPanel({ rmaId, companyId }: Props) {
 
       {grouped.length === 0 && !loading && (
         <div className="text-center text-xs text-muted-foreground border border-dashed rounded-lg p-8">
-          Nenhum arquivo com problema neste RMA. 🎉
+          Nenhum arquivo com problema neste Prospecção. 🎉
         </div>
       )}
 
@@ -433,7 +433,7 @@ export default function ErrorFilesPanel({ rmaId, companyId }: Props) {
                     Código da Pasta {numbering.get(folder.id)?.onedriveNumber ?? String(folder.id).padStart(2, "0")}
                   </Badge>
                   <span className="text-sm font-medium truncate">{folder.label}</span>
-                  <Badge variant="outline" className="text-[10px]">tópico #{folder.rmaTopicNumber}</Badge>
+                  <Badge variant="outline" className="text-[10px]">tópico #{folder.prospecçãoTopicNumber}</Badge>
                 </div>
                 <div className="flex items-center gap-1">
                   {grpFalhas.length > 0 && (
@@ -553,7 +553,7 @@ export default function ErrorFilesPanel({ rmaId, companyId }: Props) {
                                 </Button>
                               )}
                               <LearningUploadPanel
-                                rmaId={rmaId}
+                                prospecçãoId={prospecçãoId}
                                 companyId={companyId}
                                 defaultFolderId={folder.id}
                                 defaultFileName={it.file_name ?? undefined}

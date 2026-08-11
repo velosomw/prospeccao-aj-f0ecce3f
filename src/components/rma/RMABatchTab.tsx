@@ -32,7 +32,7 @@ interface JobRow {
   created_at: string;
 }
 
-function formatEta(target: string | null): string {
+function foprospecçãotEta(target: string | null): string {
   if (!target) return "—";
   const ms = new Date(target).getTime() - Date.now();
   if (ms <= 0) return "a qualquer momento";
@@ -41,7 +41,7 @@ function formatEta(target: string | null): string {
   return `em até ${h}h`;
 }
 
-function formatBytes(b: number | null): string {
+function foprospecçãotBytes(b: number | null): string {
   if (!b) return "—";
   if (b < 1024) return `${b} B`;
   if (b < 1024 * 1024) return `${(b / 1024).toFixed(1)} KB`;
@@ -49,13 +49,13 @@ function formatBytes(b: number | null): string {
 }
 
 /**
- * Reduz um caminho completo (ex: "Projeto RMA/EMPRESA/2026/02.2026/04 - Nome")
+ * Reduz um caminho completo (ex: "Projeto Prospecção/EMPRESA/2026/02.2026/04 - Nome")
  * para "/02.2026/04 - Nome" — destacando Mês.Ano e a subpasta.
  */
-function formatFolderShort(path: string): string {
+function foprospecçãotFolderShort(path: string): string {
   if (!path) return "—";
   const parts = path.split("/").filter(Boolean);
-  // procura segmento no formato MM.AAAA
+  // procura segmento no foprospecçãoto MM.AAAA
   const idx = parts.findIndex((p) => /^\d{2}\.\d{4}$/.test(p));
   if (idx >= 0) {
     return "/" + parts.slice(idx).join("/");
@@ -74,14 +74,14 @@ function statusBadge(s: string) {
 
 interface Props {
   companyId: string | null;
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
 }
 
 /**
  * Aba "Batch & Fila": mostra estado de processamento batch (Document AI off-peak)
  * por pasta e por arquivo. Persiste no banco — sobrevive a logout/login.
  */
-export default function RMABatchTab({ companyId, rmaId }: Props) {
+export default function ProspecçãoBatchTab({ companyId, prospecçãoId }: Props) {
   const [folders, setFolders] = useState<FolderRow[]>([]);
   const [jobs, setJobs] = useState<JobRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -95,7 +95,7 @@ export default function RMABatchTab({ companyId, rmaId }: Props) {
         .from("folder_deferred_status" as never)
         .select("folder_path, in_batch_count, done_count, failed_count, total_count, earliest_eta, latest_eta")
         .eq("company_id", companyId);
-      if (rmaId) fq = fq.eq("rma_id", rmaId);
+      if (prospecçãoId) fq = fq.eq("prospecção_id", prospecçãoId);
 
       let jq = supabase
         .from("deferred_jobs")
@@ -103,7 +103,7 @@ export default function RMABatchTab({ companyId, rmaId }: Props) {
         .eq("company_id", companyId)
         .order("created_at", { ascending: false })
         .limit(200);
-      if (rmaId) jq = jq.eq("rma_id", rmaId);
+      if (prospecçãoId) jq = jq.eq("prospecção_id", prospecçãoId);
 
       const [{ data: f }, { data: j }] = await Promise.all([fq, jq]);
       if (cancelled) return;
@@ -114,7 +114,7 @@ export default function RMABatchTab({ companyId, rmaId }: Props) {
     fetchAll();
     const interval = setInterval(fetchAll, 15000);
     return () => { cancelled = true; clearInterval(interval); };
-  }, [companyId, rmaId, refreshKey]);
+  }, [companyId, prospecçãoId, refreshKey]);
 
   if (!companyId) {
     return <div className="text-sm text-muted-foreground p-6">Workspace de demonstração — sem dados de batch.</div>;
@@ -153,7 +153,7 @@ export default function RMABatchTab({ companyId, rmaId }: Props) {
               <div className="rounded-lg border p-3">
                 <div className="text-xs text-muted-foreground">Em fila/processando</div>
                 <div className="text-2xl font-bold text-primary">{totalInBatch}</div>
-                {totalInBatch > 0 && <div className="text-xs text-muted-foreground mt-1">{formatEta(latestEta)}</div>}
+                {totalInBatch > 0 && <div className="text-xs text-muted-foreground mt-1">{foprospecçãotEta(latestEta)}</div>}
               </div>
               <div className="rounded-lg border p-3">
                 <div className="text-xs text-muted-foreground">Concluídos</div>
@@ -165,7 +165,7 @@ export default function RMABatchTab({ companyId, rmaId }: Props) {
               </div>
               <div className="rounded-lg border p-3">
                 <div className="text-xs text-muted-foreground">Próxima conclusão</div>
-                <div className="text-sm font-semibold mt-1">{earliestEta ? formatEta(earliestEta) : "—"}</div>
+                <div className="text-sm font-semibold mt-1">{earliestEta ? foprospecçãotEta(earliestEta) : "—"}</div>
               </div>
             </div>
           )}
@@ -194,7 +194,7 @@ export default function RMABatchTab({ companyId, rmaId }: Props) {
                   <div className="flex items-center gap-2 flex-shrink-0">
                     {f.in_batch_count > 0 && (
                       <Badge variant="outline" className="border-primary/30 bg-primary/5 text-primary gap-1">
-                        <Clock className="h-3 w-3" /> {formatEta(f.latest_eta)}
+                        <Clock className="h-3 w-3" /> {foprospecçãotEta(f.latest_eta)}
                       </Badge>
                     )}
                     {f.done_count > 0 && f.in_batch_count === 0 && (
@@ -246,13 +246,13 @@ export default function RMABatchTab({ companyId, rmaId }: Props) {
                           href={`#folder=${encodeURIComponent(j.folder_path)}`}
                           className="text-primary hover:underline truncate inline-block max-w-full align-middle"
                         >
-                          {formatFolderShort(j.folder_path)}
+                          {foprospecçãotFolderShort(j.folder_path)}
                         </a>
                       ) : (
                         <span className="text-muted-foreground">—</span>
                       )}
                     </td>
-                    <td className="p-2">{formatBytes(j.file_size_bytes)}</td>
+                    <td className="p-2">{foprospecçãotBytes(j.file_size_bytes)}</td>
                     <td className="p-2">{j.page_count_estimate ?? "—"}</td>
                     <td className="p-2">{statusBadge(j.status)}</td>
                     <td className="p-2 text-muted-foreground">
@@ -260,7 +260,7 @@ export default function RMABatchTab({ companyId, rmaId }: Props) {
                         ? new Date(j.completed_at).toLocaleString("pt-BR")
                         : j.status === "failed"
                           ? <span className="text-destructive">{j.error_message ?? "erro"}</span>
-                          : formatEta(j.eta_at)}
+                          : foprospecçãotEta(j.eta_at)}
                       {j.attempts > 1 && <span className="ml-1 text-[10px]">(tent. {j.attempts})</span>}
                     </td>
                   </tr>

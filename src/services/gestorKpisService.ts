@@ -71,9 +71,9 @@ export async function getGestorKpis(): Promise<GestorKpis> {
     value: sumBuckets > 0 ? Math.round((b.value / sumBuckets) * 100) : 0,
   }));
 
-  // auditorias = rma_analysis_results concluídas
+  // auditorias = prospecção_analysis_results concluídas
   const { count: auditCount } = await supabase
-    .from("rma_analysis_results")
+    .from("prospecção_analysis_results")
     .select("*", { count: "exact", head: true });
 
   return {

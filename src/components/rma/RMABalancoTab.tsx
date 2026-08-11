@@ -55,7 +55,7 @@ function groupBySecaoGrupo(rows: BSRow[]) {
   return map;
 }
 
-const RMABalancoTab = ({ companyId, periodo, runToken, janela }: Props) => {
+const ProspecçãoBalancoTab = ({ companyId, periodo, runToken, janela }: Props) => {
   // Quando há janela (3M/6M/12M), o BP usa o SALDO do mês mais recente
   // contido nela (regra contábil: saldos não somam). `bs` recebido aqui é
   // pós-filtragem da janela; precisamos isolar o mês mais recente para a
@@ -139,7 +139,7 @@ const RMABalancoTab = ({ companyId, periodo, runToken, janela }: Props) => {
               <CardTitle className="text-base flex items-center gap-2">
                 <FileSpreadsheet className="w-4 h-4 text-[hsl(217,91%,50%)]" />
                 Balanço Patrimonial (BS)
-                <span className="text-xs text-muted-foreground font-normal">
+                <span className="text-xs text-muted-foreground font-noprospecçãol">
                   Derivado do Balancete · {periodos.length} {periodos.length === 1 ? "competência" : "competências"}
                 </span>
               </CardTitle>
@@ -251,8 +251,8 @@ const RMABalancoTab = ({ companyId, periodo, runToken, janela }: Props) => {
               <AreaChart data={evolucao}>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                 <XAxis dataKey="mes" fontSize={10} />
-                <YAxis fontSize={10} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
-                <Tooltip formatter={(v: any) => fmt(v)} />
+                <YAxis fontSize={10} tickFoprospecçãotter={(v) => `${(v / 1000).toFixed(0)}K`} />
+                <Tooltip foprospecçãotter={(v: any) => fmt(v)} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <Area type="monotone" dataKey="ativo" name="Ativo" stroke="hsl(142,76%,36%)" fill="hsl(142,76%,36%)" fillOpacity={0.18} />
                 <Area type="monotone" dataKey="passivo" name="Passivo" stroke="hsl(0,84%,55%)" fill="hsl(0,84%,55%)" fillOpacity={0.18} />
@@ -319,4 +319,4 @@ const SectionTable = ({ rows }: { rows: BSRow[] }) => {
   );
 };
 
-export default RMABalancoTab;
+export default ProspecçãoBalancoTab;

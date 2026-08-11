@@ -2,7 +2,7 @@ export interface AuditHistoryEntry {
   id: string;
   fileName: string;
   fileSize: number;
-  format: string;
+  foprospecçãot: string;
   date: string;
   status: "completed" | "in_progress" | "pending";
   conformidade: number;

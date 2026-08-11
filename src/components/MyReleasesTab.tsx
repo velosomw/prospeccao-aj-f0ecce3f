@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar, Search, FileText, RefreshCw } from "lucide-react";
-import { listMyReleases, listReleases, monthLabel, statusLabel, type RmaRelease } from "@/services/rmaReleaseService";
+import { listMyReleases, listReleases, monthLabel, statusLabel, type RmaRelease } from "@/services/prospecçãoReleaseService";
 import { listCompanies, type Company } from "@/services/companiesService";
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
 
 const MyReleasesTab = ({
   scope = "self",
-  title = "RMAs Liberados",
+  title = "Prospecçãos Liberados",
   description = "Empresas e períodos disponíveis para visualização.",
   showActions = true,
   onOpenReport,
@@ -58,7 +58,7 @@ const MyReleasesTab = ({
     if (!q) return releases;
     return releases.filter((r) => {
       const c = companiesById.get(r.company_id);
-      return [c?.name, c?.rma_id, c?.cnpj, monthLabel(r.month), String(r.year)]
+      return [c?.name, c?.prospecção_id, c?.cnpj, monthLabel(r.month), String(r.year)]
         .filter(Boolean)
         .join(" ")
         .toLowerCase()
@@ -66,7 +66,7 @@ const MyReleasesTab = ({
     });
   }, [releases, search, companiesById]);
 
-  const formatDateTime = (s: string) => {
+  const foprospecçãotDateTime = (s: string) => {
     const d = new Date(s);
     return d.toLocaleString("pt-BR", {
       day: "2-digit", month: "2-digit", year: "numeric",
@@ -127,9 +127,9 @@ const MyReleasesTab = ({
                     <tr key={r.id} className="border-t hover:bg-muted/30">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2 flex-wrap">
-                          {c?.rma_id && (
+                          {c?.prospecção_id && (
                             <Badge className="text-sm font-mono font-semibold bg-[hsl(217,91%,50%)]/10 text-[hsl(217,91%,50%)] border-0 px-2 py-0.5">
-                              {c.rma_id}
+                              {c.prospecção_id}
                             </Badge>
                           )}
                           <span className="text-base font-semibold text-foreground">{c?.name || "Empresa"}</span>
@@ -149,7 +149,7 @@ const MyReleasesTab = ({
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm text-muted-foreground whitespace-nowrap">
-                        {formatDateTime(r.created_at)}
+                        {foprospecçãotDateTime(r.created_at)}
                       </td>
                       {showActions && (
                         <td className="px-3 py-2 text-right">
@@ -161,7 +161,7 @@ const MyReleasesTab = ({
                             onClick={() =>
                               onOpenReport
                                 ? onOpenReport(r.company_id, r.year, r.month)
-                                : navigate(`/rma/${r.company_id}`)
+                                : navigate(`/prospecção/${r.company_id}`)
                             }
                           >
                             <FileText className="w-3.5 h-3.5" /> Relatório

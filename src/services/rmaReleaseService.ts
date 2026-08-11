@@ -26,7 +26,7 @@ export interface CreateReleaseInput {
   notes?: string;
 }
 
-const TABLE = "rma_release_assignments" as any;
+const TABLE = "prospecção_release_assignments" as any;
 
 export async function listReleases(opts?: { companyId?: string; userId?: string }): Promise<RmaRelease[]> {
   let q = (supabase.from(TABLE) as any).select("*").order("created_at", { ascending: false });
@@ -51,7 +51,7 @@ export async function createRelease(input: CreateReleaseInput): Promise<RmaRelea
   const { data, error } = await (supabase.from(TABLE) as any).insert(payload).select().single();
   if (error) throw error;
 
-  await supabase.from("rma_assignment_history").insert({
+  await supabase.from("prospecção_assignment_history").insert({
     company_id: input.company_id,
     action: "release",
     from_consultant_user_id: null,
@@ -68,7 +68,7 @@ export async function updateReleaseStatus(id: string, status: ReleaseStatus, com
   if (error) throw error;
 
   const action = status === "suspended" ? "suspend" : status === "revoked" ? "revoke" : "release";
-  await supabase.from("rma_assignment_history").insert({
+  await supabase.from("prospecção_assignment_history").insert({
     company_id: companyId,
     action,
     from_consultant_user_id: null,
@@ -83,7 +83,7 @@ export async function deleteRelease(id: string, companyId: string, userId: strin
   const { error } = await (supabase.from(TABLE) as any).delete().eq("id", id);
   if (error) throw error;
 
-  await supabase.from("rma_assignment_history").insert({
+  await supabase.from("prospecção_assignment_history").insert({
     company_id: companyId,
     action: "unrelease",
     from_consultant_user_id: userId,

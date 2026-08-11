@@ -1,4 +1,4 @@
-export type AuditDepth = 'executive' | 'technical' | 'formal' | 'financial';
+export type AuditDepth = 'executive' | 'technical' | 'foprospecçãol' | 'financial';
 export type AuditPurpose = 'external' | 'internal' | 'fiscal' | 'defense' | 'review';
 export type FindingType = 'inconsistency' | 'omission' | 'impropriety' | 'control_weakness';
 export type ImpactType = 'patrimonial' | 'result' | 'disclosure';
@@ -61,7 +61,7 @@ export interface AuditFinding {
   id: string;
   description: string;
   findingType: FindingType;
-  normativeFramework: {
+  noprospecçãotiveFramework: {
     cpc?: string;
     ifrs?: string;
     nbcTa?: string;

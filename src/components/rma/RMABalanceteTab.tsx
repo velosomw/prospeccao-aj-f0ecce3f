@@ -75,19 +75,19 @@ type Run = {
 };
 
 interface CompanyPeriod {
-  rma_id: string | null;
+  prospecção_id: string | null;
   current_period_month: number | null;
   execution_year: number | null;
   last_analyzed_period: string | null;
 }
 
-interface RMABalanceteTabProps {
+interface ProspecçãoBalanceteTabProps {
   initialSubtab?: typeof SUBTABS[number]["value"];
   /** Competência selecionada no header global (sobrepõe o período do cadastro). */
   periodo?: { ano: number; mes: number } | null;
 }
 
-const RMABalanceteTab = ({ initialSubtab, periodo }: RMABalanceteTabProps = {}) => {
+const ProspecçãoBalanceteTab = ({ initialSubtab, periodo }: ProspecçãoBalanceteTabProps = {}) => {
   const { id } = useParams<{ id: string }>();
   const isRealRma = !!id && UUID_RE.test(id);
 
@@ -96,22 +96,22 @@ const RMABalanceteTab = ({ initialSubtab, periodo }: RMABalanceteTabProps = {}) 
   const [month, setMonth] = useState<number>(1);
   const [companyPeriod, setCompanyPeriod] = useState<CompanyPeriod | null>(null);
 
-  // Carrega período fixo do RMA (definido na criação do cadastro)
+  // Carrega período fixo do Prospecção (definido na criação do cadastro)
   useEffect(() => {
     if (!isRealRma || !id) return;
     let cancelled = false;
     (async () => {
       const { data } = await supabase
         .from("companies")
-        .select("rma_id, current_period_month, execution_year, last_analyzed_period")
+        .select("prospecção_id, current_period_month, execution_year, last_analyzed_period")
         .eq("id", id)
         .maybeSingle();
       if (cancelled || !data) return;
       setCompanyPeriod(data as any);
-      // Aplica o período do cadastro do RMA
+      // Aplica o período do cadastro do Prospecção
       let mes = data.current_period_month ?? null;
       let ano = data.execution_year ?? null;
-      // Fallback: tenta last_analyzed_period (formato MM-YYYY)
+      // Fallback: tenta last_analyzed_period (foprospecçãoto MM-YYYY)
       if ((!mes || !ano) && data.last_analyzed_period) {
         const m = String(data.last_analyzed_period).match(/^(\d{1,2})-(\d{4})$/);
         if (m) { mes = Number(m[1]); ano = Number(m[2]); }
@@ -279,8 +279,8 @@ const RMABalanceteTab = ({ initialSubtab, periodo }: RMABalanceteTabProps = {}) 
     return () => clearInterval(t);
   }, [run?.id, run?.status, loadConsolidado, loadLancamentos, loadHistory]);
 
-  // Pipeline de balancete agora é disparado automaticamente por rma-analyze
-  // (ver botão "Atualizar Status IA" na aba Status RMA).
+  // Pipeline de balancete agora é disparado automaticamente por prospecção-analyze
+  // (ver botão "Atualizar Status IA" na aba Status Prospecção).
 
 
   const reviewLancamento = async (lancId: string, novoStatus: "ok" | "manual_review" | "rejected") => {
@@ -321,7 +321,7 @@ const RMABalanceteTab = ({ initialSubtab, periodo }: RMABalanceteTabProps = {}) 
     return (
       <Card>
         <CardContent className="py-12 text-center text-muted-foreground">
-          Abra um RMA real (criado no banco) para usar o pipeline de balancete.
+          Abra um Prospecção real (criado no banco) para usar o pipeline de balancete.
         </CardContent>
       </Card>
     );
@@ -358,7 +358,7 @@ const RMABalanceteTab = ({ initialSubtab, periodo }: RMABalanceteTabProps = {}) 
                 </SelectContent>
               </Select>
               <Badge variant="secondary" className="text-[10px] gap-1">
-                🔒 Período do RMA{companyPeriod?.rma_id ? ` ${companyPeriod.rma_id}` : ""}
+                🔒 Período do Prospecção{companyPeriod?.prospecção_id ? ` ${companyPeriod.prospecção_id}` : ""}
               </Badge>
               <Button onClick={() => { loadHistory(); loadConsolidado(); loadLancamentos(); }} variant="outline" size="sm">
                 <RefreshCw className="w-4 h-4" />
@@ -372,7 +372,7 @@ const RMABalanceteTab = ({ initialSubtab, periodo }: RMABalanceteTabProps = {}) 
       {isRealRma && id && (
         <OrphanExtractionsCard
           companyId={id}
-          rmaId={companyPeriod?.rma_id || null}
+          prospecçãoId={companyPeriod?.prospecção_id || null}
           onConsolidated={() => { loadHistory(); loadConsolidado(); loadLancamentos(); }}
         />
       )}
@@ -900,7 +900,7 @@ const RMABalanceteTab = ({ initialSubtab, periodo }: RMABalanceteTabProps = {}) 
         <div className="space-y-4">
           <BalancetePreview
             companyId={id!}
-            rmaId={companyPeriod?.rma_id || null}
+            prospecçãoId={companyPeriod?.prospecção_id || null}
             ano={year}
             mes={month}
             consolidado={consolidado}
@@ -994,4 +994,4 @@ const Stat = ({ label, v, big, danger }: { label: string; v: string; big?: boole
   </div>
 );
 
-export default RMABalanceteTab;
+export default ProspecçãoBalanceteTab;

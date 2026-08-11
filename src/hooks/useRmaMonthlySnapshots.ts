@@ -1,11 +1,11 @@
-// Hook para snapshots mensais consolidados do RMA.
+// Hook para snapshots mensais consolidados do Prospecção.
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface RmaMonthlySnapshot {
   id: string;
   company_id: string;
-  rma_id: string | null;
+  prospecção_id: string | null;
   ano: number;
   mes: number;
   versao: number;
@@ -35,7 +35,7 @@ export function useRmaMonthlySnapshots(
     setLoading(true);
     try {
       let q = supabase
-        .from("rma_monthly_snapshots")
+        .from("prospecção_monthly_snapshots")
         .select("*")
         .eq("company_id", companyId)
         .order("ano", { ascending: false })
@@ -54,7 +54,7 @@ export function useRmaMonthlySnapshots(
     if (!companyId) return null;
     setBusy(true);
     try {
-      const { data, error } = await supabase.functions.invoke("rma-monthly-snapshot", {
+      const { data, error } = await supabase.functions.invoke("prospecção-monthly-snapshot", {
         body: { action: "create", company_id: companyId, ...payload },
       });
       if (error) throw error;

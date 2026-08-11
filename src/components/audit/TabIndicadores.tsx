@@ -17,9 +17,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { buildIndicatorSeries, type IndicatorRow } from "@/services/indicatorsEngine";
 import { mesKeyToLabel, type BSDadosRow } from "@/services/bsDadosBuilder";
 
-/* ───────────── Formatters ───────────── */
+/* ───────────── Foprospecçãotters ───────────── */
 const fmt = (n: number) =>
-  new Intl.NumberFormat("pt-BR").format(Math.round(Number.isFinite(n) ? n : 0));
+  new Intl.NumberFoprospecçãot("pt-BR").foprospecçãot(Math.round(Number.isFinite(n) ? n : 0));
 const fmtPct = (n: number) =>
   `${((Number.isFinite(n) ? n : 0) * 100).toFixed(1)}%`;
 const fmtDays = (n: number) =>

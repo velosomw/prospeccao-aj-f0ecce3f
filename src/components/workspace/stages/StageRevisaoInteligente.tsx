@@ -7,12 +7,12 @@ interface Props {
   topics: TopicItem[];
   criticas: number;
   onOpenTopic?: (id: string) => void;
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
 }
 
 type Filtro = "todos" | "criticos" | "incompletos" | "pendentes" | "concluidos";
 
-export default function StageRevisaoInteligente({ topics, criticas, onOpenTopic, rmaId }: Props) {
+export default function StageRevisaoInteligente({ topics, criticas, onOpenTopic, prospecçãoId }: Props) {
 
   const [filtro, setFiltro] = useState<Filtro>("todos");
   const [busca, setBusca] = useState("");
@@ -101,7 +101,7 @@ export default function StageRevisaoInteligente({ topics, criticas, onOpenTopic,
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-3">
         <div className="bg-white border border-border rounded-lg p-4">
           <h3 className="text-sm font-bold text-foreground mb-3">Tópicos do Prospecção AJ</h3>
-          <TopicsTaskList items={filtered} onOpen={onOpenTopic} rmaId={rmaId} />
+          <TopicsTaskList items={filtered} onOpen={onOpenTopic} prospecçãoId={prospecçãoId} />
         </div>
 
         <div className="space-y-3">

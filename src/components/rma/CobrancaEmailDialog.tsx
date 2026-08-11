@@ -11,7 +11,7 @@ import { toast } from "sonner";
 interface Props {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  rmaId: string;
+  prospecçãoId: string;
   companyName?: string;
   defaultEmail?: string;
   onSent?: () => void;
@@ -19,18 +19,18 @@ interface Props {
 
 const buildDefaultBody = (companyName?: string) => `Prezados${companyName ? ` ${companyName}` : ""},
 
-Em continuidade ao processo de Registro e Cobrança do RMA, solicitamos o envio dos documentos pendentes para que possamos concluir a análise do período corrente.
+Em continuidade ao processo de Registro e Cobrança do Prospecção, solicitamos o envio dos documentos pendentes para que possamos concluir a análise do período corrente.
 
 Caso já tenham sido encaminhados, favor desconsiderar este e-mail.
 
-Permanecemos à disposição para esclarecimentos.
+Peprospecçãonecemos à disposição para esclarecimentos.
 
 Atenciosamente,
-Equipe BEx RMA IA`;
+Equipe BEx Prospecção IA`;
 
-export function CobrancaEmailDialog({ open, onOpenChange, rmaId, companyName, defaultEmail, onSent }: Props) {
+export function CobrancaEmailDialog({ open, onOpenChange, prospecçãoId, companyName, defaultEmail, onSent }: Props) {
   const [recipient, setRecipient] = useState(defaultEmail || "");
-  const [subject, setSubject] = useState(`Solicitação de documentos — ${rmaId}${companyName ? ` ${companyName}` : ""}`);
+  const [subject, setSubject] = useState(`Solicitação de documentos — ${prospecçãoId}${companyName ? ` ${companyName}` : ""}`);
   const [body, setBody] = useState(buildDefaultBody(companyName));
   const [file, setFile] = useState<File | null>(null);
   const [sending, setSending] = useState(false);
@@ -38,11 +38,11 @@ export function CobrancaEmailDialog({ open, onOpenChange, rmaId, companyName, de
   useEffect(() => {
     if (open) {
       setRecipient(defaultEmail || "");
-      setSubject(`Solicitação de documentos — ${rmaId}${companyName ? ` ${companyName}` : ""}`);
+      setSubject(`Solicitação de documentos — ${prospecçãoId}${companyName ? ` ${companyName}` : ""}`);
       setBody(buildDefaultBody(companyName));
       setFile(null);
     }
-  }, [open, defaultEmail, rmaId, companyName]);
+  }, [open, defaultEmail, prospecçãoId, companyName]);
 
   const handleSend = async () => {
     if (!recipient.trim() || !subject.trim() || !body.trim()) {
@@ -61,7 +61,7 @@ export function CobrancaEmailDialog({ open, onOpenChange, rmaId, companyName, de
 
       if (file) {
         const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-        filePath = `${rmaId}/${Date.now()}-${safeName}`;
+        filePath = `${prospecçãoId}/${Date.now()}-${safeName}`;
         const { error: upErr } = await supabase.storage
           .from("cobranca-attachments")
           .upload(filePath, file, { upsert: false });
@@ -73,10 +73,10 @@ export function CobrancaEmailDialog({ open, onOpenChange, rmaId, companyName, de
         fileName = file.name;
       }
 
-      const idempotencyKey = `cobranca-${rmaId}-${Date.now()}`;
+      const idempotencyKey = `cobranca-${prospecçãoId}-${Date.now()}`;
       const { error: sendErr } = await supabase.functions.invoke("send-transactional-email", {
         body: {
-          templateName: "cobranca-rma",
+          templateName: "cobranca-prospecção",
           recipientEmail: recipient.trim(),
           idempotencyKey,
           templateData: {
@@ -84,15 +84,15 @@ export function CobrancaEmailDialog({ open, onOpenChange, rmaId, companyName, de
             message: body,
             fileName,
             fileUrl,
-            rmaId,
+            prospecçãoId,
             companyName,
           },
         },
       });
       if (sendErr) throw sendErr;
 
-      const { error: dbErr } = await supabase.from("rma_cobrancas").insert({
-        rma_id: rmaId,
+      const { error: dbErr } = await supabase.from("prospecção_cobrancas").insert({
+        prospecção_id: prospecçãoId,
         company_name: companyName ?? null,
         recipient_email: recipient.trim(),
         subject,
@@ -124,7 +124,7 @@ export function CobrancaEmailDialog({ open, onOpenChange, rmaId, companyName, de
             <Mail className="w-5 h-5" /> Enviar e-mail de cobrança
           </DialogTitle>
           <DialogDescription>
-            O envio é registrado como cobrança do {rmaId}{companyName ? ` — ${companyName}` : ""}.
+            O envio é registrado como cobrança do {prospecçãoId}{companyName ? ` — ${companyName}` : ""}.
           </DialogDescription>
         </DialogHeader>
 

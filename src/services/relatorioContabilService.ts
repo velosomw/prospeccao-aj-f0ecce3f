@@ -44,7 +44,7 @@ export interface ReportPeriodBlock {
 export interface ReportDataset {
   empresaNome: string;
   empresaCnpj?: string | null;
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
   agregacao: Agregacao;
   emittedAt: Date;
   periodos: ReportPeriodBlock[];
@@ -173,7 +173,7 @@ function computeBlock(bucketRows: BSDadosRow[], a: Agregacao): ReportPeriodBlock
 export interface BuildOpts {
   empresaNome: string;
   empresaCnpj?: string | null;
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
   rows: BSDadosRow[];     // ordenadas cronológica
   fromKey?: string | null;
   toKey?: string | null;
@@ -202,7 +202,7 @@ export function buildReportDataset(opts: BuildOpts): ReportDataset {
     return {
       empresaNome: opts.empresaNome,
       empresaCnpj: opts.empresaCnpj ?? null,
-      rmaId: opts.rmaId ?? null,
+      prospecçãoId: opts.prospecçãoId ?? null,
       agregacao: opts.agregacao,
       emittedAt: new Date(),
       periodos,
@@ -241,7 +241,7 @@ export function buildReportDataset(opts: BuildOpts): ReportDataset {
   return {
     empresaNome: opts.empresaNome,
     empresaCnpj: opts.empresaCnpj ?? null,
-    rmaId: opts.rmaId ?? null,
+    prospecçãoId: opts.prospecçãoId ?? null,
     agregacao: opts.agregacao,
     emittedAt: new Date(),
     periodos,
@@ -249,7 +249,7 @@ export function buildReportDataset(opts: BuildOpts): ReportDataset {
   };
 }
 
-// Formatadores reutilizáveis pelos renderers
+// Foprospecçãotadores reutilizáveis pelos renderers
 export const fmtBRL = (v: number): string =>
   (v ?? 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 export const fmtPct = (v: number, dec = 2): string =>

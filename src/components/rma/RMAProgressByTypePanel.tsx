@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-import { getRmaDocRules, type RmaDocTipo } from "@/lib/rmaDocumentRules";
+import { getRmaDocRules, type RmaDocTipo } from "@/lib/prospecçãoDocumentRules";
 
 interface DocSummary {
   tipo: RmaDocTipo;
@@ -24,7 +24,7 @@ interface DocSummary {
 
 const TIPOS: Array<{ tipo: RmaDocTipo; icon: typeof FileText; accent: string }> = [
   { tipo: "parecer_tecnico", icon: FileText, accent: "hsl(330,70%,50%)" },
-  { tipo: "rma_mensal",      icon: FileCheck, accent: "hsl(280,60%,50%)" },
+  { tipo: "prospecção_mensal",      icon: FileCheck, accent: "hsl(280,60%,50%)" },
 ];
 
 function pctColor(pct: number) {
@@ -45,7 +45,7 @@ function etapaAtual(s: DocSummary, minAuto: number, minManual: number) {
   return { label: "Em produção", icon: Loader2, color: "hsl(217,91%,50%)" };
 }
 
-const RMAProgressByTypePanel = () => {
+const ProspecçãoProgressByTypePanel = () => {
   const { id = "" } = useParams();
   const [summaries, setSummaries] = useState<DocSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,9 +58,9 @@ const RMAProgressByTypePanel = () => {
       const result: DocSummary[] = [];
       for (const { tipo } of TIPOS) {
         const { data: doc } = await supabase
-          .from("rma_documents")
+          .from("prospecção_documents")
           .select("id, status, arquivo_final_url, arquivo_final_versao, arquivo_final_gerado_em")
-          .eq("rma_id", id)
+          .eq("prospecção_id", id)
           .eq("tipo", tipo)
           .order("created_at", { ascending: false })
           .limit(1)
@@ -76,7 +76,7 @@ const RMAProgressByTypePanel = () => {
 
         if (doc?.id) {
           const { data: secs } = await supabase
-            .from("rma_document_sections")
+            .from("prospecção_document_sections")
             .select("status")
             .eq("document_id", doc.id);
           (secs || []).forEach((s: any) => {
@@ -183,4 +183,4 @@ const Stat = ({ label, value, color }: { label: string; value: number; color: st
   </div>
 );
 
-export default RMAProgressByTypePanel;
+export default ProspecçãoProgressByTypePanel;

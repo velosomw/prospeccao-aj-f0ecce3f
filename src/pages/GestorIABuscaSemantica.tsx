@@ -15,7 +15,7 @@ import { toast } from "sonner";
 interface SimilarResult {
   id: string;
   document_id: string | null;
-  rma_id: string | null;
+  prospecção_id: string | null;
   classe: string | null;
   text: string;
   similarity: number;
@@ -37,7 +37,7 @@ export default function GestorIABuscaSemantica() {
   const navigate = useNavigate();
   const [text, setText] = useState("");
   const [classe, setClasse] = useState("__all__");
-  const [rmaId, setRmaId] = useState("");
+  const [prospecçãoId, setRmaId] = useState("");
   const [threshold, setThreshold] = useState(0.7);
   const [limit, setLimit] = useState(5);
   const [loading, setLoading] = useState(false);
@@ -57,7 +57,7 @@ export default function GestorIABuscaSemantica() {
         body: {
           text: text.trim(),
           classe: classe === "__all__" ? undefined : classe,
-          rma_id: rmaId.trim() || undefined,
+          prospecção_id: prospecçãoId.trim() || undefined,
           threshold,
           limit,
         },
@@ -141,11 +141,11 @@ export default function GestorIABuscaSemantica() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="rma">Prospecção AJ ID (opcional)</Label>
+                <Label htmlFor="prospecção">Prospecção AJ ID (opcional)</Label>
                 <Input
-                  id="rma"
+                  id="prospecção"
                   placeholder="ex.: Prospecção AJ-2025-001"
-                  value={rmaId}
+                  value={prospecçãoId}
                   onChange={(e) => setRmaId(e.target.value)}
                 />
               </div>
@@ -220,9 +220,9 @@ export default function GestorIABuscaSemantica() {
                       <div className="flex items-center gap-2 flex-wrap">
                         <Badge variant="outline" className="font-mono">#{i + 1}</Badge>
                         {r.classe && <Badge variant="secondary">{r.classe}</Badge>}
-                        {r.rma_id && (
+                        {r.prospecção_id && (
                           <Badge variant="outline" className="font-mono text-xs">
-                            {r.rma_id}
+                            {r.prospecção_id}
                           </Badge>
                         )}
                       </div>

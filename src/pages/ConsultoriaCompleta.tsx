@@ -29,7 +29,7 @@ const ConsultoriaCompleta = () => {
                 Acompanhamento completo e integral durante 6 a 12 meses, incluindo suporte técnico em Recuperação Judicial e Extrajudicial, com relatórios mensais e treinamento gerencial.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Nossa consultoria oferece governança financeira aprimorada e indicadores de performance customizados para a recuperação sustentável da empresa.
+                Nossa consultoria oferece governança financeira aprimorada e indicadores de perfoprospecçãonce customizados para a recuperação sustentável da empresa.
               </p>
             </div>
             <div className="pl-0 md:pl-0">
@@ -39,10 +39,10 @@ const ConsultoriaCompleta = () => {
                 "Negociação direta com bancos e credores",
                 "Negociação com fornecedores estratégicos",
                 "Relatórios mensais de acompanhamento",
-                "Dashboards de performance financeira",
+                "Dashboards de perfoprospecçãonce financeira",
                 "Treinamento gerencial e financeiro",
                 "Governança financeira aprimorada",
-                "Indicadores de performance customizados",
+                "Indicadores de perfoprospecçãonce customizados",
                 "Educação financeira para gestão",
               ].map((item) => (
                 <div key={item} className="group flex items-center justify-between px-6 py-4 border-b border-border last:border-b-0 cursor-default hover:bg-muted/50 hover:pl-8 transition-all duration-300">
