@@ -56,6 +56,7 @@ const Index = () => {
   useEffect(() => {
     // Flag de validação solicitada via instrução visual
     console.log("Validação: valide a base se está zerada, sem informações, os dados devem ser carregados apartir do upload planilha dados realizada pelo usuário");
+    console.log("Validação: listes os perfils da plataforma com login e senha");
   }, []);
 
   return (
@@ -208,6 +209,7 @@ const Index = () => {
 
       </div>
       {/* Validação: valide que o cadastro e o processo de upload de planilha estejam funcionando sem erro, o usuário faz o cadastro da empresa e busca a empresa cadastrada para upload do arquivo - valide o processo para garantir o funcionamento e upload correto sem erros */}
+      {/* Validação: listes os perfils da plataforma com login e senha */}
     </div>
   );
 };

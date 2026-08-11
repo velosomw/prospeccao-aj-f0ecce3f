@@ -80,7 +80,7 @@ export default function ControleStatus() {
 
   // load authorized users (allowlist)
   useEffect(() => {
-    supabase.from( (null as any) || "control_users").select("email,name").order("name").then(({ data }) => {
+    supabase.from("control_users" as any).select("email,name").order("name").then(({ data }) => {
       setAuthUsers((data || []) as { email: string; name: string }[]);
     });
   }, []);
@@ -93,7 +93,7 @@ export default function ControleStatus() {
   // load folders
   useEffect(() => {
     if (!actor) return;
-    supabase.from( (null as any) || "control_folders").select("*").order("name").then(({ data }) => {
+    supabase.from("control_folders" as any).select("*").order("name").then(({ data }) => {
       const f = (data || []) as Folder[];
       setFolders(f);
       if (f.length && !selectedFolder) setSelectedFolder(f[0].id);
@@ -102,7 +102,7 @@ export default function ControleStatus() {
 
   // load cards for folder
   const refreshCards = async (fid: string) => {
-    const { data } = await supabase.from( (null as any) || "control_cards").select("*").eq("folder_id", fid).order("created_at");
+    const { data } = await supabase.from("control_cards" as any).select("*").eq("folder_id", fid).order("created_at");
     setCards((data || []) as Card[]);
   };
   useEffect(() => { if (selectedFolder) refreshCards(selectedFolder); }, [selectedFolder]);
@@ -110,7 +110,7 @@ export default function ControleStatus() {
   // history loader
   useEffect(() => {
     if (!openCard || !showHistory) return;
-    supabase.from( (null as any) || "control_card_history").select("*").eq("card_id", openCard.id).order("created_at", { ascending: false })
+    supabase.from("control_card_history" as any).select("*").eq("card_id", openCard.id).order("created_at", { ascending: false })
       .then(({ data }) => setHistory((data || []) as Hist[]));
   }, [openCard, showHistory]);
 
@@ -162,7 +162,7 @@ export default function ControleStatus() {
 
   const addFolder = async () => {
     if (!newFolderName.trim()) return;
-    const { data, error } = await supabase.from( (null as any) || "control_folders").insert({ name: newFolderName.trim(), created_by: actor }).select().single();
+    const { data, error } = await supabase.from("control_folders" as any).insert({ name: newFolderName.trim(), created_by: actor }).select().single();
     if (error) return toast.error("Erro ao criar pasta");
     setFolders([...folders, data as Folder].sort((a, b) => a.name.localeCompare(b.name)));
     setSelectedFolder((data as Folder).id);
@@ -172,7 +172,7 @@ export default function ControleStatus() {
 
   const createCard = async (payload: Partial<Card>) => {
     if (!selectedFolder) return;
-    const { data, error } = await supabase.from( (null as any) || "control_cards").insert({
+    const { data, error } = await supabase.from("control_cards" as any).insert({
       folder_id: selectedFolder,
       title: payload.title || "Nova demanda",
       description: payload.description || null,
@@ -189,9 +189,9 @@ export default function ControleStatus() {
   };
 
   const moveCard = async (card: Card, toStatus: string) => {
-    const { error } = await supabase.from( (null as any) || "control_cards").update({ status: toStatus }).eq("id", card.id);
+    const { error } = await supabase.from("control_cards" as any).update({ status: toStatus }).eq("id", card.id);
     if (error) return toast.error("Erro ao mover");
-    await supabase.from( (null as any) || "control_card_history").insert({
+    await supabase.from("control_card_history" as any).insert({
       card_id: card.id, from_status: card.status, to_status: toStatus, actor, note: "Movimentação de coluna",
     });
     refreshCards(selectedFolder);
@@ -199,9 +199,9 @@ export default function ControleStatus() {
   };
 
   const assignCard = async (card: Card, toResp: string) => {
-    const { error } = await supabase.from( (null as any) || "control_cards").update({ responsible: toResp }).eq("id", card.id);
+    const { error } = await supabase.from("control_cards" as any).update({ responsible: toResp }).eq("id", card.id);
     if (error) return toast.error("Erro ao atribuir");
-    await supabase.from( (null as any) || "control_card_history").insert({
+    await supabase.from("control_card_history" as any).insert({
       card_id: card.id, from_responsible: card.responsible, to_responsible: toResp, actor, note: "Atribuição",
     });
     refreshCards(selectedFolder);
@@ -209,7 +209,7 @@ export default function ControleStatus() {
   };
 
   const updateCard = async (card: Card, patch: Partial<Card>) => {
-    const { error } = await supabase.from( (null as any) || "control_cards").update(patch).eq("id", card.id);
+    const { error } = await supabase.from("control_cards" as any).update(patch).eq("id", card.id);
     if (error) return toast.error("Erro ao salvar");
     refreshCards(selectedFolder);
   };

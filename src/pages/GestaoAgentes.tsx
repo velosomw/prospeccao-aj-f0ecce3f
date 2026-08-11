@@ -65,11 +65,11 @@ const performanceStages = [
 ];
 
 const personaVarLabels = [
-  { key: "Rn", label: "Rigor Noprospeccaotivo (Rₙ)" },
+  { key: "Rn", label: "Rigor Normativo (Rₙ)" },
   { key: "Cr", label: "Conservadorismo (Cᵣ)" },
   { key: "Sr", label: "Sensibilidade Risco (Sᵣ)" },
   { key: "Da", label: "Profundidade Analítica (Dₐ)" },
-  { key: "Fl", label: "Foprospeccaolidade (Fₗ)" },
+  { key: "Fl", label: "Formalidade (Fₗ)" },
   { key: "Ap", label: "Agressividade (Aₚ)" },
 ];
 

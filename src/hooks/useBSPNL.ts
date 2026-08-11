@@ -50,13 +50,13 @@ export function useBSPNL(
     setLoading(true);
     try {
       const [bsRes, dreRes] = await Promise.all([
-        supabase.from( (null as any) || "bs_consolidado")
+        supabase.from("bs_consolidado" as any)
           .select("id, ano, mes, secao, grupo, codigo, descricao, nivel, valor, av_pct, ah_pct")
           .eq("company_id", companyId)
           .order("ano", { ascending: false })
           .order("mes", { ascending: false })
           .order("codigo", { ascending: true }),
-        supabase.from( (null as any) || "dre_consolidado")
+        supabase.from("dre_consolidado" as any)
           .select("id, ano, mes, codigo, descricao, grupo, valor, nivel")
           .eq("company_id", companyId)
           .order("ano", { ascending: false })

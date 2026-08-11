@@ -185,7 +185,7 @@ export function useMessages(conversationId: string | null) {
       if (!conversationId || !trimmed) return;
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-      await supabase.from( (null as any) || "messages").insert({
+      await supabase.from("messages" as any).insert({
         conversation_id: conversationId,
         author_id: user.id,
         content: trimmed,
@@ -277,7 +277,7 @@ export function useNotifications() {
   }, [userId, load]);
 
   const markRead = useCallback(async (id: string) => {
-    await supabase.from( (null as any) || "notifications").update({ read_at: new Date().toISOString() }).eq("id", id);
+    await supabase.from("notifications" as any).update({ read_at: new Date().toISOString() }).eq("id", id);
     setItems((prev) => prev.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n)));
   }, []);
 

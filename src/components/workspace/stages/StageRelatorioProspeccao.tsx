@@ -84,7 +84,7 @@ export default function StageRelatorioProspeccao({
     let cancel = false;
     (async () => {
       const { data } = await supabase
-        .from("prospeccao_analysis_results")
+        .from("prospeccao_analysis_results" as any)
         .select("percentual, kanitz, pendencias, indicadores, score_rj, topics, diagnostico")
         .eq("company_id", companyId)
         .maybeSingle();
