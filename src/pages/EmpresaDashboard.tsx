@@ -16,11 +16,11 @@ import { mockProspeccoes, type ProspeccaoEntry } from "@/data/prospeccoesMockDat
 import { listMyAssignedCompanies, activateAssignedRma, type Company } from "@/services/companiesService";
 import { startRmaAnalysis, listRmaAnalyses, type RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
 import { listPeriodsForCompanies, type RmaPeriodAnalysis } from "@/services/prospeccaoPeriodService";
-import RmaHistoricoTab from "@/components/RmaHistoricoTab";
+import ProspeccaoHistoricoTab from "@/components/ProspeccaoHistoricoTab";
 import MyReleasesTab from "@/components/MyReleasesTab";
 import Prospeccao360Panel from "@/components/coordenador/Prospeccao360Panel";
 import { DeferredBatchIndicator } from "@/components/prospeccao/DeferredBatchIndicator";
-import RmaCompanySearch from "@/components/prospeccao/RmaCompanySearch";
+import ProspeccaoCompanySearch from "@/components/prospeccao/ProspeccaoCompanySearch";
 import { buildLiveScoreTopics, computeRmaScore, groupFilesByCompany, fetchRmaScores, type ScoreFile } from "@/lib/prospeccaoScore";
 
 const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
@@ -319,7 +319,7 @@ const EmpresaDashboard = () => {
             <h1 className="text-2xl font-bold text-foreground">Olá, {firstName || "Empresa"}</h1>
             <p className="text-sm text-muted-foreground">Gestão de Prospecções AJ e acompanhamento de processos</p>
           </div>
-          <RmaCompanySearch
+          <ProspeccaoCompanySearch
             companies={[...activatedCompanies, ...pendingCompanies]}
             onSelect={(c) => navigate(`/prospeccao/${c.id}`)}
             placeholder="Buscar por empresa, ID Prospeccao AJ ou CNPJ..."
@@ -677,7 +677,7 @@ const EmpresaDashboard = () => {
 
           {/* ABA 3 - Histórico de Prospeccaos por período */}
           <TabsContent value="historico" className="space-y-4">
-            <RmaHistoricoTab
+            <ProspeccaoHistoricoTab
               periods={periods}
               companies={[...activatedCompanies, ...pendingCompanies]}
             />

@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import PlatformLayout from "@/components/PlatformLayout";
-import RmaMovementHistory from "@/components/RmaMovementHistory";
+import ProspeccaoMovementHistory from "@/components/ProspeccaoMovementHistory";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { listCompanies, type Company } from "@/services/companiesService";
@@ -368,7 +368,7 @@ const LiberarProspeccao = () => {
           </TabsContent>
 
           <TabsContent value="movimentacoes">
-            <RmaMovementHistory
+            <ProspeccaoMovementHistory
               title="Movimentações Prospeccao AJ"
               description="Inclui atribuições, movimentações, desvínculos e liberações para Magistrado/Recuperanda."
             />
@@ -385,7 +385,7 @@ const LiberarProspeccao = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <RmaMovementHistory
+                <ProspeccaoMovementHistory
                   title="Eventos auditáveis"
                   description="Registros imutáveis de movimentações e liberações."
                 />

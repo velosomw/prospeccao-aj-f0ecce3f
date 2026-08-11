@@ -28,7 +28,7 @@ const norm = (s: string | null | undefined) =>
     .replace(/\s+/g, " ")
     .trim();
 
-const RmaCompanySearch = ({
+const ProspeccaoCompanySearch = ({
   companies,
   onSelect,
   placeholder = "Buscar por empresa, ID Prospeccao ou CNPJ...",
@@ -176,4 +176,4 @@ const RmaCompanySearch = ({
   );
 };
 
-export default RmaCompanySearch;
+export default ProspeccaoCompanySearch;

@@ -21,7 +21,7 @@ const monthLabels: Record<number, string> = {
   7: "Julho", 8: "Agosto", 9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro",
 };
 
-const RmaHistoricoTab = ({ periods, companies }: Props) => {
+const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
   const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
   const lastYear = currentYear - 1;
@@ -498,4 +498,4 @@ const RmaHistoricoTab = ({ periods, companies }: Props) => {
   );
 };
 
-export default RmaHistoricoTab;
+export default ProspeccaoHistoricoTab;

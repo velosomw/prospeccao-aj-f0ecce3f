@@ -21,7 +21,7 @@ const actionConfig: Record<RmaHistoryEntry["action"], { label: string; color: st
   unassign: { label: "Desvínculo",  color: "hsl(0,70%,55%)",   Icon: UserMinus },
 };
 
-const RmaMovementHistory = ({ title = "Histórico de Movimentações de Prospeccao", description, limit = 200 }: Props) => {
+const ProspeccaoMovementHistory = ({ title = "Histórico de Movimentações de Prospeccao", description, limit = 200 }: Props) => {
   const [entries, setEntries] = useState<RmaHistoryEntry[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [profiles, setProfiles] = useState<ProfileLite[]>([]);
@@ -215,4 +215,4 @@ const RmaMovementHistory = ({ title = "Histórico de Movimentações de Prospecc
   );
 };
 
-export default RmaMovementHistory;
+export default ProspeccaoMovementHistory;
