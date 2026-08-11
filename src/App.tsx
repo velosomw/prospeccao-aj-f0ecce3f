@@ -19,7 +19,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const EmpresaDashboard = lazy(() => import("./pages/EmpresaDashboard"));
 const ConsultorDashboard = lazy(() => import("./pages/ConsultorDashboard"));
 const ConsultorHome = lazy(() => import("./pages/consultor/ConsultorHome"));
-const ConsultorProspecções = lazy(() => import("./pages/consultor/ConsultorProspecções"));
+const ConsultorProspeccoes = lazy(() => import("./pages/consultor/ConsultorProspeccoes"));
 const ConsultorProcessos = lazy(() => import("./pages/consultor/ConsultorProcessos"));
 const ConsultorPendencias = lazy(() => import("./pages/consultor/ConsultorPendencias"));
 const ConsultorRelatorios = lazy(() => import("./pages/consultor/ConsultorRelatorios"));
@@ -49,7 +49,7 @@ const CoordHistorico = lazy(() => import("./pages/coordenador/CoordHistorico"));
 const GestorUsuarios = lazy(() => import("./pages/gestor/GestorUsuarios"));
 const GestorAuditoria = lazy(() => import("./pages/gestor/GestorAuditoria"));
 const MagProcessos = lazy(() => import("./pages/magistrado/MagProcessos"));
-const MagProspecções = lazy(() => import("./pages/magistrado/MagProspecções"));
+const MagProspeccoes = lazy(() => import("./pages/magistrado/MagProspeccoes"));
 const MagEmpresas = lazy(() => import("./pages/magistrado/MagEmpresas"));
 const MagDecisoes = lazy(() => import("./pages/magistrado/MagDecisoes"));
 const MagHistorico = lazy(() => import("./pages/magistrado/MagHistorico"));
@@ -58,7 +58,7 @@ const RecPendencias = lazy(() => import("./pages/recuperanda/RecPendencias"));
 const RecRelatorios = lazy(() => import("./pages/recuperanda/RecRelatorios"));
 const RecCronograma = lazy(() => import("./pages/recuperanda/RecCronograma"));
 const AdmRecuperandas = lazy(() => import("./pages/admjudicial/AdmRecuperandas"));
-const AdmProspecções = lazy(() => import("./pages/admjudicial/AdmProspecções"));
+const AdmProspeccoes = lazy(() => import("./pages/admjudicial/AdmProspeccoes"));
 const AdmPendencias = lazy(() => import("./pages/admjudicial/AdmPendencias"));
 const AdmRelatorios = lazy(() => import("./pages/admjudicial/AdmRelatorios"));
 const AdmHistorico = lazy(() => import("./pages/admjudicial/AdmHistorico"));
@@ -138,7 +138,7 @@ const App = () => (
               {/* Site público (eager) */}
               <Route path="/" element={<Index />} />
 
-              {/* Plataforma de Prospecção (lazy) */}
+              {/* Plataforma de Prospeccao (lazy) */}
               <Route path="/login" element={<Login />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/select-role" element={<RoleSelection />} />
@@ -152,8 +152,8 @@ const App = () => (
               <Route path="/dashboard/historico" element={<ProtectedRoute allow={["coordenador"]}><CoordHistorico /></ProtectedRoute>} />
               <Route path="/consultor" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorHome /></ProtectedRoute>} />
               <Route path="/consultor/dashboard" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorDashboard /></ProtectedRoute>} />
-              <Route path="/consultor/prospecções" element={<Navigate to="/consultor/prospecções-aj" replace />} />
-              <Route path="/consultor/prospecções-aj" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorProspecções /></ProtectedRoute>} />
+              <Route path="/consultor/prospeccoes" element={<Navigate to="/consultor/prospeccoes-aj" replace />} />
+              <Route path="/consultor/prospeccoes-aj" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorProspeccoes /></ProtectedRoute>} />
               <Route path="/consultor/processos" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorProcessos /></ProtectedRoute>} />
               <Route path="/consultor/pendencias" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorPendencias /></ProtectedRoute>} />
               <Route path="/consultor/auditoria" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorPendencias /></ProtectedRoute>} />
