@@ -94,8 +94,8 @@ export default function PlanilhaPadraoProspeccao() {
 
   return (
     <ConsultorPageShell
-      title="Planilha Padrão Prospeccao"
-      subtitle="Dados da planilha padrão de prospeccao para Administrador Judicial — recuperações judiciais mapeadas."
+      title="Planilha Padrão Prospecção"
+      subtitle="Dados da planilha padrão de prospecção para Administrador Judicial — recuperações judiciais mapeadas."
       search={search}
       onSearch={setSearch}
       kpis={[

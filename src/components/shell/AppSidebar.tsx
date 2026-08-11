@@ -77,7 +77,7 @@ const buildNav = (role: string | null): NavGroup[] => {
         
         { label: "Planilha de Carga",    to: "/consultor/relatorios",    icon: FileBarChart },
         { label: "Base de Dados",        to: "/consultor/base-de-dados",  icon: Database },
-        { label: "Planilha Padrão Prospeccao", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
+        { label: "Planilha Padrão Prospecção", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
         { label: "Empresa Prospeccao", to: "/consultor/clientes",      icon: Building2 },
         
         { label: "Cadastros",     to: "/consultor/cadastro",      icon: FilePlus, children: [
