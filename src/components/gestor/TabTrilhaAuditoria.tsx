@@ -156,7 +156,7 @@ const TabTrilhaAuditoria = () => {
     URL.revokeObjectURL(url);
   };
 
-  // Unique Prospeccaos for timeline
+  // Unique Prospeccoes for timeline
   const prospeccaoTimelines = Array.from(new Set(mockLogs.filter(l => l.prospeccaoId !== "-").map(l => l.prospeccaoId)));
 
   return (

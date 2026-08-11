@@ -124,7 +124,7 @@ const ProspeccaoWorkspace = () => {
   }, []);
   // Resolve a janela com cadeia de fallback:
   //   1) chave composta (companyId + prospeccaoCode/id) — mais específica
-  //   2) chave por companyId — preserva escolha entre Prospeccaos da mesma empresa
+  //   2) chave por companyId — preserva escolha entre Prospeccoes da mesma empresa
   //   3) chave por id (Prospeccao) — preserva escolha mesmo sem companyId resolvido
   //   4) último valor usado globalmente
   //   5) default 3M

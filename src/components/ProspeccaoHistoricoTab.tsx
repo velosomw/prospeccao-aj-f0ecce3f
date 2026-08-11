@@ -284,7 +284,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
   );
 
   const yearKpiCards = [
-    { label: `Prospeccaos Apurados (${currentYear})`, value: yearKpis.apurados, icon: ClipboardList, color: "hsl(var(--accent))" },
+    { label: `Prospeccoes Apurados (${currentYear})`, value: yearKpis.apurados, icon: ClipboardList, color: "hsl(var(--accent))" },
     { label: "Concluídos 100%", value: yearKpis.concluidos, icon: CheckCircle2, color: "hsl(var(--primary))" },
     { label: "Incompletos", value: yearKpis.incompletos, icon: Layers, color: "hsl(var(--destructive))" },
     { label: "Empresas", value: yearKpis.empresas, icon: Building2, color: "hsl(var(--ring))" },
@@ -316,7 +316,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
-            <History className="w-4 h-4 text-accent" /> Histórico de Prospeccaos por Período
+            <History className="w-4 h-4 text-accent" /> Histórico de Prospeccoes por Período
           </CardTitle>
           <p className="text-xs text-muted-foreground mt-1">
             Pesquise por empresa, ano ou mês. Selecione uma empresa para ver o detalhamento mensal.

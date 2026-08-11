@@ -86,7 +86,7 @@ export default function RelatoriosContabeis() {
     return Array.from(names).sort((a, b) => a.localeCompare(b));
   }, [companies, filter]);
 
-  const prospeccaosOfCompany = useMemo(() => {
+  const prospeccoesOfCompany = useMemo(() => {
     if (!companyName) return [];
     return companies.filter(c => c.name === companyName);
   }, [companies, companyName]);
@@ -211,7 +211,7 @@ export default function RelatoriosContabeis() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-base flex items-center gap-2">
-                <Briefcase className="w-4 h-4" /> Prospeccaos de {companyName}
+                <Briefcase className="w-4 h-4" /> Prospeccoes de {companyName}
               </CardTitle>
               <Button variant="ghost" size="sm" onClick={() => setStep(1)}>
                 <ChevronLeft className="w-4 h-4 mr-1" /> Voltar
@@ -219,7 +219,7 @@ export default function RelatoriosContabeis() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {prospeccaosOfCompany.map(c => (
+                {prospeccoesOfCompany.map(c => (
                   <button
                     key={c.id}
                     onClick={() => { setCompanyId(c.id); setStep(3); }}

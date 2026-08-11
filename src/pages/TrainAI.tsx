@@ -61,8 +61,8 @@ export default function TrainAI() {
     return Array.from(names).sort((a, b) => a.localeCompare(b));
   }, [companies, filter]);
 
-  // Prospeccaos vinculados à empresa selecionada
-  const prospeccaosOfCompany = useMemo(() => {
+  // Prospeccoes vinculados à empresa selecionada
+  const prospeccoesOfCompany = useMemo(() => {
     if (!companyName) return [];
     return companies.filter(c => c.name === companyName);
   }, [companies, companyName]);
@@ -136,12 +136,12 @@ export default function TrainAI() {
                     <SelectValue placeholder={!companyName ? "Selecione a empresa primeiro" : "Arquivo"} />
                   </SelectTrigger>
                   <SelectContent className="max-h-80">
-                    {prospeccaosOfCompany.length === 0 && (
+                    {prospeccoesOfCompany.length === 0 && (
                       <div className="px-2 py-4 text-xs text-muted-foreground text-center">
                         Nenhuma planilha vinculada.
                       </div>
                     )}
-                    {prospeccaosOfCompany.map(c => (
+                    {prospeccoesOfCompany.map(c => (
                       <SelectItem key={c.id} value={c.id}>
                         Arquivo
                       </SelectItem>

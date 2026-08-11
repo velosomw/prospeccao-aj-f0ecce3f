@@ -35,9 +35,9 @@ const EmpresaDashboard = () => {
   const { userName } = useUser();
   const { toast } = useToast();
   const firstName = userName?.split(" ")[0] || null;
-  const [prospeccaos] = useState<ProspeccaoEntry[]>([]);
+  const [prospeccoes] = useState<ProspeccaoEntry[]>([]);
 
-  // Prospeccaos atribuídos pelo Coordenador, aguardando ativação
+  // Prospeccoes atribuídos pelo Coordenador, aguardando ativação
   const [pendingCompanies, setPendingCompanies] = useState<Company[]>([]);
   const [activatedCompanies, setActivatedCompanies] = useState<Company[]>([]);
   const [analyses, setAnalyses] = useState<Record<string, RmaAnalysisResult>>({});
@@ -87,7 +87,7 @@ const EmpresaDashboard = () => {
   }, []);
 
   // Polling peprospeccaonente: sempre que houver Prospeccao ativo, reconsulta a cada 2.5s
-  // garantindo UI viva em Alertas Inteligentes + lista de Prospeccaos.
+  // garantindo UI viva em Alertas Inteligentes + lista de Prospeccoes.
   useEffect(() => {
     if (activatedCompanies.length === 0 && pendingCompanies.length === 0) return;
     const hasRunning = Object.values(analyses).some(a => a.status === "em_analise");
@@ -157,7 +157,7 @@ const EmpresaDashboard = () => {
     }
   };
 
-  // Combina Prospeccaos ativados (reais) + mocks para exibir nas abas Alertas e Prospeccaos
+  // Combina Prospeccoes ativados (reais) + mocks para exibir nas abas Alertas e Prospeccoes
   const filesByCompany = useMemo(() => groupFilesByCompany(scoreFiles), [scoreFiles]);
 
   const realRmas = useMemo(() => activatedCompanies.map(c => {
@@ -198,7 +198,7 @@ const EmpresaDashboard = () => {
         : null,
     };
   }), [activatedCompanies, analyses, filesByCompany]);
-  const displayRmas: (ProspeccaoEntry & { companyId?: string; analysisStatus?: string })[] = [...realRmas as any, ...prospeccaos];
+  const displayRmas: (ProspeccaoEntry & { companyId?: string; analysisStatus?: string })[] = [...realRmas as any, ...prospeccoes];
 
   const total = displayRmas.length;
   const emProcessamento = displayRmas.filter(r => r.status === "em_processamento").length;
@@ -332,14 +332,14 @@ const EmpresaDashboard = () => {
             <TabsTrigger value="dashboard" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <BarChart3 className="w-4 h-4" /> Dashboard
             </TabsTrigger>
-            <TabsTrigger value="prospeccaos" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
-              <FileText className="w-4 h-4" /> Prospeccaos
+            <TabsTrigger value="prospeccoes" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
+              <FileText className="w-4 h-4" /> Prospeccoes
             </TabsTrigger>
             <TabsTrigger value="historico" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <History className="w-4 h-4" /> Histórico
             </TabsTrigger>
             <TabsTrigger value="liberacoes" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
-              <Calendar className="w-4 h-4" /> Prospeccaos Liberados
+              <Calendar className="w-4 h-4" /> Prospeccoes Liberados
             </TabsTrigger>
           </TabsList>
 
@@ -359,7 +359,7 @@ const EmpresaDashboard = () => {
               ))}
             </div>
 
-            {/* Prospeccaos Empresa atribuídos pelo Coordenador — aguardando ativação */}
+            {/* Prospeccoes Empresa atribuídos pelo Coordenador — aguardando ativação */}
             {pendingCompanies.length > 0 && (
               <Card className="border-2 border-accent/40 bg-gradient-to-br from-accent/5 to-transparent">
                 <CardHeader className="pb-3">
@@ -373,7 +373,7 @@ const EmpresaDashboard = () => {
                       </div>
                       <div className="text-left">
                         <CardTitle className="text-base flex items-center gap-2">
-                          Prospeccaos Empresa atribuídos
+                          Prospeccoes Empresa atribuídos
                           <Badge className="bg-accent text-accent-foreground text-[10px]">
                             {pendingCompanies.length} aguardando
                           </Badge>
@@ -436,13 +436,13 @@ const EmpresaDashboard = () => {
               </Card>
             )}
 
-            {/* Alertas — Prospeccaos com atualização nas últimas 24h */}
+            {/* Alertas — Prospeccoes com atualização nas últimas 24h */}
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-destructive" /> Alertas Inteligentes
                   <span className="text-[10px] font-normal text-muted-foreground ml-1">
-                    (atualizações dos Prospeccaos nas últimas 24h)
+                    (atualizações dos Prospeccoes nas últimas 24h)
                   </span>
                 </CardTitle>
               </CardHeader>
@@ -450,7 +450,7 @@ const EmpresaDashboard = () => {
                 {(() => {
                   const now = Date.now();
                   const DAY_MS = 24 * 60 * 60 * 1000;
-                  // Considera apenas Prospeccaos reais (com companyId) que NÃO estão concluídos
+                  // Considera apenas Prospeccoes reais (com companyId) que NÃO estão concluídos
                   const candidatos = displayRmas.filter(r => r.status !== "concluido" && r.companyId);
                   if (candidatos.length === 0) {
                     return (
@@ -612,8 +612,8 @@ const EmpresaDashboard = () => {
             </Card>
           </TabsContent>
 
-          {/* ABA 2 - Prospeccaos */}
-          <TabsContent value="prospeccaos" className="space-y-4">
+          {/* ABA 2 - Prospeccoes */}
+          <TabsContent value="prospeccoes" className="space-y-4">
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Lista de Prospecções AJ</CardTitle>
@@ -675,7 +675,7 @@ const EmpresaDashboard = () => {
             </Card>
           </TabsContent>
 
-          {/* ABA 3 - Histórico de Prospeccaos por período */}
+          {/* ABA 3 - Histórico de Prospeccoes por período */}
           <TabsContent value="historico" className="space-y-4">
             <ProspeccaoHistoricoTab
               periods={periods}

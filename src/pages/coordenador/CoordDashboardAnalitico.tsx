@@ -16,11 +16,11 @@ const COLORS = {
 };
 
 const consultores = [
-  { nome: "Ana Silva",       prospeccaos: 12, score: 87, status: "Ativo" },
-  { nome: "Carlos Mendes",   prospeccaos: 9,  score: 74, status: "Ativo" },
-  { nome: "Fernanda Costa",  prospeccaos: 7,  score: 91, status: "Ativo" },
-  { nome: "Rafael Souza",    prospeccaos: 5,  score: 62, status: "Sobrecarga" },
-  { nome: "Julia Pereira",   prospeccaos: 4,  score: 80, status: "Ativo" },
+  { nome: "Ana Silva",       prospeccoes: 12, score: 87, status: "Ativo" },
+  { nome: "Carlos Mendes",   prospeccoes: 9,  score: 74, status: "Ativo" },
+  { nome: "Fernanda Costa",  prospeccoes: 7,  score: 91, status: "Ativo" },
+  { nome: "Rafael Souza",    prospeccoes: 5,  score: 62, status: "Sobrecarga" },
+  { nome: "Julia Pereira",   prospeccoes: 4,  score: 80, status: "Ativo" },
 ];
 
 const aprovacoes = [
@@ -42,7 +42,7 @@ const evolucao = [
   { m: "Abr", v: 28 }, { m: "Mai", v: 24 },
 ];
 
-const equipeBar = consultores.map(c => ({ name: c.nome.split(" ")[0], prospeccaos: c.prospeccaos }));
+const equipeBar = consultores.map(c => ({ name: c.nome.split(" ")[0], prospeccoes: c.prospeccoes }));
 
 export default function Dashboard() {
   const { userName } = useUser();
@@ -96,8 +96,8 @@ export default function Dashboard() {
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis hide />
                 <Tooltip />
-                <Bar dataKey="prospeccaos" fill={COLORS.blue} radius={[8,8,0,0]} maxBarSize={42}>
-                  <LabelList dataKey="prospeccaos" position="top" style={{ fontSize: 11, fontWeight: 700 }} />
+                <Bar dataKey="prospeccoes" fill={COLORS.blue} radius={[8,8,0,0]} maxBarSize={42}>
+                  <LabelList dataKey="prospeccoes" position="top" style={{ fontSize: 11, fontWeight: 700 }} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -158,7 +158,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium">{c.nome}</div>
-                  <div className="text-xs text-muted-foreground">{c.prospeccaos} Prospeccaos ativos</div>
+                  <div className="text-xs text-muted-foreground">{c.prospeccoes} Prospeccoes ativos</div>
                 </div>
                 <div className="w-32">
                   <div className="h-1.5 bg-muted rounded-full overflow-hidden">

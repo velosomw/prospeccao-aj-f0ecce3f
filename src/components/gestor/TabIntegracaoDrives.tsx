@@ -409,8 +409,8 @@ const DiagnosticsCard = () => {
   );
 };
 
-// ─── Renumber existing Prospeccaos from OneDrive folders ─────────────
-const RenumberProspeccaosCard = () => {
+// ─── Renumber existing Prospeccoes from OneDrive folders ─────────────
+const RenumberProspeccoesCard = () => {
   const [year, setYear] = useState(String(new Date().getFullYear()));
   const [prefix, setPrefix] = useState("Prospeccao");
   const [dryRun, setDryRun] = useState(true);
@@ -421,7 +421,7 @@ const RenumberProspeccaosCard = () => {
     setRunning(true);
     setResult(null);
     try {
-      const { data, error } = await supabase.functions.invoke("onedrive-renumber-prospeccaos", {
+      const { data, error } = await supabase.functions.invoke("onedrive-renumber-prospeccoes", {
         body: { path: ONEDRIVE_CONFIG.base_path, year: Number(year), prefix, dryRun },
       });
       if (error) throw error;
@@ -430,7 +430,7 @@ const RenumberProspeccaosCard = () => {
         toast.success(
           dryRun
             ? `Pré-visualização: ${data.totalFolders} pastas`
-            : `${data.totalFolders} Prospeccaos sincronizados`
+            : `${data.totalFolders} Prospeccoes sincronizados`
         );
       } else {
         toast.error(data?.error || "Falha na renumeração");
@@ -802,7 +802,7 @@ const TabIntegracaoDrives = ({ onBack }: { onBack: () => void }) => {
 
         <TabsContent value="sync" className="space-y-4 mt-4">
           <DiagnosticsCard />
-          <RenumberProspeccaosCard />
+          <RenumberProspeccoesCard />
           <SyncControls />
         </TabsContent>
 

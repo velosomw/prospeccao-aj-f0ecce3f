@@ -291,14 +291,14 @@ const TabFinanceiroTokens = () => {
           icon={Wallet}
           label="Custo Total (E2E)"
           value={data ? fmtUSDc(data.custoTotal) : "—"}
-          sub={data ? `Σ IA · ${data.counts.prospeccaosTotal} Prospeccao(s) na plataforma` : "—"}
+          sub={data ? `Σ IA · ${data.counts.prospeccoesTotal} Prospeccao(s) na plataforma` : "—"}
           color="hsl(200,80%,55%)"
         />
         <KPI
           icon={Activity}
           label="Custo Médio por Prospeccao AJ"
           value={data ? fmtUSDc(data.custoMedioPorProspeccao) : "—"}
-          sub={data ? `Custo total ÷ ${data.counts.prospeccaosTotal} Prospeccao(s) (análise → conclusão)` : "—"}
+          sub={data ? `Custo total ÷ ${data.counts.prospeccoesTotal} Prospeccao(s) (análise → conclusão)` : "—"}
           color="hsl(38,90%,55%)"
         />
         <KPI

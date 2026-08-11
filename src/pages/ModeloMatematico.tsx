@@ -63,7 +63,7 @@ interface PersonaVector {
 }
 
 const personaLabels: Record<keyof PersonaVector, { label: string; desc: string }> = {
-  Rn: { label: "Rigor Noprospeccaotivo (Rₙ)", desc: "Nível de aderência estrita às noprospeccaos IFRS/CPC/NBC TA" },
+  Rn: { label: "Rigor Noprospeccaotivo (Rₙ)", desc: "Nível de aderência estrita às noprospeccoes IFRS/CPC/NBC TA" },
   Cr: { label: "Conservadorismo de Risco (Cᵣ)", desc: "Tendência a classificar situações como risco mais elevado" },
   Sr: { label: "Sensibilidade a Risco (Sᵣ)", desc: "Capacidade de detectar sinais fracos de risco" },
   Da: { label: "Profundidade Analítica (Dₐ)", desc: "Extensão e detalhamento da análise técnica" },

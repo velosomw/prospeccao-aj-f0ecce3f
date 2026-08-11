@@ -5,9 +5,9 @@ import { UserRole } from "@/types/user";
 import { motion } from "framer-motion";
 
 const roles: { role: UserRole; icon: typeof Shield; title: string; desc: string; color: string }[] = [
-  { role: "coordenador", icon: Shield, title: "Coordenador", desc: "Revisão, aprovação e governança dos Prospeccaos.", color: "hsl(217,91%,50%)" },
-  { role: "admjudicial", icon: Gavel, title: "Admjudicial", desc: "Administração das Recuperandas e Prospeccaos entregues.", color: "hsl(280,80%,55%)" },
-  { role: "consultor", icon: Building2, title: "Consultor", desc: "Operação e acompanhamento dos Prospeccaos.", color: "hsl(38,92%,50%)" },
+  { role: "coordenador", icon: Shield, title: "Coordenador", desc: "Revisão, aprovação e governança dos Prospeccoes.", color: "hsl(217,91%,50%)" },
+  { role: "admjudicial", icon: Gavel, title: "Admjudicial", desc: "Administração das Recuperandas e Prospeccoes entregues.", color: "hsl(280,80%,55%)" },
+  { role: "consultor", icon: Building2, title: "Consultor", desc: "Operação e acompanhamento dos Prospeccoes.", color: "hsl(38,92%,50%)" },
   { role: "magistrado", icon: Scale, title: "Magistrado", desc: "Visualização dos processos e relatórios.", color: "hsl(142,76%,36%)" },
   { role: "recuperanda", icon: User, title: "Recuperanda (AJ)", desc: "Consulta de documentos e status.", color: "hsl(200,98%,55%)" },
   { role: "gestor_ia", icon: Brain, title: "Gestor IA", desc: "Administração técnica e integrações.", color: "hsl(258,90%,66%)" },

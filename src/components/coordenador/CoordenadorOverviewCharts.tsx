@@ -34,7 +34,7 @@ const COLOR_CYAN = "hsl(190, 90%, 50%)";
 const monthsPt = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
 const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }: Props) => {
-  // 1. Status dos Prospeccaos (saúde do portfólio)
+  // 1. Status dos Prospeccoes (saúde do portfólio)
   const statusData = useMemo(() => {
     const buckets: Record<string, number> = { ativo: 0, pendente: 0, inativo: 0, concluido: 0 };
     companies.forEach((c) => {
@@ -59,15 +59,15 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
     const arr = Array.from(counts.entries()).map(([uid, count]) => {
       const p = profiles.find((x) => x.user_id === uid);
       const name = p?.full_name?.split(" ")[0] || "—";
-      return { name, prospeccaos: count };
+      return { name, prospeccoes: count };
     });
-    return arr.sort((a, b) => b.prospeccaos - a.prospeccaos).slice(0, 6);
+    return arr.sort((a, b) => b.prospeccoes - a.prospeccoes).slice(0, 6);
   }, [assignments, profiles]);
 
   // 3. Cadastros por mês (últimos 6 meses)
   const cadastrosData = useMemo(() => {
     const now = new Date();
-    const out: { month: string; prospeccaos: number }[] = [];
+    const out: { month: string; prospeccoes: number }[] = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const next = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
@@ -75,7 +75,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
         const t = new Date(c.created_at).getTime();
         return t >= d.getTime() && t < next.getTime();
       }).length;
-      out.push({ month: monthsPt[d.getMonth()], prospeccaos: count });
+      out.push({ month: monthsPt[d.getMonth()], prospeccoes: count });
     }
     return out;
   }, [companies]);
@@ -147,7 +147,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
               <Target className="w-4 h-4" style={{ color: COLOR_BLUE }} />
             </div>
             <p className="text-2xl font-bold text-foreground mt-1">{coverage}%</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">{totalAssigned} de {companies.length} Prospeccaos atribuídos</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">{totalAssigned} de {companies.length} Prospeccoes atribuídos</p>
           </CardContent>
         </Card>
         <Card className="border-l-4" style={{ borderLeftColor: COLOR_PURPLE }}>
@@ -189,7 +189,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <PieIcon className="w-4 h-4" style={{ color: COLOR_BLUE }} /> Status dos Prospeccaos
+              <PieIcon className="w-4 h-4" style={{ color: COLOR_BLUE }} /> Status dos Prospeccoes
             </CardTitle>
             <CardDescription>Distribuição da saúde do portfólio</CardDescription>
           </CardHeader>
@@ -240,7 +240,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
                   <XAxis dataKey="name" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <Tooltip cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }} />
-                  <Bar dataKey="prospeccaos" fill={COLOR_PURPLE} radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="prospeccoes" fill={COLOR_PURPLE} radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             )}
@@ -266,7 +266,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
                 <Tooltip />
                 <Line
                   type="monotone"
-                  dataKey="prospeccaos"
+                  dataKey="prospeccoes"
                   stroke={COLOR_BLUE}
                   strokeWidth={3}
                   dot={{ r: 5, fill: COLOR_BLUE }}

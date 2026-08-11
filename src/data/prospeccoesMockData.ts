@@ -268,7 +268,7 @@ export const mockReviewHistory: ReviewEntry[] = [
   { id: 'r5', autor: 'Ana Silva', papel: 'usuario', acao: 'Ajustes realizados', data: '2024-07-17', hora: '10:30', tempo: '3h 30min', comentario: 'Correções aplicadas nas pastas fiscais. Pastas de obrigações confiprospeccaodas como N/A pela recuperanda.' },
 ];
 
-export const mockProspeccaos: ProspeccaoEntry[] = [
+export const mockProspeccoes: ProspeccaoEntry[] = [
   {
     id: 'Prospeccao-001',
     empresa: 'XPT Indústria S.A.',

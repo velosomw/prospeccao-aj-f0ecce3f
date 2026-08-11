@@ -10,7 +10,7 @@ const statusMeta: Record<string, { bg: string; fg: string }> = {
   "Visualizado":  { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
 };
 
-export default function MagProspeccaos() {
+export default function MagProspeccoes() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);

@@ -350,7 +350,7 @@ EXTRAIA:
 - entidades_principais (pessoas, empresas, valores, datas)
 - assunto_resumido (≤ 200 chars)
 - categoria_inferida (tente classificar entre: financeiro, juridico, operacional, fiscal, outro)
-- referencias_externas (números de processo, contratos, Prospeccaos anteriores)
+- referencias_externas (números de processo, contratos, Prospeccoes anteriores)
 SAÍDA: { titulo, resumo, entidades[], categoria_inferida, referencias[], confianca }`,
   },
 ];

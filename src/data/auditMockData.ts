@@ -195,7 +195,7 @@ export const defaultFinancialAnalysis: FinancialAnalysis = (() => {
 
 export const defaultReportSections: ReportSection[] = [
   { id: "1", title: "Resumo Executivo", content: "A análise das demonstrações financeiras revela conformidade geral com os pronunciamentos contábeis vigentes, com ressalvas pontuais identificadas nos achados técnicos.", includeOpinion: false },
-  { id: "2", title: "Escopo e Metodologia", content: "O trabalho foi conduzido com base nas Noprospeccaos Brasileiras de Contabilidade (NBC TA), abrangendo procedimentos substantivos e de conformidade.", includeOpinion: false },
+  { id: "2", title: "Escopo e Metodologia", content: "O trabalho foi conduzido com base nas Noprospeccoes Brasileiras de Contabilidade (NBC TA), abrangendo procedimentos substantivos e de conformidade.", includeOpinion: false },
   { id: "3", title: "Achados e Recomendações", content: "Foram identificados achados técnicos classificados por tipo, risco e impacto. As recomendações visam a correção tempestiva e o fortalecimento dos controles internos.", includeOpinion: true },
   { id: "4", title: "Seção Financeira", content: "Indicadores financeiros, análise horizontal e vertical, índice de insolvência e análise de solvência consolidados.", includeOpinion: true },
   { id: "5", title: "Conclusão", content: "Com base nos procedimentos aplicados e nas evidências obtidas, apresentamos nossa opinião sobre as demonstrações financeiras examinadas.", includeOpinion: true },

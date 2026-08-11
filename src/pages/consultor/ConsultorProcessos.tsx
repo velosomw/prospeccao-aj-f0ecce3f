@@ -1,6 +1,6 @@
 import { Activity, Cpu, CheckCircle2, AlertTriangle, Clock, Zap } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
-import { mockProspeccaos } from "@/data/prospeccoesMockData";
+import { mockProspeccoes } from "@/data/prospeccoesMockData";
 
 const stages = [
   { key: "ingestao",   label: "Ingestão",         color: "hsl(217,91%,50%)" },
@@ -11,7 +11,7 @@ const stages = [
 ];
 
 export default function ConsultorProcessos() {
-  const running = mockProspeccaos.filter(r => r.status === "em_processamento");
+  const running = mockProspeccoes.filter(r => r.status === "em_processamento");
 
   return (
     <ConsultorPageShell
