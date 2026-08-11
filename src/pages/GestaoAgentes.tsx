@@ -12,7 +12,7 @@ import {
   listLearningExtractions,
   markAsCorrect,
 } from "@/services/learningService";
-import { PROSPECCAO_TOPICS, buildLearningPath, getTopicBySlug } from "@/lib/prospeccoesTopics";
+import { PROSPECCAO_TOPICS, buildLearningPath, getTopicBySlug } from "@/lib/prospeccaoTopics";
 import { getAgentForTopic } from "@/lib/specializedAgents";
 import { Loader2, FolderTree, X, Sparkles } from "lucide-react";
 import {

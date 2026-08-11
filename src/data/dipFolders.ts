@@ -5,7 +5,7 @@
  *  - estrutura física do OneDrive (`/Projeto Prospeccao/{CLIENTE}/{ANO}/{PERIODO}/Documentos/NN-…`);
  *  - extração de dados (agente especializado por pasta);
  *  - carga no balancete (classificação contábil predominante);
- *  - tópicos do Prospeccao na plataforma (`src/data/prospeccoesTopics.ts`, 1-61).
+ *  - tópicos do Prospeccao na plataforma (`src/data/prospeccaoTopics.ts`, 1-61).
  *
  * Cada pasta tem:
  *  - `id`             : 1-60, igual ao prefixo numérico do nome da pasta no OneDrive.
@@ -33,7 +33,7 @@ export interface DipFolder {
   label: string;
   agent: string;
   accountClass: DipAccountClass;
-  /** Tópico correspondente em `src/data/prospeccoesTopics.ts` (PROSPECCAO_TOPICS.number, 1-61). */
+  /** Tópico correspondente em `src/data/prospeccaoTopics.ts` (PROSPECCAO_TOPICS.number, 1-61). */
   prospeccaoTopicNumber: number;
 }
 

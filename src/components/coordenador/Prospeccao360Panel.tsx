@@ -17,7 +17,7 @@ import {
   type CompanyTopic,
   type RmaHistoryEntry,
 } from "@/services/companiesService";
-import { PROSPECCAO_TOPICS } from "@/data/prospeccoesTopics";
+import { PROSPECCAO_TOPICS } from "@/data/prospeccaoTopics";
 
 // As 10 abas do workspace Prospeccao — espelho do ProspeccaoWorkspace
 const WORKSPACE_TABS = [

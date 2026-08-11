@@ -34,7 +34,7 @@ const inferTopicNumber = (topic: ScoreTopic, index: number) => {
 };
 
 import { fileMatchesTopic, filterIngestibleFiles } from "@/lib/topicMatch";
-import { PROSPECCAO_TOPICS } from "@/data/prospeccoesTopics";
+import { PROSPECCAO_TOPICS } from "@/data/prospeccaoTopics";
 
 export function buildLiveScoreTopics(
   topics: ScoreTopic[] | null | undefined,

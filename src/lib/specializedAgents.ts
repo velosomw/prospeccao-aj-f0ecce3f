@@ -2,7 +2,7 @@
 // 12 Agentes Especializados × 60 Tópicos Prospeccao
 // Cada agente concentra extrações de mesma natureza (mesmo OCR, mesmas entidades,
 // mesmas regras de validação) e responde por 1..N tópicos da lista canônica
-// (ver `src/lib/prospeccoesTopics.ts`).
+// (ver `src/lib/prospeccaoTopics.ts`).
 //
 // Como é usado:
 //  1. Usuário escolhe um tópico (id 1..60) na tela de Upload.

@@ -12,7 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import PlatformLayout from "@/components/PlatformLayout";
-import { PROSPECCAO_TOPICS } from "@/data/prospeccoesTopics";
+import { PROSPECCAO_TOPICS } from "@/data/prospeccaoTopics";
 import { createCompany, assignCompanyToConsultant } from "@/services/companiesService";
 import { supabase } from "@/integrations/supabase/client";
 

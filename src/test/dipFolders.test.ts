@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { DIP_FOLDERS, validateDipFolderIntegrity, PROSPECCAO_TOPICS_WITHOUT_DIP_FOLDER } from "@/data/dipFolders";
-import { PROSPECCAO_TOPICS } from "@/data/prospeccoesTopics";
+import { PROSPECCAO_TOPICS } from "@/data/prospeccaoTopics";
 
 describe("DIP folders ↔ Prospeccao topics", () => {
   it("tem 60 pastas com ids sequenciais 1..60", () => {
