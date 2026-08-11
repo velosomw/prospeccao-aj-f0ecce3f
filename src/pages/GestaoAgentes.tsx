@@ -54,7 +54,7 @@ const accuracyDistribution: any[] = [];
 const learningEvolution: any[] = [];
 const datasetItems: any[] = [];
 
-const perfoprospeccaonceStages = [
+const performanceStages = [
   { step: "Parser estrutural",  p50: 1.2,  p95: 3.4,  p99: 5.1 },
   { step: "OCR (Google Vision)", p50: 8.7,  p95: 22.3, p99: 38.5 },
   { step: "Embedding",          p50: 0.9,  p95: 2.1,  p99: 3.4 },
@@ -247,7 +247,7 @@ const TabUploadProcessamento = () => {
 
     const runOne = async (i: number) => {
       const file = filesToProcess[i];
-      const t0 = perfoprospeccaonce.now();
+      const t0 = performance.now();
       const idx = i;
       updateTimeline(idx, { startedAt: Date.now(), status: "processing", etaSec: avgDurationRef.current });
 
@@ -327,7 +327,7 @@ const TabUploadProcessamento = () => {
         }
         setStage(idx, "validate", "done");
 
-        const durSec = (perfoprospeccaonce.now() - t0) / 1000;
+        const durSec = (performance.now() - t0) / 1000;
         durations.push(durSec);
         avgDurationRef.current = durations.reduce((a, b) => a + b, 0) / durations.length;
 
@@ -338,7 +338,7 @@ const TabUploadProcessamento = () => {
         toast.success(`${file.name} → ${topic.label}`);
       } catch (err: any) {
         console.error("[GestaoAgentes] upload pipeline error", err);
-        const durSec = (perfoprospeccaonce.now() - t0) / 1000;
+        const durSec = (performance.now() - t0) / 1000;
         const dur = durSec.toFixed(1) + "s";
         setTimeline((tl) => tl.map((it, j) => {
           if (j !== idx) return it;
@@ -910,7 +910,7 @@ const TabDatasetHistorico = () => (
 
 // ─── Aba 5: Perfoprospeccaonce ──────────────────────────────────────
 const TabPerfoprospeccaonce = () => {
-  const totalE2E = perfoprospeccaonceStages.find(s => s.step.includes("E2E"))!;
+  const totalE2E = performanceStages.find(s => s.step.includes("E2E"))!;
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -946,7 +946,7 @@ const TabPerfoprospeccaonce = () => {
             <th className="text-right px-4 py-3 font-semibold text-muted-foreground">p99</th>
           </tr></thead>
           <tbody>
-            {perfoprospeccaonceStages.map((s, i) => (
+            {performanceStages.map((s, i) => (
               <tr key={i} className={`border-b border-border last:border-0 hover:bg-muted/30 ${s.step.includes("E2E") ? "bg-muted/30 font-semibold" : ""}`}>
                 <td className="px-4 py-3 text-foreground">{s.step}</td>
                 <td className="px-4 py-3 text-right font-mono text-foreground">{fmtTime(s.p50)}</td>
@@ -1133,7 +1133,7 @@ const GestaoAgentes = () => {
             <TabsTrigger value="dataset" className="gap-1.5 data-[state=active]:bg-[hsl(258,90%,66%)] data-[state=active]:text-white text-xs">
               <Database className="w-3.5 h-3.5" /> Dataset &amp; Histórico
             </TabsTrigger>
-            <TabsTrigger value="perfoprospeccaonce" className="gap-1.5 data-[state=active]:bg-[hsl(258,90%,66%)] data-[state=active]:text-white text-xs">
+            <TabsTrigger value="performance" className="gap-1.5 data-[state=active]:bg-[hsl(258,90%,66%)] data-[state=active]:text-white text-xs">
               <Activity className="w-3.5 h-3.5" /> Perfoprospeccaonce
             </TabsTrigger>
             <TabsTrigger value="registro" className="gap-1.5 data-[state=active]:bg-[hsl(258,90%,66%)] data-[state=active]:text-white text-xs">
@@ -1148,7 +1148,7 @@ const GestaoAgentes = () => {
           <TabsContent value="validacao" className="mt-4"><TabValidacaoInteligente /></TabsContent>
           <TabsContent value="aprendizado" className="mt-4"><TabAprendizadoIA /></TabsContent>
           <TabsContent value="dataset" className="mt-4"><TabDatasetHistorico /></TabsContent>
-          <TabsContent value="perfoprospeccaonce" className="mt-4"><TabPerfoprospeccaonce /></TabsContent>
+          <TabsContent value="performance" className="mt-4"><TabPerfoprospeccaonce /></TabsContent>
           <TabsContent value="registro" className="mt-4"><TabRegistroIntegracoes /></TabsContent>
           <TabsContent value="financeiro" className="mt-4"><TabFinanceiroTokens /></TabsContent>
         </Tabs>

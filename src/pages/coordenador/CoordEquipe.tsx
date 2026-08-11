@@ -17,7 +17,7 @@ export default function CoordEquipe() {
   const avgSLA    = Math.round(team.reduce((s, t) => s + t.sla, 0) / team.length);
   return (
     <ConsultorPageShell
-      title="Equipe" subtitle="Gestão de consultores, carga e perfoprospeccaonce individual."
+      title="Equipe" subtitle="Gestão de consultores, carga e performance individual."
       kpis={[
         { label: "Consultores",   value: team.length, hint: "Ativos",         icon: Users,        tone: "blue" },
         { label: "Prospecções AJ Atribuídos", value: totalProspeccoes, hint: "Total da equipe",icon: Briefcase,    tone: "purple" },

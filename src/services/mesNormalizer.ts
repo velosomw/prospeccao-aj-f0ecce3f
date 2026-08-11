@@ -53,7 +53,7 @@ function buildKey(year: number, month: number): string | null {
 }
 
 /**
- * Noprospeccaoliza qualquer rótulo de período para "YYYY-MM".
+ * Normaliza qualquer rótulo de período para "YYYY-MM".
  * Retorna null se não for possível inferir um mês válido.
  */
 export function normalizeMesKey(input: string | null | undefined): string | null {
