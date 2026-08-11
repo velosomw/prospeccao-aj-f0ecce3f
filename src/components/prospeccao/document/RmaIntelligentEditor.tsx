@@ -42,7 +42,7 @@ const PermButton = ({
   const handle = () => {
     if (perm.allowed) return onClick();
     // Loga tentativa bloqueada (UI-side) — backend também loga ao tentar RPC
-    supabase.from("prospeccao_section_audit_log").insert({
+    (supabase.from("prospeccao_section_audit_log") as any).insert({
       section_id: sectionId,
       document_id: documentId,
       user_role: primaryRole,
