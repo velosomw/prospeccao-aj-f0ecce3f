@@ -117,7 +117,7 @@ const RouteFallback = () => (
 );
 
 
-const RmaHomeRoute = () => {
+const ProspeccaoHomeRoute = () => {
   const { roles, loading } = useUserRoles();
   if (loading) return null;
   if (roles.includes("magistrado")) return <MagistradoDashboard />;
@@ -180,7 +180,7 @@ const App = () => (
               <Route path="/recuperanda" element={<ProtectedRoute allow={["recuperanda"]}><RecuperandaDashboard /></ProtectedRoute>} />
               <Route path="/admjudicial" element={<ProtectedRoute allow={["admjudicial", "coordenador"]}><AdmjudicialDashboard /></ProtectedRoute>} />
               <Route path="/prospecção" element={<Navigate to="/prospeccao-aj" replace />} />
-              <Route path="/prospeccao-aj" element={<ProtectedRoute><RmaHomeRoute /></ProtectedRoute>} />
+              <Route path="/prospeccao-aj" element={<ProtectedRoute><ProspeccaoHomeRoute /></ProtectedRoute>} />
               <Route path="/processo-prospeccao" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ProcessoProspeccao /></ProtectedRoute>} />
               <Route path="/prospecção/:id" element={<Navigate to="/prospeccao-aj-workspace/:id" replace />} />
               <Route path="/prospeccao-aj-workspace/:id" element={<ProtectedRoute><ProspecçãoWorkspace /></ProtectedRoute>} />
