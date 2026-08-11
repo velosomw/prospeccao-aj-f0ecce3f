@@ -13,7 +13,7 @@ import type { ParsedFinancialData } from "@/services/auditAIService";
 import TabBalanceteReferencia from "./TabBalanceteReferencia";
 import TabEndividamentoReferencia from "./TabEndividamentoReferencia";
 
-const fmt = (n: number) => new Intl.NumberFormat("pt-BR").format(Math.round(n));
+const fmt = (n: number) => new Intl.NumberFoprospecçãot("pt-BR").foprospecçãot(Math.round(n));
 const fmtPct = (n: number) => `${(n * 100).toFixed(2)}%`;
 const fmtDec = (n: number) => n.toFixed(4);
 
@@ -27,7 +27,7 @@ interface KanitzResult {
   ge: number;
   fi: number;
   classificacao: "solvente" | "penumbra" | "insolvente";
-  riskScoreNormalized: number;
+  riskScoreNoprospecçãolized: number;
 }
 
 const computeKanitz = (parsedData: ParsedFinancialData | null): KanitzResult[] => {
@@ -69,17 +69,17 @@ const computeKanitz = (parsedData: ParsedFinancialData | null): KanitzResult[] =
     const classificacao: KanitzResult["classificacao"] =
       fi > 0 ? "solvente" : fi >= -3 ? "penumbra" : "insolvente";
 
-    results.push({ year, rpl, lg, ls, lc, ge, fi, classificacao, riskScoreNormalized: 0 });
+    results.push({ year, rpl, lg, ls, lc, ge, fi, classificacao, riskScoreNoprospecçãolized: 0 });
   }
 
-  // Normalizar Risk Score (Min-Max)
+  // Noprospecçãolizar Risk Score (Min-Max)
   if (results.length > 0) {
     const fiValues = results.map(r => r.fi);
     const fiMin = Math.min(...fiValues);
     const fiMax = Math.max(...fiValues);
     const range = fiMax - fiMin || 1;
     results.forEach(r => {
-      r.riskScoreNormalized = Math.round(((r.fi - fiMin) / range) * 100);
+      r.riskScoreNoprospecçãolized = Math.round(((r.fi - fiMin) / range) * 100);
     });
   }
 
@@ -116,7 +116,7 @@ const TabKanitz = ({ parsedData, aiAnalysis }: { parsedData?: ParsedFinancialDat
       ge: comp.ge || 0,
       fi,
       classificacao,
-      riskScoreNormalized: fi > 1 ? 90 : fi > 0 ? 70 : fi >= -1 ? 50 : fi >= -3 ? 30 : 10,
+      riskScoreNoprospecçãolized: fi > 1 ? 90 : fi > 0 ? 70 : fi >= -1 ? 50 : fi >= -3 ? 30 : 10,
     }];
   }
   
@@ -188,8 +188,8 @@ const TabKanitz = ({ parsedData, aiAnalysis }: { parsedData?: ParsedFinancialDat
                 }`}>{classColors[latest.classificacao].label}</p>
               </div>
               <div className="text-center p-4 rounded-lg bg-muted/30">
-                <p className="text-xs text-muted-foreground mb-1">Risk Score Normalizado</p>
-                <p className="text-4xl font-bold font-mono text-foreground">{latest.riskScoreNormalized}</p>
+                <p className="text-xs text-muted-foreground mb-1">Risk Score Noprospecçãolizado</p>
+                <p className="text-4xl font-bold font-mono text-foreground">{latest.riskScoreNoprospecçãolized}</p>
                 <p className="text-[10px] text-muted-foreground mt-1">Escala EBEX (0-100)</p>
               </div>
             </div>
@@ -469,7 +469,7 @@ const TabKanitz = ({ parsedData, aiAnalysis }: { parsedData?: ParsedFinancialDat
             {/* Risk Score */}
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Risk Score Normalizado (Escala EBEX)</CardTitle>
+                <CardTitle className="text-sm">Risk Score Noprospecçãolizado (Escala EBEX)</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -477,17 +477,17 @@ const TabKanitz = ({ parsedData, aiAnalysis }: { parsedData?: ParsedFinancialDat
                     <div key={r.year} className="space-y-1">
                       <div className="flex justify-between text-xs">
                         <span className="font-medium text-foreground">{r.year}</span>
-                        <span className="font-mono font-bold">{r.riskScoreNormalized}/100</span>
+                        <span className="font-mono font-bold">{r.riskScoreNoprospecçãolized}/100</span>
                       </div>
-                      <Progress value={r.riskScoreNormalized} className="h-2" />
+                      <Progress value={r.riskScoreNoprospecçãolized} className="h-2" />
                       <p className="text-[10px] text-muted-foreground">
-                        {r.riskScoreNormalized <= 30 ? "Alto risco" : r.riskScoreNormalized <= 70 ? "Médio risco" : "Baixo risco"}
+                        {r.riskScoreNoprospecçãolized <= 30 ? "Alto risco" : r.riskScoreNoprospecçãolized <= 70 ? "Médio risco" : "Baixo risco"}
                       </p>
                     </div>
                   ))}
                 </div>
                 <div className="mt-4 p-3 rounded-lg bg-muted/30">
-                  <p className="text-[10px] font-semibold text-foreground mb-1">Fórmula de Normalização:</p>
+                  <p className="text-[10px] font-semibold text-foreground mb-1">Fórmula de Noprospecçãolização:</p>
                   <code className="text-[10px] font-mono text-muted-foreground">
                     RiskScore = (FI - FI_min) / (FI_max - FI_min) × 100
                   </code>
@@ -629,8 +629,8 @@ const TabKanitz = ({ parsedData, aiAnalysis }: { parsedData?: ParsedFinancialDat
                           <p className="text-lg font-bold font-mono">{latest.fi.toFixed(2)}</p>
                         </div>
                         <div className="p-3 rounded-lg bg-background">
-                          <p className="text-[10px] text-muted-foreground">Risk Score Normalizado</p>
-                          <p className="text-lg font-bold font-mono">{latest.riskScoreNormalized}/100</p>
+                          <p className="text-[10px] text-muted-foreground">Risk Score Noprospecçãolizado</p>
+                          <p className="text-lg font-bold font-mono">{latest.riskScoreNoprospecçãolized}/100</p>
                         </div>
                       </div>
                       <div className="p-3 rounded-lg bg-muted/20">
@@ -746,7 +746,7 @@ const TabKanitz = ({ parsedData, aiAnalysis }: { parsedData?: ParsedFinancialDat
                   </div>
                 </div>
 
-                {/* Base Normativa */}
+                {/* Base Noprospecçãotiva */}
                 <div className="flex flex-wrap gap-1.5 pt-2">
                   {["Lei 11.101/2005", "CPC 26", "NBC TA 570", "IFRS", "Modelo Kanitz (1978)"].map(n => (
                     <Badge key={n} variant="secondary" className="text-[10px]">{n}</Badge>

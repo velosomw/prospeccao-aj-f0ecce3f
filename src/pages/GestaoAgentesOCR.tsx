@@ -317,8 +317,8 @@ export default function GestaoAgentesOCR() {
                 <div>
                   <h3 className="font-bold text-lg">MD MASTER — Arquitetura Completa</h3>
                   <p className="text-xs text-white/80 mt-1 max-w-3xl">
-                    Plataforma multi-cloud (Google Drive + OneDrive) com OCR + IA, agentes especializados por pasta,
-                    armazenamento estruturado + embeddings, e evolução via dataset próprio + learning loop.
+                    Platafoprospecção multi-cloud (Google Drive + OneDrive) com OCR + IA, agentes especializados por pasta,
+                    aprospecçãozenamento estruturado + embeddings, e evolução via dataset próprio + learning loop.
                   </p>
                   <div className="flex flex-wrap gap-2 mt-3">
                     {[
@@ -416,11 +416,11 @@ export default function GestaoAgentesOCR() {
             {/* Status implementation */}
             <div className="bg-card rounded-xl border border-border p-4">
               <h4 className="font-bold text-foreground flex items-center gap-1.5 mb-3">
-                <CheckCircle2 className="w-4 h-4 text-[hsl(152,70%,45%)]" /> Status na plataforma
+                <CheckCircle2 className="w-4 h-4 text-[hsl(152,70%,45%)]" /> Status na platafoprospecção
               </h4>
               <div className="grid md:grid-cols-3 gap-2 text-xs">
                 {[
-                  { label: "OneDrive (MS Graph)", status: "ok", note: "Conector ativo, base /Projeto RMA" },
+                  { label: "OneDrive (MS Graph)", status: "ok", note: "Conector ativo, base /Projeto Prospecção" },
                   { label: "Google Drive", status: "todo", note: "Conector disponível, ingest a habilitar" },
                   { label: "Filas / Workers", status: "partial", note: "Edge functions assíncronas (BEx Cloud)" },
                   { label: "OCR Worker", status: "partial", note: "audit-parse-pdf + pipeline-search" },
@@ -428,7 +428,7 @@ export default function GestaoAgentesOCR() {
                   { label: "Validador / Análise / Antifraude", status: "ok", note: "5 estágios definidos" },
                   { label: "Postgres + pgvector", status: "ok", note: "pipeline_documents + document_embeddings" },
                   { label: "API Layer", status: "ok", note: "Edge functions REST" },
-                  { label: "Dashboard", status: "ok", note: "Gestor IA + RMA Workspace" },
+                  { label: "Dashboard", status: "ok", note: "Gestor IA + Prospecção Workspace" },
                   { label: "Dataset / Treino", status: "todo", note: "Fase 12 — sintético + ground truth" },
                   { label: "Learning Loop", status: "todo", note: "Correção humana → re-prompt" },
                 ].map((row, i) => {
@@ -740,7 +740,7 @@ export default function GestaoAgentesOCR() {
 
               <TabsContent value="rules" className="space-y-3 mt-4">
                 <p className="text-xs text-muted-foreground">
-                  Regras híbridas regex + IA: se o texto contém qualquer um dos termos, classifica como o tipo informado.
+                  Regras híbridas regex + IA: se o texto contém qualquer um dos termos, classifica como o tipo infoprospecçãodo.
                 </p>
                 {(editing.classification_rules || []).map((r, i) => (
                   <div key={i} className="grid grid-cols-[2fr_1fr_auto] gap-2">

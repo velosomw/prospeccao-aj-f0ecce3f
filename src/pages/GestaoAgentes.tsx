@@ -12,7 +12,7 @@ import {
   listLearningExtractions,
   markAsCorrect,
 } from "@/services/learningService";
-import { RMA_TOPICS, buildLearningPath, getTopicBySlug } from "@/lib/rmaTopics";
+import { Prospecção_TOPICS, buildLearningPath, getTopicBySlug } from "@/lib/prospecçãoTopics";
 import { getAgentForTopic } from "@/lib/specializedAgents";
 import { Loader2, FolderTree, X, Sparkles } from "lucide-react";
 import {
@@ -54,7 +54,7 @@ const accuracyDistribution: any[] = [];
 const learningEvolution: any[] = [];
 const datasetItems: any[] = [];
 
-const performanceStages = [
+const perfoprospecçãonceStages = [
   { step: "Parser estrutural",  p50: 1.2,  p95: 3.4,  p99: 5.1 },
   { step: "OCR (Google Vision)", p50: 8.7,  p95: 22.3, p99: 38.5 },
   { step: "Embedding",          p50: 0.9,  p95: 2.1,  p99: 3.4 },
@@ -65,11 +65,11 @@ const performanceStages = [
 ];
 
 const personaVarLabels = [
-  { key: "Rn", label: "Rigor Normativo (Rₙ)" },
+  { key: "Rn", label: "Rigor Noprospecçãotivo (Rₙ)" },
   { key: "Cr", label: "Conservadorismo (Cᵣ)" },
   { key: "Sr", label: "Sensibilidade Risco (Sᵣ)" },
   { key: "Da", label: "Profundidade Analítica (Dₐ)" },
-  { key: "Fl", label: "Formalidade (Fₗ)" },
+  { key: "Fl", label: "Foprospecçãolidade (Fₗ)" },
   { key: "Ap", label: "Agressividade (Aₚ)" },
 ];
 
@@ -161,8 +161,8 @@ const TabUploadProcessamento = () => {
   }, [busy]);
 
   const groupedTopics = useMemo(() => {
-    const groups: Record<string, typeof RMA_TOPICS> = {};
-    for (const t of RMA_TOPICS) {
+    const groups: Record<string, typeof Prospecção_TOPICS> = {};
+    for (const t of Prospecção_TOPICS) {
       (groups[t.group] ||= []).push(t);
     }
     return groups;
@@ -247,7 +247,7 @@ const TabUploadProcessamento = () => {
 
     const runOne = async (i: number) => {
       const file = filesToProcess[i];
-      const t0 = performance.now();
+      const t0 = perfoprospecçãonce.now();
       const idx = i;
       updateTimeline(idx, { startedAt: Date.now(), status: "processing", etaSec: avgDurationRef.current });
 
@@ -265,7 +265,7 @@ const TabUploadProcessamento = () => {
         let extracted = await extractTextFromFile(file, uploaded);
         if (extracted.asyncOcrId) {
           const polled = await waitForOcr(extracted.asyncOcrId);
-          extracted = { ...extracted, rawText: polled.rawText, normalizedText: polled.normalizedText, ocrConfidence: polled.confidence, pageCount: polled.pageCount };
+          extracted = { ...extracted, rawText: polled.rawText, noprospecçãolizedText: polled.noprospecçãolizedText, ocrConfidence: polled.confidence, pageCount: polled.pageCount };
         }
         setStage(idx, "ocr", "done");
 
@@ -275,7 +275,7 @@ const TabUploadProcessamento = () => {
         setStageMsg(`Processando IA — ${file.name}`);
         const aiStart = await processWithAI({
           rawText: extracted.rawText,
-          normalizedText: extracted.normalizedText,
+          noprospecçãolizedText: extracted.noprospecçãolizedText,
           path: learningPath,
           ocrConfidence: extracted.ocrConfidence,
         });
@@ -327,7 +327,7 @@ const TabUploadProcessamento = () => {
         }
         setStage(idx, "validate", "done");
 
-        const durSec = (performance.now() - t0) / 1000;
+        const durSec = (perfoprospecçãonce.now() - t0) / 1000;
         durations.push(durSec);
         avgDurationRef.current = durations.reduce((a, b) => a + b, 0) / durations.length;
 
@@ -338,7 +338,7 @@ const TabUploadProcessamento = () => {
         toast.success(`${file.name} → ${topic.label}`);
       } catch (err: any) {
         console.error("[GestaoAgentes] upload pipeline error", err);
-        const durSec = (performance.now() - t0) / 1000;
+        const durSec = (perfoprospecçãonce.now() - t0) / 1000;
         const dur = durSec.toFixed(1) + "s";
         setTimeline((tl) => tl.map((it, j) => {
           if (j !== idx) return it;
@@ -451,7 +451,7 @@ const TabUploadProcessamento = () => {
               </div>
               <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{agent.description}</p>
               <p className="text-[10px] text-muted-foreground/80 mt-1">
-                Cobre {agent.topics.length} tópico(s) RMA · Aceita: {agent.accepted_types.join(", ")}
+                Cobre {agent.topics.length} tópico(s) Prospecção · Aceita: {agent.accepted_types.join(", ")}
               </p>
             </div>
           </div>
@@ -908,9 +908,9 @@ const TabDatasetHistorico = () => (
   </div>
 );
 
-// ─── Aba 5: Performance ──────────────────────────────────────
-const TabPerformance = () => {
-  const totalE2E = performanceStages.find(s => s.step.includes("E2E"))!;
+// ─── Aba 5: Perfoprospecçãonce ──────────────────────────────────────
+const TabPerfoprospecçãonce = () => {
+  const totalE2E = perfoprospecçãonceStages.find(s => s.step.includes("E2E"))!;
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -946,7 +946,7 @@ const TabPerformance = () => {
             <th className="text-right px-4 py-3 font-semibold text-muted-foreground">p99</th>
           </tr></thead>
           <tbody>
-            {performanceStages.map((s, i) => (
+            {perfoprospecçãonceStages.map((s, i) => (
               <tr key={i} className={`border-b border-border last:border-0 hover:bg-muted/30 ${s.step.includes("E2E") ? "bg-muted/30 font-semibold" : ""}`}>
                 <td className="px-4 py-3 text-foreground">{s.step}</td>
                 <td className="px-4 py-3 text-right font-mono text-foreground">{fmtTime(s.p50)}</td>
@@ -1133,8 +1133,8 @@ const GestaoAgentes = () => {
             <TabsTrigger value="dataset" className="gap-1.5 data-[state=active]:bg-[hsl(258,90%,66%)] data-[state=active]:text-white text-xs">
               <Database className="w-3.5 h-3.5" /> Dataset &amp; Histórico
             </TabsTrigger>
-            <TabsTrigger value="performance" className="gap-1.5 data-[state=active]:bg-[hsl(258,90%,66%)] data-[state=active]:text-white text-xs">
-              <Activity className="w-3.5 h-3.5" /> Performance
+            <TabsTrigger value="perfoprospecçãonce" className="gap-1.5 data-[state=active]:bg-[hsl(258,90%,66%)] data-[state=active]:text-white text-xs">
+              <Activity className="w-3.5 h-3.5" /> Perfoprospecçãonce
             </TabsTrigger>
             <TabsTrigger value="registro" className="gap-1.5 data-[state=active]:bg-[hsl(258,90%,66%)] data-[state=active]:text-white text-xs">
               <Bot className="w-3.5 h-3.5" /> Registro de Agentes &amp; Integrações
@@ -1148,7 +1148,7 @@ const GestaoAgentes = () => {
           <TabsContent value="validacao" className="mt-4"><TabValidacaoInteligente /></TabsContent>
           <TabsContent value="aprendizado" className="mt-4"><TabAprendizadoIA /></TabsContent>
           <TabsContent value="dataset" className="mt-4"><TabDatasetHistorico /></TabsContent>
-          <TabsContent value="performance" className="mt-4"><TabPerformance /></TabsContent>
+          <TabsContent value="perfoprospecçãonce" className="mt-4"><TabPerfoprospecçãonce /></TabsContent>
           <TabsContent value="registro" className="mt-4"><TabRegistroIntegracoes /></TabsContent>
           <TabsContent value="financeiro" className="mt-4"><TabFinanceiroTokens /></TabsContent>
         </Tabs>

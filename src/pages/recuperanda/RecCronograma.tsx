@@ -2,7 +2,7 @@ import { Calendar, Clock, CheckCircle2, AlertTriangle, FileText } from "lucide-r
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
 const eventos = [
-  { data: "20/05/2026", item: "Entrega RMA Jun/2026",      tipo: "entrega",   status: "futuro" },
+  { data: "20/05/2026", item: "Entrega Prospecção Jun/2026",      tipo: "entrega",   status: "futuro" },
   { data: "13/05/2026", item: "AGC convocada",             tipo: "audiencia", status: "futuro" },
   { data: "08/05/2026", item: "Balancete Mai entregue",    tipo: "entrega",   status: "ok" },
   { data: "01/05/2026", item: "DRE Abr publicado",         tipo: "entrega",   status: "ok" },

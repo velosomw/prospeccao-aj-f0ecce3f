@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { uploadLearningFile, extractTextFromFile, processWithAI, markExtractionAsLearning } from "@/services/learningService";
 
 interface Props {
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
   companyId?: string | null;
 }
 
@@ -23,16 +23,16 @@ interface Row {
   learning_attempts: number;
 }
 
-export default function RMAManualUploadLearningCard({ rmaId, companyId }: Props) {
-  const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(rmaId ?? null);
+export default function ProspecçãoManualUploadLearningCard({ prospecçãoId, companyId }: Props) {
+  const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(prospecçãoId ?? null);
   const [files, setFiles] = useState<Row[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (resolvedRmaId || !companyId) return;
-    supabase.from("companies").select("rma_id").eq("id", companyId).maybeSingle()
-      .then(({ data }) => { if (data?.rma_id) setResolvedRmaId(data.rma_id); });
+    supabase.from("companies").select("prospecção_id").eq("id", companyId).maybeSingle()
+      .then(({ data }) => { if (data?.prospecção_id) setResolvedRmaId(data.prospecção_id); });
   }, [companyId, resolvedRmaId]);
 
   const load = async () => {
@@ -41,7 +41,7 @@ export default function RMAManualUploadLearningCard({ rmaId, companyId }: Props)
     const { data, error } = await supabase
       .from("onedrive_files")
       .select("file_id, file_name, path, mime_type, last_learning_error, learning_attempts")
-      .eq("rma_id", resolvedRmaId)
+      .eq("prospecção_id", resolvedRmaId)
       .eq("requires_manual_upload", true)
       .order("path", { ascending: true })
       .limit(500);
@@ -59,7 +59,7 @@ export default function RMAManualUploadLearningCard({ rmaId, companyId }: Props)
       const ext = await extractTextFromFile(file, uploaded);
       const ai: any = await processWithAI({
         rawText: ext.rawText,
-        normalizedText: ext.normalizedText,
+        noprospecçãolizedText: ext.noprospecçãolizedText,
         path: uploaded.path,
         ocrConfidence: (ext as any).ocrConfidence ?? null,
       });

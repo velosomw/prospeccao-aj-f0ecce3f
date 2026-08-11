@@ -20,7 +20,7 @@ import { listCompanies, type Company } from "@/services/companiesService";
 import {
   listReleases, createRelease, updateReleaseStatus, deleteRelease,
   monthLabel, statusLabel, type RmaRelease, type ReleaseRole, type ReleaseStatus,
-} from "@/services/rmaReleaseService";
+} from "@/services/prospecçãoReleaseService";
 
 type ProfileLite = { user_id: string; full_name: string; email: string; role: string; active: boolean };
 
@@ -28,7 +28,7 @@ const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 const currentYear = new Date().getFullYear();
 const YEARS = [currentYear - 2, currentYear - 1, currentYear, currentYear + 1];
 
-const LiberarRMA = () => {
+const LiberarProspecção = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -134,12 +134,12 @@ const LiberarRMA = () => {
     return releases.filter((r) => {
       const c = companiesById.get(r.company_id);
       const u = profilesById.get(r.released_to_user_id);
-      return [c?.name, c?.rma_id, u?.full_name, u?.email, monthLabel(r.month), String(r.year)]
+      return [c?.name, c?.prospecção_id, u?.full_name, u?.email, monthLabel(r.month), String(r.year)]
         .filter(Boolean).join(" ").toLowerCase().includes(q);
     });
   }, [releases, search, companiesById, profilesById]);
 
-  const formatDateTime = (s: string) =>
+  const foprospecçãotDateTime = (s: string) =>
     new Date(s).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
   return (
@@ -154,10 +154,10 @@ const LiberarRMA = () => {
           </button>
           <div>
             <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <ShieldCheck className="w-6 h-6 text-[hsl(217,91%,50%)]" /> Liberar RMA
+              <ShieldCheck className="w-6 h-6 text-[hsl(217,91%,50%)]" /> Liberar Prospecção
             </h1>
             <p className="text-sm text-muted-foreground">
-              Atribua acesso de visualização do RMA Empresa por período (ano/mês) para Magistrado e Recuperanda.
+              Atribua acesso de visualização do Prospecção Empresa por período (ano/mês) para Magistrado e Recuperanda.
             </p>
           </div>
         </div>
@@ -168,7 +168,7 @@ const LiberarRMA = () => {
               <Send className="w-3.5 h-3.5" /> Liberar / Gerenciar
             </TabsTrigger>
             <TabsTrigger value="movimentacoes" className="gap-1.5 text-xs data-[state=active]:bg-[hsl(217,91%,50%)] data-[state=active]:text-white">
-              <HistoryIcon className="w-3.5 h-3.5" /> Movimentações RMA
+              <HistoryIcon className="w-3.5 h-3.5" /> Movimentações Prospecção
             </TabsTrigger>
             <TabsTrigger value="trilha" className="gap-1.5 text-xs data-[state=active]:bg-[hsl(217,91%,50%)] data-[state=active]:text-white">
               <ShieldCheck className="w-3.5 h-3.5" /> Trilha de Auditoria
@@ -180,7 +180,7 @@ const LiberarRMA = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
-                  <Send className="w-4 h-4 text-[hsl(217,91%,50%)]" /> Nova liberação de RMA
+                  <Send className="w-4 h-4 text-[hsl(217,91%,50%)]" /> Nova liberação de Prospecção
                 </CardTitle>
                 <CardDescription>
                   Selecione empresa, período e destinatário (Magistrado ou Recuperanda).
@@ -190,14 +190,14 @@ const LiberarRMA = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   <div>
                     <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1">
-                      <Building2 className="w-3.5 h-3.5" /> Empresa RMA
+                      <Building2 className="w-3.5 h-3.5" /> Empresa Prospecção
                     </label>
                     <Select value={companyId} onValueChange={setCompanyId}>
                       <SelectTrigger><SelectValue placeholder="Selecione a empresa..." /></SelectTrigger>
                       <SelectContent>
                         {companies.map((c) => (
                           <SelectItem key={c.id} value={c.id}>
-                            {c.name} {c.rma_id ? `· ${c.rma_id}` : ""}
+                            {c.name} {c.prospecção_id ? `· ${c.prospecção_id}` : ""}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -264,7 +264,7 @@ const LiberarRMA = () => {
 
                 <div className="flex justify-end mt-3">
                   <Button onClick={handleRelease} className="gap-1.5">
-                    <Send className="w-4 h-4" /> Liberar RMA
+                    <Send className="w-4 h-4" /> Liberar Prospecção
                   </Button>
                 </div>
               </CardContent>
@@ -317,7 +317,7 @@ const LiberarRMA = () => {
                               <td className="px-3 py-2">
                                 <div className="flex flex-col">
                                   <span className="font-medium text-foreground">{c?.name || "Empresa"}</span>
-                                  {c?.rma_id && <Badge variant="outline" className="text-[10px] font-mono w-fit mt-0.5">{c.rma_id}</Badge>}
+                                  {c?.prospecção_id && <Badge variant="outline" className="text-[10px] font-mono w-fit mt-0.5">{c.prospecção_id}</Badge>}
                                 </div>
                               </td>
                               <td className="px-3 py-2">
@@ -338,7 +338,7 @@ const LiberarRMA = () => {
                                 </span>
                               </td>
                               <td className="px-3 py-2 text-xs text-muted-foreground whitespace-nowrap">
-                                {formatDateTime(r.created_at)}
+                                {foprospecçãotDateTime(r.created_at)}
                               </td>
                               <td className="px-3 py-2 text-right">
                                 <div className="inline-flex gap-1">
@@ -398,4 +398,4 @@ const LiberarRMA = () => {
   );
 };
 
-export default LiberarRMA;
+export default LiberarProspecção;

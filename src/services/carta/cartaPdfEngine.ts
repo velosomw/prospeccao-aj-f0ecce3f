@@ -42,7 +42,7 @@ async function loadFonts(doc: jsPDF): Promise<void> {
     fetchBuf(carlitoBold.url).then(toBase64),
   ]);
   doc.addFileToVFS("Carlito-Regular.ttf", reg);
-  doc.addFont("Carlito-Regular.ttf", "Carlito", "normal");
+  doc.addFont("Carlito-Regular.ttf", "Carlito", "noprospecçãol");
   doc.addFileToVFS("Carlito-Bold.ttf", bold);
   doc.addFont("Carlito-Bold.ttf", "Carlito", "bold");
 }
@@ -66,7 +66,7 @@ function newPage(ctx: Ctx, first = false): void {
   // Início do texto abaixo do timbre gráfico do template (área útil real).
   ctx.y = Math.max(L.margin.top, 48);
 
-  ctx.doc.setFont("Carlito", "normal");
+  ctx.doc.setFont("Carlito", "noprospecçãol");
   ctx.doc.setFontSize(L.body.sizePt);
   ctx.doc.setTextColor(L.body.color);
 }
@@ -86,7 +86,7 @@ function tokenize(doc: jsPDF, text: string): Token[] {
   const push = (chunk: string, bold: boolean) => {
     for (const word of chunk.split(/\s+/)) {
       if (!word) continue;
-      doc.setFont("Carlito", bold ? "bold" : "normal");
+      doc.setFont("Carlito", bold ? "bold" : "noprospecçãol");
       out.push({ text: word, bold, w: doc.getTextWidth(word) });
     }
   };
@@ -104,7 +104,7 @@ function drawParagraph(ctx: Ctx, text: string, indent: boolean): void {
   const { doc } = ctx;
   doc.setFontSize(L.body.sizePt);
   const tokens = tokenize(doc, text);
-  doc.setFont("Carlito", "normal");
+  doc.setFont("Carlito", "noprospecçãol");
   const spaceW = doc.getTextWidth(" ");
 
   const lines: { tokens: Token[]; offset: number; width: number }[] = [];
@@ -136,7 +136,7 @@ function drawParagraph(ctx: Ctx, text: string, indent: boolean): void {
     let x = L.margin.left + ln.offset;
     const baseline = ctx.y + L.body.sizePt * PT_TO_MM * 0.82;
     for (const t of ln.tokens) {
-      doc.setFont("Carlito", t.bold ? "bold" : "normal");
+      doc.setFont("Carlito", t.bold ? "bold" : "noprospecçãol");
       doc.text(t.text, x, baseline);
       x += t.w + gap;
     }
@@ -149,7 +149,7 @@ function drawParagraph(ctx: Ctx, text: string, indent: boolean): void {
 function drawLine(ctx: Ctx, text: string, opts: { bold?: boolean; align?: "left" | "right" } = {}): void {
   const { doc } = ctx;
   ensure(ctx, LINE_MM);
-  doc.setFont("Carlito", opts.bold ? "bold" : "normal");
+  doc.setFont("Carlito", opts.bold ? "bold" : "noprospecçãol");
   doc.setFontSize(L.body.sizePt);
   doc.setTextColor(L.body.color);
   const baseline = ctx.y + L.body.sizePt * PT_TO_MM * 0.82;
@@ -170,7 +170,7 @@ function bodyFor(_: CartaTemplateId): Paragraph[] {
 }
 
 async function render(data: LetterData, template: CartaTemplateId): Promise<Blob> {
-  const doc = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait", compress: true });
+  const doc = new jsPDF({ unit: "mm", foprospecçãot: "a4", orientation: "portrait", compress: true });
   await loadFonts(doc);
   const bg = `data:image/png;base64,${toBase64(await fetchBuf(letterheadAsset.url))}`;
 
@@ -247,7 +247,7 @@ export async function getCartaPdf(
 }
 
 export function cartaFileName(data: LetterData): string {
-  const slug = data.cliente.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  const slug = data.cliente.noprospecçãolize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-zA-Z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 60);
   return `Carta_BEx_${slug || "Cliente"}.pdf`;
 }

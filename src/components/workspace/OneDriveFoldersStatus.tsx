@@ -3,26 +3,26 @@ import { Folder, FolderOpen, RefreshCw, CheckCircle2, AlertCircle, Clock, Rotate
 import { supabase } from "@/integrations/supabase/client";
 import { DIP_FOLDERS, dipFolderSlug } from "@/data/dipFolders";
 import { toast } from "sonner";
-import { buildFolderAliasMap, buildPathInFolder, findFolderLocationForDip, getPathDirectory, getPathFolderSegment, matchDipFolderBySegment, normalizeFolderText } from "@/utils/dipFolderPaths";
+import { buildFolderAliasMap, buildPathInFolder, findFolderLocationForDip, getPathDirectory, getPathFolderSegment, matchDipFolderBySegment, noprospecçãolizeFolderText } from "@/utils/dipFolderPaths";
 import { buildFolderNumbering } from "@/utils/dipFolderNumbering";
 
-// Normaliza um texto (lowercase, sem acentos, sem caracteres especiais)
+// Noprospecçãoliza um texto (lowercase, sem acentos, sem caracteres especiais)
 // para comparação fuzzy de labels de pasta entre OneDrive e DIP_FOLDERS.
-const normalize = (s: string) =>
-  normalizeFolderText(s);
+const noprospecçãolize = (s: string) =>
+  noprospecçãolizeFolderText(s);
 
 // Pega as palavras "fortes" (≥4 letras) do label canônico para fuzzy match.
 const keyWords = (label: string) =>
-  normalize(label)
+  noprospecçãolize(label)
     .split(" ")
     .filter((w) => w.length >= 4);
 
 interface Props {
   companyId: string | null;
-  /** Filtro por competência (vem do CompetenciaSelector do RMA). */
+  /** Filtro por competência (vem do CompetenciaSelector do Prospecção). */
   ano?: number | null;
   mes?: number | null;
-  /** Quando true, o seletor de mês é travado ao mês do RMA vinculado. */
+  /** Quando true, o seletor de mês é travado ao mês do Prospecção vinculado. */
   lockMonth?: boolean;
 }
 
@@ -83,7 +83,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   // Pasta destino escolhida no seletor por arquivo (key = file_id ou path)
   const [moveTarget, setMoveTarget] = useState<Record<string, number>>({});
-  // Confirmação em 2 etapas para exclusão
+  // Confiprospecçãoção em 2 etapas para exclusão
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   // Ações em curso (para desabilitar botões)
   const [busyKey, setBusyKey] = useState<string | null>(null);
@@ -121,7 +121,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
 
   const fileKey = (r: FileRow) => r.file_id || r.path;
 
-  // Move o arquivo para outra pasta DIP — apenas no banco da plataforma (path + metadata).
+  // Move o arquivo para outra pasta DIP — apenas no banco da platafoprospecção (path + metadata).
   // Não toca no OneDrive.
   const moveFile = async (r: FileRow, targetId: number) => {
     if (!r.file_id) { toast.error("Arquivo sem file_id; não é possível mover."); return; }
@@ -203,7 +203,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
         .delete()
         .eq("file_id", r.file_id);
       if (error) throw error;
-      toast.success("Arquivo excluído da plataforma.");
+      toast.success("Arquivo excluído da platafoprospecção.");
       setPendingDelete(null);
       setSelectedFile(null);
       await load();
@@ -217,7 +217,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, companyId]);
 
-  // Reset override quando muda o RMA/competência ativa.
+  // Reset override quando muda o Prospecção/competência ativa.
   useEffect(() => {
     setMonthOverride("auto");
   }, [companyId, ano, mes]);
@@ -233,7 +233,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
   }, [rows]);
 
   // Determina filtro de mês efetivo. Se `lockMonth=true`, ignora override do usuário
-  // e usa SEMPRE o ano/mes do RMA vinculado (não permite seleção divergente).
+  // e usa SEMPRE o ano/mes do Prospecção vinculado (não permite seleção divergente).
   const effectiveMonth: string | "all" = useMemo(() => {
     if (lockMonth && ano && mes) return `${ano}-${String(mes).padStart(2, "0")}`;
     if (monthOverride !== "auto") return monthOverride;
@@ -249,9 +249,9 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
   const folderAliases = useMemo(() => buildFolderAliasMap(monthFilteredRows), [monthFilteredRows]);
 
   // Extrai o "nome curto" da pasta (último segmento do path do diretório),
-  // ex.: "Projeto RMA/DIPLOMATA/2025/11.2025/01 - Fluxo de Caixa" → "01 - Fluxo de Caixa".
+  // ex.: "Projeto Prospecção/DIPLOMATA/2025/11.2025/01 - Fluxo de Caixa" → "01 - Fluxo de Caixa".
   // Usado como CHAVE de agrupamento para que variações de prefixo
-  // ("Projeto RMA/..." vs "DIPLOMATA/...") sejam consolidadas em UMA única pasta.
+  // ("Projeto Prospecção/..." vs "DIPLOMATA/...") sejam consolidadas em UMA única pasta.
   const folderKey = (path: string): { key: string; full: string } => {
     const dir = getPathDirectory(path) || "/";
     const last = getPathFolderSegment(path) || dir;
@@ -287,7 +287,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
     }));
 
     // ── Mescla com a lista canônica DIP_FOLDERS (60 pastas esperadas).
-    const actualNorm = arr.map((f) => normalize(f.folder));
+    const actualNorm = arr.map((f) => noprospecçãolize(f.folder));
     for (const dip of DIP_FOLDERS) {
       const kws = keyWords(dip.label);
       if (kws.length === 0) continue;
@@ -317,7 +317,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
     return arr;
   }, [monthFilteredRows]);
 
-  // Numeração unificada (Nº OneDrive / Nº Arquivo) baseada nas pastas REAIS aplicadas neste RMA.
+  // Numeração unificada (Nº OneDrive / Nº Arquivo) baseada nas pastas REAIS aplicadas neste Prospecção.
   const folderNumbering = useMemo(
     () => buildFolderNumbering(folders.filter((f) => !f.missing && f.dipId != null).map((f) => f.dipId!)),
     [folders],
@@ -380,8 +380,8 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
                 className="text-xs px-2 py-1 rounded border border-border bg-[hsl(220,15%,96%)] text-foreground font-semibold"
                 title="Mês travado ao Prospecção AJ vinculado"
               >
-                {effectiveMonth === "all" ? "RMA sem competência definida" : monthLabel(effectiveMonth)}
-                <span className="ml-2 text-[10px] text-muted-foreground font-normal">(Prospecção AJ)</span>
+                {effectiveMonth === "all" ? "Prospecção sem competência definida" : monthLabel(effectiveMonth)}
+                <span className="ml-2 text-[10px] text-muted-foreground font-noprospecçãol">(Prospecção AJ)</span>
               </span>
             ) : (
               <select
@@ -484,7 +484,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
                 {!loading && filtered.length === 0 && (
                   <tr><td colSpan={8} className="text-center py-6 text-xs text-muted-foreground">
                     {rows.length === 0
-                      ? "Nenhum arquivo encontrado no OneDrive para este RMA."
+                      ? "Nenhum arquivo encontrado no OneDrive para este Prospecção."
                       : effectiveMonth !== "all"
                         ? `Nenhuma pasta encontrada para ${monthLabel(effectiveMonth)}.`
                         : "Nenhuma pasta no filtro atual."}
@@ -691,7 +691,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
                                               ) : (
                                                 <span className="inline-flex items-center gap-2 text-[11px] px-2 py-1 rounded bg-[hsl(0,84%,60%)]/10 border border-[hsl(0,84%,60%)]/40 text-[hsl(0,84%,40%)]">
                                                   <AlertTriangle className="w-3 h-3" />
-                                                  Confirmar exclusão definitiva?
+                                                  Confiprospecçãor exclusão definitiva?
                                                   <button
                                                     disabled={busy}
                                                     onClick={() => deleteFile(r)}

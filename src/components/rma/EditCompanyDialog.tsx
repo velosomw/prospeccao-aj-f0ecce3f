@@ -43,7 +43,7 @@ export default function EditCompanyDialog({ company, open, onOpenChange, onSaved
       await updateCompany(company.id, {
         name: form.name || company.name,
         cnpj: form.cnpj || undefined,
-        rma_id: form.rma_id || undefined,
+        prospecção_id: form.prospecção_id || undefined,
         sector: form.sector || undefined,
         cnae: form.cnae || undefined,
         city: form.city || undefined,
@@ -95,7 +95,7 @@ export default function EditCompanyDialog({ company, open, onOpenChange, onSaved
           </div>
           <div>
             <Label>ID Prospecção AJ</Label>
-            <Input value={form.rma_id || ""} onChange={(e) => set("rma_id", e.target.value)} />
+            <Input value={form.prospecção_id || ""} onChange={(e) => set("prospecção_id", e.target.value)} />
           </div>
           <div>
             <Label>CNPJ</Label>
@@ -151,14 +151,14 @@ export default function EditCompanyDialog({ company, open, onOpenChange, onSaved
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" disabled={deleting || saving}>
-                <Trash2 className="w-4 h-4" /> Excluir RMA
+                <Trash2 className="w-4 h-4" /> Excluir Prospecção
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Excluir {company.name}?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Esta ação não pode ser desfeita. O RMA e os dados de cadastro serão removidos permanentemente.
+                  Esta ação não pode ser desfeita. O Prospecção e os dados de cadastro serão removidos peprospecçãonentemente.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

@@ -31,7 +31,7 @@ const envioClass = (s: number) => {
   return { dot: "hsl(142,76%,36%)", label: "Enviada" };
 };
 
-const formatRelative = (iso?: string | null) => {
+const foprospecçãotRelative = (iso?: string | null) => {
   if (!iso) return "—";
   const d = new Date(iso).getTime();
   if (!d) return "—";
@@ -86,7 +86,7 @@ export default function ConsultorDashboard() {
         c.status === "pausada" ? "pausado" :
         "em_analise";
       return {
-        id: c.rma_id || `CARTA-${c.id.slice(0, 4).toUpperCase()}`,
+        id: c.prospecção_id || `CARTA-${c.id.slice(0, 4).toUpperCase()}`,
         companyId: c.id,
         empresa: c.name,
         periodo: c.current_period_month && c.execution_year
@@ -97,7 +97,7 @@ export default function ConsultorDashboard() {
         envio,
         pendencias: Math.max(0, Math.round((100 - envio) / 4)),
         criticas: envio < 50 ? Math.max(1, Math.round((100 - envio) / 12)) : 0,
-        atualizado: formatRelative(c.updated_at),
+        atualizado: foprospecçãotRelative(c.updated_at),
       };
     });
   }, [data]);
@@ -416,7 +416,7 @@ export default function ConsultorDashboard() {
                   <div key={i} className="flex items-start justify-between gap-3 pb-3 border-b border-border/60 last:border-0">
                     <div>
                       <div className="text-sm font-medium text-foreground">{p.titulo}</div>
-                      <div className="text-[11px] text-muted-foreground">{p.rma}</div>
+                      <div className="text-[11px] text-muted-foreground">{p.prospecção}</div>
                     </div>
                     <div className="text-[11px] text-muted-foreground whitespace-nowrap">{p.tempo}</div>
                   </div>
@@ -426,7 +426,7 @@ export default function ConsultorDashboard() {
 
             <div className="bg-white border border-border rounded-xl p-4">
               <div className="flex items-center justify-between mb-3">
-                <div className="text-sm font-bold text-foreground">Processamentos de Carta <span className="text-xs text-muted-foreground font-normal ml-1">(Últimas 24h)</span></div>
+                <div className="text-sm font-bold text-foreground">Processamentos de Carta <span className="text-xs text-muted-foreground font-noprospecçãol ml-1">(Últimas 24h)</span></div>
                 <button className="text-[11px] font-semibold text-[hsl(217,91%,50%)] hover:underline flex items-center gap-1">
                   Ver logs <ArrowRight className="w-3 h-3" />
                 </button>

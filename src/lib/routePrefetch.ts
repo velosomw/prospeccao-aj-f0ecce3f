@@ -15,8 +15,8 @@ const loaders: Record<string, Loader> = {
 
   "/consultor":               () => import("@/pages/consultor/ConsultorHome"),
   "/consultor/dashboard":     () => import("@/pages/ConsultorDashboard"),
-  "/consultor/rmas":          () => import("@/pages/consultor/ConsultorRMAs"),
-  "/consultor/prospeccoes-aj": () => import("@/pages/consultor/ConsultorRMAs"),
+  "/consultor/prospecçãos":          () => import("@/pages/consultor/ConsultorProspecçãos"),
+  "/consultor/prospeccoes-aj": () => import("@/pages/consultor/ConsultorProspecçãos"),
   "/consultor/processos":     () => import("@/pages/consultor/ConsultorProcessos"),
   "/consultor/pendencias":    () => import("@/pages/consultor/ConsultorPendencias"),
   "/consultor/relatorios":    () => import("@/pages/consultor/ConsultorRelatorios"),
@@ -37,8 +37,8 @@ const loaders: Record<string, Loader> = {
   "/processo-prospeccao":     () => import("@/pages/ProcessoProspeccao"),
   "/treinar-ia":              () => import("@/pages/TrainAI"),
   "/relatorios-contabeis":    () => import("@/pages/RelatoriosContabeis"),
-  "/cadastro-prospeccao-aj":  () => import("@/pages/CadastroRMA"),
-  "/liberar-prospeccao-aj":   () => import("@/pages/LiberarRMA"),
+  "/cadastro-prospeccao-aj":  () => import("@/pages/CadastroProspecção"),
+  "/liberar-prospeccao-aj":   () => import("@/pages/LiberarProspecção"),
   "/modelo-matematico":       () => import("@/pages/ModeloMatematico"),
   "/user-management":         () => import("@/pages/UserManagement"),
   "/gestao-agentes":          () => import("@/pages/GestaoAgentes"),
@@ -47,7 +47,7 @@ const loaders: Record<string, Loader> = {
 
   "/magistrado":              () => import("@/pages/MagistradoDashboard"),
   "/magistrado/processos":    () => import("@/pages/magistrado/MagProcessos"),
-  "/magistrado/rmas":         () => import("@/pages/magistrado/MagRMAs"),
+  "/magistrado/prospecçãos":         () => import("@/pages/magistrado/MagProspecçãos"),
   "/magistrado/empresas":     () => import("@/pages/magistrado/MagEmpresas"),
   "/magistrado/decisoes":     () => import("@/pages/magistrado/MagDecisoes"),
   "/magistrado/historico":    () => import("@/pages/magistrado/MagHistorico"),
@@ -60,7 +60,7 @@ const loaders: Record<string, Loader> = {
 
   "/admjudicial":              () => import("@/pages/AdmjudicialDashboard"),
   "/admjudicial/recuperandas": () => import("@/pages/admjudicial/AdmRecuperandas"),
-  "/admjudicial/rmas":         () => import("@/pages/admjudicial/AdmRMAs"),
+  "/admjudicial/prospecçãos":         () => import("@/pages/admjudicial/AdmProspecçãos"),
   "/admjudicial/pendencias":   () => import("@/pages/admjudicial/AdmPendencias"),
   "/admjudicial/relatorios":   () => import("@/pages/admjudicial/AdmRelatorios"),
   "/admjudicial/historico":    () => import("@/pages/admjudicial/AdmHistorico"),
@@ -85,7 +85,7 @@ export function prefetchRoute(path: string): void {
   loader().catch(() => started.delete(path));
 }
 
-// Pré-carrega, em tempo ocioso e de forma escalonada, todas as rotas visíveis
+// Pré-carrega, em tempo ocioso e de foprospecção escalonada, todas as rotas visíveis
 // no menu lateral — assim o clique já encontra o chunk em cache.
 export function prefetchRoutesIdle(paths: string[]): void {
   const pending = paths.filter((p) => !started.has(p) && loaders[p]);

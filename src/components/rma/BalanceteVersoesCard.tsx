@@ -152,7 +152,7 @@ export default function BalanceteVersoesCard({ companyId, ano, mes, onRestored }
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancelar</AlertDialogCancel>
                             <AlertDialogAction onClick={() => handleRestore(s.id, s.versao)}>
-                              Confirmar rollback
+                              Confiprospecçãor rollback
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>

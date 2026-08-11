@@ -90,7 +90,7 @@ export function InteligenciaExecutivaPanel({ linha }: InteligenciaExecutivaPanel
             <section className="bg-blue-50 p-5 rounded-xl border border-blue-100 shadow-sm">
               <h3 className="font-bold text-blue-900 mb-2">Por que este processo interessa?</h3>
               <p className="text-blue-800 text-xs leading-relaxed">
-                {ws.interesse_bex || "Informação não disponível."}
+                {ws.interesse_bex || "Infoprospecçãoção não disponível."}
               </p>
             </section>
 

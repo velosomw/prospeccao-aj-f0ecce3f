@@ -16,11 +16,11 @@ import {
 // ─── Types ───────────────────────────────────────────────────
 type Criticidade = "critico" | "medio" | "baixo";
 type EventType =
-  | "ALTERACAO_STATUS_RMA"
+  | "ALTERACAO_STATUS_Prospecção"
   | "APROVACAO_DOCUMENTO"
   | "UPLOAD_DOCUMENTO"
   | "CIENCIA_DOCUMENTO"
-  | "VISUALIZACAO_RMA"
+  | "VISUALIZACAO_Prospecção"
   | "EXPORT_LOGS"
   | "ALTERACAO_CADASTRAL"
   | "DECISAO_JURIDICA"
@@ -32,7 +32,7 @@ interface AuditTrailLog {
   id: string;
   eventType: EventType;
   criticidade: Criticidade;
-  rmaId: string;
+  prospecçãoId: string;
   processoNumero: string;
   etapa: string;
   userNome: string;
@@ -60,11 +60,11 @@ const criticidadeConfig: Record<Criticidade, { label: string; color: string; bg:
 };
 
 const eventTypeLabels: Record<EventType, string> = {
-  ALTERACAO_STATUS_RMA: "Alteração de Status",
+  ALTERACAO_STATUS_Prospecção: "Alteração de Status",
   APROVACAO_DOCUMENTO: "Aprovação de Documento",
   UPLOAD_DOCUMENTO: "Upload de Documento",
   CIENCIA_DOCUMENTO: "Ciência de Documento",
-  VISUALIZACAO_RMA: "Visualização de RMA",
+  VISUALIZACAO_Prospecção: "Visualização de Prospecção",
   EXPORT_LOGS: "Exportação de Logs",
   ALTERACAO_CADASTRAL: "Alteração Cadastral",
   DECISAO_JURIDICA: "Decisão Jurídica",
@@ -73,7 +73,7 @@ const eventTypeLabels: Record<EventType, string> = {
   LOGOUT: "Logout",
 };
 
-const formatDateTime = (ts: string) => {
+const foprospecçãotDateTime = (ts: string) => {
   const d = new Date(ts);
   return d.toLocaleDateString("pt-BR") + " " + d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 };
@@ -104,7 +104,7 @@ const TabTrilhaAuditoria = () => {
     if (filterCriticidade !== "todos" && log.criticidade !== filterCriticidade) return false;
     if (filterEventType !== "todos" && log.eventType !== filterEventType) return false;
     if (filterPerfil !== "todos" && log.userPerfil !== filterPerfil) return false;
-    if (filterRma && !log.rmaId.toLowerCase().includes(filterRma.toLowerCase())) return false;
+    if (filterRma && !log.prospecçãoId.toLowerCase().includes(filterRma.toLowerCase())) return false;
     if (searchTerm) {
       const s = searchTerm.toLowerCase();
       return (
@@ -123,17 +123,17 @@ const TabTrilhaAuditoria = () => {
   const criticos = mockLogs.filter(l => l.criticidade === "critico").length;
   const medios = mockLogs.filter(l => l.criticidade === "medio").length;
   const baixos = mockLogs.filter(l => l.criticidade === "baixo").length;
-  const uniqueRmas = new Set(mockLogs.filter(l => l.rmaId !== "-").map(l => l.rmaId)).size;
+  const uniqueRmas = new Set(mockLogs.filter(l => l.prospecçãoId !== "-").map(l => l.prospecçãoId)).size;
 
   const handleExportCSV = () => {
-    const headers = ["ID", "Tipo Evento", "Criticidade", "RMA", "Processo", "Etapa", "Usuário", "Login", "Perfil", "Ação", "Módulo", "Antes", "Depois", "Data/Hora", "IP", "Dispositivo", "Hash"];
+    const headers = ["ID", "Tipo Evento", "Criticidade", "Prospecção", "Processo", "Etapa", "Usuário", "Login", "Perfil", "Ação", "Módulo", "Antes", "Depois", "Data/Hora", "IP", "Dispositivo", "Hash"];
     const rows = filtered.map(l => [
       l.id, eventTypeLabels[l.eventType], criticidadeConfig[l.criticidade].label,
-      l.rmaId, l.processoNumero, l.etapa, l.userNome, l.userLogin, l.userPerfil,
+      l.prospecçãoId, l.processoNumero, l.etapa, l.userNome, l.userLogin, l.userPerfil,
       l.acao, l.modulo,
       l.beforeData ? JSON.stringify(l.beforeData) : "",
       l.afterData ? JSON.stringify(l.afterData) : "",
-      formatDateTime(l.timestamp), l.ip, l.dispositivo, l.hash
+      foprospecçãotDateTime(l.timestamp), l.ip, l.dispositivo, l.hash
     ]);
     const csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(",")).join("\n");
     const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
@@ -156,8 +156,8 @@ const TabTrilhaAuditoria = () => {
     URL.revokeObjectURL(url);
   };
 
-  // Unique RMAs for timeline
-  const rmaTimelines = Array.from(new Set(mockLogs.filter(l => l.rmaId !== "-").map(l => l.rmaId)));
+  // Unique Prospecçãos for timeline
+  const prospecçãoTimelines = Array.from(new Set(mockLogs.filter(l => l.prospecçãoId !== "-").map(l => l.prospecçãoId)));
 
   return (
     <div className="space-y-6">
@@ -225,24 +225,24 @@ const TabTrilhaAuditoria = () => {
         {/* ── Tab: Linha do Tempo ── */}
         <TabsContent value="timeline" className="mt-4 space-y-4">
           <p className="text-sm text-muted-foreground">Reconstrução cronológica completa dos eventos por processo Prospecção AJ.</p>
-          {rmaTimelines.map(rmaId => {
-            const rmaLogs = mockLogs.filter(l => l.rmaId === rmaId).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+          {prospecçãoTimelines.map(prospecçãoId => {
+            const prospecçãoLogs = mockLogs.filter(l => l.prospecçãoId === prospecçãoId).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
             return (
-              <Card key={rmaId} className="border-border">
+              <Card key={prospecçãoId} className="border-border">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
                     <FileText className="w-4 h-4 text-[hsl(258,90%,66%)]" />
-                    {rmaId}
-                    <span className="text-xs text-muted-foreground font-normal ml-2">
-                      {rmaLogs[0]?.processoNumero}
+                    {prospecçãoId}
+                    <span className="text-xs text-muted-foreground font-noprospecçãol ml-2">
+                      {prospecçãoLogs[0]?.processoNumero}
                     </span>
-                    <Badge variant="outline" className="ml-auto text-xs">{rmaLogs.length} eventos</Badge>
+                    <Badge variant="outline" className="ml-auto text-xs">{prospecçãoLogs.length} eventos</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="relative pl-6 space-y-4">
                     <div className="absolute left-2.5 top-1 bottom-1 w-0.5 bg-border" />
-                    {rmaLogs.map((log, i) => {
+                    {prospecçãoLogs.map((log, i) => {
                       const cfg = criticidadeConfig[log.criticidade];
                       return (
                         <div key={log.id} className="relative">
@@ -250,7 +250,7 @@ const TabTrilhaAuditoria = () => {
                           <div className="bg-muted/30 rounded-lg p-3 hover:bg-muted/50 transition-colors cursor-pointer" onClick={() => setDetailLog(log)}>
                             <div className="flex items-center justify-between flex-wrap gap-2">
                               <div className="flex items-center gap-2">
-                                <span className="text-xs font-mono text-muted-foreground">{formatDateTime(log.timestamp)}</span>
+                                <span className="text-xs font-mono text-muted-foreground">{foprospecçãotDateTime(log.timestamp)}</span>
                                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ background: cfg.color }}>{cfg.label}</span>
                                 <span className="text-xs font-semibold text-foreground">{eventTypeLabels[log.eventType]}</span>
                               </div>
@@ -377,14 +377,14 @@ const TabTrilhaAuditoria = () => {
                         <TableCell>
                           <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ background: cfg.color }}>{cfg.label}</span>
                         </TableCell>
-                        <TableCell className="text-xs font-mono">{log.rmaId}</TableCell>
+                        <TableCell className="text-xs font-mono">{log.prospecçãoId}</TableCell>
                         <TableCell className="text-xs">{log.userNome}</TableCell>
                         <TableCell>
                           <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: `${getPerfilColor(log.userPerfil)}15`, color: getPerfilColor(log.userPerfil) }}>
                             {log.userPerfil}
                           </span>
                         </TableCell>
-                        <TableCell className="text-xs font-mono">{formatDateTime(log.timestamp)}</TableCell>
+                        <TableCell className="text-xs font-mono">{foprospecçãotDateTime(log.timestamp)}</TableCell>
                         <TableCell className="text-xs">{log.modulo}</TableCell>
                         <TableCell className="p-2">
                           <Button variant="ghost" size="icon" className="h-7 w-7" onClick={e => { e.stopPropagation(); setDetailLog(log); }}>
@@ -462,7 +462,7 @@ const TabTrilhaAuditoria = () => {
           <p className="text-sm text-muted-foreground">Registro de visualizações, ciências de decisão, aceites de termos e downloads de documentos sensíveis.</p>
           <div className="grid gap-3">
             {mockLogs
-              .filter(l => ["CIENCIA_DOCUMENTO", "VISUALIZACAO_RMA", "DOWNLOAD_ARQUIVO"].includes(l.eventType))
+              .filter(l => ["CIENCIA_DOCUMENTO", "VISUALIZACAO_Prospecção", "DOWNLOAD_ARQUIVO"].includes(l.eventType))
               .map(log => {
                 const cfg = criticidadeConfig[log.criticidade];
                 return (
@@ -477,7 +477,7 @@ const TabTrilhaAuditoria = () => {
                         <h4 className="text-sm font-semibold text-foreground">{eventTypeLabels[log.eventType]}</h4>
                         <p className="text-xs text-muted-foreground mt-0.5">{log.acao}</p>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs font-mono text-muted-foreground">{formatDateTime(log.timestamp)}</span>
+                          <span className="text-xs font-mono text-muted-foreground">{foprospecçãotDateTime(log.timestamp)}</span>
                           <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: `${getPerfilColor(log.userPerfil)}15`, color: getPerfilColor(log.userPerfil) }}>
                             {log.userNome} ({log.userPerfil})
                           </span>
@@ -485,7 +485,7 @@ const TabTrilhaAuditoria = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono text-muted-foreground">{log.rmaId}</span>
+                      <span className="text-xs font-mono text-muted-foreground">{log.prospecçãoId}</span>
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ background: cfg.color }}>{cfg.label}</span>
                     </div>
                   </div>
@@ -532,7 +532,7 @@ const TabTrilhaAuditoria = () => {
                           <Lock className="w-3 h-3 text-[hsl(152,70%,45%)] ml-1" />
                         </div>
                       </div>
-                      <span className="text-xs font-mono text-muted-foreground flex-shrink-0">{formatDateTime(log.timestamp)}</span>
+                      <span className="text-xs font-mono text-muted-foreground flex-shrink-0">{foprospecçãotDateTime(log.timestamp)}</span>
                     </div>
                   </div>
                 );
@@ -555,7 +555,7 @@ const TabTrilhaAuditoria = () => {
                 title: "ISO 27001",
                 icon: Lock,
                 color: "hsl(210,80%,55%)",
-                items: ["Controle de auditoria A.12.4", "Gestão de logs e monitoramento", "Segurança da informação", "Registros imutáveis (WORM)"]
+                items: ["Controle de auditoria A.12.4", "Gestão de logs e monitoramento", "Segurança da infoprospecçãoção", "Registros imutáveis (WORM)"]
               },
               {
                 title: "Boas Práticas (Big Four)",
@@ -617,7 +617,7 @@ const TabTrilhaAuditoria = () => {
                     {criticidadeConfig[detailLog.criticidade].label}
                   </span>
                   <Badge variant="outline">{eventTypeLabels[detailLog.eventType]}</Badge>
-                  <span className="text-xs font-mono text-muted-foreground ml-auto">{formatDateTime(detailLog.timestamp)}</span>
+                  <span className="text-xs font-mono text-muted-foreground ml-auto">{foprospecçãotDateTime(detailLog.timestamp)}</span>
                 </div>
 
                 {/* Info grid */}
@@ -626,7 +626,7 @@ const TabTrilhaAuditoria = () => {
                     ["Usuário", detailLog.userNome],
                     ["Login", detailLog.userLogin],
                     ["Perfil", detailLog.userPerfil],
-                    ["RMA", detailLog.rmaId],
+                    ["Prospecção", detailLog.prospecçãoId],
                     ["Processo", detailLog.processoNumero],
                     ["Etapa", detailLog.etapa],
                     ["Módulo", detailLog.modulo],
@@ -649,7 +649,7 @@ const TabTrilhaAuditoria = () => {
                 {/* Diff */}
                 {(detailLog.beforeData || detailLog.afterData) && (
                   <div>
-                    <p className="text-xs text-muted-foreground mb-2">Estado da Informação (Diff)</p>
+                    <p className="text-xs text-muted-foreground mb-2">Estado da Infoprospecçãoção (Diff)</p>
                     <div className="bg-muted/30 rounded-lg p-3 space-y-2">
                       {Object.keys({ ...detailLog.beforeData, ...detailLog.afterData }).map(key => (
                         <div key={key} className="flex items-center gap-2 text-xs">

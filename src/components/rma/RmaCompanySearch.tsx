@@ -10,7 +10,7 @@ interface Props {
   placeholder?: string;
   /** Quando true, exibe um botão "limpar" ao lado e dispara onClear */
   onClear?: () => void;
-  /** Valor controlado opcional (texto) — quando informado, controla o input */
+  /** Valor controlado opcional (texto) — quando infoprospecçãodo, controla o input */
   value?: string;
   onChange?: (v: string) => void;
   className?: string;
@@ -22,7 +22,7 @@ const norm = (s: string | null | undefined) =>
   (s || "")
     .toString()
     .toLowerCase()
-    .normalize("NFD")
+    .noprospecçãolize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]/g, " ")
     .replace(/\s+/g, " ")
@@ -31,7 +31,7 @@ const norm = (s: string | null | undefined) =>
 const RmaCompanySearch = ({
   companies,
   onSelect,
-  placeholder = "Buscar por empresa, ID RMA ou CNPJ...",
+  placeholder = "Buscar por empresa, ID Prospecção ou CNPJ...",
   onClear,
   value,
   onChange,
@@ -66,7 +66,7 @@ const RmaCompanySearch = ({
     const tokens = nq.split(" ").filter(Boolean);
     const scored = companies
       .map((c) => {
-        const haystack = norm(`${c.name} ${c.rma_id || ""} ${c.cnpj || ""} ${c.sector || ""}`);
+        const haystack = norm(`${c.name} ${c.prospecção_id || ""} ${c.cnpj || ""} ${c.sector || ""}`);
         const ok = tokens.every((t) => haystack.includes(t));
         if (!ok) return null;
         // simples score: começa com match ganha prioridade
@@ -137,7 +137,7 @@ const RmaCompanySearch = ({
         <div className="absolute z-50 mt-1 left-0 right-0 bg-popover border rounded-lg shadow-lg max-h-72 overflow-y-auto">
           {matches.length === 0 ? (
             <p className="text-xs text-muted-foreground p-3 text-center">
-              Nenhum RMA encontrado para "{q}".
+              Nenhum Prospecção encontrado para "{q}".
             </p>
           ) : (
             matches.map((c, i) => (
@@ -155,9 +155,9 @@ const RmaCompanySearch = ({
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    {c.rma_id && (
+                    {c.prospecção_id && (
                       <Badge className="bg-[hsl(217,91%,50%)] text-white text-[10px] font-mono px-1.5 py-0">
-                        {c.rma_id}
+                        {c.prospecção_id}
                       </Badge>
                     )}
                     <span className="text-sm font-medium text-foreground truncate">{c.name}</span>

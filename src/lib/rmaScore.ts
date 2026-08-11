@@ -1,5 +1,5 @@
-// Cálculo unificado do Score Global do RMA.
-// Usado tanto no Workspace (RMAStatusTab) quanto nos Alertas Inteligentes (Dashboard)
+// Cálculo unificado do Score Global do Prospecção.
+// Usado tanto no Workspace (ProspecçãoStatusTab) quanto nos Alertas Inteligentes (Dashboard)
 // para garantir que os percentuais batam exatamente entre as telas.
 //
 // Fórmula (não-regressiva):
@@ -34,7 +34,7 @@ const inferTopicNumber = (topic: ScoreTopic, index: number) => {
 };
 
 import { fileMatchesTopic, filterIngestibleFiles } from "@/lib/topicMatch";
-import { RMA_TOPICS } from "@/data/rmaTopics";
+import { Prospecção_TOPICS } from "@/data/prospecçãoTopics";
 
 export function buildLiveScoreTopics(
   topics: ScoreTopic[] | null | undefined,
@@ -50,10 +50,10 @@ export function buildLiveScoreTopics(
   }));
 
   // Fallback: quando a análise IA ainda não produziu tópicos, usa a lista
-  // canônica do RMA para que o workspace consiga refletir a presença de
+  // canônica do Prospecção para que o workspace consiga refletir a presença de
   // arquivos no OneDrive em vez de mostrar tudo zerado.
   if (base.length === 0) {
-    base = RMA_TOPICS.map((t) => ({
+    base = Prospecção_TOPICS.map((t) => ({
       id: `t${t.number}`,
       number: t.number,
       name: t.name,
@@ -67,7 +67,7 @@ export function buildLiveScoreTopics(
   const cleanFiles = filterIngestibleFiles(files);
   if (cleanFiles.length === 0) return base;
 
-  // Dedup por (path normalizado + nome) — evita inflar contagem por re-uploads.
+  // Dedup por (path noprospecçãolizado + nome) — evita inflar contagem por re-uploads.
   const seen = new Set<string>();
   const dedupedFiles = cleanFiles.filter((f) => {
     const key = `${(f.path || "").toLowerCase()}::${(f.file_name || "").toLowerCase()}`;
@@ -118,7 +118,7 @@ export function computeRmaScore(topics: ScoreTopic[] | null | undefined, baselin
 }
 
 // ---------------------------------------------------------------------------
-// Endpoint único — consome o edge function `rma-score` para garantir que
+// Endpoint único — consome o edge function `prospecção-score` para garantir que
 // Dashboard, Workspace e Alertas Inteligentes usem exatamente o mesmo cálculo.
 // ---------------------------------------------------------------------------
 
@@ -145,13 +145,13 @@ export async function fetchRmaScores(
       return {};
     }
     const { data, error } = await invokeAuthed<{ scores: Record<string, UnifiedRmaScore> }>(
-      "rma-score",
+      "prospecção-score",
       companyIds && companyIds.length > 0 ? { companyIds } : {},
     );
     if (error) throw error;
     return (data?.scores ?? {}) as Record<string, UnifiedRmaScore>;
   } catch (e) {
-    console.warn("[rmaScore] fetchRmaScores falhou, usando cálculo local:", e);
+    console.warn("[prospecçãoScore] fetchRmaScores falhou, usando cálculo local:", e);
     return {};
   }
 }

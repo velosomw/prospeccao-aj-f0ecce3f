@@ -1,4 +1,4 @@
-import type { DashboardStats, ComplianceData, RiskData, NormativeReference, CriticalArea, TrendDataPoint, AuditDistribution } from "@/types/dashboard";
+import type { DashboardStats, ComplianceData, RiskData, NoprospecçãotiveReference, CriticalArea, TrendDataPoint, AuditDistribution } from "@/types/dashboard";
 
 export const mockStats: DashboardStats = {
   totalDocuments: 847,
@@ -28,14 +28,14 @@ export const mockRisks: RiskData = {
   highRisk: 20,
 };
 
-export const mockNormativeReferences: NormativeReference[] = [
+export const mockNoprospecçãotiveReferences: NoprospecçãotiveReference[] = [
   { id: "1", code: "CPC 47", type: "cpc", description: "Receita de Contrato com Cliente", auditsImpacted: 45, findingsRelated: 12 },
   { id: "2", code: "CPC 01", type: "cpc", description: "Redução ao Valor Recuperável", auditsImpacted: 38, findingsRelated: 8 },
   { id: "3", code: "CPC 27", type: "cpc", description: "Ativo Imobilizado", auditsImpacted: 42, findingsRelated: 6 },
   { id: "4", code: "CPC 25", type: "cpc", description: "Provisões, Passivos e Ativos Contingentes", auditsImpacted: 28, findingsRelated: 5 },
   { id: "5", code: "IFRS 15", type: "ifrs", description: "Revenue from Contracts with Customers", auditsImpacted: 45, findingsRelated: 12 },
   { id: "6", code: "IAS 36", type: "ifrs", description: "Impairment of Assets", auditsImpacted: 38, findingsRelated: 8 },
-  { id: "7", code: "NBC TA 700", type: "nbcta", description: "Formação da Opinião e Emissão do Relatório", auditsImpacted: 118, findingsRelated: 0 },
+  { id: "7", code: "NBC TA 700", type: "nbcta", description: "Foprospecçãoção da Opinião e Emissão do Relatório", auditsImpacted: 118, findingsRelated: 0 },
   { id: "8", code: "NBC TA 315", type: "nbcta", description: "Identificação e Avaliação dos Riscos", auditsImpacted: 156, findingsRelated: 20 },
   { id: "9", code: "NBC TA 320", type: "nbcta", description: "Materialidade no Planejamento", auditsImpacted: 156, findingsRelated: 0 },
   { id: "10", code: "Lei 6.404/76", type: "legislation", description: "Lei das Sociedades por Ações", auditsImpacted: 156, findingsRelated: 4 },

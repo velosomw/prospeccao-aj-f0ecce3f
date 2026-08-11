@@ -12,13 +12,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import PlatformLayout from "@/components/PlatformLayout";
-import { RMA_TOPICS } from "@/data/rmaTopics";
+import { Prospecção_TOPICS } from "@/data/prospecçãoTopics";
 import { createCompany, assignCompanyToConsultant } from "@/services/companiesService";
 import { supabase } from "@/integrations/supabase/client";
 
 const UFS = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 
-const formatCNPJ = (v: string) => {
+const foprospecçãotCNPJ = (v: string) => {
   const d = v.replace(/\D/g, "").slice(0, 14);
   let o = d;
   if (d.length > 2) o = d.slice(0, 2) + "." + d.slice(2);
@@ -30,7 +30,7 @@ const formatCNPJ = (v: string) => {
 
 type Consultor = { user_id: string; full_name: string; email: string; role: string; active: boolean };
 
-const CadastroRMA = () => {
+const CadastroProspecção = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -38,8 +38,8 @@ const CadastroRMA = () => {
   const [saving, setSaving] = useState(false);
 
   // Empresa
-  const [rmaName, setRmaName] = useState("");
-  const [rmaId, setRmaId] = useState("");
+  const [prospecçãoName, setRmaName] = useState("");
+  const [prospecçãoId, setRmaId] = useState("");
   const [cnpj, setCnpj] = useState("");
   const [uf, setUf] = useState("");
   const [city, setCity] = useState("");
@@ -62,13 +62,13 @@ const CadastroRMA = () => {
   const [selectedConsultor, setSelectedConsultor] = useState<string>("");
 
   const categories = useMemo(() => {
-    const set = new Set(RMA_TOPICS.map(t => t.category));
+    const set = new Set(Prospecção_TOPICS.map(t => t.category));
     return ["Todos", ...Array.from(set).sort()];
   }, []);
 
   const filteredTopics = useMemo(() => {
     const q = topicSearch.trim().toLowerCase();
-    return RMA_TOPICS.filter(t =>
+    return Prospecção_TOPICS.filter(t =>
       (activeCategory === "Todos" || t.category === activeCategory) &&
       (!q || t.name.toLowerCase().includes(q) || String(t.number).includes(q))
     );
@@ -81,7 +81,7 @@ const CadastroRMA = () => {
       return next;
     });
   };
-  const selectAll = () => setSelectedTopics(new Set(RMA_TOPICS.map(t => t.number)));
+  const selectAll = () => setSelectedTopics(new Set(Prospecção_TOPICS.map(t => t.number)));
   const clearAll = () => setSelectedTopics(new Set());
   const selectFiltered = () => {
     setSelectedTopics(prev => {
@@ -105,26 +105,26 @@ const CadastroRMA = () => {
       .finally(() => setLoadingConsultores(false));
   }, [step]);
 
-  // Garante que o mês de referência sempre coincide com o número do ID RMA (001–012)
-  const rmaIdNumber = useMemo(() => {
-    const m = rmaId.match(/^RMA-(\d{3})$/);
+  // Garante que o mês de referência sempre coincide com o número do ID Prospecção (001–012)
+  const prospecçãoIdNumber = useMemo(() => {
+    const m = prospecçãoId.match(/^Prospecção-(\d{3})$/);
     if (!m) return null;
     const n = Number(m[1]);
     return n >= 1 && n <= 12 ? n : null;
-  }, [rmaId]);
+  }, [prospecçãoId]);
 
   useEffect(() => {
-    if (rmaIdNumber && executionMonth !== rmaIdNumber) {
-      setExecutionMonth(rmaIdNumber);
+    if (prospecçãoIdNumber && executionMonth !== prospecçãoIdNumber) {
+      setExecutionMonth(prospecçãoIdNumber);
     }
-  }, [rmaIdNumber, executionMonth]);
+  }, [prospecçãoIdNumber, executionMonth]);
 
   const handleNext = () => {
-    if (!rmaName.trim()) {
+    if (!prospecçãoName.trim()) {
       toast({ title: "Nome Prospecção AJ é obrigatório", variant: "destructive" });
       return;
     }
-    if (!rmaId.trim() || !rmaIdNumber) {
+    if (!prospecçãoId.trim() || !prospecçãoIdNumber) {
       toast({
         title: "ID Prospecção AJ inválido",
         description: "Selecione um ID Prospecção AJ entre Prospecção AJ-001 e Prospecção AJ-012.",
@@ -136,13 +136,13 @@ const CadastroRMA = () => {
       toast({ title: "CNPJ inválido", description: "Informe 14 dígitos", variant: "destructive" });
       return;
     }
-    if (!executionMonth || executionMonth !== rmaIdNumber) {
+    if (!executionMonth || executionMonth !== prospecçãoIdNumber) {
       toast({
         title: "Mês de referência divergente",
         description: "O mês deve coincidir com o número do ID Prospecção AJ (001–012).",
         variant: "destructive",
       });
-      setExecutionMonth(rmaIdNumber);
+      setExecutionMonth(prospecçãoIdNumber);
       return;
     }
     setStep(2);
@@ -161,7 +161,7 @@ const CadastroRMA = () => {
       toast({ title: "Selecione o Consultor responsável", variant: "destructive" });
       return;
     }
-    if (!rmaIdNumber || executionMonth !== rmaIdNumber) {
+    if (!prospecçãoIdNumber || executionMonth !== prospecçãoIdNumber) {
       toast({
         title: "Mês de referência divergente",
         description: "O mês deve coincidir com o número do ID Prospecção AJ (001–012). Volte à etapa 1 e revise.",
@@ -171,13 +171,13 @@ const CadastroRMA = () => {
     }
     setSaving(true);
     try {
-      const topics = RMA_TOPICS
+      const topics = Prospecção_TOPICS
         .filter(t => selectedTopics.has(t.number))
         .map(t => ({ number: t.number, name: t.name }));
       const company = await createCompany(
         {
-          name: rmaName,
-          rma_id: rmaId,
+          name: prospecçãoName,
+          prospecção_id: prospecçãoId,
           cnpj,
           uf,
           city,
@@ -204,7 +204,7 @@ const CadastroRMA = () => {
   const stepLabel = step === 1
     ? "Etapa 1 de 3 — Dados da empresa"
     : step === 2
-    ? "Etapa 2 de 3 — Seleção de tópicos do RMA"
+    ? "Etapa 2 de 3 — Seleção de tópicos do Prospecção"
     : "Etapa 3 de 3 — Validação e atribuição do Consultor";
 
   const consultorSelecionado = consultores.find(c => c.user_id === selectedConsultor);
@@ -254,27 +254,27 @@ const CadastroRMA = () => {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Dados da Empresa (Recuperanda)</CardTitle>
-              <CardDescription>O Coordenador registra o ID Prospecção AJ que vincula o Prospecção AJ Empresa na plataforma e ao Consultor.</CardDescription>
+              <CardDescription>O Coordenador registra o ID Prospecção AJ que vincula o Prospecção AJ Empresa na platafoprospecção e ao Consultor.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
-                  <Label>Nome Prospecção AJ * <span className="text-xs text-muted-foreground font-normal">(nome da empresa)</span></Label>
+                  <Label>Nome Prospecção AJ * <span className="text-xs text-muted-foreground font-noprospecçãol">(nome da empresa)</span></Label>
                   <Input
-                    value={rmaName}
+                    value={prospecçãoName}
                     onChange={(e) => setRmaName(e.target.value.toUpperCase())}
                     maxLength={200}
                     placeholder="Ex: DIPLOMATA"
                   />
                 </div>
                 <div>
-                  <Label>ID Prospecção AJ * <span className="text-xs text-muted-foreground font-normal">(número = mês de referência)</span></Label>
+                  <Label>ID Prospecção AJ * <span className="text-xs text-muted-foreground font-noprospecçãol">(número = mês de referência)</span></Label>
                   <div className="flex items-center gap-2">
                     <span className="px-3 h-10 inline-flex items-center rounded-md border border-input bg-muted text-sm font-mono text-foreground">Prospecção AJ-</span>
                     <Select
-                      value={rmaId.startsWith("RMA-") ? rmaId.slice(4) : ""}
+                      value={prospecçãoId.startsWith("Prospecção-") ? prospecçãoId.slice(4) : ""}
                       onValueChange={(v) => {
-                        setRmaId(`RMA-${v}`);
+                        setRmaId(`Prospecção-${v}`);
                         setExecutionMonth(Number(v));
                       }}
                     >
@@ -283,7 +283,7 @@ const CadastroRMA = () => {
                         {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(3, "0")).map((n) => {
                           const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
                           return (
-                            <SelectItem key={n} value={n}>RMA-{n} — {meses[Number(n) - 1]}</SelectItem>
+                            <SelectItem key={n} value={n}>Prospecção-{n} — {meses[Number(n) - 1]}</SelectItem>
                           );
                         })}
                       </SelectContent>
@@ -292,7 +292,7 @@ const CadastroRMA = () => {
                 </div>
                 <div>
                   <Label>CNPJ</Label>
-                  <Input value={cnpj} onChange={(e) => setCnpj(formatCNPJ(e.target.value))} placeholder="00.000.000/0000-00" />
+                  <Input value={cnpj} onChange={(e) => setCnpj(foprospecçãotCNPJ(e.target.value))} placeholder="00.000.000/0000-00" />
                 </div>
                 <div>
                   <Label>UF</Label>
@@ -312,14 +312,14 @@ const CadastroRMA = () => {
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[hsl(217,91%,50%)]" />
                   <Label className="text-sm font-semibold text-foreground">
-                    Execução automática mensal do RMA
+                    Execução automática mensal do Prospecção
                   </Label>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  A plataforma abre o RMA no dia 1º do mês e encerra no último dia (28/29/30/31).
+                  A platafoprospecção abre o Prospecção no dia 1º do mês e encerra no último dia (28/29/30/31).
                   A leitura no OneDrive ocorre na pasta{" "}
                   <span className="font-mono">
-                    Projeto RMA/{rmaName || "Empresa"}/{executionYear}/
+                    Projeto Prospecção/{prospecçãoName || "Empresa"}/{executionYear}/
                     {executionMonth ? `${String(executionMonth).padStart(2, "0")}.${executionYear}` : "MM.AAAA"}/
                   </span>
                   {" "}— cada subpasta é um tópico, classificado como{" "}
@@ -358,7 +358,7 @@ const CadastroRMA = () => {
                     <div className={`h-10 px-3 inline-flex items-center w-full rounded-md border bg-muted text-sm font-mono ${!executionMonth ? "border-[hsl(0,84%,60%)] text-muted-foreground" : "border-input text-foreground"}`}>
                       {executionMonth
                         ? `${String(executionMonth).padStart(2, "0")}.${executionYear} — ${["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"][executionMonth - 1]}`
-                        : "Definido pelo ID RMA"}
+                        : "Definido pelo ID Prospecção"}
                     </div>
                   </div>
                   <label className="flex items-start gap-2 p-3 rounded-md border border-border bg-card cursor-pointer">
@@ -393,12 +393,12 @@ const CadastroRMA = () => {
                 <div>
                   <CardTitle className="text-lg">Tópicos do Prospecção AJ</CardTitle>
                   <CardDescription>
-                    Selecione os tópicos que farão parte do RMA desta empresa. Você pode escolher quantos quiser.
+                    Selecione os tópicos que farão parte do Prospecção desta empresa. Você pode escolher quantos quiser.
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge className="bg-[hsl(217,91%,50%)]/10 text-[hsl(217,91%,50%)] border-[hsl(217,91%,50%)]/30">
-                    {selectedTopics.size} de {RMA_TOPICS.length} selecionados
+                    {selectedTopics.size} de {Prospecção_TOPICS.length} selecionados
                   </Badge>
                 </div>
               </div>
@@ -491,7 +491,7 @@ const CadastroRMA = () => {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-[hsl(217,91%,50%)]" />
-                  Validação do RMA Empresa
+                  Validação do Prospecção Empresa
                 </CardTitle>
                 <CardDescription>
                   Revise os dados antes de concluir e atribua o Consultor responsável pela operação.
@@ -504,9 +504,9 @@ const CadastroRMA = () => {
                       <Building2 className="w-4 h-4" />
                       <span className="text-xs font-semibold uppercase tracking-wide">Empresa</span>
                     </div>
-                    <p className="text-sm font-bold text-foreground truncate">{rmaName}</p>
+                    <p className="text-sm font-bold text-foreground truncate">{prospecçãoName}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {rmaId || "—"} • {cnpj || "Sem CNPJ"}
+                      {prospecçãoId || "—"} • {cnpj || "Sem CNPJ"}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {city || "—"}{uf ? `/${uf}` : ""}
@@ -520,7 +520,7 @@ const CadastroRMA = () => {
                     </div>
                     <p className="text-3xl font-bold text-foreground leading-none">
                       {selectedTopics.size}
-                      <span className="text-base font-normal text-muted-foreground"> / {RMA_TOPICS.length}</span>
+                      <span className="text-base font-noprospecçãol text-muted-foreground"> / {Prospecção_TOPICS.length}</span>
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">tópicos atribuídos</p>
                   </div>
@@ -532,7 +532,7 @@ const CadastroRMA = () => {
                     </div>
                     <p className="text-sm font-bold text-foreground">Aguardando ativação</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      O consultor atribuído deverá ativar o RMA para iniciar a análise da IA.
+                      O consultor atribuído deverá ativar o Prospecção para iniciar a análise da IA.
                     </p>
                   </div>
                 </div>
@@ -541,8 +541,8 @@ const CadastroRMA = () => {
                 <div>
                   <Label className="text-xs uppercase tracking-wide text-muted-foreground">Tópicos selecionados</Label>
                   <div className="mt-2 max-h-40 overflow-y-auto border rounded-lg p-3 flex flex-wrap gap-1.5">
-                    {RMA_TOPICS.filter(t => selectedTopics.has(t.number)).map(t => (
-                      <Badge key={t.number} variant="outline" className="text-[10px] font-normal">
+                    {Prospecção_TOPICS.filter(t => selectedTopics.has(t.number)).map(t => (
+                      <Badge key={t.number} variant="outline" className="text-[10px] font-noprospecçãol">
                         #{t.number} {t.name}
                       </Badge>
                     ))}
@@ -559,7 +559,7 @@ const CadastroRMA = () => {
                   Consultor Responsável
                 </CardTitle>
                 <CardDescription>
-                  Selecione o consultor que receberá este RMA na plataforma.
+                  Selecione o consultor que receberá este Prospecção na platafoprospecção.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -567,7 +567,7 @@ const CadastroRMA = () => {
                   <p className="text-sm text-muted-foreground py-4 text-center">Carregando consultores...</p>
                 ) : consultores.length === 0 ? (
                   <p className="text-sm text-muted-foreground py-4 text-center">
-                    Nenhum consultor ativo encontrado. Cadastre um consultor antes de atribuir o RMA.
+                    Nenhum consultor ativo encontrado. Cadastre um consultor antes de atribuir o Prospecção.
                   </p>
                 ) : (
                   <Select value={selectedConsultor} onValueChange={setSelectedConsultor}>
@@ -607,7 +607,7 @@ const CadastroRMA = () => {
                     className="bg-[hsl(217,91%,50%)] hover:bg-[hsl(217,91%,45%)] text-white gap-2"
                   >
                     <CheckCircle2 className="w-4 h-4" />
-                    {saving ? "Concluindo..." : "Concluir cadastro do RMA"}
+                    {saving ? "Concluindo..." : "Concluir cadastro do Prospecção"}
                   </Button>
                 </div>
               </CardContent>
@@ -619,4 +619,4 @@ const CadastroRMA = () => {
   );
 };
 
-export default CadastroRMA;
+export default CadastroProspecção;

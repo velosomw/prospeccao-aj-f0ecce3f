@@ -18,11 +18,11 @@ const tones: Record<string, Tone> = {
 };
 
 const cards = [
-  { label: "Cadastro",    desc: "Cadastre e gerencie informações de forma rápida e segura.",        icon: ClipboardList,      to: "/consultor/cadastro",    tone: "blue"   },
-  { label: "Planilha",    desc: "Salva as informações e Faz Upload PDF de forma inteligente.", icon: FileBarChart,       to: "/consultor/relatorios",  tone: "green"  },
+  { label: "Cadastro",    desc: "Cadastre e gerencie infoprospecçãoções de foprospecção rápida e segura.",        icon: ClipboardList,      to: "/consultor/cadastro",    tone: "blue"   },
+  { label: "Planilha",    desc: "Salva as infoprospecçãoções e Faz Upload PDF de foprospecção inteligente.", icon: FileBarChart,       to: "/consultor/relatorios",  tone: "green"  },
   { label: "Dashboard",   desc: "Acompanhe indicadores e métricas em tempo real.",                  icon: MonitorPlay,        to: "/consultor/dashboard",   tone: "purple" },
   { label: "Padrão Prospecção", desc: "Planilha padrão de prospecção do administrador judicial.",       icon: Bell,               to: "/consultor/planilha-padrao-prospeccao", tone: "orange" },
-  { label: "Planilha de Carta",    desc: "Gerencie clientes e acompanhe todas as informações.",              icon: Users,              to: "/consultor/clientes",    tone: "teal"   },
+  { label: "Planilha de Carta",    desc: "Gerencie clientes e acompanhe todas as infoprospecçãoções.",              icon: Users,              to: "/consultor/clientes",    tone: "teal"   },
   
 ];
 

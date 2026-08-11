@@ -21,7 +21,7 @@ import {
   mesKeyToLabel as _mesKeyToLabel,
   periodToMesKey as _periodToMesKey,
   detectDuplicates,
-} from "@/services/mesNormalizer";
+} from "@/services/mesNoprospecçãolizer";
 
 // Mapeamento Ref 1 (Ref Capital BEX) → chave canônica BS & Dados.
 // Cobertura COMPLETA das 47 referências da aba "BS" do template
@@ -109,7 +109,7 @@ export const REF1_MAP: Record<string, keyof BSDadosRow> = {
   "ATIVO CIRCULANTE": "ativo_circulante",
   "ATIVO NAO CIRCULANTE": "ativo_nao_circulante",
   "ATIVO NÃO CIRCULANTE": "ativo_nao_circulante",
-  "ATIVO PERMANENTE": "ativo_nao_circulante",
+  "ATIVO PEProspecçãoNENTE": "ativo_nao_circulante",
   "PASSIVO CIRCULANTE": "passivo_circulante",
   "PASSIVO NAO CIRCULANTE": "passivo_nao_circulante",
   "PASSIVO NÃO CIRCULANTE": "passivo_nao_circulante",
@@ -151,7 +151,7 @@ const FALLBACK_PATTERNS: Record<keyof BSDadosRow, RegExp | null> = {
   imobilizado: /\b(?:imobilizado|m[aá]quina|equipamento|ve[ií]culo|edifica[cç][oõ]es|terreno)\b/i,
   intangivel: /\bintang[ií]vel|marca\s+e\s+patent|software\b/i,
   investimentos: /\b(?:investiment[oa]s?\s+em|participa[cç][oõ]es?\s+societ|coligad|controlad)/i,
-  ativo_nao_circulante: /\bativo\s+n[aã]o[\s-]?circulante|ativo\s+permanente/i,
+  ativo_nao_circulante: /\bativo\s+n[aã]o[\s-]?circulante|ativo\s+peprospecçãonente/i,
   realizavel_longo_prazo: /\brealiz[aá]vel\s+a?\s*longo\s+prazo\b/i,
   ativo_circulante: /\bativo\s+circulante\b/i,
   // BALANÇO — Passivos & PL
@@ -248,7 +248,7 @@ export interface BSDadosRow {
 export const GROUP_LABELS: Record<string, { rotulo: string; campo: keyof BSDadosRow }> = {
   "11": { rotulo: "Ativo Circulante",            campo: "ativo_circulante" },
   "12": { rotulo: "Ativo Não Circulante",        campo: "ativo_nao_circulante" },
-  // "13" REMOVIDO — Ativo Permanente não é universal (Giannini e muitos
+  // "13" REMOVIDO — Ativo Peprospecçãonente não é universal (Giannini e muitos
   // planos não-padrão não o utilizam). Quando presente, é capturado via
   // ref1=ANC_TOTAL pelo dicionário textual.
   "21": { rotulo: "Passivo Circulante",          campo: "passivo_circulante" },
@@ -276,7 +276,7 @@ export function classifyDeviation(desvio: number, declaradoAusente: boolean): Gr
 export interface BalanceteEntry {
   /** Identificador do arquivo / balancete de origem */
   fileName: string;
-  /** Mês de referência atribuído pelo usuário (formato YYYY-MM). Pode ser null se múltiplos meses já estão no arquivo. */
+  /** Mês de referência atribuído pelo usuário (foprospecçãoto YYYY-MM). Pode ser null se múltiplos meses já estão no arquivo. */
   mesReferencia: string | null;
   /** Quando o usuário escolheu "auto-detect", lista de meses YYYY-MM resolvidos pelo parser. */
   mesesDetectados?: string[];
@@ -288,7 +288,7 @@ export interface BalanceteEntry {
 const toUpperNoAccent = (s: string) =>
   (s || "")
     .toString()
-    .normalize("NFD")
+    .noprospecçãolize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toUpperCase()
     .trim();
@@ -347,7 +347,7 @@ const RLP_REFS = new Set(["P","Q","R","S","T","U","V","W","X","Y","Z"]);
 // Quando essas linhas existem no balancete, são AUTORITATIVAS para o
 // campo principal (AC/PC/ANC/PNC/PL e DRE). Folhas descendentes só
 // alimentam sub-componentes (disponivel, estoques, fornecedores, etc.).
-// Nota: "13" (Ativo Permanente) intencionalmente fora — plano não-padrão
+// Nota: "13" (Ativo Peprospecçãonente) intencionalmente fora — plano não-padrão
 // pode emitir essa linha como sintética agregadora dentro de "12", o que
 // gera dupla contagem. Quando presente como grupo de fato, é capturado
 // via ref1=ANC_TOTAL pelo dicionário textual.
@@ -388,7 +388,7 @@ type ComponentBuckets = {
   layerByGroup: Record<string, "A" | "B" | "C">;
 };
 
-/** Resolve refs DRE em formato dot-decimal (10.A, 20.B, 30.C, 40.J, 50.B) → ref canônica. */
+/** Resolve refs DRE em foprospecçãoto dot-decimal (10.A, 20.B, 30.C, 40.J, 50.B) → ref canônica. */
 function resolveDotDRERef(ref: string): string | null {
   const m = /^(\d{1,2})\.([A-Z]\d?)$/i.exec(ref.trim());
   if (!m) return null;
@@ -414,7 +414,7 @@ function resolveKey(row: RowLike): keyof BSDadosRow | null {
   // antes do fallback por descrição (impede dupla contagem na receita_liquida).
   if (ref1 === "__IGNORE__") return null;
   if (ref1) {
-    // Normaliza refs DRE dot-decimal (formato planilha XPT: "10.A", "40.J", "50.B")
+    // Noprospecçãoliza refs DRE dot-decimal (foprospecçãoto planilha XPT: "10.A", "40.J", "50.B")
     const dotResolved = resolveDotDRERef(String(ref1));
     if (dotResolved) ref1 = dotResolved;
     const k = REF1_MAP[toUpperNoAccent(ref1)];
@@ -694,7 +694,7 @@ export function buildBSDados(
   // ── Prune de contas sintéticas (pais) para evitar dupla contagem ─────
   // GRUPO-FIRST: PRESERVAMOS os totalizadores de grupo (11/12/13/21/22/23/31/32/33/4/5/6/7/8)
   // mesmo que tenham folhas — eles são autoritativos.
-  // Normaliza códigos contábeis removendo espaços E TODOS os pontos
+  // Noprospecçãoliza códigos contábeis removendo espaços E TODOS os pontos
   // (ex.: "1.1" → "11", "2.1" → "21") — necessário para que o conjunto
   // GROUP_TOTAL_CODES (que usa códigos sem ponto: "11","21",…) reconheça
   // os totais de grupo em planos com numeração pontuada. Sem isso, contas

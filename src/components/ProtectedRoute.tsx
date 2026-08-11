@@ -11,7 +11,7 @@ export const roleHome: Record<AppRole, string> = {
   coordenador: "/dashboard",
   consultor: "/consultor",
   magistrado: "/magistrado",
-  recuperanda: "/rma",
+  recuperanda: "/prospecção",
   admjudicial: "/admjudicial",
 };
 

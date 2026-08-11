@@ -17,9 +17,9 @@ import {
   type CompanyTopic,
   type RmaHistoryEntry,
 } from "@/services/companiesService";
-import { RMA_TOPICS } from "@/data/rmaTopics";
+import { Prospecção_TOPICS } from "@/data/prospecçãoTopics";
 
-// As 10 abas do workspace RMA — espelho do RMAWorkspace
+// As 10 abas do workspace Prospecção — espelho do ProspecçãoWorkspace
 const WORKSPACE_TABS = [
   { key: "status", label: "Status Prospecção AJ" },
   { key: "processamento", label: "Processamento IA" },
@@ -40,7 +40,7 @@ interface Props {
   onClose: () => void;
 }
 
-const RMA360Panel = ({ company, onClose }: Props) => {
+const Prospecção360Panel = ({ company, onClose }: Props) => {
   const navigate = useNavigate();
   const [topics, setTopics] = useState<CompanyTopic[]>([]);
   const [consultants, setConsultants] = useState<ProfileLite[]>([]);
@@ -97,9 +97,9 @@ const RMA360Panel = ({ company, onClose }: Props) => {
   }, [tabsProgress]);
 
   const coveredTopicNumbers = new Set(topics.map((t) => t.topic_number));
-  const pendingTopics = RMA_TOPICS.filter((t) => !coveredTopicNumbers.has(t.number));
+  const pendingTopics = Prospecção_TOPICS.filter((t) => !coveredTopicNumbers.has(t.number));
 
-  const formatDate = (s: string) =>
+  const foprospecçãotDate = (s: string) =>
     new Date(s).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
 
   return (
@@ -114,9 +114,9 @@ const RMA360Panel = ({ company, onClose }: Props) => {
             <div className="min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h2 className="text-xl font-bold text-foreground truncate">{company.name}</h2>
-                {company.rma_id && (
+                {company.prospecção_id && (
                   <Badge className="bg-[hsl(217,91%,50%)] text-white font-mono text-xs">
-                    {company.rma_id}
+                    {company.prospecção_id}
                   </Badge>
                 )}
                 <Badge variant="outline" className="text-xs capitalize">{company.status}</Badge>
@@ -130,7 +130,7 @@ const RMA360Panel = ({ company, onClose }: Props) => {
                   </span>
                 )}
                 <span className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3" /> Cadastrada em {formatDate(company.created_at)}
+                  <Calendar className="w-3 h-3" /> Cadastrada em {foprospecçãotDate(company.created_at)}
                 </span>
               </div>
             </div>
@@ -139,7 +139,7 @@ const RMA360Panel = ({ company, onClose }: Props) => {
             <Button
               size="sm"
               className="bg-[hsl(217,91%,50%)] hover:bg-[hsl(217,91%,45%)] text-white gap-1.5"
-              onClick={() => navigate(`/rma/${company.id}`)}
+              onClick={() => navigate(`/prospecção/${company.id}`)}
             >
               <ExternalLink className="w-3.5 h-3.5" /> Abrir Workspace
             </Button>
@@ -205,11 +205,11 @@ const RMA360Panel = ({ company, onClose }: Props) => {
 
           <div className="bg-card border rounded-lg p-3">
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1">
-              <ListChecks className="w-3 h-3" /> Tópicos do RMA
+              <ListChecks className="w-3 h-3" /> Tópicos do Prospecção
             </p>
             <p className="text-2xl font-bold text-foreground leading-none">{topics.length}</p>
             <p className="text-[11px] text-muted-foreground mt-1">
-              de {RMA_TOPICS.length} disponíveis ({Math.round((topics.length / RMA_TOPICS.length) * 100)}%)
+              de {Prospecção_TOPICS.length} disponíveis ({Math.round((topics.length / Prospecção_TOPICS.length) * 100)}%)
             </p>
           </div>
 
@@ -225,7 +225,7 @@ const RMA360Panel = ({ company, onClose }: Props) => {
         {/* Progresso das 10 abas do workspace */}
         <div>
           <p className="text-sm font-semibold text-foreground mb-2 flex items-center gap-1.5">
-            <ListChecks className="w-4 h-4 text-[hsl(217,91%,50%)]" /> Etapas do Workspace RMA
+            <ListChecks className="w-4 h-4 text-[hsl(217,91%,50%)]" /> Etapas do Workspace Prospecção
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
             {tabsProgress.map((t, idx) => {
@@ -306,4 +306,4 @@ const RMA360Panel = ({ company, onClose }: Props) => {
   );
 };
 
-export default RMA360Panel;
+export default Prospecção360Panel;

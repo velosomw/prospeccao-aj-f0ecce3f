@@ -179,9 +179,9 @@ export default function AppSidebar() {
 
   const [contrast, setContrast] = useState<"dark" | "light">(() => {
     if (typeof window === "undefined") return "dark";
-    return (localStorage.getItem("rma:sidebar-contrast") as "dark" | "light") || "dark";
+    return (localStorage.getItem("prospecção:sidebar-contrast") as "dark" | "light") || "dark";
   });
-  useEffect(() => { localStorage.setItem("rma:sidebar-contrast", contrast); }, [contrast]);
+  useEffect(() => { localStorage.setItem("prospecção:sidebar-contrast", contrast); }, [contrast]);
   const theme = THEMES[contrast];
   const NAVY = theme.bg;
   const NAVY_SOFT = theme.soft;
@@ -224,7 +224,7 @@ export default function AppSidebar() {
             </div>
             {!collapsed && (
               <div className="leading-tight">
-                <div className={`text-base font-bold tracking-wide ${txtStrong}`}>Plataforma de Prospecção BEx</div>
+                <div className={`text-base font-bold tracking-wide ${txtStrong}`}>Platafoprospecção de Prospecção BEx</div>
               </div>
             )}
           </div>

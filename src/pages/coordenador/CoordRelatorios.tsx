@@ -2,10 +2,10 @@ import { FileBarChart, Download, Eye, CheckCircle2, Clock, FileText } from "luci
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
 const rels = [
-  { id: "REL-104", titulo: "RMA Maio/2026 - DIPLOMATA",  empresa: "DIPLOMATA",  consultor: "Ana Silva",      status: "Publicado", score: 87, data: "Há 4h" },
-  { id: "REL-103", titulo: "RMA Abril/2026 - TECNOMAX",  empresa: "TECNOMAX",   consultor: "Carlos Mendes",  status: "Publicado", score: 72, data: "Há 1d" },
-  { id: "REL-102", titulo: "RMA Maio/2026 - BENTOIA",    empresa: "BENTOIA",    consultor: "Fernanda Costa", status: "Em Revisão", score: 91, data: "Há 2d" },
-  { id: "REL-101", titulo: "RMA Maio/2026 - MOVAG",      empresa: "MOVAG",      consultor: "Rafael Souza",   status: "Rascunho",  score: 41, data: "Há 3d" },
+  { id: "REL-104", titulo: "Prospecção Maio/2026 - DIPLOMATA",  empresa: "DIPLOMATA",  consultor: "Ana Silva",      status: "Publicado", score: 87, data: "Há 4h" },
+  { id: "REL-103", titulo: "Prospecção Abril/2026 - TECNOMAX",  empresa: "TECNOMAX",   consultor: "Carlos Mendes",  status: "Publicado", score: 72, data: "Há 1d" },
+  { id: "REL-102", titulo: "Prospecção Maio/2026 - BENTOIA",    empresa: "BENTOIA",    consultor: "Fernanda Costa", status: "Em Revisão", score: 91, data: "Há 2d" },
+  { id: "REL-101", titulo: "Prospecção Maio/2026 - MOVAG",      empresa: "MOVAG",      consultor: "Rafael Souza",   status: "Rascunho",  score: 41, data: "Há 3d" },
 ];
 
 const statusMeta: Record<string, { bg: string; fg: string }> = {

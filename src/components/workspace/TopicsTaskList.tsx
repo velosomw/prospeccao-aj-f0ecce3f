@@ -20,7 +20,7 @@ export interface TopicItem {
 interface Props {
   items: TopicItem[];
   onOpen?: (id: string) => void;
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
 }
 
 
@@ -41,11 +41,11 @@ const statusBadge: Record<TopicStatus, { label: string; bg: string; text: string
 export default function TopicTaskCard({
   item,
   onOpen,
-  rmaId,
+  prospecçãoId,
 }: {
   item: TopicItem;
   onOpen?: (id: string) => void;
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
 }) {
   const sev = sevColor[item.severity];
   const sb = statusBadge[item.status];
@@ -112,13 +112,13 @@ export default function TopicTaskCard({
         </div>
       </div>
       {open && (
-        <TopicFilesPanel rmaId={rmaId ?? null} topicNumber={Number(item.number) || 0} />
+        <TopicFilesPanel prospecçãoId={prospecçãoId ?? null} topicNumber={Number(item.number) || 0} />
       )}
     </div>
   );
 }
 
-export function TopicsTaskList({ items, onOpen, rmaId }: Props) {
+export function TopicsTaskList({ items, onOpen, prospecçãoId }: Props) {
   if (items.length === 0) {
     return (
       <div className="bg-white border border-border rounded-lg p-8 text-center text-sm text-muted-foreground">
@@ -128,7 +128,7 @@ export function TopicsTaskList({ items, onOpen, rmaId }: Props) {
   }
   return (
     <div className="space-y-2">
-      {items.map((it) => <TopicTaskCard key={it.id} item={it} onOpen={onOpen} rmaId={rmaId} />)}
+      {items.map((it) => <TopicTaskCard key={it.id} item={it} onOpen={onOpen} prospecçãoId={prospecçãoId} />)}
     </div>
   );
 }

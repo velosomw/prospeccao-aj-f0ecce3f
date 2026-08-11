@@ -1,12 +1,12 @@
 // Regras de processamento, análise e finalização independentes
-// para cada tipo de documento RMA dentro do workspace.
+// para cada tipo de documento Prospecção dentro do workspace.
 //
 // - Parecer Técnico Contábil: documento PERICIAL — exige rigor alto
 //   (todas as seções aprovadas) e gera o "Parecer Final" em .docx.
-// - RMA Mensal (CNJ 72/2020): documento de ACOMPANHAMENTO — pode ser
-//   emitido com dados parciais; gera o "RMA Final" em .docx.
+// - Prospecção Mensal (CNJ 72/2020): documento de ACOMPANHAMENTO — pode ser
+//   emitido com dados parciais; gera o "Prospecção Final" em .docx.
 
-export type RmaDocTipo = "parecer_tecnico" | "rma_mensal";
+export type RmaDocTipo = "parecer_tecnico" | "prospecção_mensal";
 
 export interface RmaDocRules {
   tipo: RmaDocTipo;
@@ -28,7 +28,7 @@ export interface RmaDocRules {
   description: string;
 }
 
-export const RMA_DOC_RULES: Record<RmaDocTipo, RmaDocRules> = {
+export const Prospecção_DOC_RULES: Record<RmaDocTipo, RmaDocRules> = {
   parecer_tecnico: {
     tipo: "parecer_tecnico",
     label: "Parecer Técnico Contábil",
@@ -43,11 +43,11 @@ export const RMA_DOC_RULES: Record<RmaDocTipo, RmaDocRules> = {
     description:
       "Documento pericial. Exige aprovação do Coordenador em todas as seções e só é emitido como Parecer Final quando 100% aprovado.",
   },
-  rma_mensal: {
-    tipo: "rma_mensal",
+  prospecção_mensal: {
+    tipo: "prospecção_mensal",
     label: "Relatório Mensal de Atividades (CNJ 72/2020)",
-    finalLabel: "RMA Final",
-    finalFileLabel: "RMA Final (.docx)",
+    finalLabel: "Prospecção Final",
+    finalFileLabel: "Prospecção Final (.docx)",
     minPctAutoFinal: 70,
     minPctManualFinal: 50,
     requireCoordinatorApproval: false,
@@ -60,5 +60,5 @@ export const RMA_DOC_RULES: Record<RmaDocTipo, RmaDocRules> = {
 };
 
 export function getRmaDocRules(tipo: string): RmaDocRules {
-  return RMA_DOC_RULES[(tipo as RmaDocTipo)] ?? RMA_DOC_RULES.parecer_tecnico;
+  return Prospecção_DOC_RULES[(tipo as RmaDocTipo)] ?? Prospecção_DOC_RULES.parecer_tecnico;
 }

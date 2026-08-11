@@ -2,7 +2,7 @@
  * AUDIT DATASET BUILDER — Base única mensal para todos os gráficos do relatório.
  *
  * Reproduz a lógica da aba "Dados Gráficos" do template Excel:
- *   Balancete → Classificação Contábil → Normalização → Dataset Mensal → Engine Cálculo → Gráficos
+ *   Balancete → Classificação Contábil → Noprospecçãolização → Dataset Mensal → Engine Cálculo → Gráficos
  *
  * Saída: array MonthlyDatum[] ordenado cronologicamente, com TODAS as métricas
  * que alimentam os 6 gráficos do relatório (CMV/RL, CMV+Desp/RL, Resultado/RL,
@@ -68,7 +68,7 @@ const PATTERNS = {
   amortizacao: /\bamortiza[cç][aã]o\b/i,
   // BALANÇO — ATIVO
   ativo_circulante: /\bativo\s+circulante\b/i,
-  ativo_nao_circulante: /\bativo\s+n[aã]o[\s-]?circulante|realiz[aá]vel\s+a\s+longo\s+prazo|ativo\s+permanente|imobilizado/i,
+  ativo_nao_circulante: /\bativo\s+n[aã]o[\s-]?circulante|realiz[aá]vel\s+a\s+longo\s+prazo|ativo\s+peprospecçãonente|imobilizado/i,
   estoques: /\bestoqu/i,
   disponivel: /\b(?:caixa|disponibilidade|disponivel|bancos?|aplica[cç][aã]o\s+financ|equivalente)/i,
   clientes: /\b(?:clientes|duplicatas?\s+a\s+receber|contas?\s+a\s+receber)\b/i,
@@ -159,11 +159,11 @@ export function buildMonthlyDataset(parsed: ParsedFinancialData | null | undefin
   const periods = parsed.years ?? [];
   if (!periods.length) return [];
 
-  const normalized = periods
+  const noprospecçãolized = periods
     .map(p => ({ raw: p, ...(normPeriod(p) || { key: p, label: p }) }))
     .sort((a, b) => a.key.localeCompare(b.key));
 
-  return normalized.map(({ raw, key, label }) => {
+  return noprospecçãolized.map(({ raw, key, label }) => {
     const dre = parsed.dre ?? [];
     const bal = parsed.balanco ?? [];
 

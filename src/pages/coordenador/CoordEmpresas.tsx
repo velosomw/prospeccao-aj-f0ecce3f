@@ -28,7 +28,7 @@ export default function CoordEmpresas() {
       id: c.id,
       nome: c.name,
       cnpj: c.cnpj || "—",
-      rmaId: c.rma_id || "—",
+      prospecçãoId: c.prospecção_id || "—",
       status: c.status || "ativa",
       updatedAt: new Date(c.updated_at).toLocaleDateString("pt-BR"),
     }));
@@ -50,7 +50,7 @@ export default function CoordEmpresas() {
       ),
     },
     { key: "cnpj", header: "CNPJ", cell: (e: typeof rows[number]) => <span className="font-mono text-xs text-muted-foreground">{e.cnpj}</span> },
-    { key: "rmaId", header: "Prospecção AJ ID", cell: (e: typeof rows[number]) => <span className="font-mono text-xs text-muted-foreground">{e.rmaId}</span> },
+    { key: "prospecçãoId", header: "Prospecção AJ ID", cell: (e: typeof rows[number]) => <span className="font-mono text-xs text-muted-foreground">{e.prospecçãoId}</span> },
     {
       key: "status",
       header: "Status",

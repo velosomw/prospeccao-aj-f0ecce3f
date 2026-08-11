@@ -88,7 +88,7 @@ function DocumentViewer({ url, mime, kind }: { url: string | null; mime?: string
   return (
     <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-2 p-6 text-center">
       {kind === "spreadsheet" ? <Sheet className="w-8 h-8 opacity-50" /> : <FileText className="w-8 h-8 opacity-50" />}
-      <p className="text-sm">Pré-visualização não disponível para este formato.</p>
+      <p className="text-sm">Pré-visualização não disponível para este foprospecçãoto.</p>
       <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary text-sm underline">Abrir arquivo</a>
     </div>
   );
@@ -233,15 +233,15 @@ function UploadTab({ onSaved }: { onSaved: () => void }) {
         ext = {
           ...ext,
           rawText: final.rawText,
-          normalizedText: final.normalizedText,
+          noprospecçãolizedText: final.noprospecçãolizedText,
           ocrConfidence: final.confidence,
           pageCount: final.pageCount,
         };
       }
       setExtract(ext);
-      setOcrText(ext.normalizedText || ext.rawText);
+      setOcrText(ext.noprospecçãolizedText || ext.rawText);
 
-      if (!ext.normalizedText && !ext.rawText) {
+      if (!ext.noprospecçãolizedText && !ext.rawText) {
         throw new Error("Texto extraído está vazio");
       }
 
@@ -250,7 +250,7 @@ function UploadTab({ onSaved }: { onSaved: () => void }) {
       setStageMsg("Executando agentes (Classify → Router → Agente → Validador)…");
       const aiResp = await processWithAI({
         rawText: ext.rawText,
-        normalizedText: ext.normalizedText,
+        noprospecçãolizedText: ext.noprospecçãolizedText,
         path: `/learning-docs/${up.path.split("/").slice(0, -1).join("/")}`,
         ocrConfidence: ext.ocrConfidence ?? undefined,
       });
@@ -313,12 +313,12 @@ function UploadTab({ onSaved }: { onSaved: () => void }) {
         extraction: {
           id: extractionId,
           document_id: null,
-          rma_id: null,
+          prospecção_id: null,
           path: uploaded ? `learning-docs/${uploaded.path}` : null,
           classe,
           agent: aiResult.agent ?? null,
           raw_text: extract?.rawText ?? null,
-          normalized_text: ocrText,
+          noprospecçãolized_text: ocrText,
           extracted_data: (aiResult.extracted_data as Record<string, unknown>) ?? null,
           validation: aiResult.validation ?? null,
           final_confidence: aiResult.final_conf ?? null,
@@ -516,7 +516,7 @@ function PendingTab() {
 
   useEffect(() => {
     if (selected) {
-      setEditText(selected.normalized_text || selected.raw_text || "");
+      setEditText(selected.noprospecçãolized_text || selected.raw_text || "");
       setEditJson((selected.extracted_data as Record<string, unknown>) || {});
     }
   }, [selected]);
@@ -610,7 +610,7 @@ function PendingTab() {
                   </Badge>
                 </div>
                 <p className="text-[11px] text-muted-foreground truncate">
-                  {it.path || it.rma_id || it.id.slice(0, 8)}
+                  {it.path || it.prospecção_id || it.id.slice(0, 8)}
                 </p>
                 <p className="text-[10px] text-muted-foreground">
                   {new Date(it.created_at).toLocaleString("pt-BR")}

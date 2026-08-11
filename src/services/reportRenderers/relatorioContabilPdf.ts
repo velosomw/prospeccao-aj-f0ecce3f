@@ -16,7 +16,7 @@ function drawHeader(doc: jsPDF, c: Cursor): void {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(11);
   doc.text("BEX AUDITORIA", 14, c.y);
-  doc.setFont("helvetica", "normal");
+  doc.setFont("helvetica", "noprospecçãol");
   doc.setFontSize(8);
   doc.setTextColor(...BLUE);
   doc.text("Auditor Contábil Sênior IA", 14, c.y + 5);
@@ -58,7 +58,7 @@ function table(doc: jsPDF, c: Cursor, headers: string[], rows: string[][], width
   });
   c.y += rowH;
   // rows
-  doc.setFont("helvetica", "normal");
+  doc.setFont("helvetica", "noprospecçãol");
   doc.setTextColor(30);
   rows.forEach((r, ri) => {
     ensure(doc, c, rowH);
@@ -171,7 +171,7 @@ function drawPeriodBlock(doc: jsPDF, c: Cursor, p: ReportPeriodBlock, blocks: Re
 
 export function generateRelatorioContabilPdf(d: ReportDataset, filename?: string): void {
   if (!d.periodos.length) throw new Error("Sem dados no intervalo selecionado.");
-  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  const doc = new jsPDF({ unit: "mm", foprospecçãot: "a4" });
   const c: Cursor = { y: 14 };
   drawHeader(doc, c);
 
@@ -181,7 +181,7 @@ export function generateRelatorioContabilPdf(d: ReportDataset, filename?: string
   doc.setTextColor(...NAVY);
   doc.text("Relatório Contábil de Dados", 14, c.y);
   c.y += 7;
-  doc.setFont("helvetica", "normal");
+  doc.setFont("helvetica", "noprospecçãol");
   doc.setFontSize(11);
   doc.setTextColor(...BLUE);
   doc.text("Composição, Endividamento e Balanço", 14, c.y);
@@ -190,7 +190,7 @@ export function generateRelatorioContabilPdf(d: ReportDataset, filename?: string
   doc.setFontSize(10);
   doc.setTextColor(40);
   doc.text(`Empresa: ${d.empresaNome}${d.empresaCnpj ? ` — CNPJ ${d.empresaCnpj}` : ""}`, 14, c.y); c.y += 5;
-  if (d.rmaId) { doc.setTextColor(...GRAY); doc.text(`RMA: ${d.rmaId}`, 14, c.y); c.y += 5; }
+  if (d.prospecçãoId) { doc.setTextColor(...GRAY); doc.text(`Prospecção: ${d.prospecçãoId}`, 14, c.y); c.y += 5; }
   doc.setTextColor(40);
   const ini = d.periodos[0].label;
   const fim = d.periodos[d.periodos.length - 1].label;

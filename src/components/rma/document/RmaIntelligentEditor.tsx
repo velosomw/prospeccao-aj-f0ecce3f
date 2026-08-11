@@ -42,7 +42,7 @@ const PermButton = ({
   const handle = () => {
     if (perm.allowed) return onClick();
     // Loga tentativa bloqueada (UI-side) — backend também loga ao tentar RPC
-    supabase.from("rma_section_audit_log").insert({
+    supabase.from("prospecção_section_audit_log").insert({
       section_id: sectionId,
       document_id: documentId,
       user_role: primaryRole,
@@ -73,7 +73,7 @@ const PermButton = ({
 };
 
 interface Props {
-  tipo: "parecer_tecnico" | "rma_mensal";
+  tipo: "parecer_tecnico" | "prospecção_mensal";
   titulo: string;
 }
 
@@ -86,13 +86,13 @@ const STATUS_META: Record<SectionStatus, { label: string; cls: string; dot: stri
 };
 
 const RmaIntelligentEditor = ({ tipo, titulo }: Props) => {
-  const { id: rmaId = "" } = useParams();
+  const { id: prospecçãoId = "" } = useParams();
   const {
     doc, sections, comments, loading, busySectionId, progresso,
     bulkGenerating, bulkProgress,
     generateSection, regenerateWithFeedback, buildCharts,
     generateAllSections, updateContent, setStatus, assignTo, addComment, consolidate, regenerateFinal,
-  } = useRmaDocument(rmaId, tipo, titulo);
+  } = useRmaDocument(prospecçãoId, tipo, titulo);
   const userRoles = useUserRoles();
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -195,7 +195,7 @@ const RmaIntelligentEditor = ({ tipo, titulo }: Props) => {
             ? Math.round((sections.filter((s) => s.status === "aprovado" || s.status === "concluido").length / sections.length) * 100)
             : 0;
           const canGen = okPct >= 90;
-          const finalNome = tipo === "rma_mensal" ? "RMA Final" : "Parecer Técnico Final";
+          const finalNome = tipo === "prospecção_mensal" ? "Prospecção Final" : "Parecer Técnico Final";
           return (
             <div className={`mt-3 flex items-center justify-between gap-3 rounded-lg border px-3 py-2 ${
               doc?.arquivo_final_url
@@ -558,7 +558,7 @@ const RmaIntelligentEditor = ({ tipo, titulo }: Props) => {
                 }
               }}
             >
-              Confirmar
+              Confiprospecçãor
             </Button>
           </DialogFooter>
         </DialogContent>

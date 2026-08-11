@@ -25,7 +25,7 @@ interface FailedJob {
   original_queue_id: string | null;
   file_id: string;
   company_id: string | null;
-  rma_id: string | null;
+  prospecção_id: string | null;
   ano: number | null;
   mes: number | null;
   reason: string | null;
@@ -77,7 +77,7 @@ export default function GestorIAFailedJobs() {
     const s = search.toLowerCase();
     return (
       j.file_id?.toLowerCase().includes(s) ||
-      j.rma_id?.toLowerCase().includes(s) ||
+      j.prospecção_id?.toLowerCase().includes(s) ||
       j.reason?.toLowerCase().includes(s) ||
       j.error_message?.toLowerCase().includes(s)
     );
@@ -253,7 +253,7 @@ export default function GestorIAFailedJobs() {
                       {j.file_id}
                     </TableCell>
                     <TableCell className="text-xs">
-                      {j.rma_id ?? "—"}
+                      {j.prospecção_id ?? "—"}
                       {j.ano && j.mes ? ` · ${String(j.mes).padStart(2, "0")}/${j.ano}` : ""}
                     </TableCell>
                     <TableCell className="text-xs">
@@ -319,7 +319,7 @@ export default function GestorIAFailedJobs() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label className="text-xs text-muted-foreground">Prospecção AJ</Label>
-                  <div>{selected.rma_id ?? "—"}</div>
+                  <div>{selected.prospecção_id ?? "—"}</div>
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">Tentativas anteriores</Label>
@@ -348,7 +348,7 @@ export default function GestorIAFailedJobs() {
             </Button>
             <Button onClick={handleRequeue} disabled={requeuing}>
               {requeuing && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-              Confirmar reprocessamento
+              Confiprospecçãor reprocessamento
             </Button>
           </DialogFooter>
         </DialogContent>

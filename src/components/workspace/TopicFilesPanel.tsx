@@ -1,4 +1,4 @@
-// Lista de arquivos vinculados a um tópico do RMA — usado na aba
+// Lista de arquivos vinculados a um tópico do Prospecção — usado na aba
 // "Revisão Inteligente" ao expandir um tópico. Mostra apenas nome do
 // arquivo + status de processamento. Reflete em tempo real quaisquer
 // mudanças feitas em /treinar-ia (mesma fonte: onedrive_files).
@@ -9,7 +9,7 @@ import { fileMatchesTopic, isTempOrHiddenFile } from "@/lib/topicMatch";
 import { subscribeLearningUploadStatuses } from "@/utils/learningUploadStatus";
 
 interface Props {
-  rmaId: string | null | undefined;
+  prospecçãoId: string | null | undefined;
   topicNumber: number;
 }
 
@@ -42,13 +42,13 @@ function statusMeta(s: string | null | undefined) {
   return STATUS_META[k] || { label: s || "—", color: "hsl(0,0%,40%)", Icon: FileText };
 }
 
-export default function TopicFilesPanel({ rmaId, topicNumber }: Props) {
+export default function TopicFilesPanel({ prospecçãoId, topicNumber }: Props) {
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(false);
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    if (!rmaId) return;
+    if (!prospecçãoId) return;
     let cancelled = false;
     (async () => {
       setLoading(true);
@@ -56,7 +56,7 @@ export default function TopicFilesPanel({ rmaId, topicNumber }: Props) {
         const { data } = await supabase
           .from("onedrive_files")
           .select("file_id, file_name, path, status, updated_at")
-          .eq("rma_id", rmaId)
+          .eq("prospecção_id", prospecçãoId)
           .limit(2000);
         if (cancelled) return;
         setRows((data || []) as Row[]);
@@ -65,23 +65,23 @@ export default function TopicFilesPanel({ rmaId, topicNumber }: Props) {
       }
     })();
     return () => { cancelled = true; };
-  }, [rmaId, tick]);
+  }, [prospecçãoId, tick]);
 
   // Reflete correções feitas em /treinar-ia (mesma fonte): refresca quando
   // statuses locais mudam ou quando o realtime do onedrive_files dispara.
   useEffect(() => {
-    if (!rmaId) return;
+    if (!prospecçãoId) return;
     const off = subscribeLearningUploadStatuses(() => setTick((t) => t + 1));
     const channel = supabase
-      .channel(`topic-files-${rmaId}-${topicNumber}`)
+      .channel(`topic-files-${prospecçãoId}-${topicNumber}`)
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "onedrive_files", filter: `rma_id=eq.${rmaId}` },
+        { event: "*", schema: "public", table: "onedrive_files", filter: `prospecção_id=eq.${prospecçãoId}` },
         () => setTick((t) => t + 1),
       )
       .subscribe();
     return () => { off?.(); supabase.removeChannel(channel); };
-  }, [rmaId, topicNumber]);
+  }, [prospecçãoId, topicNumber]);
 
   const filtered = useMemo(() => {
     return rows
@@ -90,7 +90,7 @@ export default function TopicFilesPanel({ rmaId, topicNumber }: Props) {
       .sort((a, b) => (a.file_name || "").localeCompare(b.file_name || ""));
   }, [rows, topicNumber]);
 
-  if (!rmaId) {
+  if (!prospecçãoId) {
     return <div className="text-xs text-muted-foreground px-3 py-3">Prospecção AJ não definido.</div>;
   }
 

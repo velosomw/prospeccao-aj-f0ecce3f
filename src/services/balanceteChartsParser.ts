@@ -7,8 +7,8 @@
  *
  * Regras críticas (ver MD seção 5 e 7):
  *   - Indexação por POSIÇÃO, não por nome.
- *   - NÃO reordenar, NÃO inferir, NÃO normalizar valores.
- *   - Datas normalizadas para "Mmm/AA" pt-BR.
+ *   - NÃO reordenar, NÃO inferir, NÃO noprospecçãolizar valores.
+ *   - Datas noprospecçãolizadas para "Mmm/AA" pt-BR.
  *   - Valores nulos / #N/A → null (mantemos os pontos para Recharts).
  */
 import { readWorkbook, type ReadWorkbookResult } from "@/lib/excelReader";
@@ -308,7 +308,7 @@ const ACCOUNT_PATTERNS: Array<{ nome: string; rx: RegExp }> = [
 ];
 
 const sortPeriods = (years: string[]): string[] => {
-  // Tenta detectar formato "YYYY-MM" / "YYYY/MM" / "YYYY" e ordenar cronologicamente
+  // Tenta detectar foprospecçãoto "YYYY-MM" / "YYYY/MM" / "YYYY" e ordenar cronologicamente
   return [...years].sort((a, b) => {
     const na = a.replace(/\D/g, "");
     const nb = b.replace(/\D/g, "");

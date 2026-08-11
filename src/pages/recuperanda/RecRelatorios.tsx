@@ -30,7 +30,7 @@ export default function RecRelatorios() {
               <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center"><FileBarChart className="w-5 h-5 text-primary" /></div>
               <div className="flex-1">
                 <div className="text-xs font-mono text-muted-foreground">{r.id}</div>
-                <div className="text-sm font-semibold">RMA Período {r.periodo}</div>
+                <div className="text-sm font-semibold">Prospecção Período {r.periodo}</div>
                 <div className="text-xs text-muted-foreground">{r.status} • {r.data}</div>
               </div>
               <div className="w-9 h-9 rounded-full text-white text-xs font-bold flex items-center justify-center" style={{ background: scoreColor(r.score) }}>{r.score}</div>

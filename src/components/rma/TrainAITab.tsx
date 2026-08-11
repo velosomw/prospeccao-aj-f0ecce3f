@@ -16,7 +16,7 @@ import TrainingMetrics from "./training/TrainingMetrics";
 
 interface Props {
   companyId: string | null;
-  rmaId?: string;
+  prospecçãoId?: string;
 }
 
 const CLASSES = [
@@ -34,11 +34,11 @@ interface PendingDoc {
   final_confidence: number | null;
   status: string;
   extracted_data: any;
-  normalized_text: string | null;
+  noprospecçãolized_text: string | null;
   file_name: string | null;
 }
 
-export default function TrainAITab({ companyId, rmaId }: Props) {
+export default function TrainAITab({ companyId, prospecçãoId }: Props) {
   const [classe, setClasse] = useState<string>("BALANCETE");
   const [agent, setAgent] = useState<string>("");
   const [inputText, setInputText] = useState("");
@@ -76,7 +76,7 @@ export default function TrainAITab({ companyId, rmaId }: Props) {
     setLoadingPending(true);
     try {
       let q = supabase.from("vw_training_pending").select("*").limit(50);
-      if (rmaId) q = q.eq("rma_id", rmaId);
+      if (prospecçãoId) q = q.eq("prospecção_id", prospecçãoId);
       const { data, error } = await q;
       if (error) throw error;
       setPending((data ?? []) as PendingDoc[]);
@@ -85,7 +85,7 @@ export default function TrainAITab({ companyId, rmaId }: Props) {
     } finally {
       setLoadingPending(false);
     }
-  }, [rmaId]);
+  }, [prospecçãoId]);
 
   useEffect(() => { loadPending(); }, [loadPending]);
 
@@ -94,7 +94,7 @@ export default function TrainAITab({ companyId, rmaId }: Props) {
     setSelectedPending(doc);
     setClasse((doc.classe || "OUTRO").toUpperCase());
     setAgent(doc.agent || (doc.classe || "outro").toLowerCase());
-    setInputText(doc.normalized_text || "");
+    setInputText(doc.noprospecçãolized_text || "");
     setOutput(doc.extracted_data || { linhas: [] });
     toast.info(`Carregado: ${doc.file_name ?? doc.path ?? doc.extraction_id.slice(0,8)}`);
   };
@@ -125,7 +125,7 @@ export default function TrainAITab({ companyId, rmaId }: Props) {
           output_original: selectedPending?.extracted_data ?? null,
           extraction_id: selectedPending?.extraction_id ?? null,
           document_id: selectedPending?.document_id ?? null,
-          rma_id: rmaId ?? null,
+          prospecção_id: prospecçãoId ?? null,
           path: selectedPending?.path ?? null,
         },
       });
@@ -183,7 +183,7 @@ export default function TrainAITab({ companyId, rmaId }: Props) {
             <TabsContent value="pending" className="space-y-2 mt-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground">
-                  Docs com baixa confiança ou erro {rmaId ? "neste RMA" : ""}
+                  Docs com baixa confiança ou erro {prospecçãoId ? "neste Prospecção" : ""}
                 </span>
                 <Button size="sm" variant="ghost" onClick={loadPending} disabled={loadingPending}>
                   {loadingPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}

@@ -10,8 +10,8 @@ import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
 interface Props {
-  /** Pode passar rma_id direto OU companyId — se vier só companyId, resolve do banco. */
-  rmaId?: string | null;
+  /** Pode passar prospecção_id direto OU companyId — se vier só companyId, resolve do banco. */
+  prospecçãoId?: string | null;
   companyId?: string | null;
 }
 
@@ -40,24 +40,24 @@ const STATUS_COLOR: Record<string, string> = {
   pending: "bg-amber-500/15 text-amber-700",
 };
 
-export default function RMAFailedFilesLearningCard({ rmaId, companyId }: Props) {
-  const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(rmaId ?? null);
+export default function ProspecçãoFailedFilesLearningCard({ prospecçãoId, companyId }: Props) {
+  const [resolvedRmaId, setResolvedRmaId] = useState<string | null>(prospecçãoId ?? null);
   const [files, setFiles] = useState<FailedFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<Record<string, boolean>>({});
   const [sending, setSending] = useState<Record<string, boolean>>({});
   const [bulkRunning, setBulkRunning] = useState(false);
 
-  // Resolve rma_id a partir do companyId quando necessário
+  // Resolve prospecção_id a partir do companyId quando necessário
   useEffect(() => {
     if (resolvedRmaId || !companyId) return;
     supabase
       .from("companies")
-      .select("rma_id")
+      .select("prospecção_id")
       .eq("id", companyId)
       .maybeSingle()
       .then(({ data }) => {
-        if (data?.rma_id) setResolvedRmaId(data.rma_id);
+        if (data?.prospecção_id) setResolvedRmaId(data.prospecção_id);
       });
   }, [companyId, resolvedRmaId]);
 
@@ -67,7 +67,7 @@ export default function RMAFailedFilesLearningCard({ rmaId, companyId }: Props) 
     const { data, error } = await supabase
       .from("onedrive_files")
       .select("file_id, file_name, path, status, mime_type, error_message")
-      .eq("rma_id", resolvedRmaId)
+      .eq("prospecção_id", resolvedRmaId)
       .in("status", ["error", "tracked", "new", "updated", "pending"])
       .order("status", { ascending: true })
       .order("path", { ascending: true })
@@ -95,7 +95,7 @@ export default function RMAFailedFilesLearningCard({ rmaId, companyId }: Props) 
     setSending((s) => ({ ...s, [f.file_id]: true }));
     try {
       const { data, error } = await supabase.functions.invoke("learning-from-pipeline", {
-        body: { file_id: f.file_id, rma_id: resolvedRmaId },
+        body: { file_id: f.file_id, prospecção_id: resolvedRmaId },
       });
       if (error) throw new Error(error.message);
       if (!data?.ok) throw new Error(data?.error || "Falha desconhecida");
@@ -152,7 +152,7 @@ export default function RMAFailedFilesLearningCard({ rmaId, companyId }: Props) 
               Arquivos com erro / pendentes — Enviar para Aprendizado IA
             </CardTitle>
             <p className="text-[11px] text-muted-foreground mt-1">
-              Reenvia o arquivo do OneDrive para o pipeline de aprendizado (OCR + IA + validação humana). Não consome a fila normal nem aciona o circuit breaker.
+              Reenvia o arquivo do OneDrive para o pipeline de aprendizado (OCR + IA + validação humana). Não consome a fila noprospecçãol nem aciona o circuit breaker.
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -186,7 +186,7 @@ export default function RMAFailedFilesLearningCard({ rmaId, companyId }: Props) 
           </div>
         ) : files.length === 0 ? (
           <div className="flex items-center gap-2 text-xs text-emerald-700 py-6 justify-center">
-            <CheckCircle2 className="w-4 h-4" /> Sem arquivos com erro/pendentes neste RMA.
+            <CheckCircle2 className="w-4 h-4" /> Sem arquivos com erro/pendentes neste Prospecção.
           </div>
         ) : (
           <>

@@ -1,12 +1,12 @@
 import { Briefcase, CheckCircle2, Eye, AlertTriangle, Award, Building2, MoreVertical } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
-const rmas = [
-  { id: "RMA-0012", empresa: "DIPLOMATA",  periodo: "05/2026", status: "Concluído",   score: 87 },
-  { id: "RMA-0014", empresa: "TECNOMAX",   periodo: "04/2026", status: "Em Revisão",  score: 72 },
-  { id: "RMA-0009", empresa: "BENTOIA",    periodo: "05/2026", status: "Concluído",   score: 91 },
-  { id: "RMA-0011", empresa: "MOVAG",      periodo: "05/2026", status: "Em Análise",  score: 41 },
-  { id: "RMA-0008", empresa: "CONSTRUTEX", periodo: "04/2026", status: "Concluído",   score: 78 },
+const prospecçãos = [
+  { id: "Prospecção-0012", empresa: "DIPLOMATA",  periodo: "05/2026", status: "Concluído",   score: 87 },
+  { id: "Prospecção-0014", empresa: "TECNOMAX",   periodo: "04/2026", status: "Em Revisão",  score: 72 },
+  { id: "Prospecção-0009", empresa: "BENTOIA",    periodo: "05/2026", status: "Concluído",   score: 91 },
+  { id: "Prospecção-0011", empresa: "MOVAG",      periodo: "05/2026", status: "Em Análise",  score: 41 },
+  { id: "Prospecção-0008", empresa: "CONSTRUTEX", periodo: "04/2026", status: "Concluído",   score: 78 },
 ];
 const statusMeta: Record<string, { bg: string; fg: string }> = {
   "Em Análise":  { bg: "hsl(258,90%,96%)", fg: "hsl(258,90%,40%)" },
@@ -15,7 +15,7 @@ const statusMeta: Record<string, { bg: string; fg: string }> = {
 };
 const scoreColor = (s: number) => s < 33 ? "hsl(0,84%,55%)" : s < 67 ? "hsl(38,92%,50%)" : "hsl(142,76%,40%)";
 
-export default function AdmRMAs() {
+export default function AdmProspecçãos() {
   return (
     <ConsultorPageShell
       title="Prospecções AJ" subtitle="Relatórios de monitoramento das recuperandas administradas."
@@ -42,7 +42,7 @@ export default function AdmRMAs() {
             </tr>
           </thead>
           <tbody>
-            {rmas.map(r => {
+            {prospecçãos.map(r => {
               const s = statusMeta[r.status];
               return (
                 <tr key={r.id} className="border-t hover:bg-muted/20">

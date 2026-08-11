@@ -26,7 +26,7 @@ interface TemplateNode {
 
 interface Props {
   documentId: string;
-  tipo: string; // e.g. "rma_intelligence"
+  tipo: string; // e.g. "prospecção_intelligence"
   sections: SectionRow[];
 }
 
@@ -41,8 +41,8 @@ const SOURCE_HINTS: Record<string, string> = {
   "fluxo_caixa_consolidado": "Fluxo de Caixa (Workspace › Fluxo de Caixa)",
   "lancamentos": "Lançamentos contábeis (Workspace › Razão)",
   "nfe_compras": "Notas Fiscais (Workspace › NF-e)",
-  "rma_cobrancas": "Cobranças/Aging (Workspace › Aging)",
-  "rma_analysis_results": "Análise consolidada do RMA",
+  "prospecção_cobrancas": "Cobranças/Aging (Workspace › Aging)",
+  "prospecção_analysis_results": "Análise consolidada do Prospecção",
   "company.profile": "Cadastro da empresa (CNPJ, CNAE, atividade)",
   "company.societaria": "Estrutura societária (atas, contratos sociais)",
 };
@@ -67,10 +67,10 @@ export const SectionPendenciesPanel = ({ documentId, tipo, sections }: Props) =>
     (async () => {
       setLoading(true);
       const [tpl, evs, srcs] = await Promise.all([
-        supabase.from("rma_document_templates").select("structure").eq("tipo", tipo).maybeSingle(),
-        supabase.from("rma_section_evidences").select("section_id").eq("document_id", documentId),
+        supabase.from("prospecção_document_templates").select("structure").eq("tipo", tipo).maybeSingle(),
+        supabase.from("prospecção_section_evidences").select("section_id").eq("document_id", documentId),
         supabase
-          .from("rma_section_data_sources")
+          .from("prospecção_section_data_sources")
           .select("section_id")
           .in("section_id", sections.map((s) => s.id).filter(Boolean)),
       ]);
@@ -106,7 +106,7 @@ export const SectionPendenciesPanel = ({ documentId, tipo, sections }: Props) =>
 
       const missing: string[] = [];
       if (!hasContent) missing.push("Sem conteúdo gerado pela IA — documento-fonte ausente no workspace.");
-      if (evCount === 0) missing.push("Nenhuma evidência ancorada (rma_section_evidences vazia).");
+      if (evCount === 0) missing.push("Nenhuma evidência ancorada (prospecção_section_evidences vazia).");
       if (srcCount === 0 && evidenceSources.length > 0) missing.push("Nenhuma fonte de dados conciliada para esta seção.");
       if (score < 50 && hasContent) missing.push(`Grounding baixo (${score}/100) — revisar fontes.`);
       if (ung.length > 0) missing.push(`${ung.length} valor(es) sem origem identificada: ${ung.slice(0, 4).join(" · ")}${ung.length > 4 ? " …" : ""}`);

@@ -46,7 +46,7 @@ AGORA ANALISE. Extraia: valor, data, hora, pagador, destinatario, banco, id.
 
 REGRAS:
 - "R$" define valor
-- Datas brasileiras (DD/MM/YYYY) → normalizar para YYYY-MM-DD
+- Datas brasileiras (DD/MM/YYYY) → noprospecçãolizar para YYYY-MM-DD
 - Nome em caixa alta geralmente é empresa
 
 SAÍDA JSON:

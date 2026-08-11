@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { getRmaDocRules } from "@/lib/rmaDocumentRules";
+import { getRmaDocRules } from "@/lib/prospecçãoDocumentRules";
 
 export type SectionStatus =
   | "pendente"
@@ -46,7 +46,7 @@ export interface RmaDocComment {
 
 export interface RmaDocument {
   id: string;
-  rma_id: string;
+  prospecção_id: string;
   tipo: string;
   titulo: string;
   status: DocumentStatus;
@@ -57,7 +57,7 @@ export interface RmaDocument {
   arquivo_final_pct?: number | null;
 }
 
-export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_mensal", titulo: string) {
+export function useRmaDocument(prospecçãoId: string, tipo: "parecer_tecnico" | "prospecção_mensal", titulo: string) {
   const [doc, setDoc] = useState<RmaDocument | null>(null);
   const [sections, setSections] = useState<RmaDocSection[]>([]);
   const [comments, setComments] = useState<Record<string, RmaDocComment[]>>({});
@@ -68,9 +68,9 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
     setLoading(true);
     try {
       const { data: existing } = await supabase
-        .from("rma_documents")
+        .from("prospecção_documents")
         .select("*")
-        .eq("rma_id", rmaId)
+        .eq("prospecção_id", prospecçãoId)
         .eq("tipo", tipo)
         .neq("status", "finalizado")
         .order("created_at", { ascending: false })
@@ -82,13 +82,13 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
         documentId = existing.id;
         setDoc(existing as any);
       } else {
-        const { data, error } = await supabase.functions.invoke("rma-doc-init", {
-          body: { rma_id: rmaId, tipo, titulo },
+        const { data, error } = await supabase.functions.invoke("prospecção-doc-init", {
+          body: { prospecção_id: prospecçãoId, tipo, titulo },
         });
         if (error) throw error;
         documentId = data.document_id;
         const { data: created } = await supabase
-          .from("rma_documents")
+          .from("prospecção_documents")
           .select("*")
           .eq("id", documentId)
           .maybeSingle();
@@ -96,7 +96,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
       }
 
       const { data: secs } = await supabase
-        .from("rma_document_sections")
+        .from("prospecção_document_sections")
         .select("*")
         .eq("document_id", documentId)
         .order("ordem", { ascending: true });
@@ -105,7 +105,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
       const ids = (secs || []).map((s: any) => s.id);
       if (ids.length) {
         const { data: cs } = await supabase
-          .from("rma_document_section_comments")
+          .from("prospecção_document_section_comments")
           .select("*")
           .in("section_id", ids)
           .order("created_at", { ascending: true });
@@ -120,7 +120,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
     } finally {
       setLoading(false);
     }
-  }, [rmaId, tipo, titulo]);
+  }, [prospecçãoId, tipo, titulo]);
 
   useEffect(() => {
     initDoc();
@@ -128,7 +128,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
 
   const reloadSection = async (sectionId: string) => {
     const { data } = await supabase
-      .from("rma_document_sections")
+      .from("prospecção_document_sections")
       .select("*")
       .eq("id", sectionId)
       .maybeSingle();
@@ -153,7 +153,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
     for (let i = 0; i < pending.length; i++) {
       const s = pending[i];
       try {
-        const { error } = await supabase.functions.invoke("rma-doc-section-ai", {
+        const { error } = await supabase.functions.invoke("prospecção-doc-section-ai", {
           body: { section_id: s.id, mode: "generate" },
         });
         if (error) throw error;
@@ -166,7 +166,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
     }
     // recarrega tudo
     const { data: secs } = await supabase
-      .from("rma_document_sections")
+      .from("prospecção_document_sections")
       .select("*")
       .eq("document_id", sections[0]?.document_id)
       .order("ordem", { ascending: true });
@@ -183,7 +183,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
   const generateSection = async (sectionId: string, mode: "generate" | "rewrite", extra = "") => {
     setBusySectionId(sectionId);
     try {
-      const { data, error } = await supabase.functions.invoke("rma-doc-section-ai", {
+      const { data, error } = await supabase.functions.invoke("prospecção-doc-section-ai", {
         body: { section_id: sectionId, mode, extra_instructions: extra },
       });
       if (error) throw error;
@@ -200,7 +200,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
   const regenerateWithFeedback = async (sectionId: string, extra = "") => {
     setBusySectionId(sectionId);
     try {
-      const { data, error } = await supabase.functions.invoke("rma-doc-section-regenerate", {
+      const { data, error } = await supabase.functions.invoke("prospecção-doc-section-regenerate", {
         body: { section_id: sectionId, extra_instructions: extra },
       });
       if (error) throw error;
@@ -221,13 +221,13 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
   const updateContent = async (sectionId: string, conteudo: string, status?: SectionStatus) => {
     const patch: any = { conteudo_editado: conteudo };
     if (status) patch.status = status;
-    const { error } = await supabase.from("rma_document_sections").update(patch).eq("id", sectionId);
+    const { error } = await supabase.from("prospecção_document_sections").update(patch).eq("id", sectionId);
     if (error) {
       toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
       return;
     }
     // versão manual
-    await supabase.from("rma_document_section_versions").insert({
+    await supabase.from("prospecção_document_section_versions").insert({
       section_id: sectionId,
       versao: (sections.find((s) => s.id === sectionId)?.versao_atual ?? 1) + 1,
       conteudo,
@@ -239,7 +239,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
   const regenerateFinal = useCallback(
     async (force = false) => {
       if (!doc) return null;
-      const { data, error } = await supabase.functions.invoke("rma-doc-consolidate-docx", {
+      const { data, error } = await supabase.functions.invoke("prospecção-doc-consolidate-docx", {
         body: { document_id: doc.id, force },
       });
       if (error) {
@@ -258,7 +258,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
         });
         // recarrega doc com nova URL
         const { data: updated } = await supabase
-          .from("rma_documents")
+          .from("prospecção_documents")
           .select("*")
           .eq("id", doc.id)
           .maybeSingle();
@@ -271,7 +271,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
 
   const buildCharts = useCallback(async (force = false) => {
     if (!doc) return null;
-    const { data, error } = await supabase.functions.invoke("rma-doc-charts-build", {
+    const { data, error } = await supabase.functions.invoke("prospecção-doc-charts-build", {
       body: { document_id: doc.id, months: 12, force },
     });
     if (error) {
@@ -287,7 +287,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
   }, [doc, initDoc]);
 
   const setStatus = async (sectionId: string, status: SectionStatus, motivo?: string) => {
-    const { error } = await supabase.rpc("transition_rma_section_status", {
+    const { error } = await supabase.rpc("transition_prospecção_section_status", {
       p_section_id: sectionId,
       p_new_status: status,
       p_motivo: motivo ?? null,
@@ -315,7 +315,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
   };
 
   const consolidate = async (documentId: string) => {
-    const { data, error } = await supabase.rpc("consolidate_rma_document", { p_document_id: documentId });
+    const { data, error } = await supabase.rpc("consolidate_prospecção_document", { p_document_id: documentId });
     if (error) {
       toast({ title: "Consolidação bloqueada", description: error.message, variant: "destructive" });
       return null;
@@ -327,7 +327,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
   };
 
   const assignTo = async (sectionId: string, target: "usuario" | "coordenador") => {
-    await supabase.from("rma_document_sections").update({ assigned_to: target }).eq("id", sectionId);
+    await supabase.from("prospecção_document_sections").update({ assigned_to: target }).eq("id", sectionId);
     await reloadSection(sectionId);
   };
 
@@ -341,7 +341,7 @@ export function useRmaDocument(rmaId: string, tipo: "parecer_tecnico" | "rma_men
       author_role: meta?.role || "Consultor",
       text,
     };
-    const { data } = await supabase.from("rma_document_section_comments").insert(insert).select().single();
+    const { data } = await supabase.from("prospecção_document_section_comments").insert(insert).select().single();
     if (data) setComments((prev) => ({ ...prev, [sectionId]: [...(prev[sectionId] || []), data as any] }));
   };
 

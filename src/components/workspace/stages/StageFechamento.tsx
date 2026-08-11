@@ -1,5 +1,5 @@
 import { CheckCircle2, ShieldCheck, FileCheck, Award, FileText, Download, FileSpreadsheet, Package, ArrowRight } from "lucide-react";
-import RMARelatorioFinalTab from "@/components/rma/RMARelatorioFinalTab";
+import ProspecçãoRelatorioFinalTab from "@/components/prospecção/ProspecçãoRelatorioFinalTab";
 import { useState } from "react";
 
 interface Props {
@@ -100,7 +100,7 @@ export default function StageFechamento({
             <h3 className="text-sm font-bold text-foreground">Relatório Prospecção AJ Final</h3>
             <button onClick={() => setShowReport(false)} className="text-xs text-muted-foreground hover:text-foreground">Fechar</button>
           </div>
-          <RMARelatorioFinalTab />
+          <ProspecçãoRelatorioFinalTab />
         </div>
       )}
     </div>

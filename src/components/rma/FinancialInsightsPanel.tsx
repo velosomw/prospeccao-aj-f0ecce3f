@@ -232,7 +232,7 @@ const FinancialInsightsPanel = ({ companyId, periodo, runToken }: Props) => {
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                   <XAxis dataKey="mes" fontSize={10} />
                   <YAxis fontSize={10} />
-                  <Tooltip formatter={(v: any, name: string) => name === "Endividamento" ? pct(v) : ratio(v)} />
+                  <Tooltip foprospecçãotter={(v: any, name: string) => name === "Endividamento" ? pct(v) : ratio(v)} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                   <Line type="monotone" dataKey="liquidez" name="Liquidez Corrente" stroke="hsl(142,76%,36%)" strokeWidth={2} />
                   <Line type="monotone" dataKey="endividamento" name="Endividamento" stroke="hsl(0,84%,55%)" strokeWidth={2} />
@@ -252,8 +252,8 @@ const FinancialInsightsPanel = ({ companyId, periodo, runToken }: Props) => {
                 <AreaChart data={trend} onClick={handleChartClick("margem_liquida")} style={{ cursor: "pointer" }}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                   <XAxis dataKey="mes" fontSize={10} />
-                  <YAxis fontSize={10} tickFormatter={(v) => `${(v * 100).toFixed(0)}%`} />
-                  <Tooltip formatter={(v: any) => pct(v)} />
+                  <YAxis fontSize={10} tickFoprospecçãotter={(v) => `${(v * 100).toFixed(0)}%`} />
+                  <Tooltip foprospecçãotter={(v: any) => pct(v)} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                   <Area type="monotone" dataKey="margem_ebitda" name="Margem EBITDA" stroke="hsl(258,90%,56%)" fill="hsl(258,90%,56%)" fillOpacity={0.18} />
                   <Area type="monotone" dataKey="margem_liquida" name="Margem Líquida" stroke="hsl(217,91%,50%)" fill="hsl(217,91%,50%)" fillOpacity={0.18} />
@@ -277,8 +277,8 @@ const FinancialInsightsPanel = ({ companyId, periodo, runToken }: Props) => {
                 }} style={{ cursor: "pointer" }}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                   <XAxis dataKey="mes" fontSize={10} />
-                  <YAxis fontSize={10} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
-                  <Tooltip formatter={(v: any) => fmt(v)} />
+                  <YAxis fontSize={10} tickFoprospecçãotter={(v) => `${(v / 1000).toFixed(0)}K`} />
+                  <Tooltip foprospecçãotter={(v: any) => fmt(v)} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                   <Bar dataKey="receita" name="Receita" fill="hsl(217,91%,50%)" />
                   <Bar dataKey="ebitda" name="EBITDA" fill="hsl(258,90%,56%)" />
@@ -314,7 +314,7 @@ const FinancialInsightsPanel = ({ companyId, periodo, runToken }: Props) => {
                     >
                       {composicao.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                     </Pie>
-                    <Tooltip formatter={(v: any) => fmt(v)} />
+                    <Tooltip foprospecçãotter={(v: any) => fmt(v)} />
                   </PieChart>
                 </ResponsiveContainer>
               </CardContent>

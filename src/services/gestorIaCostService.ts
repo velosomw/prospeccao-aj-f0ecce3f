@@ -54,13 +54,13 @@ export interface CostInsight {
 }
 
 export interface PlatformCounts {
-  rmasTotal: number;            // RMAs distintos analisados (rma_analysis_results)
-  rmasConcluidos: number;
-  rmasEmAnalise: number;
+  prospecçãosTotal: number;            // Prospecçãos distintos analisados (prospecção_analysis_results)
+  prospecçãosConcluidos: number;
+  prospecçãosEmAnalise: number;
   balancetesRuns: number;       // balancete_runs total
   balancetesConsolidados: number;
-  relatoriosFinalizados: number;  // rma_documents status='finalizado'
-  relatoriosEmElaboracao: number; // rma_documents status<>'finalizado'
+  relatoriosFinalizados: number;  // prospecção_documents status='finalizado'
+  relatoriosEmElaboracao: number; // prospecção_documents status<>'finalizado'
   documentosOcr: number;        // ai_extractions distintos
 }
 
@@ -69,8 +69,8 @@ export interface CostIndicators {
   custoBalancete: number;          // custo IA atribuído a OCR/extraction/embedding
   custoRelatorio: number;          // custo IA atribuído a geração de relatório
   custoIaOcrProcessamento: number; // OCR + extraction + embedding + classification + validation
-  custoMedioExecucao: number;      // custoTotal / RMAs reais
-  custoMedioPorRMA: number;        // custoTotal / nº RMAs
+  custoMedioExecucao: number;      // custoTotal / Prospecçãos reais
+  custoMedioPorProspecção: number;        // custoTotal / nº Prospecçãos
   custoMedioPorBalancete: number;  // custoBalancete / nº runs balancete
   custoMedioPorRelatorio: number;  // custoRelatorio / nº relatórios (finalizados+andamento)
   totalBalancetes: number;
@@ -178,15 +178,15 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
     }),
   );
 
-  // Denominadores REAIS da plataforma (não dependem de metadata em logs)
+  // Denominadores REAIS da platafoprospecção (não dependem de metadata em logs)
   const counts = await fetchPlatformCounts(cutoff);
 
   // Custos médios por unidade real
-  const custoMedioPorRMA       = counts.rmasTotal > 0 ? custoTotal / counts.rmasTotal : 0;
+  const custoMedioPorProspecção       = counts.prospecçãosTotal > 0 ? custoTotal / counts.prospecçãosTotal : 0;
   const custoMedioPorBalancete = counts.balancetesRuns > 0 ? custoBalancete / counts.balancetesRuns : 0;
   const totalRel = counts.relatoriosFinalizados + counts.relatoriosEmElaboracao;
   const custoMedioPorRelatorio = totalRel > 0 ? custoRelatorio / totalRel : 0;
-  const custoMedioExecucao     = counts.rmasTotal > 0 ? custoTotal / counts.rmasTotal : 0;
+  const custoMedioExecucao     = counts.prospecçãosTotal > 0 ? custoTotal / counts.prospecçãosTotal : 0;
 
   const totalBalancetes = counts.balancetesRuns;
   const totalRelatorios = totalRel;
@@ -262,7 +262,7 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
       level: "info",
       alerta: `Possível economia de ~${economia.toFixed(2)} USD`,
       causa: "Mais de 30% do custo está em modelo Pro.",
-      acao: "Use Pro só para insight final; mapping/normalização pode ir para Flash.",
+      acao: "Use Pro só para insight final; mapping/noprospecçãolização pode ir para Flash.",
     });
   }
 
@@ -272,7 +272,7 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
     custoRelatorio,
     custoIaOcrProcessamento,
     custoMedioExecucao,
-    custoMedioPorRMA,
+    custoMedioPorProspecção,
     custoMedioPorBalancete,
     custoMedioPorRelatorio,
     totalBalancetes,
@@ -288,7 +288,7 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
   };
 }
 
-/** Conta unidades reais da plataforma para usar como denominadores de custo médio. */
+/** Conta unidades reais da platafoprospecção para usar como denominadores de custo médio. */
 export async function fetchPlatformCounts(cutoff: Date | null): Promise<PlatformCounts> {
   const since = cutoff ? cutoff.toISOString() : null;
 
@@ -301,20 +301,20 @@ export async function fetchPlatformCounts(cutoff: Date | null): Promise<Platform
     return count ?? 0;
   };
 
-  const [rmasTotal, rmasConcluidos, rmasEmAnalise, balancetesRuns, balancetesConsolidados,
+  const [prospecçãosTotal, prospecçãosConcluidos, prospecçãosEmAnalise, balancetesRuns, balancetesConsolidados,
     relatoriosFinalizados, relatoriosEmElaboracao, documentosOcr] = await Promise.all([
-    cnt("rma_analysis_results"),
-    cnt("rma_analysis_results", (q: any) => q.eq("status", "concluido")),
-    cnt("rma_analysis_results", (q: any) => q.eq("status", "em_analise")),
+    cnt("prospecção_analysis_results"),
+    cnt("prospecção_analysis_results", (q: any) => q.eq("status", "concluido")),
+    cnt("prospecção_analysis_results", (q: any) => q.eq("status", "em_analise")),
     cnt("balancete_runs"),
     cnt("balancete_consolidado"),
-    cnt("rma_documents", (q: any) => q.eq("status", "finalizado")),
-    cnt("rma_documents", (q: any) => q.neq("status", "finalizado")),
+    cnt("prospecção_documents", (q: any) => q.eq("status", "finalizado")),
+    cnt("prospecção_documents", (q: any) => q.neq("status", "finalizado")),
     cnt("ai_extractions"),
   ]);
 
   return {
-    rmasTotal, rmasConcluidos, rmasEmAnalise,
+    prospecçãosTotal, prospecçãosConcluidos, prospecçãosEmAnalise,
     balancetesRuns, balancetesConsolidados,
     relatoriosFinalizados, relatoriosEmElaboracao,
     documentosOcr,

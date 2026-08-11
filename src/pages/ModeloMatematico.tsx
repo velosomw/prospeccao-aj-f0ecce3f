@@ -63,11 +63,11 @@ interface PersonaVector {
 }
 
 const personaLabels: Record<keyof PersonaVector, { label: string; desc: string }> = {
-  Rn: { label: "Rigor Normativo (Rₙ)", desc: "Nível de aderência estrita às normas IFRS/CPC/NBC TA" },
+  Rn: { label: "Rigor Noprospecçãotivo (Rₙ)", desc: "Nível de aderência estrita às noprospecçãos IFRS/CPC/NBC TA" },
   Cr: { label: "Conservadorismo de Risco (Cᵣ)", desc: "Tendência a classificar situações como risco mais elevado" },
   Sr: { label: "Sensibilidade a Risco (Sᵣ)", desc: "Capacidade de detectar sinais fracos de risco" },
   Da: { label: "Profundidade Analítica (Dₐ)", desc: "Extensão e detalhamento da análise técnica" },
-  Fl: { label: "Formalidade Linguística (Fₗ)", desc: "Grau de tecnicidade no vocabulário e estilo do relatório" },
+  Fl: { label: "Foprospecçãolidade Linguística (Fₗ)", desc: "Grau de tecnicidade no vocabulário e estilo do relatório" },
   Ap: { label: "Agressividade na Identificação (Aₚ)", desc: "Tendência a apontar desvios e inconsistências" },
 };
 
@@ -312,7 +312,7 @@ const TabAgenteAuditor = () => {
                 <span className="font-mono">R$ {(materialidadeBase).toLocaleString("pt-BR")}</span>
               </div>
               <div className="flex justify-between p-2 rounded-lg bg-muted/50 text-sm">
-                <span className="text-muted-foreground">Rigor Normativo (Rₙ)</span>
+                <span className="text-muted-foreground">Rigor Noprospecçãotivo (Rₙ)</span>
                 <span className="font-mono">{persona.Rn}</span>
               </div>
               <div className="flex justify-between p-3 rounded-lg bg-[hsl(258,90%,66%)]/5 border border-[hsl(258,90%,66%)]/20 text-sm">
@@ -420,10 +420,10 @@ const TabAgenteRelatorio = () => {
         <Card>
           <CardContent className="p-5 space-y-4">
             <h4 className="text-sm font-semibold text-foreground">Índice de Complexidade Textual</h4>
-            <FormulaBlock formula="CT = Base + (Fₗ × γ)" description="Formalidade alta → vocabulário técnico elevado" />
+            <FormulaBlock formula="CT = Base + (Fₗ × γ)" description="Foprospecçãolidade alta → vocabulário técnico elevado" />
             <div className="space-y-2 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">Base</span><span className="font-mono">{ctBase}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Fₗ (Formalidade)</span><span className="font-mono">{persona.Fl}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Fₗ (Foprospecçãolidade)</span><span className="font-mono">{persona.Fl}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">γ (gamma)</span><span className="font-mono">{gamma}</span></div>
               <hr className="border-border" />
               <div className="flex justify-between p-2 rounded-lg bg-[hsl(258,90%,66%)]/5">
@@ -431,7 +431,7 @@ const TabAgenteRelatorio = () => {
                 <span className="font-bold font-mono text-[hsl(258,90%,66%)]">{fmt(ct, 1)}</span>
               </div>
             </div>
-            <p className="text-xs text-muted-foreground">{ct > 70 ? "→ Linguagem altamente técnica com termos normativos" : ct > 55 ? "→ Linguagem técnica moderada" : "→ Linguagem simplificada/executiva"}</p>
+            <p className="text-xs text-muted-foreground">{ct > 70 ? "→ Linguagem altamente técnica com termos noprospecçãotivos" : ct > 55 ? "→ Linguagem técnica moderada" : "→ Linguagem simplificada/executiva"}</p>
           </CardContent>
         </Card>
 
@@ -482,14 +482,14 @@ const TabRiskEngine = () => {
   // 2.3 Score Narrativo (SR)
   const SR = (mockAlertLevel + mockComplexidadeRisco + mockFreqDesvios) / 3;
 
-  // Normalização Min-Max (scores already 0-1 in mock)
+  // Noprospecçãolização Min-Max (scores already 0-1 in mock)
   const scores = [SA, SF, SR];
   const sMin = Math.min(...scores);
   const sMax = Math.max(...scores);
-  const normalize = (x: number) => sMax === sMin ? 0.5 : (x - sMin) / (sMax - sMin);
-  const SA_norm = normalize(SA);
-  const SF_norm = normalize(SF);
-  const SR_norm = normalize(SR);
+  const noprospecçãolize = (x: number) => sMax === sMin ? 0.5 : (x - sMin) / (sMax - sMin);
+  const SA_norm = noprospecçãolize(SA);
+  const SF_norm = noprospecçãolize(SF);
+  const SR_norm = noprospecçãolize(SR);
 
   // Correlação mock (calculada a partir de dados simulados)
   const rhoAF = 0.78;
@@ -510,7 +510,7 @@ const TabRiskEngine = () => {
   // ECRS (seção 5)
   const ECRS = wA_adj * SA_norm + wF_adj * SF_norm + wR_adj * SR_norm + lambda * corrFactor;
 
-  // Normalizar ECRS para [0,1]
+  // Noprospecçãolizar ECRS para [0,1]
   const ECRSNorm = Math.min(ECRS / (wA_adj + wF_adj + wR_adj + lambda), 1);
 
   // Risco Sistêmico (seção 7)
@@ -539,7 +539,7 @@ const TabRiskEngine = () => {
         <CardContent className="p-5">
           <h4 className="text-sm font-semibold text-foreground mb-3">Fluxo Arquitetural</h4>
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            {["Inputs", "Agentes Individuais", "Normalização", "Correlação", "Motor Consolidado", "Classificação", "Alertas", "Relatório"].map((step, i) => (
+            {["Inputs", "Agentes Individuais", "Noprospecçãolização", "Correlação", "Motor Consolidado", "Classificação", "Alertas", "Relatório"].map((step, i) => (
               <div key={i} className="flex items-center gap-2">
                 <span className={`px-3 py-1.5 rounded-lg font-medium ${i === 4 ? "bg-[hsl(258,90%,66%)] text-white" : "bg-muted text-foreground"}`}>{step}</span>
                 {i < 7 && <ArrowRight className="w-3 h-3 text-muted-foreground" />}
@@ -574,7 +574,7 @@ const TabRiskEngine = () => {
                   <span className="font-bold font-mono">{fmt(agent.score, 4)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Score Normalizado</span>
+                  <span className="text-muted-foreground">Score Noprospecçãolizado</span>
                   <span className="font-bold font-mono" style={{ color: agent.color }}>{fmt(agent.norm, 4)}</span>
                 </div>
               </div>
@@ -583,11 +583,11 @@ const TabRiskEngine = () => {
         ))}
       </div>
 
-      {/* Normalização */}
+      {/* Noprospecçãolização */}
       <Card>
         <CardContent className="p-5 space-y-3">
-          <h4 className="text-sm font-semibold text-foreground">Normalização Min-Max</h4>
-          <FormulaBlock formula="Score_norm = (X − X_min) / (X_max − X_min)" description="Todos os scores normalizados para [0, 1] antes da consolidação" />
+          <h4 className="text-sm font-semibold text-foreground">Noprospecçãolização Min-Max</h4>
+          <FormulaBlock formula="Score_norm = (X − X_min) / (X_max − X_min)" description="Todos os scores noprospecçãolizados para [0, 1] antes da consolidação" />
           <div className="grid grid-cols-3 gap-3">
             {[{ label: "SA", raw: SA, norm: SA_norm }, { label: "SF", raw: SF, norm: SF_norm }, { label: "SR", raw: SR, norm: SR_norm }].map((s, i) => (
               <div key={i} className="text-center p-3 rounded-lg bg-muted/50">
@@ -952,7 +952,7 @@ const ModeloMatematico = () => {
               <Calculator className="w-6 h-6 text-primary" />
               Modelo Matemático Detalhado
             </h1>
-            <p className="text-sm text-muted-foreground">Índices Financeiros & Sistema de Persona — Plataforma de Auditoria IA v3.0</p>
+            <p className="text-sm text-muted-foreground">Índices Financeiros & Sistema de Persona — Platafoprospecção de Auditoria IA v3.0</p>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">Ano:</span>
@@ -1139,7 +1139,7 @@ const ModeloMatematico = () => {
                   calc: `IPL = ${fmtMoney(d.ativoNaoCirculante)} / ${fmtMoney(d.patrimonioLiquido)}`,
                   value: ind.imobilizacaoPL, isPct: false,
                   interp: { text: ind.imobilizacaoPL > 1 ? "PL insuficiente" : "Adequado", risk: (ind.imobilizacaoPL > 1 ? "Alto" : "Saudável") as RiskLevel },
-                  trigger: "IPL > 1 → PL insuficiente para financiar ativo permanente",
+                  trigger: "IPL > 1 → PL insuficiente para financiar ativo peprospecçãonente",
                 },
               ].map((item) => (
                 <Card key={item.name}>
@@ -1249,7 +1249,7 @@ const ModeloMatematico = () => {
                           ) : Math.abs(i.variation) > 0.25 ? (
                             <Badge variant="secondary" className="text-xs">Atenção</Badge>
                           ) : (
-                            <Badge variant="outline" className="text-xs">Normal</Badge>
+                            <Badge variant="outline" className="text-xs">Noprospecçãol</Badge>
                           )}
                         </TableCell>
                       </TableRow>

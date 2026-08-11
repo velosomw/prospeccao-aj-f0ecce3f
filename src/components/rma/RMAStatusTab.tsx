@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-import { buildLiveScoreTopics, computeRmaScore } from "@/lib/rmaScore";
+import { buildLiveScoreTopics, computeRmaScore } from "@/lib/prospecçãoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
-import type { RMAEntry } from "@/types/rma";
-import type { RmaAnalysisResult } from "@/services/rmaAnalysisService";
+import type { ProspecçãoEntry } from "@/types/prospecção";
+import type { RmaAnalysisResult } from "@/services/prospecçãoAnalysisService";
 
 interface Props {
-  rma: RMAEntry;
+  prospecção: ProspecçãoEntry;
   companyId?: string | null;
   onUpdateIA: () => void;
   isAnalyzing?: boolean;
@@ -23,7 +23,7 @@ type StatusFilter = "all" | "completo" | "pendente" | "incompleto";
 
 interface OneDriveFile { path: string; file_name: string; status: string | null }
 
-const RMAStatusTab = ({ rma, companyId, onUpdateIA, isAnalyzing = false, analysis }: Props) => {
+const ProspecçãoStatusTab = ({ prospecção, companyId, onUpdateIA, isAnalyzing = false, analysis }: Props) => {
   const [filter, setFilter] = useState<StatusFilter>("all");
   const [allFiles, setAllFiles] = useState<OneDriveFile[] | null>(null);
   const [refreshTick, setRefreshTick] = useState(0);
@@ -36,7 +36,7 @@ const RMAStatusTab = ({ rma, companyId, onUpdateIA, isAnalyzing = false, analysi
     if (!companyId) { setAllFiles(null); return; }
     let cancelled = false;
     const fetchFiles = async () => {
-      // Busca a competência ativa da empresa para limitar o escopo do RMA
+      // Busca a competência ativa da empresa para limitar o escopo do Prospecção
       const { data: comp } = await supabase
         .from("companies")
         .select("execution_year, current_period_month")
@@ -79,7 +79,7 @@ const RMAStatusTab = ({ rma, companyId, onUpdateIA, isAnalyzing = false, analysi
           docsParsed: t.docsParsed,
           errors: t.errors,
         }))
-      : rma.topics.map((t: any, i: number) => ({
+      : prospecção.topics.map((t: any, i: number) => ({
           id: t.id,
           number: (t.number ?? t.pasta ?? i + 1) as number,
           name: t.name,
@@ -93,20 +93,20 @@ const RMAStatusTab = ({ rma, companyId, onUpdateIA, isAnalyzing = false, analysi
 
     // Sobrescreve fileCount/docsParsed/completude/status com os números reais do OneDrive.
     // A completude por tópico passa a refletir docsParsed/fileCount em tempo real
-    // (e não apenas o snapshot da última run completa de rma-analyze).
+    // (e não apenas o snapshot da última run completa de prospecção-analyze).
     return buildLiveScoreTopics(base, allFiles) as typeof base;
-  }, [analysis, rma.topics, allFiles]);
+  }, [analysis, prospecção.topics, allFiles]);
 
   const completos = liveTopics.filter((t) => t.status === "completo");
   const pendentes = liveTopics.filter((t) => t.status === "pendente");
   const incompletos = liveTopics.filter((t) => t.status === "incompleto");
   const processandoAtual = liveTopics.find((t) => t.processing);
 
-  // Score Global unificado: `rma.percentual` é a fonte canônica (vinda do
-  // Workspace/edge `rma-score`). reconcileScore garante paridade em runtime.
+  // Score Global unificado: `prospecção.percentual` é a fonte canônica (vinda do
+  // Workspace/edge `prospecção-score`). reconcileScore garante paridade em runtime.
   const localScore = computeRmaScore(liveTopics as any, analysis?.percentual ?? 0);
-  const avgCompletude = reconcileScore("RMAStatusTab", rma.percentual, localScore);
-  useScoreParityGuard(rma.id ?? null, "RMAStatusTab", avgCompletude);
+  const avgCompletude = reconcileScore("ProspecçãoStatusTab", prospecção.percentual, localScore);
+  useScoreParityGuard(prospecção.id ?? null, "ProspecçãoStatusTab", avgCompletude);
 
   const totalProcessados = completos.length + incompletos.length;
   const totalEsperado = liveTopics.length;
@@ -149,7 +149,7 @@ const RMAStatusTab = ({ rma, companyId, onUpdateIA, isAnalyzing = false, analysi
           <div className="text-center">
             <p className="text-5xl font-bold text-[hsl(217,91%,50%)]">{avgCompletude}%</p>
             <p className="text-sm text-muted-foreground mt-1">
-              {isAnalyzing ? "IA processando documentos…" : "Status Geral do RMA"}
+              {isAnalyzing ? "IA processando documentos…" : "Status Geral do Prospecção"}
             </p>
           </div>
 
@@ -251,7 +251,7 @@ const RMAStatusTab = ({ rma, companyId, onUpdateIA, isAnalyzing = false, analysi
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
-            <Clock className="w-4 h-4" /> Tópicos do RMA — atualização em tempo real
+            <Clock className="w-4 h-4" /> Tópicos do Prospecção — atualização em tempo real
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
@@ -330,4 +330,4 @@ const RMAStatusTab = ({ rma, companyId, onUpdateIA, isAnalyzing = false, analysi
   );
 };
 
-export default RMAStatusTab;
+export default ProspecçãoStatusTab;

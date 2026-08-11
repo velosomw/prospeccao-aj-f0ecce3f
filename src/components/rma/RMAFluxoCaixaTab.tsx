@@ -55,7 +55,7 @@ function groupByPeriod(rows: FCXRow[]) {
   return Array.from(map.values()).sort((a, b) => (a.ano - b.ano) || (a.mes - b.mes));
 }
 
-const RMAFluxoCaixaTab = ({ companyId, periodo, runToken, janela }: Props) => {
+const ProspecçãoFluxoCaixaTab = ({ companyId, periodo, runToken, janela }: Props) => {
   const { rows, allRows, loading } = useFluxoCaixa(companyId, periodo, runToken, janela ?? null);
 
   const byPeriod = useMemo(() => groupByPeriod(rows), [rows]);
@@ -128,8 +128,8 @@ const RMAFluxoCaixaTab = ({ companyId, periodo, runToken, janela }: Props) => {
               <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                 <XAxis dataKey="label" fontSize={11} />
-                <YAxis fontSize={11} tickFormatter={(v) => Intl.NumberFormat("pt-BR", { notation: "compact" }).format(v as number)} />
-                <Tooltip formatter={(v: number) => fmtBRL(v)} />
+                <YAxis fontSize={11} tickFoprospecçãotter={(v) => Intl.NumberFoprospecçãot("pt-BR", { notation: "compact" }).foprospecçãot(v as number)} />
+                <Tooltip foprospecçãotter={(v: number) => fmtBRL(v)} />
                 <Legend />
                 <Bar dataKey="Operacional" fill={CAT_COLOR.operacional} />
                 <Bar dataKey="Investimento" fill={CAT_COLOR.investimento} />
@@ -199,4 +199,4 @@ const KPI = ({ label, value, color, icon }: { label: string; value: string; colo
   </Card>
 );
 
-export default RMAFluxoCaixaTab;
+export default ProspecçãoFluxoCaixaTab;

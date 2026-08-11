@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { FileText, ScrollText, BookOpen, ChevronDown, ChevronRight, CheckCircle2, AlertTriangle, Circle } from "lucide-react";
 
 /**
- * Sumário canônico oficial do RMA — DIP/Capital AJ.
+ * Sumário canônico oficial do Prospecção — DIP/Capital AJ.
  * Esta é a fonte de verdade para a visualização: TODAS as seções e
  * subseções devem aparecer, independentemente do estado dos dados.
  * Seções sem conteúdo exibem o tipo de problema e a condição para solução.
@@ -17,7 +17,7 @@ export const CANONICAL_SUMARIO: CanonicalNode[] = [
   { numero: "1", titulo: "Houve alteração da atividade empresarial?" },
   { numero: "2", titulo: "Houve alteração da estrutura societária e dos órgãos de administração?" },
   { numero: "3", titulo: "Houve abertura ou fechamento de estabelecimentos?" },
-  { numero: "4", titulo: "Segmento de atuação · Fontes de informação · Associação · Sindicato" },
+  { numero: "4", titulo: "Segmento de atuação · Fontes de infoprospecçãoção · Associação · Sindicato" },
   {
     numero: "5", titulo: "Quadro de funcionários",
     children: [
@@ -34,7 +34,7 @@ export const CANONICAL_SUMARIO: CanonicalNode[] = [
     ],
   },
   {
-    numero: "6", titulo: "Análise dos dados contábeis e informações financeiras",
+    numero: "6", titulo: "Análise dos dados contábeis e infoprospecçãoções financeiras",
     children: [
       {
         numero: "6.1", titulo: "Ativo (descrição / evolução)",
@@ -139,7 +139,7 @@ interface SectionLike {
 
 interface Props {
   empresa?: string;
-  rmaCode?: string;
+  prospecçãoCode?: string;
   mesReferencia?: string;
   responsavel?: string;
   juizo?: string;
@@ -259,7 +259,7 @@ function NodeRow({
 }
 
 export default function RelatorioCanonicalPreview({
-  empresa, rmaCode, mesReferencia, responsavel, sections,
+  empresa, prospecçãoCode, mesReferencia, responsavel, sections,
   juizo = "JUÍZO DA 4ª VARA CÍVEL DE CASCAVEL - PARANÁ",
   autos = "0013103-92.2020.8.16.0021",
   rjAutos = "0024946-35.2012.8.16.0021",
@@ -297,7 +297,7 @@ export default function RelatorioCanonicalPreview({
     <div className="bg-white border border-border rounded-lg overflow-hidden">
       <div className="bg-muted/30 px-4 py-2 border-b text-xs text-muted-foreground flex items-center justify-between flex-wrap gap-2">
         <span className="flex items-center gap-1.5">
-          <FileText className="h-3.5 w-3.5" /> Prévia estruturada — DIP/RMA
+          <FileText className="h-3.5 w-3.5" /> Prévia estruturada — DIP/Prospecção
         </span>
         <span>{okCount}/{totalNodes} seções conformes</span>
       </div>
@@ -309,7 +309,7 @@ export default function RelatorioCanonicalPreview({
         <p className="text-sm text-muted-foreground mt-1">Administração Judicial · Recomendação CNJ 72/2020</p>
         <div className="mt-6 space-y-1 text-sm">
           {empresa && <p><strong>Recuperanda:</strong> {empresa}</p>}
-          {rmaCode && <p><strong>Prospecção AJ:</strong> {rmaCode}</p>}
+          {prospecçãoCode && <p><strong>Prospecção AJ:</strong> {prospecçãoCode}</p>}
           {mesReferencia && <p><strong>Competência:</strong> {mesReferencia}</p>}
           {responsavel && <p><strong>Administrador Judicial:</strong> {responsavel}</p>}
         </div>

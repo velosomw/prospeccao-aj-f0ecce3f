@@ -2,7 +2,7 @@ import { History, GitCommit, User, FileText, CheckCircle2, AlertTriangle } from 
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
 const events = [
-  { id: "AH-401", tipo: "publicacao", titulo: "RMA Mai/2026 publicado - DIPLOMATA", empresa: "DIPLOMATA", autor: "Adm. Judicial", data: "Hoje 14:32" },
+  { id: "AH-401", tipo: "publicacao", titulo: "Prospecção Mai/2026 publicado - DIPLOMATA", empresa: "DIPLOMATA", autor: "Adm. Judicial", data: "Hoje 14:32" },
   { id: "AH-400", tipo: "edicao",     titulo: "Pendência cobrada - TECNOMAX",       empresa: "TECNOMAX",  autor: "Adm. Judicial", data: "Hoje 13:10" },
   { id: "AH-399", tipo: "rejeicao",   titulo: "Documento reprovado - MOVAG",        empresa: "MOVAG",     autor: "Adm. Judicial", data: "Ontem" },
   { id: "AH-398", tipo: "aprovacao",  titulo: "Plano de pagamento aprovado",        empresa: "BENTOIA",   autor: "Adm. Judicial", data: "07/05" },

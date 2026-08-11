@@ -5,17 +5,17 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import type { RMAEntry } from "@/types/rma";
-import { DeferredBatchIndicator } from "@/components/rma/DeferredBatchIndicator";
-import RMAFailedFilesLearningCard from "@/components/rma/RMAFailedFilesLearningCard";
-import RMAManualUploadLearningCard from "@/components/rma/RMAManualUploadLearningCard";
-import RMAAuditTrailCard from "@/components/rma/RMAAuditTrailCard";
-import RMABatchTab from "@/components/rma/RMABatchTab";
-import { computeRmaScore } from "@/lib/rmaScore";
+import type { ProspecçãoEntry } from "@/types/prospecção";
+import { DeferredBatchIndicator } from "@/components/prospecção/DeferredBatchIndicator";
+import ProspecçãoFailedFilesLearningCard from "@/components/prospecção/ProspecçãoFailedFilesLearningCard";
+import ProspecçãoManualUploadLearningCard from "@/components/prospecção/ProspecçãoManualUploadLearningCard";
+import ProspecçãoAuditTrailCard from "@/components/prospecção/ProspecçãoAuditTrailCard";
+import ProspecçãoBatchTab from "@/components/prospecção/ProspecçãoBatchTab";
+import { computeRmaScore } from "@/lib/prospecçãoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
 
 interface Props {
-  rma: RMAEntry;
+  prospecção: ProspecçãoEntry;
   companyId?: string | null;
 }
 
@@ -37,7 +37,7 @@ type TopicNorm = {
   status: "ok" | "incompleto" | "vazio";
 };
 
-const normalizeStatus = (
+const noprospecçãolizeStatus = (
   raw: any,
   fileCount: number,
   processedCount: number,
@@ -55,7 +55,7 @@ const statusBadge = (s: "ok" | "incompleto" | "vazio") => {
   return <Badge className="bg-[hsl(0,84%,60%)]/15 text-[hsl(0,84%,60%)] border-0 text-[10px]">Vazio</Badge>;
 };
 
-const RMAProcessamentoTab = ({ rma, companyId }: Props) => {
+const ProspecçãoProcessamentoTab = ({ prospecção, companyId }: Props) => {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [allFiles, setAllFiles] = useState<OneDriveFile[] | null>(null);
   const [loadingFiles, setLoadingFiles] = useState(false);
@@ -107,7 +107,7 @@ const RMAProcessamentoTab = ({ rma, companyId }: Props) => {
   };
 
   const topics: TopicNorm[] = useMemo(() => {
-    return (rma.topics || []).map((t: any, i: number) => {
+    return (prospecção.topics || []).map((t: any, i: number) => {
       const docs = Array.isArray(t.documents) ? t.documents : [];
       const pasta = t.pasta ?? t.number ?? i + 1;
       const realFiles = matchTopicFiles(pasta);
@@ -130,10 +130,10 @@ const RMAProcessamentoTab = ({ rma, companyId }: Props) => {
         pasta,
         fileCount,
         docsParsed,
-        status: normalizeStatus(t.status, fileCount, docsParsed),
+        status: noprospecçãolizeStatus(t.status, fileCount, docsParsed),
       };
     });
-  }, [rma.topics, allFiles]);
+  }, [prospecção.topics, allFiles]);
 
   const total = topics.length;
   const okCount = topics.filter((t) => t.status === "ok").length;
@@ -142,18 +142,18 @@ const RMAProcessamentoTab = ({ rma, companyId }: Props) => {
   const totalDocs = allFiles ? allFiles.length : topics.reduce((s, t) => s + t.fileCount, 0);
 
   // Score Global unificado: usa exatamente o mesmo percentual exibido no header
-  // do Workspace e nos Alertas Inteligentes (vindo do edge `rma-score` quando
-  // disponível). Mantém computeRmaScore como piso defensivo caso `rma.percentual`
+  // do Workspace e nos Alertas Inteligentes (vindo do edge `prospecção-score` quando
+  // disponível). Mantém computeRmaScore como piso defensivo caso `prospecção.percentual`
   // ainda não tenha sido propagado.
   const localScore = computeRmaScore(
     topics.map((t) => ({
       status: t.status === "ok" ? "completo" : t.status === "incompleto" ? "incompleto" : "pendente",
       completude: t.fileCount > 0 ? Math.round((t.docsParsed / t.fileCount) * 100) : 0,
     })),
-    rma.percentual,
+    prospecção.percentual,
   );
-  const score = reconcileScore("RMAProcessamentoTab", rma.percentual, localScore);
-  useScoreParityGuard(rma.id ?? null, "RMAProcessamentoTab", score);
+  const score = reconcileScore("ProspecçãoProcessamentoTab", prospecção.percentual, localScore);
+  useScoreParityGuard(prospecção.id ?? null, "ProspecçãoProcessamentoTab", score);
 
   const okPct = total > 0 ? Math.round((okCount / total) * 100) : 0;
   const incPct = total > 0 ? Math.round((incompletoCount / total) * 100) : 0;
@@ -175,7 +175,7 @@ const RMAProcessamentoTab = ({ rma, companyId }: Props) => {
   return (
     <div className="space-y-6">
       {companyId && (
-        <DeferredBatchIndicator companyId={companyId} rmaId={(rma as any).id ?? null} variant="rma-summary" />
+        <DeferredBatchIndicator companyId={companyId} prospecçãoId={(prospecção as any).id ?? null} variant="prospecção-summary" />
       )}
       {/* Linha 1 — Score Global + Distribuição por classificação */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -264,7 +264,7 @@ const RMAProcessamentoTab = ({ rma, companyId }: Props) => {
       <Card className="border-2 border-[hsl(38,92%,50%)]/20 bg-[hsl(38,92%,50%)]/5">
         <CardContent className="p-5">
           <p className="text-sm font-semibold text-foreground mb-2">
-            🧠 Diagnóstico da IA — {rma.empresa}
+            🧠 Diagnóstico da IA — {prospecção.empresa}
           </p>
           <p className="text-xs text-muted-foreground leading-relaxed">
             Foram analisadas <strong>{total} pastas</strong> do OneDrive.{" "}
@@ -348,7 +348,7 @@ const RMAProcessamentoTab = ({ rma, companyId }: Props) => {
                       const color = COLORS[t.status];
                       const Icon = t.status === "ok" ? FolderCheck : t.status === "incompleto" ? FolderOpen : FolderX;
                       const isOpen = !!expanded[t.id];
-                      const docs = isOpen ? getDocsForTopic(t.pasta, (rma.topics?.find((x: any) => (x.id || "") === t.id) as any)?.documents) : [];
+                      const docs = isOpen ? getDocsForTopic(t.pasta, (prospecção.topics?.find((x: any) => (x.id || "") === t.id) as any)?.documents) : [];
                       return (
                         <Fragment key={t.id}>
                           <tr className="border-b border-border/10 hover:bg-muted/20 transition-colors">
@@ -526,23 +526,23 @@ const RMAProcessamentoTab = ({ rma, companyId }: Props) => {
         </TabsContent>
 
         <TabsContent value="erros" className="mt-4">
-          {companyId && <RMAFailedFilesLearningCard companyId={companyId} />}
+          {companyId && <ProspecçãoFailedFilesLearningCard companyId={companyId} />}
         </TabsContent>
 
         <TabsContent value="manual" className="mt-4">
-          {companyId && <RMAManualUploadLearningCard companyId={companyId} />}
+          {companyId && <ProspecçãoManualUploadLearningCard companyId={companyId} />}
         </TabsContent>
 
         <TabsContent value="trilha" className="mt-4">
-          {companyId && <RMAAuditTrailCard companyId={companyId} />}
+          {companyId && <ProspecçãoAuditTrailCard companyId={companyId} />}
         </TabsContent>
 
         <TabsContent value="batch" className="mt-4">
-          <RMABatchTab companyId={companyId ?? null} rmaId={(rma as any).id ?? null} />
+          <ProspecçãoBatchTab companyId={companyId ?? null} prospecçãoId={(prospecção as any).id ?? null} />
         </TabsContent>
       </Tabs>
     </div>
   );
 };
 
-export default RMAProcessamentoTab;
+export default ProspecçãoProcessamentoTab;

@@ -144,7 +144,7 @@ export default function ReprocessHistoryDialog({ fileId, fileName, open, onOpenC
             <div className="text-lg font-semibold">
               {remaining != null ? remaining : "—"}
               {maxAttempts != null && (
-                <span className="text-xs text-muted-foreground font-normal"> / {maxAttempts}</span>
+                <span className="text-xs text-muted-foreground font-noprospecçãol"> / {maxAttempts}</span>
               )}
             </div>
           </div>

@@ -1,6 +1,6 @@
 // Seletor compartilhado de competência (mês/ano).
 // Lista os últimos 6 meses disponíveis no consolidado e
-// destaca o período "principal" do RMA (definido no cadastro).
+// destaca o período "principal" do Prospecção (definido no cadastro).
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -35,9 +35,9 @@ export default function CompetenciaSelector({
   companyId, value, onChange, refreshKey, maxItems = 6, preferredCompetencia = null,
 }: Props) {
   const [periodos, setPeriodos] = useState<Competencia[]>([]);
-  const [rmaPeriodo, setRmaPeriodo] = useState<Competencia | null>(null);
+  const [prospecçãoPeriodo, setRmaPeriodo] = useState<Competencia | null>(null);
 
-  // Carrega últimos N períodos disponíveis no consolidado + período principal do RMA
+  // Carrega últimos N períodos disponíveis no consolidado + período principal do Prospecção
   useEffect(() => {
     if (!companyId) { setPeriodos([]); setRmaPeriodo(null); return; }
     let cancelled = false;
@@ -62,7 +62,7 @@ export default function CompetenciaSelector({
           .order("mes", { ascending: false })
           .limit(50),
         supabase.from("companies")
-          .select("rma_id, execution_year, current_period_month")
+          .select("prospecção_id, execution_year, current_period_month")
           .eq("id", companyId)
           .maybeSingle(),
       ]);
@@ -83,8 +83,8 @@ export default function CompetenciaSelector({
 
       if (preferredCompetencia) {
         setRmaPeriodo(preferredCompetencia);
-      } else if (compRes.data?.rma_id && /^RMA-DIP-\d{2}-\d{4}$/i.test(String(compRes.data.rma_id))) {
-        const [, mm, yyyy] = String(compRes.data.rma_id).match(/^RMA-DIP-(\d{2})-(\d{4})$/i)!;
+      } else if (compRes.data?.prospecção_id && /^Prospecção-DIP-\d{2}-\d{4}$/i.test(String(compRes.data.prospecção_id))) {
+        const [, mm, yyyy] = String(compRes.data.prospecção_id).match(/^Prospecção-DIP-(\d{2})-(\d{4})$/i)!;
         setRmaPeriodo(toComp(Number(yyyy), Number(mm)));
       } else if (compRes.data?.execution_year && compRes.data?.current_period_month) {
         setRmaPeriodo(toComp(
@@ -99,7 +99,7 @@ export default function CompetenciaSelector({
   }, [companyId, refreshKey, maxItems, preferredCompetencia?.key]);
 
   const isRma = (p: Competencia) =>
-    rmaPeriodo && p.ano === rmaPeriodo.ano && p.mes === rmaPeriodo.mes;
+    prospecçãoPeriodo && p.ano === prospecçãoPeriodo.ano && p.mes === prospecçãoPeriodo.mes;
 
   const currentLabel = value ? value.label : "Todos os meses";
 
@@ -135,12 +135,12 @@ export default function CompetenciaSelector({
             )}
           </DropdownMenuItem>
         ))}
-        {rmaPeriodo && !periodos.some(p => isRma(p)) && (
+        {prospecçãoPeriodo && !periodos.some(p => isRma(p)) && (
           <DropdownMenuItem
-            onClick={() => onChange(rmaPeriodo)}
+            onClick={() => onChange(prospecçãoPeriodo)}
             className="text-xs flex items-center justify-between capitalize"
           >
-            <span>{rmaPeriodo.label}</span>
+            <span>{prospecçãoPeriodo.label}</span>
             <Badge variant="secondary" className="h-4 px-1 text-[9px]">Prospecção AJ</Badge>
           </DropdownMenuItem>
         )}

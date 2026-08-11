@@ -12,16 +12,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import PlatformLayout from "@/components/PlatformLayout";
-import { mockRMAs, type RMAEntry } from "@/data/rmaMockData";
+import { mockProspecçãos, type ProspecçãoEntry } from "@/data/prospecçãoMockData";
 import { listMyAssignedCompanies, activateAssignedRma, type Company } from "@/services/companiesService";
-import { startRmaAnalysis, listRmaAnalyses, type RmaAnalysisResult } from "@/services/rmaAnalysisService";
-import { listPeriodsForCompanies, type RmaPeriodAnalysis } from "@/services/rmaPeriodService";
+import { startRmaAnalysis, listRmaAnalyses, type RmaAnalysisResult } from "@/services/prospecçãoAnalysisService";
+import { listPeriodsForCompanies, type RmaPeriodAnalysis } from "@/services/prospecçãoPeriodService";
 import RmaHistoricoTab from "@/components/RmaHistoricoTab";
 import MyReleasesTab from "@/components/MyReleasesTab";
-import RMA360Panel from "@/components/coordenador/RMA360Panel";
-import { DeferredBatchIndicator } from "@/components/rma/DeferredBatchIndicator";
-import RmaCompanySearch from "@/components/rma/RmaCompanySearch";
-import { buildLiveScoreTopics, computeRmaScore, groupFilesByCompany, fetchRmaScores, type ScoreFile } from "@/lib/rmaScore";
+import Prospecção360Panel from "@/components/coordenador/Prospecção360Panel";
+import { DeferredBatchIndicator } from "@/components/prospecção/DeferredBatchIndicator";
+import RmaCompanySearch from "@/components/prospecção/RmaCompanySearch";
+import { buildLiveScoreTopics, computeRmaScore, groupFilesByCompany, fetchRmaScores, type ScoreFile } from "@/lib/prospecçãoScore";
 
 const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
   em_processamento: { label: "Em Processamento", color: "text-accent", bg: "bg-accent/15" },
@@ -35,9 +35,9 @@ const EmpresaDashboard = () => {
   const { userName } = useUser();
   const { toast } = useToast();
   const firstName = userName?.split(" ")[0] || null;
-  const [rmas] = useState<RMAEntry[]>([]);
+  const [prospecçãos] = useState<ProspecçãoEntry[]>([]);
 
-  // RMAs atribuídos pelo Coordenador, aguardando ativação
+  // Prospecçãos atribuídos pelo Coordenador, aguardando ativação
   const [pendingCompanies, setPendingCompanies] = useState<Company[]>([]);
   const [activatedCompanies, setActivatedCompanies] = useState<Company[]>([]);
   const [analyses, setAnalyses] = useState<Record<string, RmaAnalysisResult>>({});
@@ -86,8 +86,8 @@ const EmpresaDashboard = () => {
     reloadAssigned().catch(() => {});
   }, []);
 
-  // Polling permanente: sempre que houver RMA ativo, reconsulta a cada 2.5s
-  // garantindo UI viva em Alertas Inteligentes + lista de RMAs.
+  // Polling peprospecçãonente: sempre que houver Prospecção ativo, reconsulta a cada 2.5s
+  // garantindo UI viva em Alertas Inteligentes + lista de Prospecçãos.
   useEffect(() => {
     if (activatedCompanies.length === 0 && pendingCompanies.length === 0) return;
     const hasRunning = Object.values(analyses).some(a => a.status === "em_analise");
@@ -132,7 +132,7 @@ const EmpresaDashboard = () => {
         title: "Análise IA iniciada",
         description: `${company.name}: lendo pastas e documentos no OneDrive.`,
       });
-      navigate(`/rma/${company.id}`);
+      navigate(`/prospecção/${company.id}`);
     } catch (e: any) {
       toast({ title: "Erro ao ativar Prospecção AJ", description: e.message, variant: "destructive" });
     } finally {
@@ -140,7 +140,7 @@ const EmpresaDashboard = () => {
     }
   };
 
-  /** Reinicia a análise IA do RMA, zerando o prazo de 24h da flag. */
+  /** Reinicia a análise IA do Prospecção, zerando o prazo de 24h da flag. */
   const handleRefreshIA = async (companyId: string, companyName: string) => {
     setRefreshingId(companyId);
     try {
@@ -157,7 +157,7 @@ const EmpresaDashboard = () => {
     }
   };
 
-  // Combina RMAs ativados (reais) + mocks para exibir nas abas Alertas e RMAs
+  // Combina Prospecçãos ativados (reais) + mocks para exibir nas abas Alertas e Prospecçãos
   const filesByCompany = useMemo(() => groupFilesByCompany(scoreFiles), [scoreFiles]);
 
   const realRmas = useMemo(() => activatedCompanies.map(c => {
@@ -182,7 +182,7 @@ const EmpresaDashboard = () => {
         : "em_processamento";
 
     return {
-      id: c.rma_id || c.id.slice(0, 8).toUpperCase(),
+      id: c.prospecção_id || c.id.slice(0, 8).toUpperCase(),
       companyId: c.id,
       empresa: c.name,
       status: mappedStatus,
@@ -198,7 +198,7 @@ const EmpresaDashboard = () => {
         : null,
     };
   }), [activatedCompanies, analyses, filesByCompany]);
-  const displayRmas: (RMAEntry & { companyId?: string; analysisStatus?: string })[] = [...realRmas as any, ...rmas];
+  const displayRmas: (ProspecçãoEntry & { companyId?: string; analysisStatus?: string })[] = [...realRmas as any, ...prospecçãos];
 
   const total = displayRmas.length;
   const emProcessamento = displayRmas.filter(r => r.status === "em_processamento").length;
@@ -246,7 +246,7 @@ const EmpresaDashboard = () => {
   };
 
   // ---------- Atividades Recentes (dados reais) ----------
-  const formatRelative = (iso?: string | null) => {
+  const foprospecçãotRelative = (iso?: string | null) => {
     if (!iso) return "";
     const d = new Date(iso).getTime();
     if (!d || isNaN(d)) return "";
@@ -265,26 +265,26 @@ const EmpresaDashboard = () => {
     const items: { id: string; text: string; time: string; ts: number }[] = [];
     activatedCompanies.forEach(c => {
       const a = analyses[c.id];
-      const rmaLabel = c.rma_id || c.name;
+      const prospecçãoLabel = c.prospecção_id || c.name;
       if (a) {
         const ts = new Date(a.updated_at || a.started_at || c.updated_at).getTime();
         let text = "";
         if (a.status === "concluido") {
-          text = `${rmaLabel} — Análise IA concluída (${Math.round(a.percentual ?? 0)}%)`;
+          text = `${prospecçãoLabel} — Análise IA concluída (${Math.round(a.percentual ?? 0)}%)`;
         } else if (a.status === "em_analise") {
-          text = `${rmaLabel} — Análise IA em andamento (${Math.round(a.percentual ?? 0)}%)`;
+          text = `${prospecçãoLabel} — Análise IA em andamento (${Math.round(a.percentual ?? 0)}%)`;
         } else if (a.status === "erro") {
-          text = `${rmaLabel} — Análise IA com erro — revisar`;
+          text = `${prospecçãoLabel} — Análise IA com erro — revisar`;
         } else {
-          text = `${rmaLabel} — ${a.status}`;
+          text = `${prospecçãoLabel} — ${a.status}`;
         }
-        items.push({ id: `a-${c.id}`, text, time: formatRelative(a.updated_at || a.started_at), ts });
+        items.push({ id: `a-${c.id}`, text, time: foprospecçãotRelative(a.updated_at || a.started_at), ts });
       } else {
         const ts = new Date(c.updated_at || c.created_at).getTime();
         items.push({
           id: `c-${c.id}`,
-          text: `${rmaLabel} — RMA ativado para ${c.name}`,
-          time: formatRelative(c.updated_at || c.created_at),
+          text: `${prospecçãoLabel} — Prospecção ativado para ${c.name}`,
+          time: foprospecçãotRelative(c.updated_at || c.created_at),
           ts,
         });
       }
@@ -293,8 +293,8 @@ const EmpresaDashboard = () => {
       const ts = new Date(c.updated_at || c.created_at).getTime();
       items.push({
         id: `p-${c.id}`,
-        text: `${c.rma_id || c.name} — Atribuído pelo Coordenador, aguardando ativação`,
-        time: formatRelative(c.updated_at || c.created_at),
+        text: `${c.prospecção_id || c.name} — Atribuído pelo Coordenador, aguardando ativação`,
+        time: foprospecçãotRelative(c.updated_at || c.created_at),
         ts,
       });
     });
@@ -303,8 +303,8 @@ const EmpresaDashboard = () => {
       if (!ts) return;
       items.push({
         id: `pe-${p.id}`,
-        text: `${companyNameById[p.company_id] || "RMA"} — Período ${String(p.month).padStart(2, "0")}/${p.year} atualizado (${Math.round(p.percentual ?? 0)}%)`,
-        time: formatRelative(p.updated_at || p.created_at),
+        text: `${companyNameById[p.company_id] || "Prospecção"} — Período ${String(p.month).padStart(2, "0")}/${p.year} atualizado (${Math.round(p.percentual ?? 0)}%)`,
+        time: foprospecçãotRelative(p.updated_at || p.created_at),
         ts,
       });
     });
@@ -321,7 +321,7 @@ const EmpresaDashboard = () => {
           </div>
           <RmaCompanySearch
             companies={[...activatedCompanies, ...pendingCompanies]}
-            onSelect={(c) => navigate(`/rma/${c.id}`)}
+            onSelect={(c) => navigate(`/prospecção/${c.id}`)}
             placeholder="Buscar por empresa, ID Prospecção AJ ou CNPJ..."
             className="w-full md:w-96"
           />
@@ -332,14 +332,14 @@ const EmpresaDashboard = () => {
             <TabsTrigger value="dashboard" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <BarChart3 className="w-4 h-4" /> Dashboard
             </TabsTrigger>
-            <TabsTrigger value="rmas" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
-              <FileText className="w-4 h-4" /> RMAs
+            <TabsTrigger value="prospecçãos" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
+              <FileText className="w-4 h-4" /> Prospecçãos
             </TabsTrigger>
             <TabsTrigger value="historico" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
               <History className="w-4 h-4" /> Histórico
             </TabsTrigger>
             <TabsTrigger value="liberacoes" className="gap-2 text-sm data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-md">
-              <Calendar className="w-4 h-4" /> RMAs Liberados
+              <Calendar className="w-4 h-4" /> Prospecçãos Liberados
             </TabsTrigger>
           </TabsList>
 
@@ -359,7 +359,7 @@ const EmpresaDashboard = () => {
               ))}
             </div>
 
-            {/* RMAs Empresa atribuídos pelo Coordenador — aguardando ativação */}
+            {/* Prospecçãos Empresa atribuídos pelo Coordenador — aguardando ativação */}
             {pendingCompanies.length > 0 && (
               <Card className="border-2 border-accent/40 bg-gradient-to-br from-accent/5 to-transparent">
                 <CardHeader className="pb-3">
@@ -373,13 +373,13 @@ const EmpresaDashboard = () => {
                       </div>
                       <div className="text-left">
                         <CardTitle className="text-base flex items-center gap-2">
-                          RMAs Empresa atribuídos
+                          Prospecçãos Empresa atribuídos
                           <Badge className="bg-accent text-accent-foreground text-[10px]">
                             {pendingCompanies.length} aguardando
                           </Badge>
                         </CardTitle>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                          Ative o RMA para iniciar a análise da IA e carregar o status na plataforma
+                          Ative o Prospecção para iniciar a análise da IA e carregar o status na platafoprospecção
                         </p>
                       </div>
                     </div>
@@ -404,9 +404,9 @@ const EmpresaDashboard = () => {
                           <div className="min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
                               <p className="text-sm font-bold text-foreground truncate">{company.name}</p>
-                              {company.rma_id && (
+                              {company.prospecção_id && (
                                 <Badge className="bg-accent text-accent-foreground text-[10px] font-mono">
-                                  {company.rma_id}
+                                  {company.prospecção_id}
                                 </Badge>
                               )}
                               <Badge variant="outline" className="text-[10px] border-destructive/30 text-destructive">
@@ -427,7 +427,7 @@ const EmpresaDashboard = () => {
                           className="bg-accent hover:bg-accent/90 text-accent-foreground gap-1.5 shrink-0"
                         >
                           <PlayCircle className="w-4 h-4" />
-                          {activatingId === company.id ? "Ativando..." : "Ativar RMA"}
+                          {activatingId === company.id ? "Ativando..." : "Ativar Prospecção"}
                         </Button>
                       </div>
                     ))}
@@ -436,13 +436,13 @@ const EmpresaDashboard = () => {
               </Card>
             )}
 
-            {/* Alertas — RMAs com atualização nas últimas 24h */}
+            {/* Alertas — Prospecçãos com atualização nas últimas 24h */}
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-destructive" /> Alertas Inteligentes
-                  <span className="text-[10px] font-normal text-muted-foreground ml-1">
-                    (atualizações dos RMAs nas últimas 24h)
+                  <span className="text-[10px] font-noprospecçãol text-muted-foreground ml-1">
+                    (atualizações dos Prospecçãos nas últimas 24h)
                   </span>
                 </CardTitle>
               </CardHeader>
@@ -450,25 +450,25 @@ const EmpresaDashboard = () => {
                 {(() => {
                   const now = Date.now();
                   const DAY_MS = 24 * 60 * 60 * 1000;
-                  // Considera apenas RMAs reais (com companyId) que NÃO estão concluídos
+                  // Considera apenas Prospecçãos reais (com companyId) que NÃO estão concluídos
                   const candidatos = displayRmas.filter(r => r.status !== "concluido" && r.companyId);
                   if (candidatos.length === 0) {
                     return (
                       <p className="text-xs text-muted-foreground text-center py-6">
-                        Nenhum RMA atualizado no momento.
+                        Nenhum Prospecção atualizado no momento.
                       </p>
                     );
                   }
-                  return candidatos.map(rma => {
-                    const sc = statusConfig[rma.status];
-                    const pct = rma.percentual;
-                    const pendingCount = rma.topics.length > 0
-                      ? rma.topics.filter(t => t.status !== "completo").length
+                  return candidatos.map(prospecção => {
+                    const sc = statusConfig[prospecção.status];
+                    const pct = prospecção.percentual;
+                    const pendingCount = prospecção.topics.length > 0
+                      ? prospecção.topics.filter(t => t.status !== "completo").length
                       : 0;
-                    const targetId = rma.companyId || rma.id;
+                    const targetId = prospecção.companyId || prospecção.id;
                     const company = activatedCompanies.find(c => c.id === targetId);
                     const isStatusOpen = statusCompanyId === targetId;
-                    const updatedAt = rma.dataAtualizacao ? new Date(rma.dataAtualizacao).getTime() : 0;
+                    const updatedAt = prospecção.dataAtualizacao ? new Date(prospecção.dataAtualizacao).getTime() : 0;
                     const ageMs = updatedAt ? now - updatedAt : Number.POSITIVE_INFINITY;
                     const isStale = ageMs > DAY_MS;
                     const hoursAgo = updatedAt ? Math.floor(ageMs / (60 * 60 * 1000)) : null;
@@ -478,11 +478,11 @@ const EmpresaDashboard = () => {
                     const serverRunning = analyses[targetId]?.status === "em_analise";
                     const isRefreshing = refreshingId === targetId || serverRunning;
                     return (
-                      <div key={(rma as any).companyId || rma.id} className="p-4 rounded-lg bg-muted/30 space-y-3">
+                      <div key={(prospecção as any).companyId || prospecção.id} className="p-4 rounded-lg bg-muted/30 space-y-3">
                         <div className="flex items-center justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <p className="text-sm font-bold text-foreground truncate">{rma.id} — {rma.empresa}</p>
+                              <p className="text-sm font-bold text-foreground truncate">{prospecção.id} — {prospecção.empresa}</p>
                               {isStale && (
                                 <Badge className="bg-destructive/15 text-destructive border-0 text-[10px] gap-1">
                                   <AlertCircle className="w-3 h-3" />
@@ -491,7 +491,7 @@ const EmpresaDashboard = () => {
                               )}
                             </div>
                             <p className="text-xs text-muted-foreground">
-                              {rma.analysisStatus === "em_analise"
+                              {prospecção.analysisStatus === "em_analise"
                                 ? `${pendingCount} tópicos em processamento`
                                 : `${pendingCount} tópicos pendentes`}
                               {hoursAgo !== null && (
@@ -543,7 +543,7 @@ const EmpresaDashboard = () => {
                               size="sm"
                               variant="outline"
                               className="text-xs gap-1.5"
-                              onClick={() => handleRefreshIA(targetId, rma.empresa)}
+                              onClick={() => handleRefreshIA(targetId, prospecção.empresa)}
                               disabled={isRefreshing}
                             >
                               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin" : ""}`} />
@@ -563,21 +563,21 @@ const EmpresaDashboard = () => {
                               {isStatusOpen ? "Ocultar Status" : "Status Empresa"}
                             </Button>
                           )}
-                          <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/rma/${targetId}`)}>
-                            Ver RMA
+                          <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/prospecção/${targetId}`)}>
+                            Ver Prospecção
                           </Button>
                         </div>
                         {/* Indicador de fila batch (arquivos grandes processados em horário off-peak) */}
                         {company && (
                           <DeferredBatchIndicator
                             companyId={targetId}
-                            rmaId={rma.id}
-                            variant="rma-summary"
+                            prospecçãoId={prospecção.id}
+                            variant="prospecção-summary"
                           />
                         )}
                         {isStatusOpen && company && (
                           <div className="pt-2">
-                            <RMA360Panel company={company} onClose={() => setStatusCompanyId(null)} />
+                            <Prospecção360Panel company={company} onClose={() => setStatusCompanyId(null)} />
                           </div>
                         )}
                       </div>
@@ -612,8 +612,8 @@ const EmpresaDashboard = () => {
             </Card>
           </TabsContent>
 
-          {/* ABA 2 - RMAs */}
-          <TabsContent value="rmas" className="space-y-4">
+          {/* ABA 2 - Prospecçãos */}
+          <TabsContent value="prospecçãos" className="space-y-4">
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Lista de Prospecções AJ</CardTitle>
@@ -633,16 +633,16 @@ const EmpresaDashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {displayRmas.map(rma => {
-                        const sc = statusConfig[rma.status];
+                      {displayRmas.map(prospecção => {
+                        const sc = statusConfig[prospecção.status];
                         return (
-                          <tr key={(rma as any).companyId || rma.id} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
-                            <td className="py-3 px-3 font-mono font-semibold text-foreground">{rma.id}</td>
-                            <td className="py-3 px-3 text-foreground">{rma.empresa}</td>
+                          <tr key={(prospecção as any).companyId || prospecção.id} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
+                            <td className="py-3 px-3 font-mono font-semibold text-foreground">{prospecção.id}</td>
+                            <td className="py-3 px-3 text-foreground">{prospecção.empresa}</td>
                             <td className="py-3 px-3">
-                              {(rma as any).mes ? (
+                              {(prospecção as any).mes ? (
                                 <Badge className="bg-[hsl(258,90%,66%)]/15 text-[hsl(258,90%,56%)] font-mono text-[10px] border-0">
-                                  {(rma as any).mes}
+                                  {(prospecção as any).mes}
                                 </Badge>
                               ) : (
                                 <span className="text-muted-foreground text-xs">—</span>
@@ -654,15 +654,15 @@ const EmpresaDashboard = () => {
                             <td className="py-3 px-3">
                               <div className="flex items-center gap-2">
                                 <div className="relative h-2 w-20 rounded-full bg-muted overflow-hidden">
-                                  <div className="h-full rounded-full transition-all bg-accent" style={{ width: `${rma.percentual}%` }} />
+                                  <div className="h-full rounded-full transition-all bg-accent" style={{ width: `${prospecção.percentual}%` }} />
                                 </div>
-                                <span className="text-xs font-mono font-semibold text-foreground">{rma.percentual}%</span>
+                                <span className="text-xs font-mono font-semibold text-foreground">{prospecção.percentual}%</span>
                               </div>
                             </td>
-                            <td className="py-3 px-3 text-xs text-muted-foreground">{rma.dataAtualizacao}</td>
+                            <td className="py-3 px-3 text-xs text-muted-foreground">{prospecção.dataAtualizacao}</td>
                             <td className="py-3 px-3 text-right">
-                              <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/rma/${rma.companyId || rma.id}`)}>
-                                Ver RMA
+                              <Button size="sm" variant="outline" className="text-xs" onClick={() => navigate(`/prospecção/${prospecção.companyId || prospecção.id}`)}>
+                                Ver Prospecção
                               </Button>
                             </td>
                           </tr>
@@ -675,7 +675,7 @@ const EmpresaDashboard = () => {
             </Card>
           </TabsContent>
 
-          {/* ABA 3 - Histórico de RMAs por período */}
+          {/* ABA 3 - Histórico de Prospecçãos por período */}
           <TabsContent value="historico" className="space-y-4">
             <RmaHistoricoTab
               periods={periods}

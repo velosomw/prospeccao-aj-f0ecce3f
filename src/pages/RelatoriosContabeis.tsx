@@ -1,4 +1,4 @@
-// Página "Relatórios Contábeis" — seleciona Empresa → RMA → Período/Formato e gera o
+// Página "Relatórios Contábeis" — seleciona Empresa → Prospecção → Período/Foprospecçãoto e gera o
 // Relatório Contábil de Dados (DOCX/PDF) usando balancete_consolidado da empresa.
 import { useEffect, useMemo, useState } from "react";
 import PlatformLayout from "@/components/PlatformLayout";
@@ -80,20 +80,20 @@ export default function RelatoriosContabeis() {
     const names = new Set<string>();
     companies.forEach(c => {
       if (!c.name) return;
-      if (q && !c.name.toLowerCase().includes(q) && !(c.rma_id || "").toLowerCase().includes(q)) return;
+      if (q && !c.name.toLowerCase().includes(q) && !(c.prospecção_id || "").toLowerCase().includes(q)) return;
       names.add(c.name);
     });
     return Array.from(names).sort((a, b) => a.localeCompare(b));
   }, [companies, filter]);
 
-  const rmasOfCompany = useMemo(() => {
+  const prospecçãosOfCompany = useMemo(() => {
     if (!companyName) return [];
     return companies.filter(c => c.name === companyName);
   }, [companies, companyName]);
 
   const selected = companies.find(c => c.id === companyId) || null;
 
-  // Carrega dados financeiros consolidados quando empresa+RMA estão selecionados
+  // Carrega dados financeiros consolidados quando empresa+Prospecção estão selecionados
   const { parsed, entries, loading: loadingDados } = useConsolidadoBS(companyId, null, null);
   const bsRows = useMemo(() => (parsed ? buildBSDados(parsed, entries) : []), [parsed, entries]);
   const periodKeys = useMemo(
@@ -108,7 +108,7 @@ export default function RelatoriosContabeis() {
     if (!toKey) setToKey(periodKeys[periodKeys.length - 1]);
   }, [periodKeys, fromKey, toKey]);
 
-  const generate = async (formato: "docx" | "pdf") => {
+  const generate = async (foprospecçãoto: "docx" | "pdf") => {
     if (!selected) return;
     if (!bsRows.length) {
       toast({ title: "Sem dados", description: "Esta empresa ainda não possui balancete consolidado.", variant: "destructive" });
@@ -119,7 +119,7 @@ export default function RelatoriosContabeis() {
       const dataset = buildReportDataset({
         empresaNome: selected.name,
         empresaCnpj: selected.cnpj,
-        rmaId: selected.rma_id,
+        prospecçãoId: selected.prospecção_id,
         rows: bsRows,
         fromKey, toKey, agregacao, blocks,
       });
@@ -127,9 +127,9 @@ export default function RelatoriosContabeis() {
         toast({ title: "Intervalo vazio", description: "Nenhum período encontrado no intervalo selecionado.", variant: "destructive" });
         return;
       }
-      if (formato === "docx") await generateRelatorioContabilDocx(dataset);
+      if (foprospecçãoto === "docx") await generateRelatorioContabilDocx(dataset);
       else generateRelatorioContabilPdf(dataset);
-      toast({ title: "Relatório gerado", description: `Arquivo .${formato} salvo no seu dispositivo.` });
+      toast({ title: "Relatório gerado", description: `Arquivo .${foprospecçãoto} salvo no seu dispositivo.` });
     } catch (e: any) {
       toast({ title: "Falha ao gerar", description: String(e?.message || e), variant: "destructive" });
     } finally {
@@ -161,7 +161,7 @@ export default function RelatoriosContabeis() {
               step > n ? "bg-green-100 text-green-800" : "bg-muted text-muted-foreground"
             }`}>
               <span className="font-bold">{n}</span>
-              <span>{n === 1 ? "Empresa" : n === 2 ? "RMA" : "Configurar"}</span>
+              <span>{n === 1 ? "Empresa" : n === 2 ? "Prospecção" : "Configurar"}</span>
             </div>
           ))}
         </div>
@@ -197,7 +197,7 @@ export default function RelatoriosContabeis() {
                   >
                     <span className="font-medium text-sm">{name}</span>
                     <span className="text-xs text-muted-foreground">
-                      {companies.filter(c => c.name === name).length} RMA(s)
+                      {companies.filter(c => c.name === name).length} Prospecção(s)
                     </span>
                   </button>
                 ))}
@@ -206,12 +206,12 @@ export default function RelatoriosContabeis() {
           </Card>
         )}
 
-        {/* Step 2 — RMA */}
+        {/* Step 2 — Prospecção */}
         {step === 2 && companyName && (
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-base flex items-center gap-2">
-                <Briefcase className="w-4 h-4" /> RMAs de {companyName}
+                <Briefcase className="w-4 h-4" /> Prospecçãos de {companyName}
               </CardTitle>
               <Button variant="ghost" size="sm" onClick={() => setStep(1)}>
                 <ChevronLeft className="w-4 h-4 mr-1" /> Voltar
@@ -219,14 +219,14 @@ export default function RelatoriosContabeis() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {rmasOfCompany.map(c => (
+                {prospecçãosOfCompany.map(c => (
                   <button
                     key={c.id}
                     onClick={() => { setCompanyId(c.id); setStep(3); }}
                     className="text-left p-4 border rounded-lg hover:border-[hsl(217,91%,50%)] hover:bg-muted/30 transition-colors"
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-semibold text-sm">{c.rma_id || "RMA sem identificador"}</span>
+                      <span className="font-semibold text-sm">{c.prospecção_id || "Prospecção sem identificador"}</span>
                       <span className={`text-[10px] px-2 py-0.5 rounded-full ${
                         c.status === "active" ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"
                       }`}>{c.status}</span>
@@ -365,7 +365,7 @@ export default function RelatoriosContabeis() {
               <CardContent className="space-y-2 text-sm">
                 <div><b>Empresa:</b> {selected.name}</div>
                 {selected.cnpj && <div><b>CNPJ:</b> {selected.cnpj}</div>}
-                <div><b>Prospecção AJ:</b> {selected.rma_id || "—"}</div>
+                <div><b>Prospecção AJ:</b> {selected.prospecção_id || "—"}</div>
                 <div><b>Agregação:</b> {AGREG_LABEL[agregacao]}</div>
                 <div><b>Períodos disponíveis:</b> {periodKeys.length}</div>
                 <div><b>Intervalo:</b> {fromKey || "—"} → {toKey || "—"}</div>

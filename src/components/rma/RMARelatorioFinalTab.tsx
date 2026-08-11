@@ -1,7 +1,7 @@
-import RMAParecerFinalTab from "./RMAParecerFinalTab";
+import ProspecçãoParecerFinalTab from "./ProspecçãoParecerFinalTab";
 
-const RMARelatorioFinalTab = () => (
-  <RMAParecerFinalTab tipo="rma_mensal" titulo="Relatório Mensal de Atividade — Final" />
+const ProspecçãoRelatorioFinalTab = () => (
+  <ProspecçãoParecerFinalTab tipo="prospecção_mensal" titulo="Relatório Mensal de Atividade — Final" />
 );
 
-export default RMARelatorioFinalTab;
+export default ProspecçãoRelatorioFinalTab;

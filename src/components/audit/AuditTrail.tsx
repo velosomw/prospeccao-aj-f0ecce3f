@@ -26,14 +26,14 @@ const ACTION_COLOR: Record<string, string> = {
 
 interface Props {
   conversationId?: string | null;
-  rmaId?: string | null;
+  prospecçãoId?: string | null;
   entityId?: string | null;
   limit?: number;
   title?: string;
 }
 
 export default function AuditTrail({
-  conversationId, rmaId, entityId, limit = 50,
+  conversationId, prospecçãoId, entityId, limit = 50,
   title = "Trilha de Auditoria",
 }: Props) {
   const [items, setItems] = useState<Entry[]>([]);
@@ -49,7 +49,7 @@ export default function AuditTrail({
         .order("created_at", { ascending: false })
         .limit(limit);
       if (conversationId) q = q.eq("conversation_id", conversationId);
-      if (rmaId) q = q.eq("rma_id", rmaId);
+      if (prospecçãoId) q = q.eq("prospecção_id", prospecçãoId);
       if (entityId) q = q.eq("entity_id", entityId);
       const { data } = await q;
       if (active) {
@@ -61,19 +61,19 @@ export default function AuditTrail({
 
     // realtime
     const ch = supabase
-      .channel(`audit-${conversationId || rmaId || entityId || "global"}`)
+      .channel(`audit-${conversationId || prospecçãoId || entityId || "global"}`)
       .on("postgres_changes",
           { event: "INSERT", schema: "public", table: "platform_audit_log" },
           (payload) => {
             const row = payload.new as Entry;
             if (conversationId && (row as any).conversation_id !== conversationId) return;
-            if (rmaId && (row as any).rma_id !== rmaId) return;
+            if (prospecçãoId && (row as any).prospecção_id !== prospecçãoId) return;
             if (entityId && row.entity_id !== entityId) return;
             setItems((prev) => [row, ...prev].slice(0, limit));
           })
       .subscribe();
     return () => { active = false; supabase.removeChannel(ch); };
-  }, [conversationId, rmaId, entityId, limit]);
+  }, [conversationId, prospecçãoId, entityId, limit]);
 
   return (
     <div className="bg-white rounded-2xl border border-border overflow-hidden">
