@@ -79,7 +79,7 @@ const BalancetePreview = ({ companyId, prospeccaoId }: Props) => {
             const fn = byId.get(e.document_id) as string;
             if (!fn || seen.has(fn)) continue;
             seen.add(fn);
-            files.push({ file_name: fn, classe: e.classe as string, status: e.status as string });
+            files.push({ file_name: fn, classe: e.classe as string as string, status: e.status as string as string });
           }
           files.sort((a, b) => a.file_name.localeCompare(b.file_name));
         }
