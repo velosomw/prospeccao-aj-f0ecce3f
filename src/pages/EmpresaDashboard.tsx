@@ -13,9 +13,9 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import PlatformLayout from "@/components/PlatformLayout";
 import { mockProspeccoes, type ProspeccaoEntry } from "@/data/prospeccoesMockData";
-import { listMyAssignedCompanies, activateAssignedRma, type Company } from "@/services/companiesService";
-import { startRmaAnalysis, listRmaAnalyses, type RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
-import { listPeriodsForCompanies, type RmaPeriodAnalysis } from "@/services/prospeccaoPeriodService";
+import { listMyAssignedCompanies, activateAssignedProspeccao, type Company } from "@/services/companiesService";
+import { startProspeccaoAnalysis, listProspeccaoAnalyses, type ProspeccaoAnalysisResult } from "@/services/prospeccaoAnalysisService";
+import { listPeriodsForCompanies, type ProspeccaoPeriodAnalysis } from "@/services/prospeccaoPeriodService";
 import ProspeccaoHistoricoTab from "@/components/ProspeccaoHistoricoTab";
 import MyReleasesTab from "@/components/MyReleasesTab";
 import Prospeccao360Panel from "@/components/coordenador/Prospeccao360Panel";
@@ -40,7 +40,7 @@ const EmpresaDashboard = () => {
   // Prospeccoes atribuídos pelo Coordenador, aguardando ativação
   const [pendingCompanies, setPendingCompanies] = useState<Company[]>([]);
   const [activatedCompanies, setActivatedCompanies] = useState<Company[]>([]);
-  const [analyses, setAnalyses] = useState<Record<string, RmaAnalysisResult>>({});
+  const [analyses, setAnalyses] = useState<Record<string, ProspeccaoAnalysisResult>>({});
   const [pendingOpen, setPendingOpen] = useState(true);
   const [activatingId, setActivatingId] = useState<string | null>(null);
   const [statusCompanyId, setStatusCompanyId] = useState<string | null>(null);
@@ -49,7 +49,7 @@ const EmpresaDashboard = () => {
   const [unifiedScores, setUnifiedScores] = useState<Record<string, { percentual: number }>>({});
 
   // Histórico mensal
-  const [periods, setPeriods] = useState<RmaPeriodAnalysis[]>([]);
+  const [periods, setPeriods] = useState<ProspeccaoPeriodAnalysis[]>([]);
   const [histYear, setHistYear] = useState<string>("todos");
   const [histMonth, setHistMonth] = useState<string>("todos");
   const [histCompany, setHistCompany] = useState<string>("todos");
@@ -66,8 +66,8 @@ const EmpresaDashboard = () => {
       return;
     }
 
-    const rows = await listRmaAnalyses(companyIds);
-    const next = rows.reduce<Record<string, RmaAnalysisResult>>((acc, row) => {
+    const rows = await listProspeccaoAnalyses(companyIds);
+    const next = rows.reduce<Record<string, ProspeccaoAnalysisResult>>((acc, row) => {
       acc[row.company_id] = row;
       return acc;
     }, {});
@@ -125,8 +125,8 @@ const EmpresaDashboard = () => {
   const handleActivate = async (company: Company) => {
     setActivatingId(company.id);
     try {
-      await activateAssignedRma(company.id);
-      await startRmaAnalysis(company.id);
+      await activateAssignedProspeccao(company.id);
+      await startProspeccaoAnalysis(company.id);
       await reloadAssigned();
       toast({
         title: "Análise IA iniciada",
@@ -144,7 +144,7 @@ const EmpresaDashboard = () => {
   const handleRefreshIA = async (companyId: string, companyName: string) => {
     setRefreshingId(companyId);
     try {
-      await startRmaAnalysis(companyId);
+      await startProspeccaoAnalysis(companyId);
       await reloadAssigned();
       toast({
         title: "Status IA atualizado",

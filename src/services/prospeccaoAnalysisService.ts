@@ -11,7 +11,7 @@ export interface RmaAnalysisTopic {
   processing?: boolean;
 }
 
-export interface RmaAnalysisResult {
+export interface ProspeccaoAnalysisResult {
   id: string;
   company_id: string;
   status: "em_analise" | "concluido" | "erro";
@@ -33,7 +33,7 @@ export interface RmaAnalysisResult {
 }
 
 /** Dispara a análise IA (não aguarda — corre em background no servidor). */
-export async function startRmaAnalysis(companyId: string): Promise<void> {
+export async function startProspeccaoAnalysis(companyId: string): Promise<void> {
   const { error } = await supabase.functions.invoke("prospeccao-analyze", {
     body: { companyId },
   });
@@ -41,7 +41,7 @@ export async function startRmaAnalysis(companyId: string): Promise<void> {
 }
 
 /** Lista os resultados mais recentes para várias empresas atribuídas. */
-export async function listRmaAnalyses(companyIds: string[]): Promise<RmaAnalysisResult[]> {
+export async function listProspeccaoAnalyses(companyIds: string[]): Promise<ProspeccaoAnalysisResult[]> {
   if (companyIds.length === 0) return [];
 
   const { data, error } = await (supabase
@@ -51,11 +51,11 @@ export async function listRmaAnalyses(companyIds: string[]): Promise<RmaAnalysis
     .order("updated_at", { ascending: false });
 
   if (error) throw error;
-  return ((data as any[]) || []) as RmaAnalysisResult[];
+  return ((data as any[]) || []) as ProspeccaoAnalysisResult[];
 }
 
 /** Busca o resultado mais recente para a empresa. */
-export async function getRmaAnalysis(companyId: string): Promise<RmaAnalysisResult | null> {
+export async function getRmaAnalysis(companyId: string): Promise<ProspeccaoAnalysisResult | null> {
   const { data, error } = await (supabase
     .from("prospeccao_analysis_results") as any)
     .select("*")

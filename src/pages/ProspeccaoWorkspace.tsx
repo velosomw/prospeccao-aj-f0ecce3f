@@ -13,9 +13,9 @@ import PlatformLayout from "@/components/PlatformLayout";
 import type { ProspeccaoEntry } from "@/types/prospeccao";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  startRmaAnalysis,
+  startProspeccaoAnalysis,
   getRmaAnalysis,
-  type RmaAnalysisResult,
+  type ProspeccaoAnalysisResult,
 } from "@/services/prospeccaoAnalysisService";
 import { buildLiveScoreTopics, computeRmaScore, fetchRmaScores, type ScoreFile } from "@/lib/prospeccaoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
@@ -165,7 +165,7 @@ const ProspeccaoWorkspace = () => {
   const [companyId, setCompanyId] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState<string | null>(null);
   const [prospeccaoCode, setRmaCode] = useState<string | null>(null);
-  const [analysis, setAnalysis] = useState<RmaAnalysisResult | null>(null);
+  const [analysis, setAnalysis] = useState<ProspeccaoAnalysisResult | null>(null);
   const [scoreFiles, setScoreFiles] = useState<ScoreFile[]>([]);
   const [prospeccaoPeriod, setRmaPeriod] = useState<{ ano: number; mes: number } | null>(null);
   const [overviewFiles, setOverviewFiles] = useState<ScoreFile[]>([]);
@@ -351,7 +351,7 @@ const ProspeccaoWorkspace = () => {
     }
     setLoading(true);
     try {
-      await startRmaAnalysis(companyId);
+      await startProspeccaoAnalysis(companyId);
       setAnalysis(prev => prev ? { ...prev, status: "em_analise" } : {
         id: companyId,
         company_id: companyId,

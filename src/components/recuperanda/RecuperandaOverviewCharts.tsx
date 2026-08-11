@@ -6,12 +6,12 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, PieChart as PieIcon, BarChart3, Activity, Target, Layers } from "lucide-react";
 import type { Company, RmaHistoryEntry } from "@/services/companiesService";
-import type { RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
+import type { ProspeccaoAnalysisResult } from "@/services/prospeccaoAnalysisService";
 
 interface Props {
   companies: Company[];
   history: RmaHistoryEntry[];
-  analyses: Record<string, RmaAnalysisResult>;
+  analyses: Record<string, ProspeccaoAnalysisResult>;
 }
 
 const COLOR_BLUE = "hsl(217, 91%, 50%)";

@@ -9,14 +9,14 @@ import { supabase } from "@/lib/supabase-any";
 import { buildLiveScoreTopics, computeRmaScore } from "@/lib/prospeccaoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
 import type { ProspeccaoEntry } from "@/types/prospeccao";
-import type { RmaAnalysisResult } from "@/services/prospeccaoAnalysisService";
+import type { ProspeccaoAnalysisResult } from "@/services/prospeccaoAnalysisService";
 
 interface Props {
   prospeccao: ProspeccaoEntry;
   companyId?: string | null;
   onUpdateIA: () => void;
   isAnalyzing?: boolean;
-  analysis?: RmaAnalysisResult | null;
+  analysis?: ProspeccaoAnalysisResult | null;
 }
 
 type StatusFilter = "all" | "completo" | "pendente" | "incompleto";

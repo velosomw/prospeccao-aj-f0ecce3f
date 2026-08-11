@@ -9,10 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Building2, Calendar, CheckCircle2, ClipboardList, FileText, History, Layers, Search } from "lucide-react";
 import { supabase } from "@/lib/supabase-any";
 import type { Company } from "@/services/companiesService";
-import type { RmaPeriodAnalysis } from "@/services/prospeccaoPeriodService";
+import type { ProspeccaoPeriodAnalysis } from "@/services/prospeccaoPeriodService";
 
 interface Props {
-  periods: RmaPeriodAnalysis[];
+  periods: ProspeccaoPeriodAnalysis[];
   companies: Company[];
 }
 
@@ -145,7 +145,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
 
   // Periodos por ano para o foco
   const periodsByYear = useMemo(() => {
-    const m = new Map<number, RmaPeriodAnalysis[]>();
+    const m = new Map<number, ProspeccaoPeriodAnalysis[]>();
     focusPeriods.forEach((p) => {
       const arr = m.get(p.year) || [];
       arr.push(p);
@@ -161,7 +161,7 @@ const ProspeccaoHistoricoTab = ({ periods, companies }: Props) => {
 
   const renderMonthRow = (year: number) => {
     const yearPeriods = periodsByYear.get(year) || [];
-    const periodByMonth = new Map<number, RmaPeriodAnalysis>();
+    const periodByMonth = new Map<number, ProspeccaoPeriodAnalysis>();
     yearPeriods.forEach((p) => periodByMonth.set(p.month, p));
 
     return (
