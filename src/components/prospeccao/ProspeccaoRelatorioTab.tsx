@@ -3,13 +3,13 @@ import DocumentSubStepNav from "./document/DocumentSubStepNav";
 import RmaIntelligentEditor from "./document/RmaIntelligentEditor";
 import RelatorioA4View from "./document/RelatorioA4View";
 import { useParams } from "react-router-dom";
-import { useRmaDocument } from "@/hooks/useRmaDocument";
+import { useProspeccaoDocument } from "@/hooks/useProspeccaoDocument";
 import type { DocumentBlock, DocumentSubStep } from "@/types/documentEditor";
 
 const ProspeccaoRelatorioTab = () => {
   const { id = "" } = useParams();
   const [subStep, setSubStep] = useState<DocumentSubStep>("escopo");
-  const { sections, progresso, aprovadoPct, rules, canManualFinalize, regenerateFinal } = useRmaDocument(
+  const { sections, progresso, aprovadoPct, rules, canManualFinalize, regenerateFinal } = useProspeccaoDocument(
     id,
     "prospeccao_mensal",
     "Revisão-Relatório Prospeccao Mensal (CNJ 72/2020)",

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase-any";
-import { useRmaDocument } from "@/hooks/useRmaDocument";
+import { useProspeccaoDocument } from "@/hooks/useProspeccaoDocument";
 
 interface Props {
   prospeccaoId: string;
@@ -18,7 +18,7 @@ const toneClass = (t: string) =>
         : "border-blue-200 bg-blue-50 text-blue-900";
 
 export default function RmaDipKpiCards({ prospeccaoId, companyId, scoreFinal }: Props) {
-  const { sections, progresso, doc } = useRmaDocument(
+  const { sections, progresso, doc } = useProspeccaoDocument(
     prospeccaoId,
     "prospeccao_mensal",
     "Relatório Mensal de Atividade (CNJ 72/2020)",

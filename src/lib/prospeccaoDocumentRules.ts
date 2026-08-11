@@ -59,6 +59,6 @@ export const Prospeccao_DOC_RULES: Record<RmaDocTipo, RmaDocRules> = {
   },
 };
 
-export function getRmaDocRules(tipo: string): RmaDocRules {
+export function getProspeccaoDocRules(tipo: string): RmaDocRules {
   return Prospeccao_DOC_RULES[(tipo as RmaDocTipo)] ?? Prospeccao_DOC_RULES.parecer_tecnico;
 }

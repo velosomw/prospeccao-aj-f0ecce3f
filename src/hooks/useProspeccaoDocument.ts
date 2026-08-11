@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase-any";
 import { toast } from "@/hooks/use-toast";
-import { getRmaDocRules } from "@/lib/prospeccaoDocumentRules";
+import { getProspeccaoDocRules } from "@/lib/prospeccaoDocumentRules";
 
 export type SectionStatus =
   | "pendente"
@@ -12,7 +12,7 @@ export type SectionStatus =
 
 export type DocumentStatus = "rascunho" | "em_producao" | "pre_parecer" | "finalizado";
 
-export interface RmaDocSection {
+export interface ProspeccaoDocSection {
   id: string;
   document_id: string;
   parent_id: string | null;
@@ -34,7 +34,7 @@ export interface RmaDocSection {
   regen_count?: number | null;
 }
 
-export interface RmaDocComment {
+export interface ProspeccaoDocComment {
   id: string;
   section_id: string;
   author_name: string | null;
@@ -44,7 +44,7 @@ export interface RmaDocComment {
   created_at: string;
 }
 
-export interface RmaDocument {
+export interface ProspeccaoDocument {
   id: string;
   prospeccao_id: string;
   tipo: string;
@@ -57,10 +57,10 @@ export interface RmaDocument {
   arquivo_final_pct?: number | null;
 }
 
-export function useRmaDocument(prospeccaoId: string, tipo: "parecer_tecnico" | "prospeccao_mensal", titulo: string) {
-  const [doc, setDoc] = useState<RmaDocument | null>(null);
-  const [sections, setSections] = useState<RmaDocSection[]>([]);
-  const [comments, setComments] = useState<Record<string, RmaDocComment[]>>({});
+export function useProspeccaoDocument(prospeccaoId: string, tipo: "parecer_tecnico" | "prospeccao_mensal", titulo: string) {
+  const [doc, setDoc] = useState<ProspeccaoDocument | null>(null);
+  const [sections, setSections] = useState<ProspeccaoDocSection[]>([]);
+  const [comments, setComments] = useState<Record<string, ProspeccaoDocComment[]>>({});
   const [loading, setLoading] = useState(true);
   const [busySectionId, setBusySectionId] = useState<string | null>(null);
 
@@ -109,7 +109,7 @@ export function useRmaDocument(prospeccaoId: string, tipo: "parecer_tecnico" | "
           .select("*")
           .in("section_id", ids)
           .order("created_at", { ascending: true });
-        const grouped: Record<string, RmaDocComment[]> = {};
+        const grouped: Record<string, ProspeccaoDocComment[]> = {};
         (cs || []).forEach((c: any) => {
           (grouped[c.section_id] ||= []).push(c);
         });
@@ -251,7 +251,7 @@ export function useRmaDocument(prospeccaoId: string, tipo: "parecer_tecnico" | "
         return null;
       }
       if (data?.ok) {
-        const rules = getRmaDocRules(tipo);
+        const rules = getProspeccaoDocRules(tipo);
         toast({
           title: `${rules.finalLabel} atualizado`,
           description: `Versão ${data.versao} · ${data.pct}% concluído`,
@@ -306,7 +306,7 @@ export function useRmaDocument(prospeccaoId: string, tipo: "parecer_tecnico" | "
     const total = updated.length;
     const ok = updated.filter((s) => s.status === "aprovado" || s.status === "concluido").length;
     const pct = total ? Math.round((ok * 100) / total) : 0;
-    const rules = getRmaDocRules(tipo);
+    const rules = getProspeccaoDocRules(tipo);
     if (pct >= rules.minPctAutoFinal) {
       // não bloqueia o fluxo
       regenerateFinal(false).catch(() => {});
@@ -357,7 +357,7 @@ export function useRmaDocument(prospeccaoId: string, tipo: "parecer_tecnico" | "
       )
     : 0;
 
-  const rules = getRmaDocRules(tipo);
+  const rules = getProspeccaoDocRules(tipo);
   const canManualFinalize = aprovadoPct >= rules.minPctManualFinal;
   const canAutoFinalize = aprovadoPct >= rules.minPctAutoFinal;
 

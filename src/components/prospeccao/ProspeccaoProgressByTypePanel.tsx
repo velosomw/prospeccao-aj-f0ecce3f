@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/lib/supabase-any";
-import { getRmaDocRules, type RmaDocTipo } from "@/lib/prospeccaoDocumentRules";
+import { getProspeccaoDocRules, type RmaDocTipo } from "@/lib/prospeccaoDocumentRules";
 
 interface DocSummary {
   tipo: RmaDocTipo;
@@ -110,7 +110,7 @@ const ProspeccaoProgressByTypePanel = () => {
     <div className="grid gap-4 md:grid-cols-2">
       {summaries.map((s) => {
         const cfg = TIPOS.find((t) => t.tipo === s.tipo)!;
-        const rules = getRmaDocRules(s.tipo);
+        const rules = getProspeccaoDocRules(s.tipo);
         const Icon = cfg.icon;
         const aprovPct = s.total ? Math.round(((s.aprovadas + s.concluidas) * 100) / s.total) : 0;
         const concluPct = s.total ? Math.round((s.concluidas * 100) / s.total) : 0;
