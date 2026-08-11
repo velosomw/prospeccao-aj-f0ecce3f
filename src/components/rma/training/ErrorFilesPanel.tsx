@@ -433,7 +433,7 @@ export default function ErrorFilesPanel({ prospecçãoId, companyId }: Props) {
                     Código da Pasta {numbering.get(folder.id)?.onedriveNumber ?? String(folder.id).padStart(2, "0")}
                   </Badge>
                   <span className="text-sm font-medium truncate">{folder.label}</span>
-                  <Badge variant="outline" className="text-[10px]">tópico #{folder.prospecçãoTopicNumber}</Badge>
+                  <Badge variant="outline" className="text-[10px]">tópico #{folder.prospeccaoTopicNumber}</Badge>
                 </div>
                 <div className="flex items-center gap-1">
                   {grpFalhas.length > 0 && (

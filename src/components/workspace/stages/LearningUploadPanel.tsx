@@ -956,7 +956,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
               Pasta OneDrive: <strong className="ml-1">#{String(selected.id).padStart(2, "0")}</strong>
             </Badge>
             <Badge variant="outline" className="bg-white border-amber-300">
-              Tópico Prospecção: <strong className="ml-1">#{selected.prospecçãoTopicNumber}</strong>
+              Tópico Prospecção: <strong className="ml-1">#{selected.prospeccaoTopicNumber}</strong>
             </Badge>
             <Badge variant="outline" className="bg-white border-amber-300">
               Agente: <strong className="ml-1">{selected.agent}</strong>

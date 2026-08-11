@@ -467,7 +467,7 @@ const ProspecçãoAnaliseTab = ({ prospecção }: Props) => {
                 Auditor Contábil Sênior IA
               </p>
               <p className="text-[10px] text-muted-foreground mt-0.5">
-                Platafoprospecção BEx — Brasil Expert
+                Plataforma BEx — Brasil Expert
               </p>
             </div>
           </div>

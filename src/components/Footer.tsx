@@ -64,7 +64,7 @@ const Footer = () => {
         {/* Platform Access */}
         <div className="mt-12 pt-8 border-t border-primary-foreground/10">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-            <span className="text-sm text-primary-foreground/50">Acesso à Platafoprospecção:</span>
+            <span className="text-sm text-primary-foreground/50">Acesso à Plataforma:</span>
             <div className="flex gap-3">
               <Link
                 to="/login"

@@ -16,7 +16,7 @@ describe("DIP folders ↔ Prospecção topics", () => {
 
   it("tópicos sem pasta DIP são marcados explicitamente", () => {
     for (const t of Prospecção_TOPICS_WITHOUT_DIP_FOLDER) {
-      expect(DIP_FOLDERS.find((f) => f.prospecçãoTopicNumber === t)).toBeUndefined();
+      expect(DIP_FOLDERS.find((f) => f.prospeccaoTopicNumber === t)).toBeUndefined();
     }
   });
 });
