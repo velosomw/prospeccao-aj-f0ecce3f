@@ -8,7 +8,7 @@ import {
 import { useRmaDocument, type SectionStatus } from "@/hooks/useRmaDocument";
 import SectionGovernanceCard from "./SectionGovernanceCard";
 import { useUserRoles, getSectionPermissions, type SectionPermission } from "@/hooks/useUserRoles";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

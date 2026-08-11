@@ -4,7 +4,7 @@ import { FileText, FileCheck, Lock, Loader2, CheckCircle2, AlertCircle } from "l
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { getRmaDocRules, type RmaDocTipo } from "@/lib/prospeccaoDocumentRules";
 
 interface DocSummary {

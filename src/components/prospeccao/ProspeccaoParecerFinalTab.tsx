@@ -4,7 +4,7 @@ import { FileText, Lock, Download, AlertCircle, Printer, ShieldAlert, Unlock, Se
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { useUserRoles } from "@/hooks/useUserRoles";
 import { toast } from "sonner";
 import SectionPendenciesPanel from "@/components/prospeccao/document/SectionPendenciesPanel";

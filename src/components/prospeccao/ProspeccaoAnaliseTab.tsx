@@ -22,7 +22,7 @@ import { Progress } from "@/components/ui/progress";
 import type { ProspeccaoEntry } from "@/types/prospeccao";
 import logoBrasilExpert from "@/assets/logo-bex-full.jpeg";
 import { CobrancaEmailDialog } from "./CobrancaEmailDialog";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 interface Props {
   prospeccao: ProspeccaoEntry;

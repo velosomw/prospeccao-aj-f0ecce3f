@@ -11,7 +11,7 @@ import {
   Activity, CheckCircle2, AlertTriangle, RefreshCw, FileText,
   Search, ListChecks, GitMerge, ShieldCheck, Loader2
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { toast } from "sonner";
 import OrphanExtractionsCard from "./OrphanExtractionsCard";
 import BalancetePreview from "./BalancetePreview";

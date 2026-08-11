@@ -3,7 +3,7 @@ import { Clock, User, Shield, CheckCircle2, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useParams } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import type { ProspeccaoEntry } from "@/types/prospeccao";
 
 interface Props { prospeccao: ProspeccaoEntry }
@@ -60,7 +60,7 @@ const ProspeccaoEvolucaoTab = ({ prospeccao }: Props) => {
         .order("created_at", { ascending: false })
         .limit(80);
       const userIds = Array.from(new Set((log || []).map((l: any) => l.user_id).filter(Boolean)));
-      const sectionIds = Array.from(new Set((log || []).map((l: any) => l.section_id).filter(Boolean)));
+      const sectionIds = Array.from(new Set((log || []).map((l: any) => l.section_id).filter(Boolean))) as string[];
       const [profilesRes, secsRes] = await Promise.all([
         userIds.length
           ? supabase.from("profiles").select("user_id, full_name, email").in("user_id", userIds)
