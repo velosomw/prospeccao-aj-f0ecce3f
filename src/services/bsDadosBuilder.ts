@@ -21,7 +21,7 @@ import {
   mesKeyToLabel as _mesKeyToLabel,
   periodToMesKey as _periodToMesKey,
   detectDuplicates,
-} from "@/services/mesNoprospeccaolizer";
+} from "@/services/mesNormalizer";
 
 // Mapeamento Ref 1 (Ref Capital BEX) → chave canônica BS & Dados.
 // Cobertura COMPLETA das 47 referências da aba "BS" do template

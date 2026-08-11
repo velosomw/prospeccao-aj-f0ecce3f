@@ -14,7 +14,7 @@ import { Loader2, CheckCircle2, AlertTriangle, XCircle, Clock, Copy } from "luci
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { mesKeyToLabel } from "@/services/bsDados/mesNoprospeccaolizer";
+import { mesKeyToLabel } from "@/services/bsDados/mesNormalizer";
 
 interface Props {
   companyId: string | null;
