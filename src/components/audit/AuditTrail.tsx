@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Shield, Loader2, History } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 type Entry = {
   id: string;

@@ -2,7 +2,7 @@
 // Disponibilidade Agente IA = (total - falhas) / total  (ai_extractions)
 // Acurácia IA = média ponderada de ai_confidence em runs válidos (status=completed, valid=true OU final_confidence>=0.7)
 // Acurácia IA (extração) = bucketing por faixa de quality_score / final_confidence
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface GestorKpis {
   documentos_auditados: number;

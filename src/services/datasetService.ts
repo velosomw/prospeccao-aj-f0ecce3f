@@ -1,7 +1,7 @@
 // Dataset + Learning Loop — service frontend
 // Submete correções humanas (ground truth), lista pendentes para revisão e
 // consulta o quality score consolidado do sistema.
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface PendingExtraction {
   id: string;

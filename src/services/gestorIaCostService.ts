@@ -1,6 +1,6 @@
 // Service de custos / tokens — Gestor IA Financeiro
 // Espelha o cálculo do trigger SQL e agrega indicadores por período.
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export type PeriodKey = "mes" | "trimestre" | "semestre" | "ano" | "total";
 

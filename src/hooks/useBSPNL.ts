@@ -1,7 +1,7 @@
 // Hook que carrega BS e DRE consolidados por empresa e competência.
 // Aceita um período global (ano/mes) opcional ou retorna últimos N meses.
 import { useEffect, useState, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface BSRow {
   id: string;

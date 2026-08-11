@@ -8,7 +8,7 @@
 //   3. processWithAI({ text, ... })    → invoca ai-process (engine de agentes)
 //   4. listPendingExtractions/listLearningExtractions / submitGroundTruth / saveFieldFeedback
 import * as XLSX from "xlsx";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { processDocument, waitForProcessing, type AiProcessStatus, type AiProcessSyncResult, type AiProcessAsyncStarted } from "@/services/aiProcessService";
 import { submitCorrection } from "@/services/datasetService";
 

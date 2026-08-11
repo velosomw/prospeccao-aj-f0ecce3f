@@ -1,7 +1,7 @@
 // Hook que carrega Fluxo de Caixa consolidado (`fluxo_caixa_consolidado`)
 // populado automaticamente pelo edge `balancete-build` (F3 do MD de reformulação).
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface FCXRow {
   id: string;

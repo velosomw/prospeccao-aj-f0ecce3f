@@ -1,5 +1,5 @@
 // MD-GEMINI-LIVE-PROCESSING-CERTIFICATION-001 — serviço do modo LIVE CERTIFICATION
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export const FASES_CERTIFICACAO = [1, 5, 20, 100] as const;
 export type FaseCertificacao = (typeof FASES_CERTIFICACAO)[number];

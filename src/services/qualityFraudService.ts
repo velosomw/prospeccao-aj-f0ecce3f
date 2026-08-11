@@ -1,5 +1,5 @@
 // Service para Quality Engine + Antifraude
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface FraudAlert {
   id: string;

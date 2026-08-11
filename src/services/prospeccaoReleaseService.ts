@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export type ReleaseStatus = "active" | "suspended" | "revoked";
 export type ReleaseRole = "magistrado" | "recuperanda";

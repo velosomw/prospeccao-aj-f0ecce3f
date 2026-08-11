@@ -1,5 +1,5 @@
 // Serviço para o fluxo Prospeccao AJ (uploads, linhas, jobs).
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface ProspeccaoLinha {
   id: string;

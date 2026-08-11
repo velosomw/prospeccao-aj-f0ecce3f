@@ -3,7 +3,7 @@
 // dre_consolidado / fluxo_caixa_consolidado / balancete_runs por company_id e refaz o
 // build à medida que dados chegam do OneDrive ou de uploads manuais (acumulação ao vivo).
 import { useEffect, useRef, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { consolidadoToParsed } from "@/services/bsDados/consolidadoAdapter";
 import type { ParsedFinancialData, ParsedRow, BalanceteEntry } from "@/services/bsDados/types";
 

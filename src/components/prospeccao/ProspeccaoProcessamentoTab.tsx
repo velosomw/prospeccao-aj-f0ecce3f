@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import type { ProspeccaoEntry } from "@/types/prospeccao";
 import { DeferredBatchIndicator } from "@/components/prospeccao/DeferredBatchIndicator";
 import ProspeccaoFailedFilesLearningCard from "@/components/prospeccao/ProspeccaoFailedFilesLearningCard";

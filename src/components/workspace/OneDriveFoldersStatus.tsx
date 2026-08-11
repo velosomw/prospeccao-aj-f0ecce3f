@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { Folder, FolderOpen, RefreshCw, CheckCircle2, AlertCircle, Clock, RotateCw, FileWarning, Move, PauseCircle, Trash2, AlertTriangle } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { DIP_FOLDERS, dipFolderSlug } from "@/data/dipFolders";
 import { toast } from "sonner";
 import { buildFolderAliasMap, buildPathInFolder, findFolderLocationForDip, getPathDirectory, getPathFolderSegment, matchDipFolderBySegment, normalizeFolderText } from "@/utils/dipFolderPaths";

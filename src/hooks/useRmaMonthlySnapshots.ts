@@ -1,6 +1,6 @@
 // Hook para snapshots mensais consolidados do Prospeccao.
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 
 export interface RmaMonthlySnapshot {
   id: string;

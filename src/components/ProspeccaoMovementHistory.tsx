@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowRightLeft, History, Search, UserPlus, UserMinus, RefreshCw } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { listRmaHistory, listCompanies, type Company, type RmaHistoryEntry } from "@/services/companiesService";
 
 type ProfileLite = { user_id: string; full_name: string; email: string };

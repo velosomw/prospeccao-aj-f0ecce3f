@@ -2,7 +2,7 @@
 // agrupa por pasta DIP (via agente) e permite abrir o LearningUploadPanel inline
 // com a pasta correspondente pré-selecionada, para reupload manual estratégico.
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase-any";
 import { Loader2, RefreshCw, FolderOpen, FileWarning, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
