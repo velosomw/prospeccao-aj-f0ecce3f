@@ -109,7 +109,7 @@ const ChartTooltipContent = React.forwardRef<
       hideLabel = false,
       hideIndicator = false,
       label,
-      labelFoprospeccaotter,
+      labelFormatter,
       labelClassName,
       formatter,
       color,
@@ -133,8 +133,8 @@ const ChartTooltipContent = React.forwardRef<
           ? config[label as keyof typeof config]?.label || label
           : itemConfig?.label;
 
-      if (labelFoprospeccaotter) {
-        return <div className={cn("font-medium", labelClassName)}>{labelFoprospeccaotter(value, payload)}</div>;
+      if (labelFormatter) {
+        return <div className={cn("font-medium", labelClassName)}>{labelFormatter(value, payload)}</div>;
       }
 
       if (!value) {
@@ -142,7 +142,7 @@ const ChartTooltipContent = React.forwardRef<
       }
 
       return <div className={cn("font-medium", labelClassName)}>{value}</div>;
-    }, [label, labelFoprospeccaotter, payload, hideLabel, labelClassName, config, labelKey]);
+    }, [label, labelFormatter, payload, hideLabel, labelClassName, config, labelKey]);
 
     if (!active || !payload?.length) {
       return null;
