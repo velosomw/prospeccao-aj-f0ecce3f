@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { buildFolderAliasMap, buildPathInFolder, findFolderLocationForDip, getPathDirectory, getPathFolderSegment, matchDipFolderBySegment, normalizeFolderText } from "@/utils/dipFolderPaths";
 import { buildFolderNumbering } from "@/utils/dipFolderNumbering";
 
-// Noprospeccaoliza um texto (lowercase, sem acentos, sem caracteres especiais)
+// Normaliza um texto (lowercase, sem acentos, sem caracteres especiais)
 // para comparação fuzzy de labels de pasta entre OneDrive e DIP_FOLDERS.
 const normalize = (s: string) =>
   normalizeFolderText(s);

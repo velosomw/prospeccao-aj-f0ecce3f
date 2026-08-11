@@ -103,7 +103,7 @@ export async function uploadLearningFile(file: File): Promise<UploadedLearningFi
   };
 }
 
-// ---------- Noprospeccaolização local (espelho do edge OCR) ----------
+// ---------- Normalização local (espelho do edge OCR) ----------
 function normalizeText(text: string): string {
   return text
     .replace(/l(?=\d)/g, "1")

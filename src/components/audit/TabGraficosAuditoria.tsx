@@ -93,7 +93,7 @@ const TabGraficosAuditoria = ({ parsedData, entries = [] }: Props) => {
   const kanitzClass = fi > 0 ? { nome: "Solvência", cor: COLOR_GREEN }
                     : fi < -3 ? { nome: "Insolvência", cor: COLOR_RED }
                               : { nome: "Penumbra", cor: COLOR_AMBER };
-  const fiNoprospeccaolized = Math.max(-7, Math.min(7, fi)) + 7;
+  const fiNormalized = Math.max(-7, Math.min(7, fi)) + 7;
 
   // Pie estrutura de custos
   const pieData = kpis ? [
@@ -236,7 +236,7 @@ const TabGraficosAuditoria = ({ parsedData, entries = [] }: Props) => {
                   <RadialBarChart
                     innerRadius="65%" outerRadius="100%"
                     startAngle={180} endAngle={0}
-                    data={[{ name: "FI", value: fiNoprospeccaolized, fill: kanitzClass.cor }]}
+                    data={[{ name: "FI", value: fiNormalized, fill: kanitzClass.cor }]}
                   >
                     <RadialBar dataKey="value" background={{ fill: "hsl(var(--muted))" }} />
                     <Tooltip {...TOOLTIP_STYLE} />

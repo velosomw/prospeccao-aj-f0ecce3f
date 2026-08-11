@@ -414,7 +414,7 @@ function resolveKey(row: RowLike): keyof BSDadosRow | null {
   // antes do fallback por descrição (impede dupla contagem na receita_liquida).
   if (ref1 === "__IGNORE__") return null;
   if (ref1) {
-    // Noprospeccaoliza refs DRE dot-decimal (formato planilha XPT: "10.A", "40.J", "50.B")
+    // Normaliza refs DRE dot-decimal (formato planilha XPT: "10.A", "40.J", "50.B")
     const dotResolved = resolveDotDRERef(String(ref1));
     if (dotResolved) ref1 = dotResolved;
     const k = REF1_MAP[toUpperNoAccent(ref1)];
@@ -694,7 +694,7 @@ export function buildBSDados(
   // ── Prune de contas sintéticas (pais) para evitar dupla contagem ─────
   // GRUPO-FIRST: PRESERVAMOS os totalizadores de grupo (11/12/13/21/22/23/31/32/33/4/5/6/7/8)
   // mesmo que tenham folhas — eles são autoritativos.
-  // Noprospeccaoliza códigos contábeis removendo espaços E TODOS os pontos
+  // Normaliza códigos contábeis removendo espaços E TODOS os pontos
   // (ex.: "1.1" → "11", "2.1" → "21") — necessário para que o conjunto
   // GROUP_TOTAL_CODES (que usa códigos sem ponto: "11","21",…) reconheça
   // os totais de grupo em planos com numeração pontuada. Sem isso, contas

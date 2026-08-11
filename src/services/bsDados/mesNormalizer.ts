@@ -1,4 +1,4 @@
-// Noprospeccaolização e detecção de meses YYYY-MM
+// Normalização e detecção de meses YYYY-MM
 const MES_PT = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",

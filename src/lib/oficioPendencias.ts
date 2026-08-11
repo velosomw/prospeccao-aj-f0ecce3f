@@ -97,10 +97,10 @@ export async function generateOficioDocx(pendencias: PendenciaItem[], meta: Ofic
     styles: {
       default: { document: { run: { font: "Arial", size: 22 } } },
       paragraphStyles: [
-        { id: "Heading1", name: "Heading 1", basedOn: "Noprospeccaol", next: "Noprospeccaol", quickFoprospeccaot: true,
+        { id: "Heading1", name: "Heading 1", basedOn: "Normal", next: "Normal", quickFormat: true,
           run: { size: 32, bold: true, font: "Arial", color: "0B3A82" },
           paragraph: { spacing: { before: 240, after: 200 }, outlineLevel: 0 } },
-        { id: "Heading2", name: "Heading 2", basedOn: "Noprospeccaol", next: "Noprospeccaol", quickFoprospeccaot: true,
+        { id: "Heading2", name: "Heading 2", basedOn: "Normal", next: "Normal", quickFormat: true,
           run: { size: 26, bold: true, font: "Arial", color: "0B3A82" },
           paragraph: { spacing: { before: 200, after: 120 }, outlineLevel: 1 } },
       ],

@@ -2,7 +2,7 @@
  * AUDIT DATASET BUILDER — Base única mensal para todos os gráficos do relatório.
  *
  * Reproduz a lógica da aba "Dados Gráficos" do template Excel:
- *   Balancete → Classificação Contábil → Noprospeccaolização → Dataset Mensal → Engine Cálculo → Gráficos
+ *   Balancete → Classificação Contábil → Normalização → Dataset Mensal → Engine Cálculo → Gráficos
  *
  * Saída: array MonthlyDatum[] ordenado cronologicamente, com TODAS as métricas
  * que alimentam os 6 gráficos do relatório (CMV/RL, CMV+Desp/RL, Resultado/RL,

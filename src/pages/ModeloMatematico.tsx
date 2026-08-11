@@ -482,7 +482,7 @@ const TabRiskEngine = () => {
   // 2.3 Score Narrativo (SR)
   const SR = (mockAlertLevel + mockComplexidadeRisco + mockFreqDesvios) / 3;
 
-  // Noprospeccaolização Min-Max (scores already 0-1 in mock)
+  // Normalização Min-Max (scores already 0-1 in mock)
   const scores = [SA, SF, SR];
   const sMin = Math.min(...scores);
   const sMax = Math.max(...scores);
@@ -510,7 +510,7 @@ const TabRiskEngine = () => {
   // ECRS (seção 5)
   const ECRS = wA_adj * SA_norm + wF_adj * SF_norm + wR_adj * SR_norm + lambda * corrFactor;
 
-  // Noprospeccaolizar ECRS para [0,1]
+  // Normalizar ECRS para [0,1]
   const ECRSNorm = Math.min(ECRS / (wA_adj + wF_adj + wR_adj + lambda), 1);
 
   // Risco Sistêmico (seção 7)
@@ -539,7 +539,7 @@ const TabRiskEngine = () => {
         <CardContent className="p-5">
           <h4 className="text-sm font-semibold text-foreground mb-3">Fluxo Arquitetural</h4>
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            {["Inputs", "Agentes Individuais", "Noprospeccaolização", "Correlação", "Motor Consolidado", "Classificação", "Alertas", "Relatório"].map((step, i) => (
+            {["Inputs", "Agentes Individuais", "Normalização", "Correlação", "Motor Consolidado", "Classificação", "Alertas", "Relatório"].map((step, i) => (
               <div key={i} className="flex items-center gap-2">
                 <span className={`px-3 py-1.5 rounded-lg font-medium ${i === 4 ? "bg-[hsl(258,90%,66%)] text-white" : "bg-muted text-foreground"}`}>{step}</span>
                 {i < 7 && <ArrowRight className="w-3 h-3 text-muted-foreground" />}
@@ -574,7 +574,7 @@ const TabRiskEngine = () => {
                   <span className="font-bold font-mono">{fmt(agent.score, 4)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Score Noprospeccaolizado</span>
+                  <span className="text-muted-foreground">Score Normalizado</span>
                   <span className="font-bold font-mono" style={{ color: agent.color }}>{fmt(agent.norm, 4)}</span>
                 </div>
               </div>
@@ -583,10 +583,10 @@ const TabRiskEngine = () => {
         ))}
       </div>
 
-      {/* Noprospeccaolização */}
+      {/* Normalização */}
       <Card>
         <CardContent className="p-5 space-y-3">
-          <h4 className="text-sm font-semibold text-foreground">Noprospeccaolização Min-Max</h4>
+          <h4 className="text-sm font-semibold text-foreground">Normalização Min-Max</h4>
           <FormulaBlock formula="Score_norm = (X − X_min) / (X_max − X_min)" description="Todos os scores normalizados para [0, 1] antes da consolidação" />
           <div className="grid grid-cols-3 gap-3">
             {[{ label: "SA", raw: SA, norm: SA_norm }, { label: "SF", raw: SF, norm: SF_norm }, { label: "SR", raw: SR, norm: SR_norm }].map((s, i) => (
@@ -1249,7 +1249,7 @@ const ModeloMatematico = () => {
                           ) : Math.abs(i.variation) > 0.25 ? (
                             <Badge variant="secondary" className="text-xs">Atenção</Badge>
                           ) : (
-                            <Badge variant="outline" className="text-xs">Noprospeccaol</Badge>
+                            <Badge variant="outline" className="text-xs">Normal</Badge>
                           )}
                         </TableCell>
                       </TableRow>

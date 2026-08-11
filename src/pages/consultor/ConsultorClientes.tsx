@@ -106,7 +106,7 @@ export default function ConsultorClientes() {
   return (
     <ConsultorPageShell
       title="Planilha de Carta"
-      subtitle="Gestão das cartas geradas a partir das recuperações judiciais ativas na Planilha Padrão Prospeccao."
+      subtitle="Gestão das cartas geradas a partir das recuperações judiciais ativas na Planilha Padrão Prospecção."
       search={search}
       onSearch={setSearch}
       kpis={[
