@@ -265,7 +265,7 @@ const TabUploadProcessamento = () => {
         let extracted = await extractTextFromFile(file, uploaded);
         if (extracted.asyncOcrId) {
           const polled = await waitForOcr(extracted.asyncOcrId);
-          extracted = { ...extracted, rawText: polled.rawText, noprospecçãolizedText: polled.noprospecçãolizedText, ocrConfidence: polled.confidence, pageCount: polled.pageCount };
+          extracted = { ...extracted, rawText: polled.rawText, normalizedText: polled.normalizedText, ocrConfidence: polled.confidence, pageCount: polled.pageCount };
         }
         setStage(idx, "ocr", "done");
 
@@ -275,7 +275,7 @@ const TabUploadProcessamento = () => {
         setStageMsg(`Processando IA — ${file.name}`);
         const aiStart = await processWithAI({
           rawText: extracted.rawText,
-          noprospecçãolizedText: extracted.noprospecçãolizedText,
+          normalizedText: extracted.normalizedText,
           path: learningPath,
           ocrConfidence: extracted.ocrConfidence,
         });

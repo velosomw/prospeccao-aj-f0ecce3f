@@ -159,11 +159,11 @@ export function buildMonthlyDataset(parsed: ParsedFinancialData | null | undefin
   const periods = parsed.years ?? [];
   if (!periods.length) return [];
 
-  const noprospecçãolized = periods
+  const normalized = periods
     .map(p => ({ raw: p, ...(normPeriod(p) || { key: p, label: p }) }))
     .sort((a, b) => a.key.localeCompare(b.key));
 
-  return noprospecçãolized.map(({ raw, key, label }) => {
+  return normalized.map(({ raw, key, label }) => {
     const dre = parsed.dre ?? [];
     const bal = parsed.balanco ?? [];
 

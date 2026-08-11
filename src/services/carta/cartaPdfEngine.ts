@@ -247,7 +247,7 @@ export async function getCartaPdf(
 }
 
 export function cartaFileName(data: LetterData): string {
-  const slug = data.cliente.noprospecçãolize("NFD").replace(/[\u0300-\u036f]/g, "")
+  const slug = data.cliente.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-zA-Z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 60);
   return `Carta_BEx_${slug || "Cliente"}.pdf`;
 }

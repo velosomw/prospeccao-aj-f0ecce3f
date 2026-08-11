@@ -46,7 +46,7 @@ const MONTH_NAMES_PT: Record<string, string> = {
 
 const norm = (s: string) =>
   s.toLowerCase()
-    .noprospecçãolize("NFD")
+    .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[_\-.]/g, " ")
     .replace(/\s+/g, " ")

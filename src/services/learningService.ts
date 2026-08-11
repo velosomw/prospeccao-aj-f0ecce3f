@@ -1,7 +1,7 @@
 // Learning Service — orquestração da tela de Validação/Aprendizado de Documentos
 // Fluxo:
 //   1. uploadLearningFile(file)       → envia arquivo ao bucket "learning-docs" e devolve URL pública.
-//   2. extractTextFromFile(file, url) → produz { rawText, noprospecçãolized, source } usando o método correto
+//   2. extractTextFromFile(file, url) → produz { rawText, normalized, source } usando o método correto
 //        - imagens/PDF  → ocr-google-vision (sync ou async, com fileUrl)
 //        - txt/csv      → leitura local
 //        - xlsx/xls     → SheetJS (xlsx) → CSV string
@@ -28,7 +28,7 @@ export interface UploadedLearningFile {
 
 export interface ExtractedTextResult {
   rawText: string;
-  noprospecçãolizedText: string;
+  normalizedText: string;
   ocrConfidence: number | null;
   pageCount: number | null;
   ocrResultId?: string;
@@ -46,7 +46,7 @@ export interface LearningExtraction {
   classe: string | null;
   agent: string | null;
   raw_text: string | null;
-  noprospecçãolized_text: string | null;
+  normalized_text: string | null;
   extracted_data: Record<string, unknown> | null;
   validation: { valido: boolean; correcoes: unknown[]; confianca: number } | null;
   final_confidence: number | null;
@@ -104,7 +104,7 @@ export async function uploadLearningFile(file: File): Promise<UploadedLearningFi
 }
 
 // ---------- Noprospecçãolização local (espelho do edge OCR) ----------
-function noprospecçãolizeText(text: string): string {
+function normalizeText(text: string): string {
   return text
     .replace(/l(?=\d)/g, "1")
     .replace(/O(?=\d)/g, "0")
@@ -141,7 +141,7 @@ export async function extractTextFromFile(
     const raw = await readAsText(file);
     return {
       rawText: raw,
-      noprospecçãolizedText: noprospecçãolizeText(raw),
+      normalizedText: normalizeText(raw),
       ocrConfidence: 1,
       pageCount: 1,
       method: "client_text",
@@ -152,7 +152,7 @@ export async function extractTextFromFile(
     const raw = await readSpreadsheet(file);
     return {
       rawText: raw,
-      noprospecçãolizedText: noprospecçãolizeText(raw),
+      normalizedText: normalizeText(raw),
       ocrConfidence: 1,
       pageCount: null,
       method: "client_xlsx",
@@ -182,7 +182,7 @@ export async function extractTextFromFile(
   if (r.mode === "async") {
     return {
       rawText: "",
-      noprospecçãolizedText: "",
+      normalizedText: "",
       ocrConfidence: null,
       pageCount: null,
       asyncOcrId: r.resultId,
@@ -193,7 +193,7 @@ export async function extractTextFromFile(
 
   return {
     rawText: r.rawText || r.text || "",
-    noprospecçãolizedText: r.text || "",
+    normalizedText: r.text || "",
     ocrConfidence: r.confidence ?? null,
     pageCount: r.pageCount ?? null,
     ocrResultId: r.resultId,
@@ -229,7 +229,7 @@ export async function waitForOcr(
   onProgress?: (s: OcrAsyncStatus) => void,
   intervalMs = 2500,
   timeoutMs = 10 * 60 * 1000,
-): Promise<{ rawText: string; noprospecçãolizedText: string; confidence: number | null; pageCount: number | null }> {
+): Promise<{ rawText: string; normalizedText: string; confidence: number | null; pageCount: number | null }> {
   const start = Date.now();
   // eslint-disable-next-line no-constant-condition
   while (true) {
@@ -240,12 +240,12 @@ export async function waitForOcr(
       // Busca o registro completo para pegar o texto
       const { data } = await supabase
         .from("ocr_results")
-        .select("raw_text,noprospecçãolized_text,confidence,page_count")
+        .select("raw_text,normalized_text,confidence,page_count")
         .eq("id", id)
         .maybeSingle();
       return {
         rawText: data?.raw_text || "",
-        noprospecçãolizedText: data?.noprospecçãolized_text || "",
+        normalizedText: data?.normalized_text || "",
         confidence: data?.confidence ?? null,
         pageCount: data?.page_count ?? null,
       };
@@ -258,7 +258,7 @@ export async function waitForOcr(
 // ---------- Processar com IA (engine de agentes) ----------
 export interface ProcessLearningInput {
   rawText: string;
-  noprospecçãolizedText?: string;
+  normalizedText?: string;
   path?: string;
   ocrConfidence?: number | null;
 }
@@ -266,7 +266,7 @@ export interface ProcessLearningInput {
 export async function processWithAI(input: ProcessLearningInput): Promise<AiProcessSyncResult | AiProcessAsyncStarted> {
   return await processDocument({
     text: input.rawText,
-    noprospecçãolized_text: input.noprospecçãolizedText,
+    normalized_text: input.normalizedText,
     path: input.path,
     ocr_confidence: input.ocrConfidence ?? undefined,
     async: true,
@@ -393,8 +393,8 @@ export async function saveGroundTruth(input: SaveCorrectionInput) {
     classe: e.classe,
     agent: e.agent ?? undefined,
     path: e.path ?? undefined,
-    input_text: input.correctedText || e.noprospecçãolized_text || e.raw_text || "",
-    noprospecçãolized_text: input.correctedText ? noprospecçãolizeText(input.correctedText) : (e.noprospecçãolized_text ?? undefined),
+    input_text: input.correctedText || e.normalized_text || e.raw_text || "",
+    normalized_text: input.correctedText ? normalizeText(input.correctedText) : (e.normalized_text ?? undefined),
     output_original: (e.extracted_data ?? undefined) as Record<string, unknown> | undefined,
     output_correto: input.correctedJson,
     corrections: corrections.map((c) => ({

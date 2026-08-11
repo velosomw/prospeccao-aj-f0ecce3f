@@ -38,7 +38,7 @@ const isStructuredEdgeError = (value: unknown): value is EdgeDiagnosticPayload =
   return "success" in value && "error" in value;
 };
 
-const noprospecçãolizeInvokeError = (data: any, error: any): EdgeDiagnosticPayload | null => {
+const normalizeInvokeError = (data: any, error: any): EdgeDiagnosticPayload | null => {
   if (isStructuredEdgeError(data)) return data;
   if (isStructuredEdgeError(error?.context)) return error.context;
   return null;
@@ -103,7 +103,7 @@ const OneDriveCard = () => {
       const { data, error } = await supabase.functions.invoke("onedrive-list", {
         body: { path: "me", method: "GET" },
       });
-      const structuredError = noprospecçãolizeInvokeError(data, error);
+      const structuredError = normalizeInvokeError(data, error);
       if (structuredError) {
         setAccountInfo(null);
         setStatus("error");
@@ -215,7 +215,7 @@ const SyncControls = () => {
           persist,
         },
       });
-      const structuredError = noprospecçãolizeInvokeError(data, error);
+      const structuredError = normalizeInvokeError(data, error);
       if (structuredError) {
         setResult(structuredError);
         toast.error(structuredError.hint || structuredError.error || "Falha na integração com Microsoft Graph");
@@ -301,7 +301,7 @@ const DiagnosticsCard = () => {
       const { data, error } = await supabase.functions.invoke("onedrive-diagnostics", {
         body: includeShare ? { shareUrl: ONEDRIVE_CONFIG.share_url } : {},
       });
-      const structuredError = noprospecçãolizeInvokeError(data, error);
+      const structuredError = normalizeInvokeError(data, error);
       if (structuredError) {
         setReport(structuredError);
         toast.error(structuredError.hint || structuredError.error || "Falha ao rodar diagnóstico");

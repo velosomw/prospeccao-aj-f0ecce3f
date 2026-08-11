@@ -486,10 +486,10 @@ const TabRiskEngine = () => {
   const scores = [SA, SF, SR];
   const sMin = Math.min(...scores);
   const sMax = Math.max(...scores);
-  const noprospecçãolize = (x: number) => sMax === sMin ? 0.5 : (x - sMin) / (sMax - sMin);
-  const SA_norm = noprospecçãolize(SA);
-  const SF_norm = noprospecçãolize(SF);
-  const SR_norm = noprospecçãolize(SR);
+  const normalize = (x: number) => sMax === sMin ? 0.5 : (x - sMin) / (sMax - sMin);
+  const SA_norm = normalize(SA);
+  const SF_norm = normalize(SF);
+  const SR_norm = normalize(SR);
 
   // Correlação mock (calculada a partir de dados simulados)
   const rhoAF = 0.78;

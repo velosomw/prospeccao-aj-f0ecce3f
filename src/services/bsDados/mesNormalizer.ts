@@ -4,7 +4,7 @@ const MES_PT = [
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
 ];
 
-export function noprospecçãolizeMesKey(input: string | null | undefined): string | null {
+export function normalizeMesKey(input: string | null | undefined): string | null {
   if (!input) return null;
   const s = String(input).trim();
 

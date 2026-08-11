@@ -55,7 +55,7 @@ const REF_BY_PREFIX: Array<[RegExp, string]> = [
 ];
 
 const stripAccents = (s: string) =>
-  (s || "").toLowerCase().noprospecçãolize("NFD").replace(/[\u0300-\u036f]/g, "");
+  (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 function classifyPCByDescription(desc: string): string {
   const d = stripAccents(desc);

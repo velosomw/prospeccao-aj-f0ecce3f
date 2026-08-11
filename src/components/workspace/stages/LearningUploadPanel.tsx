@@ -585,7 +585,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
           extracted = {
             ...extracted,
             rawText: done.rawText,
-            noprospecçãolizedText: done.noprospecçãolizedText,
+            normalizedText: done.normalizedText,
             ocrConfidence: done.confidence,
             pageCount: done.pageCount,
           };
@@ -608,7 +608,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
         recordLearningUploadStatus({ prospecçãoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: 60, confidence: extracted.ocrConfidence, message: `Processando com ${folder.agent}…` });
         const ai = await processWithAI({
           rawText: extracted.rawText,
-          noprospecçãolizedText: extracted.noprospecçãolizedText,
+          normalizedText: extracted.normalizedText,
           path:
             `learning-docs/${slug}/${up.path} · prospecção:${prospecçãoId}` +
             (companyId ? ` · company:${companyId}` : "") +

@@ -29,7 +29,7 @@ const MES_LONG: Record<string, number> = {
 };
 
 const stripAccents = (s: string) =>
-  (s || "").toString().noprospecçãolize("NFD").replace(/[\u0300-\u036f]/g, "");
+  (s || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const norm = (s: string) =>
   stripAccents(s).toLowerCase().trim().replace(/\s+/g, " ");
@@ -56,7 +56,7 @@ function buildKey(year: number, month: number): string | null {
  * Noprospecçãoliza qualquer rótulo de período para "YYYY-MM".
  * Retorna null se não for possível inferir um mês válido.
  */
-export function noprospecçãolizeMesKey(input: string | null | undefined): string | null {
+export function normalizeMesKey(input: string | null | undefined): string | null {
   if (input === null || input === undefined) return null;
   const raw = String(input).trim();
   if (!raw) return null;
@@ -116,7 +116,7 @@ export function mesKeyToLabel(key: string): string {
  * (para preservar comportamento dos callers que querem "passar adiante").
  */
 export function periodToMesKey(period: string): string {
-  const k = noprospecçãolizeMesKey(period);
+  const k = normalizeMesKey(period);
   return k ?? (period || "").trim();
 }
 

@@ -106,7 +106,7 @@ export const Prospecção_TOPICS_WITHOUT_DIP_FOLDER: number[] = [22]; // "Tópic
 /** Slug usado em path/metadata (ex.: "07-balancete-de-verificacao"). */
 export function dipFolderSlug(f: DipFolder): string {
   const norm = f.label
-    .noprospecçãolize("NFD")
+    .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")

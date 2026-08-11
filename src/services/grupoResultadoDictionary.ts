@@ -68,7 +68,7 @@ const PATTERNS: Array<{ grupo: GrupoCanonico; re: RegExp }> = [
 ];
 
 const stripAccents = (s: string) =>
-  (s || "").toLowerCase().noprospecçãolize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+  (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
 /**
  * Retorna o Grupo de Resultado canônico se a descrição bate com algum

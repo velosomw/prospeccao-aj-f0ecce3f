@@ -288,7 +288,7 @@ export interface BalanceteEntry {
 const toUpperNoAccent = (s: string) =>
   (s || "")
     .toString()
-    .noprospecçãolize("NFD")
+    .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toUpperCase()
     .trim();

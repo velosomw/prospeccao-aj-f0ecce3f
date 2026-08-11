@@ -46,7 +46,7 @@ interface CacheRow {
   dre: unknown;
 }
 
-function noprospecçãolizeCacheRows(rows: CacheRow[], janela?: JanelaConsolidado | null) {
+function normalizeCacheRows(rows: CacheRow[], janela?: JanelaConsolidado | null) {
   const yearsSet = new Set<string>();
   const balanco: ParsedRow[] = [];
   const dre: ParsedRow[] = [];
@@ -162,7 +162,7 @@ export function useConsolidadoBS(
           const k = `${c.ano}-${String(c.mes).padStart(2, "0")}`;
           return !coveredMonths.has(k);
         });
-        const fallback = noprospecçãolizeCacheRows(cacheRows, janela);
+        const fallback = normalizeCacheRows(cacheRows, janela);
         const mergedYears = Array.from(new Set([...primary.parsed.years, ...fallback.parsed.years])).sort();
         const mergedParsed: ParsedFinancialData = {
           years: mergedYears,

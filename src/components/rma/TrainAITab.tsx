@@ -34,7 +34,7 @@ interface PendingDoc {
   final_confidence: number | null;
   status: string;
   extracted_data: any;
-  noprospecçãolized_text: string | null;
+  normalized_text: string | null;
   file_name: string | null;
 }
 
@@ -94,7 +94,7 @@ export default function TrainAITab({ companyId, prospecçãoId }: Props) {
     setSelectedPending(doc);
     setClasse((doc.classe || "OUTRO").toUpperCase());
     setAgent(doc.agent || (doc.classe || "outro").toLowerCase());
-    setInputText(doc.noprospecçãolized_text || "");
+    setInputText(doc.normalized_text || "");
     setOutput(doc.extracted_data || { linhas: [] });
     toast.info(`Carregado: ${doc.file_name ?? doc.path ?? doc.extraction_id.slice(0,8)}`);
   };

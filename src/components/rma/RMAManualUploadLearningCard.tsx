@@ -59,7 +59,7 @@ export default function ProspecçãoManualUploadLearningCard({ prospecçãoId, c
       const ext = await extractTextFromFile(file, uploaded);
       const ai: any = await processWithAI({
         rawText: ext.rawText,
-        noprospecçãolizedText: ext.noprospecçãolizedText,
+        normalizedText: ext.normalizedText,
         path: uploaded.path,
         ocrConfidence: (ext as any).ocrConfidence ?? null,
       });

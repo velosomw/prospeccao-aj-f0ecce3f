@@ -7,7 +7,7 @@ REGRAS CRÍTICAS:
 1. Você NÃO pode inventar dados.
 2. Se não encontrar infoprospecçãoção, retorne null.
 3. Trabalhe com textos imperfeitos (OCR pode ter erros).
-4. Sempre noprospecçãolize:
+4. Sempre normalize:
    - Datas → YYYY-MM-DD
    - Valores → número decimal (ex: 10000.50)
    - CNPJ/CPF → apenas números
