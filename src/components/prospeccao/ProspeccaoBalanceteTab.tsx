@@ -144,7 +144,7 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
 
   const loadCrossHistory = useCallback(async () => {
     if (!isRealRma || !id) return;
-    const { data } = await supabase
+    const { data } = await (supabase
       .from("cross_validation_runs") as any)
       .select("id, ano, mes, score, passed, checked, issues, persisted_versions, created_at")
       .eq("company_id", id)
@@ -214,7 +214,7 @@ const ProspeccaoBalanceteTab = ({ initialSubtab, periodo }: ProspeccaoBalanceteT
 
   const loadConflictAudit = useCallback(async (ids: string[]) => {
     if (!ids.length) { setAuditByConflict({}); return; }
-    const { data, error } = await supabase
+    const { data, error } = await (supabase
       .from("balancete_conflict_audit") as any)
       .select("id, conflict_id, user_id, user_role, action, from_status, to_status, notes, created_at")
       .in("conflict_id", ids)

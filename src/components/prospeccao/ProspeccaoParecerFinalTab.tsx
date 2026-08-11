@@ -119,7 +119,7 @@ const ProspeccaoParecerFinalTab = ({ tipo: tipoInicial = "prospeccao_intelligenc
         p_document_id: doc.id,
         p_release: release,
         p_notes: null,
-      });
+      }) as any);
       if (error) throw error;
       toast.success(release ? "Relatório liberado para a Recuperanda." : "Liberação revogada.");
       await reload();
