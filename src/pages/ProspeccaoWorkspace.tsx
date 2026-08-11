@@ -17,7 +17,7 @@ import {
   getRmaAnalysis,
   type ProspeccaoAnalysisResult,
 } from "@/services/prospeccaoAnalysisService";
-import { buildLiveScoreTopics, computeRmaScore, fetchRmaScores, type ScoreFile } from "@/lib/prospeccaoScore";
+import { buildLiveScoreTopics, computeProspeccaoScore, fetchProspeccaoScores, type ScoreFile } from "@/lib/prospeccaoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
 import ProspeccaoStatusTab from "@/components/prospeccao/ProspeccaoStatusTab";
 import ProspeccaoProcessamentoTab from "@/components/prospeccao/ProspeccaoProcessamentoTab";
@@ -314,7 +314,7 @@ const ProspeccaoWorkspace = () => {
       if (!cancelled) setScoreFiles((data as any) || []);
     };
     const loadUnified = async () => {
-      const scores = await fetchRmaScores([companyId]);
+      const scores = await fetchProspeccaoScores([companyId]);
       if (!cancelled && scores[companyId]) setUnifiedScore(scores[companyId].percentual);
     };
     loadFiles();
@@ -382,7 +382,7 @@ const ProspeccaoWorkspace = () => {
   }, [companyId]);
 
   const liveWorkspaceTopics = buildLiveScoreTopics(analysis?.topics as any, scoreFiles);
-  const localWorkspacePct = computeRmaScore(liveWorkspaceTopics, analysis?.percentual ?? 0);
+  const localWorkspacePct = computeProspeccaoScore(liveWorkspaceTopics, analysis?.percentual ?? 0);
   // unifiedScore (edge `prospeccao-score`) é a fonte canônica; reconcileScore garante
   // paridade com Status Prospeccao, Processamento IA e Alertas Inteligentes.
   const liveWorkspacePercentual = reconcileScore("ProspeccaoWorkspace", unifiedScore, localWorkspacePct);

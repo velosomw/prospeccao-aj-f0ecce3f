@@ -11,7 +11,7 @@ import ProspeccaoFailedFilesLearningCard from "@/components/prospeccao/Prospecca
 import ProspeccaoManualUploadLearningCard from "@/components/prospeccao/ProspeccaoManualUploadLearningCard";
 import ProspeccaoAuditTrailCard from "@/components/prospeccao/ProspeccaoAuditTrailCard";
 import ProspeccaoBatchTab from "@/components/prospeccao/ProspeccaoBatchTab";
-import { computeRmaScore } from "@/lib/prospeccaoScore";
+import { computeProspeccaoScore } from "@/lib/prospeccaoScore";
 import { reconcileScore, useScoreParityGuard } from "@/lib/scoreSync";
 
 interface Props {
@@ -143,9 +143,9 @@ const ProspeccaoProcessamentoTab = ({ prospeccao, companyId }: Props) => {
 
   // Score Global unificado: usa exatamente o mesmo percentual exibido no header
   // do Workspace e nos Alertas Inteligentes (vindo do edge `prospeccao-score` quando
-  // disponível). Mantém computeRmaScore como piso defensivo caso `prospeccao.percentual`
+  // disponível). Mantém computeProspeccaoScore como piso defensivo caso `prospeccao.percentual`
   // ainda não tenha sido propagado.
-  const localScore = computeRmaScore(
+  const localScore = computeProspeccaoScore(
     topics.map((t) => ({
       status: t.status === "ok" ? "completo" : t.status === "incompleto" ? "incompleto" : "pendente",
       completude: t.fileCount > 0 ? Math.round((t.docsParsed / t.fileCount) * 100) : 0,
