@@ -13,7 +13,7 @@ export interface AiProcessInput {
   document_id?: string;
   prospecção_id?: string;
   text: string;
-  noprospecçãolized_text?: string;
+  normalized_text?: string;
   path?: string;
   ocr_confidence?: number;
   async?: boolean;
@@ -277,7 +277,7 @@ export async function retryProcessing(previousJobId: string): Promise<AiProcessA
     document_id: prev.document_id ?? undefined,
     prospecção_id: prev.prospecção_id ?? undefined,
     text: prev.raw_text,
-    noprospecçãolized_text: prev.noprospecçãolized_text ?? undefined,
+    normalized_text: prev.normalized_text ?? undefined,
     path: prev.path ?? undefined,
     ocr_confidence: prev.ocr_confidence ?? undefined,
     resume_from_id: previousJobId,

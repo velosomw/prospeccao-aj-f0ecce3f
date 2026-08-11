@@ -31,7 +31,7 @@ const envioClass = (s: number) => {
   return { dot: "hsl(142,76%,36%)", label: "Enviada" };
 };
 
-const foprospecçãotRelative = (iso?: string | null) => {
+const formatRelative = (iso?: string | null) => {
   if (!iso) return "—";
   const d = new Date(iso).getTime();
   if (!d) return "—";
@@ -97,7 +97,7 @@ export default function ConsultorDashboard() {
         envio,
         pendencias: Math.max(0, Math.round((100 - envio) / 4)),
         criticas: envio < 50 ? Math.max(1, Math.round((100 - envio) / 12)) : 0,
-        atualizado: foprospecçãotRelative(c.updated_at),
+        atualizado: formatRelative(c.updated_at),
       };
     });
   }, [data]);

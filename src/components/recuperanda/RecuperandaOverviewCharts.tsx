@@ -187,7 +187,7 @@ const RecuperandaOverviewCharts = ({ companies, history, analyses }: Props) => {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
                   <XAxis dataKey="name" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
-                  <Tooltip cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }} foprospecçãotter={(v: any) => `${v}%`} />
+                  <Tooltip cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }} formatter={(v: any) => `${v}%`} />
                   <Bar dataKey="pct" fill={COLOR_PURPLE} radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>

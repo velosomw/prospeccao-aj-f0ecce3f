@@ -73,7 +73,7 @@ const eventTypeLabels: Record<EventType, string> = {
   LOGOUT: "Logout",
 };
 
-const foprospecçãotDateTime = (ts: string) => {
+const formatDateTime = (ts: string) => {
   const d = new Date(ts);
   return d.toLocaleDateString("pt-BR") + " " + d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 };
@@ -133,7 +133,7 @@ const TabTrilhaAuditoria = () => {
       l.acao, l.modulo,
       l.beforeData ? JSON.stringify(l.beforeData) : "",
       l.afterData ? JSON.stringify(l.afterData) : "",
-      foprospecçãotDateTime(l.timestamp), l.ip, l.dispositivo, l.hash
+      formatDateTime(l.timestamp), l.ip, l.dispositivo, l.hash
     ]);
     const csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(",")).join("\n");
     const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
@@ -250,7 +250,7 @@ const TabTrilhaAuditoria = () => {
                           <div className="bg-muted/30 rounded-lg p-3 hover:bg-muted/50 transition-colors cursor-pointer" onClick={() => setDetailLog(log)}>
                             <div className="flex items-center justify-between flex-wrap gap-2">
                               <div className="flex items-center gap-2">
-                                <span className="text-xs font-mono text-muted-foreground">{foprospecçãotDateTime(log.timestamp)}</span>
+                                <span className="text-xs font-mono text-muted-foreground">{formatDateTime(log.timestamp)}</span>
                                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ background: cfg.color }}>{cfg.label}</span>
                                 <span className="text-xs font-semibold text-foreground">{eventTypeLabels[log.eventType]}</span>
                               </div>
@@ -384,7 +384,7 @@ const TabTrilhaAuditoria = () => {
                             {log.userPerfil}
                           </span>
                         </TableCell>
-                        <TableCell className="text-xs font-mono">{foprospecçãotDateTime(log.timestamp)}</TableCell>
+                        <TableCell className="text-xs font-mono">{formatDateTime(log.timestamp)}</TableCell>
                         <TableCell className="text-xs">{log.modulo}</TableCell>
                         <TableCell className="p-2">
                           <Button variant="ghost" size="icon" className="h-7 w-7" onClick={e => { e.stopPropagation(); setDetailLog(log); }}>
@@ -477,7 +477,7 @@ const TabTrilhaAuditoria = () => {
                         <h4 className="text-sm font-semibold text-foreground">{eventTypeLabels[log.eventType]}</h4>
                         <p className="text-xs text-muted-foreground mt-0.5">{log.acao}</p>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs font-mono text-muted-foreground">{foprospecçãotDateTime(log.timestamp)}</span>
+                          <span className="text-xs font-mono text-muted-foreground">{formatDateTime(log.timestamp)}</span>
                           <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: `${getPerfilColor(log.userPerfil)}15`, color: getPerfilColor(log.userPerfil) }}>
                             {log.userNome} ({log.userPerfil})
                           </span>
@@ -532,7 +532,7 @@ const TabTrilhaAuditoria = () => {
                           <Lock className="w-3 h-3 text-[hsl(152,70%,45%)] ml-1" />
                         </div>
                       </div>
-                      <span className="text-xs font-mono text-muted-foreground flex-shrink-0">{foprospecçãotDateTime(log.timestamp)}</span>
+                      <span className="text-xs font-mono text-muted-foreground flex-shrink-0">{formatDateTime(log.timestamp)}</span>
                     </div>
                   </div>
                 );
@@ -555,7 +555,7 @@ const TabTrilhaAuditoria = () => {
                 title: "ISO 27001",
                 icon: Lock,
                 color: "hsl(210,80%,55%)",
-                items: ["Controle de auditoria A.12.4", "Gestão de logs e monitoramento", "Segurança da infoprospecçãoção", "Registros imutáveis (WORM)"]
+                items: ["Controle de auditoria A.12.4", "Gestão de logs e monitoramento", "Segurança da informação", "Registros imutáveis (WORM)"]
               },
               {
                 title: "Boas Práticas (Big Four)",
@@ -617,7 +617,7 @@ const TabTrilhaAuditoria = () => {
                     {criticidadeConfig[detailLog.criticidade].label}
                   </span>
                   <Badge variant="outline">{eventTypeLabels[detailLog.eventType]}</Badge>
-                  <span className="text-xs font-mono text-muted-foreground ml-auto">{foprospecçãotDateTime(detailLog.timestamp)}</span>
+                  <span className="text-xs font-mono text-muted-foreground ml-auto">{formatDateTime(detailLog.timestamp)}</span>
                 </div>
 
                 {/* Info grid */}

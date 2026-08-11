@@ -170,7 +170,7 @@ function bodyFor(_: CartaTemplateId): Paragraph[] {
 }
 
 async function render(data: LetterData, template: CartaTemplateId): Promise<Blob> {
-  const doc = new jsPDF({ unit: "mm", foprospecçãot: "a4", orientation: "portrait", compress: true });
+  const doc = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait", compress: true });
   await loadFonts(doc);
   const bg = `data:image/png;base64,${toBase64(await fetchBuf(letterheadAsset.url))}`;
 
@@ -247,7 +247,7 @@ export async function getCartaPdf(
 }
 
 export function cartaFileName(data: LetterData): string {
-  const slug = data.cliente.noprospecçãolize("NFD").replace(/[\u0300-\u036f]/g, "")
+  const slug = data.cliente.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-zA-Z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 60);
   return `Carta_BEx_${slug || "Cliente"}.pdf`;
 }

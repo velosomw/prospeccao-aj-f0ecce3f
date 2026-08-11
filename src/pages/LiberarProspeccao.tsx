@@ -19,7 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { listCompanies, type Company } from "@/services/companiesService";
 import {
   listReleases, createRelease, updateReleaseStatus, deleteRelease,
-  monthLabel, statusLabel, type RmaRelease, type ReleaseRole, type ReleaseStatus,
+  monthLabel, statusLabel, type ProspeccaoRelease, type ReleaseRole, type ReleaseStatus,
 } from "@/services/prospecçãoReleaseService";
 
 type ProfileLite = { user_id: string; full_name: string; email: string; role: string; active: boolean };
@@ -34,7 +34,7 @@ const LiberarProspecção = () => {
 
   const [companies, setCompanies] = useState<Company[]>([]);
   const [profiles, setProfiles] = useState<ProfileLite[]>([]);
-  const [releases, setReleases] = useState<RmaRelease[]>([]);
+  const [releases, setReleases] = useState<ProspeccaoRelease[]>([]);
   const [loading, setLoading] = useState(true);
 
   // form
@@ -107,7 +107,7 @@ const LiberarProspecção = () => {
     }
   };
 
-  const handleStatus = async (r: RmaRelease, status: ReleaseStatus) => {
+  const handleStatus = async (r: ProspeccaoRelease, status: ReleaseStatus) => {
     try {
       await updateReleaseStatus(r.id, status, r.company_id, r.released_to_user_id);
       toast({ title: `Liberação ${statusLabel[status].label.toLowerCase()}` });
@@ -117,7 +117,7 @@ const LiberarProspecção = () => {
     }
   };
 
-  const handleDelete = async (r: RmaRelease) => {
+  const handleDelete = async (r: ProspeccaoRelease) => {
     if (!confirm("Remover esta liberação? Esta ação será registrada na trilha de auditoria.")) return;
     try {
       await deleteRelease(r.id, r.company_id, r.released_to_user_id);
@@ -139,7 +139,7 @@ const LiberarProspecção = () => {
     });
   }, [releases, search, companiesById, profilesById]);
 
-  const foprospecçãotDateTime = (s: string) =>
+  const formatDateTime = (s: string) =>
     new Date(s).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
   return (
@@ -338,7 +338,7 @@ const LiberarProspecção = () => {
                                 </span>
                               </td>
                               <td className="px-3 py-2 text-xs text-muted-foreground whitespace-nowrap">
-                                {foprospecçãotDateTime(r.created_at)}
+                                {formatDateTime(r.created_at)}
                               </td>
                               <td className="px-3 py-2 text-right">
                                 <div className="inline-flex gap-1">

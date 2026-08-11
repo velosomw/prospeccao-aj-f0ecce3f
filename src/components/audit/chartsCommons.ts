@@ -1,5 +1,5 @@
 /**
- * Tokens visuais, foprospecçãotters e paleta para os gráficos de auditoria (Recharts).
+ * Tokens visuais, formatters e paleta para os gráficos de auditoria (Recharts).
  * Conforme spec ABA_GRAFICOS_AUDITORIA_REPLICACAO.md §7.
  */
 import { CartesianGrid } from "recharts";
@@ -28,7 +28,7 @@ export const SERIES_COLORS = [
 export const fmtMilhar = (v: number | null | undefined) => {
   if (v == null || !Number.isFinite(v)) return "#N/D";
   const n = Math.round(v);
-  const s = new Intl.NumberFoprospecçãot("pt-BR").foprospecçãot(Math.abs(n));
+  const s = new Intl.NumberFormat("pt-BR").format(Math.abs(n));
   return n < 0 ? `(${s})` : s;
 };
 export const fmtPct = (v: number | null | undefined, dec = 2) => {
@@ -45,7 +45,7 @@ export const fmtDec = (v: number | null | undefined, dec = 2) => {
 };
 export const fmtMoeda = (v: number | null | undefined) => {
   if (v == null || !Number.isFinite(v)) return "—";
-  return new Intl.NumberFoprospecçãot("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).foprospecçãot(v);
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(v);
 };
 export const fmtCompact = (v: any) => {
   const n = typeof v === "number" ? v : Number(v);
@@ -98,7 +98,7 @@ export const ALWAYS_LABEL = {
   fontSize: 10,
   fill: "hsl(var(--foreground))",
   fontWeight: 600,
-  foprospecçãotter: fmtCompact,
+  formatter: fmtCompact,
 };
 
 export const LEGEND_STYLE = { fontSize: 12, fontWeight: 500 } as const;

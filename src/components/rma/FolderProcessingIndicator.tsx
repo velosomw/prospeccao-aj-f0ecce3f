@@ -21,7 +21,7 @@ interface Props {
   pollMs?: number;
 }
 
-function foprospecçãotCountdown(target: string | null): string {
+function formatCountdown(target: string | null): string {
   if (!target) return "";
   const ms = new Date(target).getTime() - Date.now();
   if (ms <= 0) return "liberando…";
@@ -78,7 +78,7 @@ export function FolderProcessingIndicator({ companyId, prospecçãoId, folderPat
       {status.rate_limited_count > 0 && (
         <Badge variant="outline" className="gap-1 border-orange-300 text-orange-700">
           <Hourglass className="h-3 w-3" />
-          {status.rate_limited_count} aguardando rate-limit ({foprospecçãotCountdown(status.rate_limit_until)})
+          {status.rate_limited_count} aguardando rate-limit ({formatCountdown(status.rate_limit_until)})
         </Badge>
       )}
 

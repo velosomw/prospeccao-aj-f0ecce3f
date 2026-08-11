@@ -111,7 +111,7 @@ const ProspecçãoBalanceteTab = ({ initialSubtab, periodo }: ProspecçãoBalanc
       // Aplica o período do cadastro do Prospecção
       let mes = data.current_period_month ?? null;
       let ano = data.execution_year ?? null;
-      // Fallback: tenta last_analyzed_period (foprospecçãoto MM-YYYY)
+      // Fallback: tenta last_analyzed_period (formato MM-YYYY)
       if ((!mes || !ano) && data.last_analyzed_period) {
         const m = String(data.last_analyzed_period).match(/^(\d{1,2})-(\d{4})$/);
         if (m) { mes = Number(m[1]); ano = Number(m[2]); }

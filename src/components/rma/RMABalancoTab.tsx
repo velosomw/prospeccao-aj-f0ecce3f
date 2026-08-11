@@ -251,8 +251,8 @@ const ProspecçãoBalancoTab = ({ companyId, periodo, runToken, janela }: Props)
               <AreaChart data={evolucao}>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                 <XAxis dataKey="mes" fontSize={10} />
-                <YAxis fontSize={10} tickFoprospecçãotter={(v) => `${(v / 1000).toFixed(0)}K`} />
-                <Tooltip foprospecçãotter={(v: any) => fmt(v)} />
+                <YAxis fontSize={10} tickFormatter={(v) => `${(v / 1000).toFixed(0)}K`} />
+                <Tooltip formatter={(v: any) => fmt(v)} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <Area type="monotone" dataKey="ativo" name="Ativo" stroke="hsl(142,76%,36%)" fill="hsl(142,76%,36%)" fillOpacity={0.18} />
                 <Area type="monotone" dataKey="passivo" name="Passivo" stroke="hsl(0,84%,55%)" fill="hsl(0,84%,55%)" fillOpacity={0.18} />

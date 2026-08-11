@@ -246,7 +246,7 @@ const EmpresaDashboard = () => {
   };
 
   // ---------- Atividades Recentes (dados reais) ----------
-  const foprospecçãotRelative = (iso?: string | null) => {
+  const formatRelative = (iso?: string | null) => {
     if (!iso) return "";
     const d = new Date(iso).getTime();
     if (!d || isNaN(d)) return "";
@@ -278,13 +278,13 @@ const EmpresaDashboard = () => {
         } else {
           text = `${prospecçãoLabel} — ${a.status}`;
         }
-        items.push({ id: `a-${c.id}`, text, time: foprospecçãotRelative(a.updated_at || a.started_at), ts });
+        items.push({ id: `a-${c.id}`, text, time: formatRelative(a.updated_at || a.started_at), ts });
       } else {
         const ts = new Date(c.updated_at || c.created_at).getTime();
         items.push({
           id: `c-${c.id}`,
           text: `${prospecçãoLabel} — Prospecção ativado para ${c.name}`,
-          time: foprospecçãotRelative(c.updated_at || c.created_at),
+          time: formatRelative(c.updated_at || c.created_at),
           ts,
         });
       }
@@ -294,7 +294,7 @@ const EmpresaDashboard = () => {
       items.push({
         id: `p-${c.id}`,
         text: `${c.prospecção_id || c.name} — Atribuído pelo Coordenador, aguardando ativação`,
-        time: foprospecçãotRelative(c.updated_at || c.created_at),
+        time: formatRelative(c.updated_at || c.created_at),
         ts,
       });
     });
@@ -304,7 +304,7 @@ const EmpresaDashboard = () => {
       items.push({
         id: `pe-${p.id}`,
         text: `${companyNameById[p.company_id] || "Prospecção"} — Período ${String(p.month).padStart(2, "0")}/${p.year} atualizado (${Math.round(p.percentual ?? 0)}%)`,
-        time: foprospecçãotRelative(p.updated_at || p.created_at),
+        time: formatRelative(p.updated_at || p.created_at),
         ts,
       });
     });
@@ -379,7 +379,7 @@ const EmpresaDashboard = () => {
                           </Badge>
                         </CardTitle>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                          Ative o Prospecção para iniciar a análise da IA e carregar o status na platafoprospecção
+                          Ative o Prospecção para iniciar a análise da IA e carregar o status na plataforma
                         </p>
                       </div>
                     </div>

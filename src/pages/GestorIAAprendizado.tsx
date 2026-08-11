@@ -88,7 +88,7 @@ function DocumentViewer({ url, mime, kind }: { url: string | null; mime?: string
   return (
     <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-2 p-6 text-center">
       {kind === "spreadsheet" ? <Sheet className="w-8 h-8 opacity-50" /> : <FileText className="w-8 h-8 opacity-50" />}
-      <p className="text-sm">Pré-visualização não disponível para este foprospecçãoto.</p>
+      <p className="text-sm">Pré-visualização não disponível para este formato.</p>
       <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary text-sm underline">Abrir arquivo</a>
     </div>
   );
@@ -233,15 +233,15 @@ function UploadTab({ onSaved }: { onSaved: () => void }) {
         ext = {
           ...ext,
           rawText: final.rawText,
-          noprospecçãolizedText: final.noprospecçãolizedText,
+          normalizedText: final.normalizedText,
           ocrConfidence: final.confidence,
           pageCount: final.pageCount,
         };
       }
       setExtract(ext);
-      setOcrText(ext.noprospecçãolizedText || ext.rawText);
+      setOcrText(ext.normalizedText || ext.rawText);
 
-      if (!ext.noprospecçãolizedText && !ext.rawText) {
+      if (!ext.normalizedText && !ext.rawText) {
         throw new Error("Texto extraído está vazio");
       }
 
@@ -250,7 +250,7 @@ function UploadTab({ onSaved }: { onSaved: () => void }) {
       setStageMsg("Executando agentes (Classify → Router → Agente → Validador)…");
       const aiResp = await processWithAI({
         rawText: ext.rawText,
-        noprospecçãolizedText: ext.noprospecçãolizedText,
+        normalizedText: ext.normalizedText,
         path: `/learning-docs/${up.path.split("/").slice(0, -1).join("/")}`,
         ocrConfidence: ext.ocrConfidence ?? undefined,
       });
@@ -318,7 +318,7 @@ function UploadTab({ onSaved }: { onSaved: () => void }) {
           classe,
           agent: aiResult.agent ?? null,
           raw_text: extract?.rawText ?? null,
-          noprospecçãolized_text: ocrText,
+          normalized_text: ocrText,
           extracted_data: (aiResult.extracted_data as Record<string, unknown>) ?? null,
           validation: aiResult.validation ?? null,
           final_confidence: aiResult.final_conf ?? null,
@@ -516,7 +516,7 @@ function PendingTab() {
 
   useEffect(() => {
     if (selected) {
-      setEditText(selected.noprospecçãolized_text || selected.raw_text || "");
+      setEditText(selected.normalized_text || selected.raw_text || "");
       setEditJson((selected.extracted_data as Record<string, unknown>) || {});
     }
   }, [selected]);

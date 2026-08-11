@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar, Search, FileText, RefreshCw } from "lucide-react";
-import { listMyReleases, listReleases, monthLabel, statusLabel, type RmaRelease } from "@/services/prospecçãoReleaseService";
+import { listMyReleases, listReleases, monthLabel, statusLabel, type ProspeccaoRelease } from "@/services/prospecçãoReleaseService";
 import { listCompanies, type Company } from "@/services/companiesService";
 
 interface Props {
@@ -24,7 +24,7 @@ const MyReleasesTab = ({
   onOpenReport,
 }: Props) => {
   const navigate = useNavigate();
-  const [releases, setReleases] = useState<RmaRelease[]>([]);
+  const [releases, setReleases] = useState<ProspeccaoRelease[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
@@ -66,7 +66,7 @@ const MyReleasesTab = ({
     });
   }, [releases, search, companiesById]);
 
-  const foprospecçãotDateTime = (s: string) => {
+  const formatDateTime = (s: string) => {
     const d = new Date(s);
     return d.toLocaleString("pt-BR", {
       day: "2-digit", month: "2-digit", year: "numeric",
@@ -149,7 +149,7 @@ const MyReleasesTab = ({
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm text-muted-foreground whitespace-nowrap">
-                        {foprospecçãotDateTime(r.created_at)}
+                        {formatDateTime(r.created_at)}
                       </td>
                       {showActions && (
                         <td className="px-3 py-2 text-right">

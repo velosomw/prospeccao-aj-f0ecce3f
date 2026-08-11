@@ -37,7 +37,7 @@ type TopicNorm = {
   status: "ok" | "incompleto" | "vazio";
 };
 
-const noprospecçãolizeStatus = (
+const normalizeStatus = (
   raw: any,
   fileCount: number,
   processedCount: number,
@@ -130,7 +130,7 @@ const ProspecçãoProcessamentoTab = ({ prospecção, companyId }: Props) => {
         pasta,
         fileCount,
         docsParsed,
-        status: noprospecçãolizeStatus(t.status, fileCount, docsParsed),
+        status: normalizeStatus(t.status, fileCount, docsParsed),
       };
     });
   }, [prospecção.topics, allFiles]);

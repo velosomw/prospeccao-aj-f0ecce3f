@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 export type ReleaseStatus = "active" | "suspended" | "revoked";
 export type ReleaseRole = "magistrado" | "recuperanda";
 
-export interface RmaRelease {
+export interface ProspeccaoRelease {
   id: string;
   company_id: string;
   year: number;
@@ -28,23 +28,23 @@ export interface CreateReleaseInput {
 
 const TABLE = "prospecção_release_assignments" as any;
 
-export async function listReleases(opts?: { companyId?: string; userId?: string }): Promise<RmaRelease[]> {
+export async function listReleases(opts?: { companyId?: string; userId?: string }): Promise<ProspeccaoRelease[]> {
   let q = (supabase.from(TABLE) as any).select("*").order("created_at", { ascending: false });
   if (opts?.companyId) q = q.eq("company_id", opts.companyId);
   if (opts?.userId) q = q.eq("released_to_user_id", opts.userId);
   const { data, error } = await q;
   if (error) throw error;
-  return (data || []) as RmaRelease[];
+  return (data || []) as ProspeccaoRelease[];
 }
 
-export async function listMyReleases(): Promise<RmaRelease[]> {
+export async function listMyReleases(): Promise<ProspeccaoRelease[]> {
   const { data: s } = await supabase.auth.getSession();
   const uid = s.session?.user?.id;
   if (!uid) return [];
   return listReleases({ userId: uid });
 }
 
-export async function createRelease(input: CreateReleaseInput): Promise<RmaRelease> {
+export async function createRelease(input: CreateReleaseInput): Promise<ProspeccaoRelease> {
   const { data: s } = await supabase.auth.getSession();
   const uid = s.session?.user?.id;
   const payload = { ...input, status: "active", released_by: uid, notes: input.notes || null };
@@ -58,7 +58,7 @@ export async function createRelease(input: CreateReleaseInput): Promise<RmaRelea
     to_consultant_user_id: input.released_to_user_id,
     changed_by: uid,
   });
-  return data as RmaRelease;
+  return data as ProspeccaoRelease;
 }
 
 export async function updateReleaseStatus(id: string, status: ReleaseStatus, companyId: string, userId: string): Promise<void> {

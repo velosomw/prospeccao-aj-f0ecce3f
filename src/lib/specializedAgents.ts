@@ -50,7 +50,7 @@ export interface SpecializedAgent {
 const PROMPT_HEADER = `Você é um agente OCR especializado.
 REGRAS:
 1) Não invente dados — se não encontrar, retorne null.
-2) Trabalhe com OCR imperfeito; noprospecçãolize datas (YYYY-MM-DD), valores (decimal),
+2) Trabalhe com OCR imperfeito; normalize datas (YYYY-MM-DD), valores (decimal),
    CNPJ/CPF (apenas dígitos) e percentuais (decimal).
 3) Sempre responda em JSON válido — nunca explique fora do JSON.
 4) Confiança alta apenas com evidência clara no texto.`;
@@ -337,7 +337,7 @@ SAÍDA: { categoria, itens[], total_mensal, total_anual, alertas[], confianca }`
   {
     key: "AGENTE_GENERICO",
     name: "Agente Genérico (Fallback)",
-    description: "Pendência de Prospecção AJ anterior, outras infoprospecçãoções e documentos não-classificáveis.",
+    description: "Pendência de Prospecção AJ anterior, outras informações e documentos não-classificáveis.",
     topics: [38, 39],
     ai_model: "google/gemini-2.5-flash",
     temperature: 0.3,

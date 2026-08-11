@@ -5,7 +5,7 @@ export default function ConsultorCadastroAJ() {
     <RoleCadastroPage
       role="admjudicial"
       title="Administradores Judiciais"
-      subtitle="Usuários com perfil de Administrador Judicial cadastrados na platafoprospecção."
+      subtitle="Usuários com perfil de Administrador Judicial cadastrados na plataforma."
       singular="Administrador Judicial"
       breadcrumbLabel="Administrador Judicial"
       backTo="/consultor/cadastro"

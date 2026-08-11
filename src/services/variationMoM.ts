@@ -10,7 +10,7 @@
  *
  * Esta separação evita a recorrência da dúvida observada no caso Giannini:
  * "Variação Custos dez/25" na planilha (374%) era Fórmula B disfarçada de A;
- * a platafoprospecção exibia o valor correto pela Fórmula A (19%).
+ * a plataforma exibia o valor correto pela Fórmula A (19%).
  */
 
 export type VarKind = "mom" | "media_acumulada";
@@ -38,7 +38,7 @@ export function variacaoVsMediaAcumulada(valorMes: number, mesesAnteriores: numb
 }
 
 /** Foprospecçãota variação como string PT-BR com sinal e 1 casa. */
-export function foprospecçãotVar(v: number | null): string {
+export function formatVar(v: number | null): string {
   if (v == null) return "—";
   const pct = v * 100;
   const sinal = pct > 0 ? "+" : "";

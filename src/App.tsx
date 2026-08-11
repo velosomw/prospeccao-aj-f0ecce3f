@@ -19,7 +19,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const EmpresaDashboard = lazy(() => import("./pages/EmpresaDashboard"));
 const ConsultorDashboard = lazy(() => import("./pages/ConsultorDashboard"));
 const ConsultorHome = lazy(() => import("./pages/consultor/ConsultorHome"));
-const ConsultorProspecçãos = lazy(() => import("./pages/consultor/ConsultorProspecçãos"));
+const ConsultorProspeccoes = lazy(() => import("./pages/consultor/ConsultorProspeccoes"));
 const ConsultorProcessos = lazy(() => import("./pages/consultor/ConsultorProcessos"));
 const ConsultorPendencias = lazy(() => import("./pages/consultor/ConsultorPendencias"));
 const ConsultorRelatorios = lazy(() => import("./pages/consultor/ConsultorRelatorios"));
@@ -49,7 +49,7 @@ const CoordHistorico = lazy(() => import("./pages/coordenador/CoordHistorico"));
 const GestorUsuarios = lazy(() => import("./pages/gestor/GestorUsuarios"));
 const GestorAuditoria = lazy(() => import("./pages/gestor/GestorAuditoria"));
 const MagProcessos = lazy(() => import("./pages/magistrado/MagProcessos"));
-const MagProspecçãos = lazy(() => import("./pages/magistrado/MagProspecçãos"));
+const MagProspeccoes = lazy(() => import("./pages/magistrado/MagProspeccoes"));
 const MagEmpresas = lazy(() => import("./pages/magistrado/MagEmpresas"));
 const MagDecisoes = lazy(() => import("./pages/magistrado/MagDecisoes"));
 const MagHistorico = lazy(() => import("./pages/magistrado/MagHistorico"));
@@ -58,14 +58,14 @@ const RecPendencias = lazy(() => import("./pages/recuperanda/RecPendencias"));
 const RecRelatorios = lazy(() => import("./pages/recuperanda/RecRelatorios"));
 const RecCronograma = lazy(() => import("./pages/recuperanda/RecCronograma"));
 const AdmRecuperandas = lazy(() => import("./pages/admjudicial/AdmRecuperandas"));
-const AdmProspecçãos = lazy(() => import("./pages/admjudicial/AdmProspecçãos"));
+const AdmProspeccoes = lazy(() => import("./pages/admjudicial/AdmProspeccoes"));
 const AdmPendencias = lazy(() => import("./pages/admjudicial/AdmPendencias"));
 const AdmRelatorios = lazy(() => import("./pages/admjudicial/AdmRelatorios"));
 const AdmHistorico = lazy(() => import("./pages/admjudicial/AdmHistorico"));
 const MagistradoDashboard = lazy(() => import("./pages/MagistradoDashboard"));
 const RecuperandaDashboard = lazy(() => import("./pages/RecuperandaDashboard"));
 const AdmjudicialDashboard = lazy(() => import("./pages/AdmjudicialDashboard"));
-const ProspecçãoWorkspace = lazy(() => import("./pages/ProspecçãoWorkspace"));
+const ProspeccaoWorkspace = lazy(() => import("./pages/ProspeccaoWorkspace"));
 const ProcessoProspeccao = lazy(() => import("./pages/ProcessoProspeccao"));
 const TrainAI = lazy(() => import("./pages/TrainAI"));
 const ModeloMatematico = lazy(() => import("./pages/ModeloMatematico"));
@@ -78,8 +78,8 @@ const GestorIAFailedJobs = lazy(() => import("./pages/GestorIAFailedJobs"));
 const GestorIAPerfilAgentes = lazy(() => import("./pages/GestorIAPerfilAgentes"));
 const UserManagement = lazy(() => import("./pages/UserManagement"));
 const AdminAdmjudicialLinks = lazy(() => import("./pages/AdminAdmjudicialLinks"));
-const CadastroProspecção = lazy(() => import("./pages/CadastroProspecção"));
-const LiberarProspecção = lazy(() => import("./pages/LiberarProspecção"));
+const CadastroProspeccao = lazy(() => import("./pages/CadastroProspeccao"));
+const LiberarProspeccao = lazy(() => import("./pages/LiberarProspeccao"));
 const RelatoriosContabeis = lazy(() => import("./pages/RelatoriosContabeis"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
@@ -117,7 +117,7 @@ const RouteFallback = () => (
 );
 
 
-const RmaHomeRoute = () => {
+const ProspeccaoHomeRoute = () => {
   const { roles, loading } = useUserRoles();
   if (loading) return null;
   if (roles.includes("magistrado")) return <MagistradoDashboard />;
@@ -138,7 +138,7 @@ const App = () => (
               {/* Site público (eager) */}
               <Route path="/" element={<Index />} />
 
-              {/* Platafoprospecção Prospecção AJ (lazy) */}
+              {/* Plataforma Prospecção AJ (lazy) */}
               <Route path="/login" element={<Login />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/select-role" element={<RoleSelection />} />
@@ -152,8 +152,8 @@ const App = () => (
               <Route path="/dashboard/historico" element={<ProtectedRoute allow={["coordenador"]}><CoordHistorico /></ProtectedRoute>} />
               <Route path="/consultor" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorHome /></ProtectedRoute>} />
               <Route path="/consultor/dashboard" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorDashboard /></ProtectedRoute>} />
-              <Route path="/consultor/prospecçãos" element={<Navigate to="/consultor/prospeccoes-aj" replace />} />
-              <Route path="/consultor/prospeccoes-aj" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorProspecçãos /></ProtectedRoute>} />
+              <Route path="/consultor/prospeccoes" element={<Navigate to="/consultor/prospeccoes-aj" replace />} />
+              <Route path="/consultor/prospeccoes-aj" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorProspeccoes /></ProtectedRoute>} />
               <Route path="/consultor/processos" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorProcessos /></ProtectedRoute>} />
               <Route path="/consultor/pendencias" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorPendencias /></ProtectedRoute>} />
               <Route path="/consultor/auditoria" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ConsultorPendencias /></ProtectedRoute>} />
@@ -179,11 +179,11 @@ const App = () => (
               <Route path="/magistrado" element={<ProtectedRoute allow={["magistrado"]}><MagistradoDashboard /></ProtectedRoute>} />
               <Route path="/recuperanda" element={<ProtectedRoute allow={["recuperanda"]}><RecuperandaDashboard /></ProtectedRoute>} />
               <Route path="/admjudicial" element={<ProtectedRoute allow={["admjudicial", "coordenador"]}><AdmjudicialDashboard /></ProtectedRoute>} />
-              <Route path="/prospecção" element={<Navigate to="/prospeccao-aj" replace />} />
-              <Route path="/prospeccao-aj" element={<ProtectedRoute><RmaHomeRoute /></ProtectedRoute>} />
+              <Route path="/prospeccao" element={<Navigate to="/prospeccao-aj" replace />} />
+              <Route path="/prospeccao-aj" element={<ProtectedRoute><ProspeccaoHomeRoute /></ProtectedRoute>} />
               <Route path="/processo-prospeccao" element={<ProtectedRoute allow={["consultor", "coordenador"]}><ProcessoProspeccao /></ProtectedRoute>} />
-              <Route path="/prospecção/:id" element={<Navigate to="/prospeccao-aj-workspace/:id" replace />} />
-              <Route path="/prospeccao-aj-workspace/:id" element={<ProtectedRoute><ProspecçãoWorkspace /></ProtectedRoute>} />
+              <Route path="/prospeccao/:id" element={<Navigate to="/prospeccao-aj-workspace/:id" replace />} />
+              <Route path="/prospeccao-aj-workspace/:id" element={<ProtectedRoute><ProspeccaoWorkspace /></ProtectedRoute>} />
               <Route path="/treinar-ia" element={<ProtectedRoute allow={["consultor", "coordenador", "gestor_ia", "recuperanda"]}><TrainAI /></ProtectedRoute>} />
               <Route path="/gestor-ia" element={<ProtectedRoute allow={["gestor_ia"]}><GestorIA /></ProtectedRoute>} />
               <Route path="/gestao-agentes-ocr" element={<ProtectedRoute allow={["gestor_ia"]}><GestaoAgentesOCR /></ProtectedRoute>} />
@@ -197,10 +197,10 @@ const App = () => (
               <Route path="/user-management" element={<ProtectedRoute allow={["coordenador"]}><UserManagement /></ProtectedRoute>} />
               <Route path="/admin/admjudicial-links" element={<ProtectedRoute allow={["coordenador"]}><AdminAdmjudicialLinks /></ProtectedRoute>} />
               <Route path="/modelo-matematico" element={<ProtectedRoute allow={["coordenador", "consultor"]}><ModeloMatematico /></ProtectedRoute>} />
-              <Route path="/cadastro-prospecção" element={<Navigate to="/cadastro-prospeccao-aj" replace />} />
-              <Route path="/cadastro-prospeccao-aj" element={<ProtectedRoute allow={["coordenador"]}><CadastroProspecção /></ProtectedRoute>} />
-              <Route path="/liberar-prospecção" element={<Navigate to="/liberar-prospeccao-aj" replace />} />
-              <Route path="/liberar-prospeccao-aj" element={<ProtectedRoute allow={["coordenador"]}><LiberarProspecção /></ProtectedRoute>} />
+              <Route path="/cadastro-prospeccao" element={<Navigate to="/cadastro-prospeccao-aj" replace />} />
+              <Route path="/cadastro-prospeccao-aj" element={<ProtectedRoute allow={["coordenador"]}><CadastroProspeccao /></ProtectedRoute>} />
+              <Route path="/liberar-prospeccao" element={<Navigate to="/liberar-prospeccao-aj" replace />} />
+              <Route path="/liberar-prospeccao-aj" element={<ProtectedRoute allow={["coordenador"]}><LiberarProspeccao /></ProtectedRoute>} />
               <Route path="/relatorios-contabeis" element={<ProtectedRoute allow={["consultor", "coordenador", "gestor_ia"]}><RelatoriosContabeis /></ProtectedRoute>} />
               <Route path="/unsubscribe" element={<Unsubscribe />} />
               <Route path="/controle-status" element={<ControleStatus />} />

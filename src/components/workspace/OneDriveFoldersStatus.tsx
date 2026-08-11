@@ -3,17 +3,17 @@ import { Folder, FolderOpen, RefreshCw, CheckCircle2, AlertCircle, Clock, Rotate
 import { supabase } from "@/integrations/supabase/client";
 import { DIP_FOLDERS, dipFolderSlug } from "@/data/dipFolders";
 import { toast } from "sonner";
-import { buildFolderAliasMap, buildPathInFolder, findFolderLocationForDip, getPathDirectory, getPathFolderSegment, matchDipFolderBySegment, noprospecçãolizeFolderText } from "@/utils/dipFolderPaths";
+import { buildFolderAliasMap, buildPathInFolder, findFolderLocationForDip, getPathDirectory, getPathFolderSegment, matchDipFolderBySegment, normalizeFolderText } from "@/utils/dipFolderPaths";
 import { buildFolderNumbering } from "@/utils/dipFolderNumbering";
 
 // Noprospecçãoliza um texto (lowercase, sem acentos, sem caracteres especiais)
 // para comparação fuzzy de labels de pasta entre OneDrive e DIP_FOLDERS.
-const noprospecçãolize = (s: string) =>
-  noprospecçãolizeFolderText(s);
+const normalize = (s: string) =>
+  normalizeFolderText(s);
 
 // Pega as palavras "fortes" (≥4 letras) do label canônico para fuzzy match.
 const keyWords = (label: string) =>
-  noprospecçãolize(label)
+  normalize(label)
     .split(" ")
     .filter((w) => w.length >= 4);
 
@@ -121,7 +121,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
 
   const fileKey = (r: FileRow) => r.file_id || r.path;
 
-  // Move o arquivo para outra pasta DIP — apenas no banco da platafoprospecção (path + metadata).
+  // Move o arquivo para outra pasta DIP — apenas no banco da plataforma (path + metadata).
   // Não toca no OneDrive.
   const moveFile = async (r: FileRow, targetId: number) => {
     if (!r.file_id) { toast.error("Arquivo sem file_id; não é possível mover."); return; }
@@ -203,7 +203,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
         .delete()
         .eq("file_id", r.file_id);
       if (error) throw error;
-      toast.success("Arquivo excluído da platafoprospecção.");
+      toast.success("Arquivo excluído da plataforma.");
       setPendingDelete(null);
       setSelectedFile(null);
       await load();
@@ -287,7 +287,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
     }));
 
     // ── Mescla com a lista canônica DIP_FOLDERS (60 pastas esperadas).
-    const actualNorm = arr.map((f) => noprospecçãolize(f.folder));
+    const actualNorm = arr.map((f) => normalize(f.folder));
     for (const dip of DIP_FOLDERS) {
       const kws = keyWords(dip.label);
       if (kws.length === 0) continue;

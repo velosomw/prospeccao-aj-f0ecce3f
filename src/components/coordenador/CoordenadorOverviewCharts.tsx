@@ -311,7 +311,7 @@ const CoordenadorOverviewCharts = ({ companies, assignments, history, profiles }
             <CardTitle className="text-base flex items-center gap-2">
               <PieIcon className="w-4 h-4" style={{ color: COLOR_CYAN }} /> Usuários por Perfil
             </CardTitle>
-            <CardDescription>Composição da base de usuários da platafoprospecção</CardDescription>
+            <CardDescription>Composição da base de usuários da plataforma</CardDescription>
           </CardHeader>
           <CardContent className="h-[280px]">
             {rolesData.length === 0 ? (

@@ -21,7 +21,7 @@ const roleColor: Record<string, { bg: string; fg: string }> = {
 export default function GestorUsuarios() {
   return (
     <ConsultorPageShell
-      title="Usuários" subtitle="Gestão hierárquica de acessos e perfis da platafoprospecção."
+      title="Usuários" subtitle="Gestão hierárquica de acessos e perfis da plataforma."
       kpis={[
         { label: "Total",        value: users.length, hint: "Cadastrados",  icon: Users,      tone: "blue" },
         { label: "Ativos",       value: users.filter(u => u.status === "Ativo").length, hint: "Online recente", icon: UserCheck, tone: "green" },

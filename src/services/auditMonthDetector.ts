@@ -1,7 +1,7 @@
 /**
  * Detecção e consolidação de períodos mensais em balancetes.
  * Estratégia:
- *  1) Tenta extrair YYYY-MM do nome do arquivo (foprospecçãotos comuns BR).
+ *  1) Tenta extrair YYYY-MM do nome do arquivo (formatos comuns BR).
  *  2) Tenta detectar colunas mensais (JAN/24, 01/2024, etc.) no XLSX.
  *  3) Fallback: usa "atual" + assume mês corrente.
  *
@@ -46,7 +46,7 @@ const MONTH_NAMES_PT: Record<string, string> = {
 
 const norm = (s: string) =>
   s.toLowerCase()
-    .noprospecçãolize("NFD")
+    .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[_\-.]/g, " ")
     .replace(/\s+/g, " ")
@@ -276,10 +276,10 @@ export function detectMonthFromYearLabel(label: string, fallbackMonth?: MonthRef
 export function relabelYearsAsMonths(
   parsed: ParsedFinancialData,
   fileName: string,
-  /** Mês "YYYY-MM" infoprospecçãodo manualmente pelo usuário — prioridade máxima sobre detector. */
+  /** Mês "YYYY-MM" informado manualmente pelo usuário — prioridade máxima sobre detector. */
   userMonthOverride?: string | null,
 ): { parsed: ParsedFinancialData; months: MonthRef[] } {
-  // Override do usuário: força TODOS os years para o mês infoprospecçãodo.
+  // Override do usuário: força TODOS os years para o mês informado.
   let overrideRef: MonthRef | null = null;
   if (userMonthOverride && /^\d{4}-(0[1-9]|1[0-2])$/.test(userMonthOverride)) {
     overrideRef = {

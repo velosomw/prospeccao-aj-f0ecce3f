@@ -110,7 +110,7 @@ export default function GestorAuditoria() {
   return (
     <ConsultorPageShell
       title="Auditoria PDF"
-      subtitle="Trilha imutável WORM de toda governança e interação na platafoprospecção."
+      subtitle="Trilha imutável WORM de toda governança e interação na plataforma."
       kpis={[
         { label: "Eventos (filtro)", value: stats.total, hint: "Resultados",       icon: Activity,      tone: "blue" },
         { label: "Mensagens",        value: stats.msgs,  hint: "Prospecção AJ & comunicação",icon: FileText,      tone: "purple" },
@@ -176,7 +176,7 @@ export default function GestorAuditoria() {
       <div className="bg-white rounded-2xl border border-border overflow-hidden">
         <div className="px-4 py-3 border-b border-border flex items-center gap-2">
           <Shield className="w-4 h-4 text-[hsl(217,91%,50%)]" />
-          <h3 className="text-sm font-bold">Trilha global da platafoprospecção (WORM)</h3>
+          <h3 className="text-sm font-bold">Trilha global da plataforma (WORM)</h3>
           <span className="ml-auto text-[10px] font-bold text-green-600 flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> CADEIA ÍNTEGRA
           </span>

@@ -10,7 +10,7 @@ interface Props {
   placeholder?: string;
   /** Quando true, exibe um botão "limpar" ao lado e dispara onClear */
   onClear?: () => void;
-  /** Valor controlado opcional (texto) — quando infoprospecçãodo, controla o input */
+  /** Valor controlado opcional (texto) — quando informado, controla o input */
   value?: string;
   onChange?: (v: string) => void;
   className?: string;
@@ -22,7 +22,7 @@ const norm = (s: string | null | undefined) =>
   (s || "")
     .toString()
     .toLowerCase()
-    .noprospecçãolize("NFD")
+    .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]/g, " ")
     .replace(/\s+/g, " ")

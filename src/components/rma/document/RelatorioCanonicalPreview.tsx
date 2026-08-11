@@ -17,7 +17,7 @@ export const CANONICAL_SUMARIO: CanonicalNode[] = [
   { numero: "1", titulo: "Houve alteração da atividade empresarial?" },
   { numero: "2", titulo: "Houve alteração da estrutura societária e dos órgãos de administração?" },
   { numero: "3", titulo: "Houve abertura ou fechamento de estabelecimentos?" },
-  { numero: "4", titulo: "Segmento de atuação · Fontes de infoprospecçãoção · Associação · Sindicato" },
+  { numero: "4", titulo: "Segmento de atuação · Fontes de informação · Associação · Sindicato" },
   {
     numero: "5", titulo: "Quadro de funcionários",
     children: [
@@ -34,7 +34,7 @@ export const CANONICAL_SUMARIO: CanonicalNode[] = [
     ],
   },
   {
-    numero: "6", titulo: "Análise dos dados contábeis e infoprospecçãoções financeiras",
+    numero: "6", titulo: "Análise dos dados contábeis e informações financeiras",
     children: [
       {
         numero: "6.1", titulo: "Ativo (descrição / evolução)",

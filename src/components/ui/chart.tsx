@@ -111,7 +111,7 @@ const ChartTooltipContent = React.forwardRef<
       label,
       labelFoprospecçãotter,
       labelClassName,
-      foprospecçãotter,
+      formatter,
       color,
       nameKey,
       labelKey,
@@ -173,8 +173,8 @@ const ChartTooltipContent = React.forwardRef<
                   indicator === "dot" && "items-center",
                 )}
               >
-                {foprospecçãotter && item?.value !== undefined && item.name ? (
-                  foprospecçãotter(item.value, item.name, item, index, item.payload)
+                {formatter && item?.value !== undefined && item.name ? (
+                  formatter(item.value, item.name, item, index, item.payload)
                 ) : (
                   <>
                     {itemConfig?.icon ? (

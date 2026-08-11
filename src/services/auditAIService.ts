@@ -13,7 +13,7 @@ export interface ParsedFinancialData {
 export interface ConsolidatedFinancialData {
   empresa: string;
   periodo: string;
-  documents: Array<{ fileName: string; type: string; foprospecçãot: string }>;
+  documents: Array<{ fileName: string; type: string; format: string }>;
   contasConsolidadas: Array<{
     codigo: string;
     descricao: string;
@@ -55,7 +55,7 @@ const REF_BY_PREFIX: Array<[RegExp, string]> = [
 ];
 
 const stripAccents = (s: string) =>
-  (s || "").toLowerCase().noprospecçãolize("NFD").replace(/[\u0300-\u036f]/g, "");
+  (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 function classifyPCByDescription(desc: string): string {
   const d = stripAccents(desc);
@@ -117,13 +117,13 @@ export function isDataFile(file: File): boolean {
 
 export function getFileFoprospecçãot(file: File): string {
   const ext = getFileExtension(file);
-  const foprospecçãotMap: Record<string, string> = {
+  const formatMap: Record<string, string> = {
     ".pdf": "PDF", ".xlsx": "Excel XLSX", ".xls": "Excel XLS", ".csv": "CSV",
     ".xlsm": "Excel XLSM", ".xlsb": "Excel XLSB", ".xltx": "Excel XLTX", ".xltm": "Excel XLTM",
     ".docx": "Word DOCX", ".doc": "Word DOC", ".txt": "Texto TXT", ".rtf": "RTF",
     ".json": "JSON", ".xml": "XML", ".ofx": "OFX", ".sped": "SPED",
   };
-  return foprospecçãotMap[ext] || ext.toUpperCase().replace(".", "");
+  return formatMap[ext] || ext.toUpperCase().replace(".", "");
 }
 
 /* ── File to Base64 ── */
@@ -156,7 +156,7 @@ export async function parseDataFileAI(file: File): Promise<ParsedFinancialData> 
           documentType: jsonData.tipo || "balancete",
         };
       }
-    } catch { /* not valid JSON or not in expected foprospecçãot, send to AI */ }
+    } catch { /* not valid JSON or not in expected format, send to AI */ }
   }
 
   // Send to AI for extraction
@@ -186,7 +186,7 @@ export async function parseDocumentAI(file: File): Promise<ParsedFinancialData> 
     if (!mimeType) {
       const mimeMap: Record<string, string> = {
         ".pdf": "application/pdf",
-        ".docx": "application/vnd.openxmlfoprospecçãots-officedocument.wordprocessingml.document",
+        ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         ".doc": "application/msword",
         ".rtf": "application/rtf",
       };
@@ -240,7 +240,7 @@ export async function parseFile(file: File): Promise<ParsedFinancialData> {
 }
 
 /* ── Parse multiple files and consolidate ── */
-export async function parseMultipleFiles(files: File[]): Promise<{ parsed: ParsedFinancialData; fileResults: Array<{ fileName: string; foprospecçãot: string; type: string; rows: number; success: boolean; error?: string }> }> {
+export async function parseMultipleFiles(files: File[]): Promise<{ parsed: ParsedFinancialData; fileResults: Array<{ fileName: string; format: string; type: string; rows: number; success: boolean; error?: string }> }> {
   const consolidated: ParsedFinancialData = {
     balanco: [],
     dre: [],
@@ -248,7 +248,7 @@ export async function parseMultipleFiles(files: File[]): Promise<{ parsed: Parse
     documentInfo: {},
   };
 
-  const fileResults: Array<{ fileName: string; foprospecçãot: string; type: string; rows: number; success: boolean; error?: string }> = [];
+  const fileResults: Array<{ fileName: string; format: string; type: string; rows: number; success: boolean; error?: string }> = [];
 
   for (const file of files) {
     try {
@@ -268,7 +268,7 @@ export async function parseMultipleFiles(files: File[]): Promise<{ parsed: Parse
 
       fileResults.push({
         fileName: file.name,
-        foprospecçãot: getFileFoprospecçãot(file),
+        format: getFileFoprospecçãot(file),
         type: result.documentType || result.documentInfo?.tipo || "documento",
         rows: result.balanco.length + result.dre.length,
         success: true,
@@ -276,7 +276,7 @@ export async function parseMultipleFiles(files: File[]): Promise<{ parsed: Parse
     } catch (err) {
       fileResults.push({
         fileName: file.name,
-        foprospecçãot: getFileFoprospecçãot(file),
+        format: getFileFoprospecçãot(file),
         type: "erro",
         rows: 0,
         success: false,

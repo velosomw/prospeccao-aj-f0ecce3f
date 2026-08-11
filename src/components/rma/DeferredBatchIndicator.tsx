@@ -21,7 +21,7 @@ interface Props {
   pollMs?: number;
 }
 
-function foprospecçãotEta(target: string | null): string {
+function formatEta(target: string | null): string {
   if (!target) return "";
   const ms = new Date(target).getTime() - Date.now();
   if (ms <= 0) return "a qualquer momento";
@@ -90,7 +90,7 @@ export function DeferredBatchIndicator({ companyId, prospecçãoId, folderPath, 
         {status.in_batch_count > 0 && (
           <Badge variant="secondary" className="gap-1">
             <Clock className="h-3 w-3" />
-            {status.in_batch_count} arquivo(s) {foprospecçãotEta(status.latest_eta)}
+            {status.in_batch_count} arquivo(s) {formatEta(status.latest_eta)}
           </Badge>
         )}
         {status.done_count > 0 && (
@@ -114,7 +114,7 @@ export function DeferredBatchIndicator({ companyId, prospecçãoId, folderPath, 
         <TooltipTrigger asChild>
           <Badge variant="outline" className="gap-1 border-primary/30 bg-primary/5 text-primary">
             <Hourglass className="h-3 w-3" />
-            {status.in_batch_count} batch · {foprospecçãotEta(status.latest_eta)}
+            {status.in_batch_count} batch · {formatEta(status.latest_eta)}
           </Badge>
         </TooltipTrigger>
         <TooltipContent>
@@ -161,11 +161,11 @@ export function DeferredFileBadge({ fileId }: { fileId: string }) {
         <TooltipTrigger asChild>
           <Badge variant="outline" className="gap-1 border-primary/30 bg-primary/5 text-primary text-[10px]">
             <Hourglass className="h-2.5 w-2.5" />
-            Batch · {foprospecçãotEta(job.eta_at)}
+            Batch · {formatEta(job.eta_at)}
           </Badge>
         </TooltipTrigger>
         <TooltipContent>
-          <div className="text-xs">Arquivo grande — processamento econômico em lote ({foprospecçãotEta(job.eta_at)})</div>
+          <div className="text-xs">Arquivo grande — processamento econômico em lote ({formatEta(job.eta_at)})</div>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

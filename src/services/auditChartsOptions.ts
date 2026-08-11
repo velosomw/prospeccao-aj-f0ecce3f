@@ -22,7 +22,7 @@ export const EXCEL_COLORS = {
 export const fmtMilhar = (v: number | null | undefined): string => {
   if (v === null || v === undefined || !Number.isFinite(v)) return "#N/D";
   const n = Math.round(v as number);
-  const s = new Intl.NumberFoprospecçãot("pt-BR").foprospecçãot(Math.abs(n));
+  const s = new Intl.NumberFormat("pt-BR").format(Math.abs(n));
   return n < 0 ? `(${s})` : s;
 };
 export const fmtPct = (v: number | null | undefined, dec = 2): string => {

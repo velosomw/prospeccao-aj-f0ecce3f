@@ -1,8 +1,8 @@
 import { DIP_FOLDERS, type DipFolder } from "@/data/dipFolders";
 
-export const noprospecçãolizeFolderText = (value: string | null | undefined) =>
+export const normalizeFolderText = (value: string | null | undefined) =>
   (value || "")
-    .noprospecçãolize("NFD")
+    .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, " ")
@@ -14,7 +14,7 @@ export const stripFolderNumber = (segment: string | null | undefined) =>
     .trim();
 
 const strongWords = (value: string) =>
-  noprospecçãolizeFolderText(value)
+  normalizeFolderText(value)
     .split(" ")
     .filter((word) => word.length >= 4);
 
@@ -38,13 +38,13 @@ export const defaultFolderSegment = (folder: DipFolder) =>
 
 export function matchDipFolderBySegment(segment: string | null | undefined): DipFolder | undefined {
   const clean = stripFolderNumber(segment);
-  const norm = noprospecçãolizeFolderText(clean);
+  const norm = normalizeFolderText(clean);
   if (!norm) return undefined;
 
   return (
-    DIP_FOLDERS.find((folder) => noprospecçãolizeFolderText(folder.label) === norm) ||
+    DIP_FOLDERS.find((folder) => normalizeFolderText(folder.label) === norm) ||
     DIP_FOLDERS.find((folder) => {
-      const label = noprospecçãolizeFolderText(folder.label);
+      const label = normalizeFolderText(folder.label);
       return label.length >= 6 && (norm.includes(label) || label.includes(norm));
     }) ||
     DIP_FOLDERS.find((folder) => {

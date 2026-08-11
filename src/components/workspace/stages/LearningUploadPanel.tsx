@@ -32,7 +32,7 @@ interface Props {
   compact?: boolean;
   /** Máx. de arquivos por upload. 1 = modo corretivo 1:1 (ErrorFilesPanel); 5 = aba Aprendizado IA. */
   maxFiles?: number;
-  /** Mês/Ano travados ao Prospecção selecionado. Quando infoprospecçãodos, o seletor vira chip read-only. */
+  /** Mês/Ano travados ao Prospecção selecionado. Quando informados, o seletor vira chip read-only. */
   lockedYear?: number | null;
   lockedMonth?: number | null;
   /** Callback disparado quando o usuário (ou efeito) altera a pasta correspondente. */
@@ -132,7 +132,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
     return () => { cancelled = true; };
   }, [prospecçãoId]);
   const folderNumbering = useMemo(() => buildFolderNumbering(appliedDipIds), [appliedDipIds]);
-  const foprospecçãotOption = (f: DipFolder) => {
+  const formatOption = (f: DipFolder) => {
     const ref = folderNumbering.get(f.id);
     const od = String(f.id).padStart(2, "0");
     const arq = ref?.fileNumber ?? "—";
@@ -585,7 +585,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
           extracted = {
             ...extracted,
             rawText: done.rawText,
-            noprospecçãolizedText: done.noprospecçãolizedText,
+            normalizedText: done.normalizedText,
             ocrConfidence: done.confidence,
             pageCount: done.pageCount,
           };
@@ -608,7 +608,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
         recordLearningUploadStatus({ prospecçãoId, fileName: f.name, path: `${slug}/${up.path}`, folderId: folder.id, folderLabel: folder.label, status: "processing", progress: 60, confidence: extracted.ocrConfidence, message: `Processando com ${folder.agent}…` });
         const ai = await processWithAI({
           rawText: extracted.rawText,
-          noprospecçãolizedText: extracted.noprospecçãolizedText,
+          normalizedText: extracted.normalizedText,
           path:
             `learning-docs/${slug}/${up.path} · prospecção:${prospecçãoId}` +
             (companyId ? ` · company:${companyId}` : "") +
@@ -956,7 +956,7 @@ export default function LearningUploadPanel({ prospecçãoId, companyId, default
               Pasta OneDrive: <strong className="ml-1">#{String(selected.id).padStart(2, "0")}</strong>
             </Badge>
             <Badge variant="outline" className="bg-white border-amber-300">
-              Tópico Prospecção: <strong className="ml-1">#{selected.prospecçãoTopicNumber}</strong>
+              Tópico Prospecção: <strong className="ml-1">#{selected.prospeccaoTopicNumber}</strong>
             </Badge>
             <Badge variant="outline" className="bg-white border-amber-300">
               Agente: <strong className="ml-1">{selected.agent}</strong>

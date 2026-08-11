@@ -467,7 +467,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
     bsdados: kpi.errors ? String(kpi.errors) : "",
   };
 
-  const foprospecçãotMonthLabel = (mk: string) => {
+  const formatMonthLabel = (mk: string) => {
     const found = allRows.find(r => r.mesKey === mk);
     return found?.mes ?? mk;
   };
@@ -640,7 +640,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
               <SelectTrigger className="h-7 w-[160px] text-xs"><SelectValue placeholder="De" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="__all">Início</SelectItem>
-                {monthKeys.map(k => <SelectItem key={k} value={k}>{foprospecçãotMonthLabel(k)}</SelectItem>)}
+                {monthKeys.map(k => <SelectItem key={k} value={k}>{formatMonthLabel(k)}</SelectItem>)}
               </SelectContent>
             </Select>
             <span className="text-muted-foreground">até</span>
@@ -648,7 +648,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
               <SelectTrigger className="h-7 w-[160px] text-xs"><SelectValue placeholder="Até" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="__all">Fim</SelectItem>
-                {monthKeys.map(k => <SelectItem key={k} value={k}>{foprospecçãotMonthLabel(k)}</SelectItem>)}
+                {monthKeys.map(k => <SelectItem key={k} value={k}>{formatMonthLabel(k)}</SelectItem>)}
               </SelectContent>
             </Select>
             <div className="mx-1 h-4 w-px bg-border" />

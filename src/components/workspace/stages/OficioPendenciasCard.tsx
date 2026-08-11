@@ -43,7 +43,7 @@ export default function OficioPendenciasCard({
       else generateOficioPdf(pendencias, meta);
       toast({
         title: "Ofício gerado",
-        description: `${total} pendências · foprospecçãoto ${fmt.toUpperCase()}`,
+        description: `${total} pendências · formato ${fmt.toUpperCase()}`,
       });
     } catch (e: any) {
       toast({ title: "Falha ao gerar ofício", description: e?.message, variant: "destructive" });
@@ -129,7 +129,7 @@ export default function OficioPendenciasCard({
           <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" />
           <div>
             <strong>Nenhuma pendência identificada nesta data.</strong> Você pode emitir um ofício
-            infoprospecçãotivo (atestando ausência de pendências) ou aguardar nova incorporação de dados.
+            informativo (atestando ausência de pendências) ou aguardar nova incorporação de dados.
           </div>
         </div>
       ) : (

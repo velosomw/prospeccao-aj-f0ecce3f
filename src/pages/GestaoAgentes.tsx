@@ -12,7 +12,7 @@ import {
   listLearningExtractions,
   markAsCorrect,
 } from "@/services/learningService";
-import { Prospecção_TOPICS, buildLearningPath, getTopicBySlug } from "@/lib/prospecçãoTopics";
+import { PROSPECCAO_TOPICS, buildLearningPath, getTopicBySlug } from "@/lib/prospecçãoTopics";
 import { getAgentForTopic } from "@/lib/specializedAgents";
 import { Loader2, FolderTree, X, Sparkles } from "lucide-react";
 import {
@@ -161,8 +161,8 @@ const TabUploadProcessamento = () => {
   }, [busy]);
 
   const groupedTopics = useMemo(() => {
-    const groups: Record<string, typeof Prospecção_TOPICS> = {};
-    for (const t of Prospecção_TOPICS) {
+    const groups: Record<string, typeof PROSPECCAO_TOPICS> = {};
+    for (const t of PROSPECCAO_TOPICS) {
       (groups[t.group] ||= []).push(t);
     }
     return groups;
@@ -265,7 +265,7 @@ const TabUploadProcessamento = () => {
         let extracted = await extractTextFromFile(file, uploaded);
         if (extracted.asyncOcrId) {
           const polled = await waitForOcr(extracted.asyncOcrId);
-          extracted = { ...extracted, rawText: polled.rawText, noprospecçãolizedText: polled.noprospecçãolizedText, ocrConfidence: polled.confidence, pageCount: polled.pageCount };
+          extracted = { ...extracted, rawText: polled.rawText, normalizedText: polled.normalizedText, ocrConfidence: polled.confidence, pageCount: polled.pageCount };
         }
         setStage(idx, "ocr", "done");
 
@@ -275,7 +275,7 @@ const TabUploadProcessamento = () => {
         setStageMsg(`Processando IA — ${file.name}`);
         const aiStart = await processWithAI({
           rawText: extracted.rawText,
-          noprospecçãolizedText: extracted.noprospecçãolizedText,
+          normalizedText: extracted.normalizedText,
           path: learningPath,
           ocrConfidence: extracted.ocrConfidence,
         });

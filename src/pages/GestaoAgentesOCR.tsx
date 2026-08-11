@@ -317,7 +317,7 @@ export default function GestaoAgentesOCR() {
                 <div>
                   <h3 className="font-bold text-lg">MD MASTER — Arquitetura Completa</h3>
                   <p className="text-xs text-white/80 mt-1 max-w-3xl">
-                    Platafoprospecção multi-cloud (Google Drive + OneDrive) com OCR + IA, agentes especializados por pasta,
+                    Plataforma multi-cloud (Google Drive + OneDrive) com OCR + IA, agentes especializados por pasta,
                     aprospecçãozenamento estruturado + embeddings, e evolução via dataset próprio + learning loop.
                   </p>
                   <div className="flex flex-wrap gap-2 mt-3">
@@ -416,7 +416,7 @@ export default function GestaoAgentesOCR() {
             {/* Status implementation */}
             <div className="bg-card rounded-xl border border-border p-4">
               <h4 className="font-bold text-foreground flex items-center gap-1.5 mb-3">
-                <CheckCircle2 className="w-4 h-4 text-[hsl(152,70%,45%)]" /> Status na platafoprospecção
+                <CheckCircle2 className="w-4 h-4 text-[hsl(152,70%,45%)]" /> Status na plataforma
               </h4>
               <div className="grid md:grid-cols-3 gap-2 text-xs">
                 {[
@@ -740,7 +740,7 @@ export default function GestaoAgentesOCR() {
 
               <TabsContent value="rules" className="space-y-3 mt-4">
                 <p className="text-xs text-muted-foreground">
-                  Regras híbridas regex + IA: se o texto contém qualquer um dos termos, classifica como o tipo infoprospecçãodo.
+                  Regras híbridas regex + IA: se o texto contém qualquer um dos termos, classifica como o tipo informado.
                 </p>
                 {(editing.classification_rules || []).map((r, i) => (
                   <div key={i} className="grid grid-cols-[2fr_1fr_auto] gap-2">

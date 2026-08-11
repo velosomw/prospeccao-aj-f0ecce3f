@@ -178,7 +178,7 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
     }),
   );
 
-  // Denominadores REAIS da platafoprospecção (não dependem de metadata em logs)
+  // Denominadores REAIS da plataforma (não dependem de metadata em logs)
   const counts = await fetchPlatformCounts(cutoff);
 
   // Custos médios por unidade real
@@ -288,7 +288,7 @@ export async function fetchCostIndicators(period: PeriodKey = "mes"): Promise<Co
   };
 }
 
-/** Conta unidades reais da platafoprospecção para usar como denominadores de custo médio. */
+/** Conta unidades reais da plataforma para usar como denominadores de custo médio. */
 export async function fetchPlatformCounts(cutoff: Date | null): Promise<PlatformCounts> {
   const since = cutoff ? cutoff.toISOString() : null;
 

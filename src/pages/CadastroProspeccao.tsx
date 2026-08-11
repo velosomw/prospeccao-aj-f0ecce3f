@@ -12,13 +12,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import PlatformLayout from "@/components/PlatformLayout";
-import { Prospecção_TOPICS } from "@/data/prospecçãoTopics";
+import { PROSPECCAO_TOPICS } from "@/data/prospecçãoTopics";
 import { createCompany, assignCompanyToConsultant } from "@/services/companiesService";
 import { supabase } from "@/integrations/supabase/client";
 
 const UFS = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 
-const foprospecçãotCNPJ = (v: string) => {
+const formatCNPJ = (v: string) => {
   const d = v.replace(/\D/g, "").slice(0, 14);
   let o = d;
   if (d.length > 2) o = d.slice(0, 2) + "." + d.slice(2);
@@ -62,13 +62,13 @@ const CadastroProspecção = () => {
   const [selectedConsultor, setSelectedConsultor] = useState<string>("");
 
   const categories = useMemo(() => {
-    const set = new Set(Prospecção_TOPICS.map(t => t.category));
+    const set = new Set(PROSPECCAO_TOPICS.map(t => t.category));
     return ["Todos", ...Array.from(set).sort()];
   }, []);
 
   const filteredTopics = useMemo(() => {
     const q = topicSearch.trim().toLowerCase();
-    return Prospecção_TOPICS.filter(t =>
+    return PROSPECCAO_TOPICS.filter(t =>
       (activeCategory === "Todos" || t.category === activeCategory) &&
       (!q || t.name.toLowerCase().includes(q) || String(t.number).includes(q))
     );
@@ -81,7 +81,7 @@ const CadastroProspecção = () => {
       return next;
     });
   };
-  const selectAll = () => setSelectedTopics(new Set(Prospecção_TOPICS.map(t => t.number)));
+  const selectAll = () => setSelectedTopics(new Set(PROSPECCAO_TOPICS.map(t => t.number)));
   const clearAll = () => setSelectedTopics(new Set());
   const selectFiltered = () => {
     setSelectedTopics(prev => {
@@ -171,7 +171,7 @@ const CadastroProspecção = () => {
     }
     setSaving(true);
     try {
-      const topics = Prospecção_TOPICS
+      const topics = PROSPECCAO_TOPICS
         .filter(t => selectedTopics.has(t.number))
         .map(t => ({ number: t.number, name: t.name }));
       const company = await createCompany(
@@ -254,7 +254,7 @@ const CadastroProspecção = () => {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Dados da Empresa (Recuperanda)</CardTitle>
-              <CardDescription>O Coordenador registra o ID Prospecção AJ que vincula o Prospecção AJ Empresa na platafoprospecção e ao Consultor.</CardDescription>
+              <CardDescription>O Coordenador registra o ID Prospecção AJ que vincula o Prospecção AJ Empresa na plataforma e ao Consultor.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -292,7 +292,7 @@ const CadastroProspecção = () => {
                 </div>
                 <div>
                   <Label>CNPJ</Label>
-                  <Input value={cnpj} onChange={(e) => setCnpj(foprospecçãotCNPJ(e.target.value))} placeholder="00.000.000/0000-00" />
+                  <Input value={cnpj} onChange={(e) => setCnpj(formatCNPJ(e.target.value))} placeholder="00.000.000/0000-00" />
                 </div>
                 <div>
                   <Label>UF</Label>
@@ -316,7 +316,7 @@ const CadastroProspecção = () => {
                   </Label>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  A platafoprospecção abre o Prospecção no dia 1º do mês e encerra no último dia (28/29/30/31).
+                  A plataforma abre o Prospecção no dia 1º do mês e encerra no último dia (28/29/30/31).
                   A leitura no OneDrive ocorre na pasta{" "}
                   <span className="font-mono">
                     Projeto Prospecção/{prospecçãoName || "Empresa"}/{executionYear}/
@@ -398,7 +398,7 @@ const CadastroProspecção = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge className="bg-[hsl(217,91%,50%)]/10 text-[hsl(217,91%,50%)] border-[hsl(217,91%,50%)]/30">
-                    {selectedTopics.size} de {Prospecção_TOPICS.length} selecionados
+                    {selectedTopics.size} de {PROSPECCAO_TOPICS.length} selecionados
                   </Badge>
                 </div>
               </div>
@@ -520,7 +520,7 @@ const CadastroProspecção = () => {
                     </div>
                     <p className="text-3xl font-bold text-foreground leading-none">
                       {selectedTopics.size}
-                      <span className="text-base font-noprospecçãol text-muted-foreground"> / {Prospecção_TOPICS.length}</span>
+                      <span className="text-base font-noprospecçãol text-muted-foreground"> / {PROSPECCAO_TOPICS.length}</span>
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">tópicos atribuídos</p>
                   </div>
@@ -541,7 +541,7 @@ const CadastroProspecção = () => {
                 <div>
                   <Label className="text-xs uppercase tracking-wide text-muted-foreground">Tópicos selecionados</Label>
                   <div className="mt-2 max-h-40 overflow-y-auto border rounded-lg p-3 flex flex-wrap gap-1.5">
-                    {Prospecção_TOPICS.filter(t => selectedTopics.has(t.number)).map(t => (
+                    {PROSPECCAO_TOPICS.filter(t => selectedTopics.has(t.number)).map(t => (
                       <Badge key={t.number} variant="outline" className="text-[10px] font-noprospecçãol">
                         #{t.number} {t.name}
                       </Badge>
@@ -559,7 +559,7 @@ const CadastroProspecção = () => {
                   Consultor Responsável
                 </CardTitle>
                 <CardDescription>
-                  Selecione o consultor que receberá este Prospecção na platafoprospecção.
+                  Selecione o consultor que receberá este Prospecção na plataforma.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
