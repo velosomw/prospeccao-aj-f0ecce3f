@@ -1,4 +1,4 @@
-export interface ProspecçãoDocument {
+export interface ProspeccaoDocument {
   id: string;
   name: string;
   type: 'pdf' | 'excel' | 'doc' | 'csv' | 'txt' | 'imagem';
@@ -6,17 +6,17 @@ export interface ProspecçãoDocument {
   compliance: 'atende' | 'nao_atende' | 'parcial' | 'pendente';
 }
 
-export interface ProspecçãoTopic {
+export interface ProspeccaoTopic {
   id: string;
   pasta: number;
   name: string;
   folder: string;
   status: 'completo' | 'pendente' | 'em_processamento';
   completude: number;
-  documents: ProspecçãoDocument[];
+  documents: ProspeccaoDocument[];
 }
 
-export interface ProspecçãoEntry {
+export interface ProspeccaoEntry {
   id: string;
   empresa: string;
   status: 'em_processamento' | 'em_revisao' | 'concluido' | 'pendente';
@@ -25,7 +25,7 @@ export interface ProspecçãoEntry {
   dataAtualizacao: string;
   responsavel: string;
   coordenador: string;
-  topics: ProspecçãoTopic[];
+  topics: ProspeccaoTopic[];
 }
 
 export interface BalanceteRow {
@@ -53,7 +53,7 @@ export interface ReviewEntry {
 }
 
 // ═══ TÓPICOS baseados na Lista das Pastas OneDrive ═══
-const mockTopics: ProspecçãoTopic[] = [
+const mockTopics: ProspeccaoTopic[] = [
   { id: 't1', pasta: 1, name: 'Alteração na Atividade Empresarial', folder: 'Pasta_01', status: 'completo', completude: 100,
     documents: [{ id: 'd1', name: 'Alteracao_Atividade_2024.pdf', type: 'pdf', status: 'ok', compliance: 'atende' }] },
   { id: 't2', pasta: 2, name: 'Alteração na Estrutura Societária (Organograma)', folder: 'Pasta_02', status: 'completo', completude: 100,
@@ -166,8 +166,8 @@ const mockTopics: ProspecçãoTopic[] = [
     ] },
   { id: 't37', pasta: 37, name: 'Última Alteração Contratual', folder: 'Pasta_37', status: 'completo', completude: 100,
     documents: [{ id: 'd37', name: 'Alteracao_Contratual_2024.pdf', type: 'pdf', status: 'ok', compliance: 'atende' }] },
-  { id: 't38', pasta: 38, name: 'Infoprospecçãoções de Pendência de Prospecção AJ Anterior', folder: 'Pasta_38', status: 'completo', completude: 100,
-    documents: [{ id: 'd38', name: 'Pendencias_Prospecção_Anterior.pdf', type: 'pdf', status: 'ok', compliance: 'atende' }] },
+  { id: 't38', pasta: 38, name: 'Infoprospecçãoções de Pendência de Prospeccao AJ Anterior', folder: 'Pasta_38', status: 'completo', completude: 100,
+    documents: [{ id: 'd38', name: 'Pendencias_Prospeccao_Anterior.pdf', type: 'pdf', status: 'ok', compliance: 'atende' }] },
   { id: 't39', pasta: 39, name: 'Outras Infoprospecçãoções', folder: 'Pasta_39', status: 'pendente', completude: 10,
     documents: [{ id: 'd39', name: 'Info_Complementar.pdf', type: 'pdf', status: 'vazio', compliance: 'nao_atende' }] },
   { id: 't40', pasta: 40, name: 'Situação Fiscal', folder: 'Pasta_40', status: 'em_processamento', completude: 65,
@@ -262,15 +262,15 @@ export const mockBalanceteData: BalanceteRow[] = [
 
 export const mockReviewHistory: ReviewEntry[] = [
   { id: 'r1', autor: 'Ana Silva', papel: 'usuario', acao: 'Enviou para revisão', data: '2024-07-15', hora: '14:30', tempo: '4h 15min', comentario: 'Documentação das pastas 1-20 completa. Pendente validação das pastas fiscais (18, 19, 21, 22).' },
-  { id: 'r2', autor: 'Maria Coordenadora', papel: 'coordenador', acao: 'Revisão iniciada', data: '2024-07-16', hora: '09:00', tempo: '0min', comentario: 'Iniciando análise da documentação do Prospecção XPT S.A.' },
+  { id: 'r2', autor: 'Maria Coordenadora', papel: 'coordenador', acao: 'Revisão iniciada', data: '2024-07-16', hora: '09:00', tempo: '0min', comentario: 'Iniciando análise da documentação do Prospeccao XPT S.A.' },
   { id: 'r3', autor: 'Maria Coordenadora', papel: 'coordenador', acao: 'Comentário adicionado', data: '2024-07-16', hora: '11:45', tempo: '2h 45min', comentario: 'Divergência encontrada no FGTS (pasta 21). GIA incompleta a partir de abril (pasta 18). Solicitar reenvio.' },
   { id: 'r4', autor: 'Maria Coordenadora', papel: 'coordenador', acao: 'Devolvido para ajustes', data: '2024-07-16', hora: '14:00', tempo: '5h', comentario: 'Necessário completar pastas 27-30 (obrigações) e pastas 33-35 (garantias). Total de 12 pastas vazias.' },
   { id: 'r5', autor: 'Ana Silva', papel: 'usuario', acao: 'Ajustes realizados', data: '2024-07-17', hora: '10:30', tempo: '3h 30min', comentario: 'Correções aplicadas nas pastas fiscais. Pastas de obrigações confiprospecçãodas como N/A pela recuperanda.' },
 ];
 
-export const mockProspecçãos: ProspecçãoEntry[] = [
+export const mockProspeccaos: ProspeccaoEntry[] = [
   {
-    id: 'Prospecção-001',
+    id: 'Prospeccao-001',
     empresa: 'XPT Indústria S.A.',
     status: 'em_processamento',
     percentual: Math.round(mockTopics.reduce((s, t) => s + t.completude, 0) / mockTopics.length),
@@ -281,7 +281,7 @@ export const mockProspecçãos: ProspecçãoEntry[] = [
     topics: mockTopics,
   },
   {
-    id: 'Prospecção-002',
+    id: 'Prospeccao-002',
     empresa: 'ABC Comércio Ltda.',
     status: 'em_revisao',
     percentual: 85,
@@ -292,7 +292,7 @@ export const mockProspecçãos: ProspecçãoEntry[] = [
     topics: mockTopics.map(t => ({ ...t, completude: Math.min(100, t.completude + 25) })),
   },
   {
-    id: 'Prospecção-003',
+    id: 'Prospeccao-003',
     empresa: 'DEF Serviços S.A.',
     status: 'concluido',
     percentual: 100,
@@ -303,7 +303,7 @@ export const mockProspecçãos: ProspecçãoEntry[] = [
     topics: mockTopics.map(t => ({ ...t, status: 'completo' as const, completude: 100 })),
   },
   {
-    id: 'Prospecção-004',
+    id: 'Prospeccao-004',
     empresa: 'GHI Transportes Ltda.',
     status: 'pendente',
     percentual: 8,
