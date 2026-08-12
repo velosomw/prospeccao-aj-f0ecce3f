@@ -86,11 +86,47 @@ export default function DetalheBaseDeDados() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [rows, setRows] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   const config = FILE_CONFIGS[code || ""] || { title: "Arquivo não encontrado", columns: [] };
 
-  // Sample empty data for now as per instructions (cleared database)
-  const rows: any[] = []; // In a real scenario, this would use a hook to fetch data based on `code` and `refreshKey`
+  useEffect(() => {
+    async function loadData() {
+      setIsLoading(true);
+      try {
+        const { listLinhas } = await import("@/services/prospeccaoService");
+        const allLinhas = await listLinhas();
+        
+        // Mapear ProspeccaoLinha para o formato esperado pela tabela
+        const mapped = allLinhas.map(l => ({
+          id: l.id,
+          data_distribuicao: l.dt_inicio || l.data_distribuicao,
+          numero_processo: l.numero_processo,
+          empresa: l.parte_pro_nome,
+          recuperanda: l.parte_pro_nome,
+          aj_nomeado: l.advogado_nome,
+          magistrado_nome: l.pedidos_principais?.includes("Juiz:") ? l.pedidos_principais.split("|")[0].replace("Juiz:", "").trim() : l.pedidos_principais,
+          cliente: l.parte_con_nome,
+          data_agc: l.dt_inicio, // Simplificação
+          cidade: l.municipio,
+          estado: l.uf,
+          nome: l.advogado_nome,
+          sigla: l.denominacao,
+          email: l.link_documento,
+          telefone: l.advogado_oab,
+          processo: l.numero_processo,
+          status: l.status_processo,
+        }));
+        setRows(mapped);
+      } catch (e) {
+        console.error("Erro ao carregar dados:", e);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadData();
+  }, [code, refreshKey]);
 
   const handleUpload = () => {
     setIsUploadOpen(true);
