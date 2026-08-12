@@ -111,14 +111,17 @@ export default function VirtualTable<T>({
         <table className="w-full text-sm">
           <thead className={headerClassName}>
             <tr>
-              {columns.map((col) => (
-                <th
-                  key={col.key}
-                  className={`text-left px-4 py-2.5 ${col.className ?? ""}`}
-                >
-                  {col.header}
-                </th>
-              ))}
+              {columns.map((col) => {
+                if (!col) return null;
+                return (
+                  <th
+                    key={col.key}
+                    className={`text-left px-4 py-2.5 ${col.className ?? ""}`}
+                  >
+                    {col.header}
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody>
