@@ -216,9 +216,6 @@ function buildBlock(p: ReportPeriodBlock, blocks: ReportDataset["blocks"]): Para
   out.push(h2("Indicadores Calculados"));
   out.push(indicadoresTable(p));
 
-  if (blocks.kanitz && p.kanitz) {
-    out.push(h2("Modelo de Insolvência (Kanitz)"));
-    out.push(para(`Fator de Insolvência: ${p.kanitz.fi.toFixed(3)} — ${p.kanitz.classificacao.toUpperCase()}`, { bold: true }));
   }
   if (blocks.scoreRJ && p.scoreRJ) {
     out.push(h2("Score BEx-RJ"));

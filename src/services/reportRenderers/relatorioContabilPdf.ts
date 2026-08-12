@@ -151,12 +151,9 @@ function drawPeriodBlock(doc: jsPDF, c: Cursor, p: ReportPeriodBlock, blocks: Re
     ["Imobilização do PL", "(AT−AC) ÷ PL", fmtPct(i.imobilizacao_pl)],
   ], [80, 60, 42]);
 
-  if (blocks.kanitz && p.kanitz) {
-    sectionTitle(doc, c, "Modelo de Insolvência (Kanitz)");
     doc.setFont("helvetica", "bold");
     doc.setFontSize(9);
     doc.setTextColor(30);
-    doc.text(`Fator de Insolvência: ${p.kanitz.fi.toFixed(3)} — ${p.kanitz.classificacao.toUpperCase()}`, 14, c.y);
     c.y += 8;
   }
   if (blocks.scoreRJ && p.scoreRJ) {

@@ -78,7 +78,6 @@ export default function StageRelatorioProspeccao({
     [sections],
   );
 
-  // Carrega dados de análise para alimentar dashboard (Kanitz, pendências, confiança)
   useEffect(() => {
     if (!companyId) return;
     let cancel = false;
