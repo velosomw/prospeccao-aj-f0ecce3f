@@ -1,4 +1,4 @@
-// Renderer DOCX — Relatório Contábil de Dados (fidelidade ao template BEX).
+// Renderer DOCX — Registros de Prospecção (fidelidade ao template BEX).
 import {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
   HeadingLevel, AlignmentType, WidthType, BorderStyle, ShadingType,
@@ -216,10 +216,6 @@ function buildBlock(p: ReportPeriodBlock, blocks: ReportDataset["blocks"]): Para
   out.push(h2("Indicadores Calculados"));
   out.push(indicadoresTable(p));
 
-  if (blocks.kanitz && p.kanitz) {
-    out.push(h2("Modelo de Insolvência (Kanitz)"));
-    out.push(para(`Fator de Insolvência: ${p.kanitz.fi.toFixed(3)} — ${p.kanitz.classificacao.toUpperCase()}`, { bold: true }));
-  }
   if (blocks.scoreRJ && p.scoreRJ) {
     out.push(h2("Score BEx-RJ"));
     out.push(para(`Score: ${p.scoreRJ.score}/100 — ${p.scoreRJ.classificacao}`, { bold: true }));
@@ -234,10 +230,10 @@ export async function generateRelatorioContabilDocx(d: ReportDataset, filename?:
   const fim = d.periodos[d.periodos.length - 1].label;
 
   const cover: (Paragraph | Table)[] = [
-    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "BEX AUDITORIA", bold: true, size: 36, color: NAVY })] }),
-    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Auditor Contábil Sênior IA", size: 22, color: BLUE })] }),
+    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "BEX PROSPECÇÃO", bold: true, size: 36, color: NAVY })] }),
+    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "IA de Prospecção", size: 22, color: BLUE })] }),
     new Paragraph({ spacing: { before: 240 }, alignment: AlignmentType.CENTER,
-      children: [new TextRun({ text: "Relatório Contábil de Dados — Composição, Endividamento e Balanço", bold: true, size: 28, color: NAVY })] }),
+      children: [new TextRun({ text: "Registros de Prospecção — Composição, Endividamento e Balanço", bold: true, size: 28, color: NAVY })] }),
     new Paragraph({ alignment: AlignmentType.CENTER,
       children: [new TextRun({ text: `Empresa: ${d.empresaNome}${d.empresaCnpj ? ` — CNPJ ${d.empresaCnpj}` : ""}`, size: 22 })] }),
     d.prospeccaoId ? new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: `Prospeccao: ${d.prospeccaoId}`, size: 20, color: "555555" })] }) : new Paragraph({}),

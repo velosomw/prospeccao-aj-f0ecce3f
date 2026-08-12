@@ -77,7 +77,7 @@ SAÍDA:
   "confianca": 0.0
 }`;
 
-export const PROMPT_CONTABIL_ANALITICO = `Você é um contador especialista em análise de demonstrativos financeiros.
+export const PROMPT_DOCUMENTAL_ANALITICO = `Você é um analista especialista em análise de demonstrativos financeiros.
 
 Analise o texto OCR e extraia:
 
@@ -188,9 +188,9 @@ export const AGENT_TEMPLATES: Record<string, { label: string; specific: string }
     label: "Financeiro Transacional (PIX/TED/Boleto)",
     specific: PROMPT_FINANCEIRO_TRANSACIONAL,
   },
-  AGENTE_CONTABIL_ANALITICO: {
-    label: "Contábil Analítico (Balancete/DRE)",
-    specific: PROMPT_CONTABIL_ANALITICO,
+  AGENTE_DOCUMENTAL_ANALITICO: {
+    label: "Documental Analítico (Balancete/DRE)",
+    specific: PROMPT_DOCUMENTAL_ANALITICO,
   },
   AGENTE_PAGAMENTOS: {
     label: "Pagamentos / Boletos",

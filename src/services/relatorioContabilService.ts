@@ -1,4 +1,4 @@
-// Relatório Contábil de Dados — agregação por período (mensal/bimestral/trimestral/semestral/anual/custom)
+// Registros de Prospecção — agregação por período (mensal/bimestral/trimestral/semestral/anual/custom)
 // Consome BSDadosRow[] (já produzido por buildBSDados) e devolve um ReportDataset
 // pronto para os renderers DOCX/PDF.
 import type { BSDadosRow } from "@/services/bsDadosBuilder";
@@ -10,7 +10,6 @@ export interface ReportBlocks {
   balanco: boolean;
   endividamento: boolean;
   dre: boolean;
-  kanitz: boolean;
   scoreRJ: boolean;
 }
 
@@ -37,7 +36,6 @@ export interface ReportPeriodBlock {
     capital_terceiros: number;         // PT / (PT+PL)
     imobilizacao_pl: number;           // (AT-AC) / PL
   };
-  kanitz: { fi: number; classificacao: "solvente" | "penumbra" | "insolvente" } | null;
   scoreRJ: { score: number; classificacao: string } | null;
 }
 
@@ -96,28 +94,13 @@ function labelForBucket(rows: BSDadosRow[], a: Agregacao): string {
   return `${ini} → ${fim}`;
 }
 
-function kanitzFor(r: BSDadosRow): ReportPeriodBlock["kanitz"] {
-  // FI Kanitz precisa de Lucro Líquido / PL → aqui o resultado é proxy do LL.
-  const X1 = safeDiv(r.resultado, r.patrimonio_liquido);
-  const X2 = safeDiv(r.ativo_circulante + r.ativo_nao_circulante, r.passivo_circulante + r.passivo_nao_circulante);
-  const X3 = safeDiv(r.ativo_circulante - r.estoques, r.passivo_circulante);
-  const X4 = safeDiv(r.ativo_circulante, r.passivo_circulante);
-  const X5 = -safeDiv(r.passivo_circulante + r.passivo_nao_circulante, r.patrimonio_liquido);
-  const fi = 0.05 * X1 + 1.65 * X2 + 3.55 * X3 - 1.06 * X4 - 0.33 * X5;
-  if (!Number.isFinite(fi)) return null;
-  const cls: "solvente" | "penumbra" | "insolvente" =
-    fi >= 0 ? "solvente" : fi <= -3 ? "insolvente" : "penumbra";
-  return { fi: Math.round(fi * 1000) / 1000, classificacao: cls };
-}
-
 function scoreRJFor(r: BSDadosRow, ind: ReportPeriodBlock["indicators"]): ReportPeriodBlock["scoreRJ"] {
-  const liqPenalty = Math.max(0, 1 - ind.liquidez_corrente) * 25;
-  const endivPenalty = Math.max(0, ind.endividamento_total - 0.6) * 60;
+  const liqPenalty = Math.max(0, 1 - ind.liquidez_corrente) * 35;
+  const endivPenalty = Math.max(0, ind.endividamento_total - 0.6) * 65;
   const margem = safeDiv(r.resultado, r.receita_liquida);
-  const margemPenalty = Math.max(0, -margem) * 40;
-  const k = kanitzFor(r);
-  const kanitzPenalty = !k ? 0 : k.fi >= 0 ? 0 : Math.min(40, Math.abs(k.fi) * 10);
-  const raw = liqPenalty + endivPenalty + margemPenalty + kanitzPenalty;
+  const margemPenalty = Math.max(0, -margem) * 50;
+  
+  const raw = liqPenalty + endivPenalty + margemPenalty;
   const score = Math.min(100, Math.round(raw));
   const cls =
     score < 30 ? "Saudável" :
@@ -155,7 +138,6 @@ function computeBlock(bucketRows: BSDadosRow[], a: Agregacao): ReportPeriodBlock
     imobilizacao_pl: safeDiv(AT - snapshot.ativo_circulante, PL),
   };
 
-  const k = kanitzFor(snapshot);
   const s = scoreRJFor({ ...snapshot, receita_liquida: dre.receita_liquida, resultado: dre.resultado }, indicators);
 
   return {
@@ -165,7 +147,6 @@ function computeBlock(bucketRows: BSDadosRow[], a: Agregacao): ReportPeriodBlock
     snapshot,
     dre,
     indicators,
-    kanitz: k,
     scoreRJ: s,
   };
 }
@@ -185,7 +166,6 @@ const DEFAULT_BLOCKS: ReportBlocks = {
   balanco: true,
   endividamento: true,
   dre: true,
-  kanitz: true,
   scoreRJ: true,
 };
 

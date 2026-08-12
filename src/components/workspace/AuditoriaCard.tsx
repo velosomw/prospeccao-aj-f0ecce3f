@@ -25,10 +25,10 @@ import TabBSDados from "@/components/bsDados/TabBSDados";
 import TabPivotConsolidado from "@/components/bsDados/TabPivotConsolidado";
 import TabGraficosAuditoria from "@/components/audit/TabGraficosAuditoria";
 import TabIndicadores from "@/components/audit/TabIndicadores";
-import TabKanitz from "@/components/audit/TabKanitz";
+
 import { buildBSDados, type BSDadosRow } from "@/services/bsDadosBuilder";
 import { buildIndicatorSeries, buildISGSeries } from "@/services/indicatorsEngine";
-import { buildKanitzMonthlySeries, summarizeKanitzSeries } from "@/services/kanitzMonthly";
+
 
 interface AuditoriaCardProps {
   companyId: string | null;
@@ -47,7 +47,7 @@ type TabKey =
   | "pivot"
   | "graficos"
   | "riscorj"
-  | "kanitz";
+  ;
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: "indicadores",   label: "Indicadores" },
@@ -57,7 +57,7 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: "pivot",         label: "Pivot" },
   { key: "graficos",      label: "Gráficos de Auditoria" },
   { key: "riscorj",       label: "Risco RJ" },
-  { key: "kanitz",        label: "Kanitz" },
+  
 ];
 
 const fmt = (v?: number | null, dec = 2) =>
@@ -334,16 +334,12 @@ function PanelPatrimonial({ rows }: { rows: BSDadosRow[] }) {
 
 /* ─────────────── Risco RJ ─────────────── */
 function PanelRiscoRJ({ rows }: { rows: BSDadosRow[] }) {
-  const kanitz = useMemo(() => buildKanitzMonthlySeries(rows), [rows]);
   const isg = useMemo(() => buildISGSeries(rows), [rows]);
-  const summary = useMemo(() => summarizeKanitzSeries(kanitz), [kanitz]);
-  if (!kanitz.length) return <Empty msg="Sem base BS & Dados para compor o Risco RJ." />;
+  if (!isg.length) return <Empty msg="Sem base BS & Dados para compor o Risco RJ." />;
 
-  const lastK = kanitz[kanitz.length - 1];
   const lastI = isg[isg.length - 1];
-  const kNorm = Math.max(0, Math.min(100, ((7 - (lastK?.score ?? 0)) / 10) * 100));
   const iNorm = Math.max(0, Math.min(100, ((2 - (lastI?.isg ?? 0)) / 2) * 100));
-  const score = Math.round(kNorm * 0.6 + iNorm * 0.4);
+  const score = Math.round(iNorm);
   const band =
     score >= 67 ? { label: "Risco Crítico",  color: "hsl(0,84%,55%)"  } :
     score >= 33 ? { label: "Risco Moderado", color: "hsl(38,92%,50%)" } :
@@ -351,16 +347,11 @@ function PanelRiscoRJ({ rows }: { rows: BSDadosRow[] }) {
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className="grid gap-3 md:grid-cols-2">
         <div className="rounded-lg border bg-white p-4">
           <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Score BEx-RJ</div>
           <div className="mt-2 text-3xl font-bold" style={{ color: band.color }}>{score}</div>
           <div className="mt-1 text-xs font-medium" style={{ color: band.color }}>{band.label}</div>
-        </div>
-        <div className="rounded-lg border bg-white p-4">
-          <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Kanitz (último mês)</div>
-          <div className="mt-2 text-2xl font-bold">{fmt(lastK?.score, 4)}</div>
-          <div className="mt-1 text-xs" style={{ color: lastK?.color }}>{lastK?.ratingLabel}</div>
         </div>
         <div className="rounded-lg border bg-white p-4">
           <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">ISG (último mês)</div>
@@ -370,8 +361,8 @@ function PanelRiscoRJ({ rows }: { rows: BSDadosRow[] }) {
       </div>
       <div className="rounded-lg border bg-white p-4 text-xs text-muted-foreground">
         <p className="font-semibold text-foreground mb-1">Memória de cálculo</p>
-        <p>Score = 0,6 × KanitzNorm + 0,4 × ISGNorm · KanitzNorm = ((7 − Kanitz) / 10) × 100 · ISGNorm = ((2 − ISG) / 2) × 100.</p>
-        <p className="mt-1">Faixas: 0–32 Baixo · 33–66 Moderado · 67–100 Crítico. Tendência da janela: <b>Δ {fmt(summary?.delta, 4)}</b>.</p>
+        <p>Score = ISGNorm · ISGNorm = ((2 − ISG) / 2) × 100.</p>
+        <p className="mt-1">Faixas: 0–32 Baixo · 33–66 Moderado · 67–100 Crítico.</p>
       </div>
     </div>
   );
@@ -540,11 +531,6 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
     const brokenEq = rows.filter(r => !r.equilibrio_ok).length;
     if (brokenEq > 0) {
       out.push({ level: "warn", msg: `${brokenEq} mês(es) com equilíbrio contábil quebrado (AT ≠ P + PL).` });
-    }
-    const kanitzSeries = buildKanitzMonthlySeries(rows);
-    const lastK = kanitzSeries[kanitzSeries.length - 1];
-    if (lastK && Number.isFinite(lastK.score) && lastK.score < 0) {
-      out.push({ level: "crit", msg: `Kanitz em zona de insolvência (${fmt(lastK.score, 2)}) em ${lastK.mes ?? last.mes}.` });
     }
     if (lastSerie && Number.isFinite(lastSerie.endividamentoGeral) && lastSerie.endividamentoGeral > 0.8) {
       out.push({ level: "warn", msg: `Endividamento Geral elevado em ${last.mes} (${fmtPct(lastSerie.endividamentoGeral)}).` });
@@ -715,7 +701,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
             {tab === "pivot"         && <TabPivotConsolidado companyId={companyId} runToken={runToken} fallbackRows={rows} />}
             {tab === "graficos"      && <TabGraficosAuditoria parsedData={bsParsed} entries={bsEntries} />}
             {tab === "riscorj"       && <PanelRiscoRJ rows={rows} />}
-            {tab === "kanitz"        && <TabKanitz parsedData={bsParsed} />}
+            
             
           </div>
         )}

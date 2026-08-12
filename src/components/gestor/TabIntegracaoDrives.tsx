@@ -702,7 +702,7 @@ const GoogleDriveCard = () => (
 // ─── Outras Integrações (BigQuery, APIs, Webhooks, SFTP) ──────
 const OUTRAS_INTEGRACOES = [
   { name: "BigQuery", type: "Data Warehouse", status: "active", icon: Database },
-  { name: "API Contábil", type: "ERP", status: "active", icon: Globe },
+  { name: "API Documental", type: "ERP", status: "active", icon: Globe },
   { name: "Webhooks", type: "Notificações", status: "active", icon: Webhook },
   { name: "API Financeira", type: "Banking", status: "inactive", icon: CreditCard },
   { name: "Upload SFTP", type: "Arquivos", status: "paused", icon: Upload },

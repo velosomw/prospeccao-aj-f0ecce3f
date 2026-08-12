@@ -1,4 +1,4 @@
-// Renderer PDF — Relatório Contábil de Dados (layout enxuto, mesmas seções do DOCX).
+// Renderer PDF — Registros de Prospecção (layout enxuto, mesmas seções do DOCX).
 import jsPDF from "jspdf";
 import {
   type ReportDataset, type ReportPeriodBlock,
@@ -15,11 +15,11 @@ function drawHeader(doc: jsPDF, c: Cursor): void {
   doc.setTextColor(...NAVY);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(11);
-  doc.text("BEX AUDITORIA", 14, c.y);
+  doc.text("BEX PROSPECÇÃO", 14, c.y);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   doc.setTextColor(...BLUE);
-  doc.text("Auditor Contábil Sênior IA", 14, c.y + 5);
+  doc.text("IA de Prospecção", 14, c.y + 5);
   doc.setDrawColor(220);
   doc.line(14, c.y + 8, 196, c.y + 8);
   c.y += 14;
@@ -151,14 +151,7 @@ function drawPeriodBlock(doc: jsPDF, c: Cursor, p: ReportPeriodBlock, blocks: Re
     ["Imobilização do PL", "(AT−AC) ÷ PL", fmtPct(i.imobilizacao_pl)],
   ], [80, 60, 42]);
 
-  if (blocks.kanitz && p.kanitz) {
-    sectionTitle(doc, c, "Modelo de Insolvência (Kanitz)");
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(9);
-    doc.setTextColor(30);
-    doc.text(`Fator de Insolvência: ${p.kanitz.fi.toFixed(3)} — ${p.kanitz.classificacao.toUpperCase()}`, 14, c.y);
-    c.y += 8;
-  }
+  c.y += 8;
   if (blocks.scoreRJ && p.scoreRJ) {
     sectionTitle(doc, c, "Score BEx-RJ");
     doc.setFont("helvetica", "bold");
@@ -179,7 +172,7 @@ export function generateRelatorioContabilPdf(d: ReportDataset, filename?: string
   doc.setFont("helvetica", "bold");
   doc.setFontSize(18);
   doc.setTextColor(...NAVY);
-  doc.text("Relatório Contábil de Dados", 14, c.y);
+  doc.text("Registros de Prospecção", 14, c.y);
   c.y += 7;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
