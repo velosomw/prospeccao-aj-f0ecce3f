@@ -85,7 +85,12 @@ export default function DetalheBaseDeDados() {
 
   if (!config) {
     return (
-      <ConsultorPageShell title="Arquivo não encontrado">
+      <ConsultorPageShell 
+        title="Arquivo não encontrado"
+        subtitle="Verifique o código da base de dados"
+        kpis={[]}
+      >
+
         <div className="flex flex-col items-center justify-center py-20">
           <Info className="w-12 h-12 text-slate-300 mb-4" />
           <p className="text-slate-500">A base de dados selecionada não existe ou foi removida.</p>
