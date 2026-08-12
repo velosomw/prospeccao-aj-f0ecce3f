@@ -15,32 +15,21 @@ const COLORS = {
   green: "hsl(142,76%,40%)", orange: "hsl(38,92%,50%)", red: "hsl(0,84%,55%)",
 };
 
-const consultores = [
-  { nome: "Ana Silva",       prospecções: 12, score: 87, status: "Ativo" },
-  { nome: "Carlos Mendes",   prospecções: 9,  score: 74, status: "Ativo" },
-  { nome: "Fernanda Costa",  prospecções: 7,  score: 91, status: "Ativo" },
-  { nome: "Rafael Souza",    prospecções: 5,  score: 62, status: "Sobrecarga" },
-  { nome: "Julia Pereira",   prospecções: 4,  score: 80, status: "Ativo" },
-];
+const consultores: any[] = [];
 
-const aprovacoes = [
-  { id: "Prospeccao-0012", empresa: "DIPLOMATA",  consultor: "Ana Silva",      score: 87, sla: "Hoje" },
-  { id: "Prospeccao-0014", empresa: "TECNOMAX",   consultor: "Carlos Mendes",  score: 72, sla: "Hoje" },
-  { id: "Prospeccao-0009", empresa: "BENTOIA",    consultor: "Fernanda Costa", score: 91, sla: "Em 1d" },
-  { id: "Prospeccao-0011", empresa: "MOVAG",      consultor: "Rafael Souza",   score: 41, sla: "Em 2d" },
-];
+
+const aprovacoes: any[] = [];
+
 
 const distStatus = [
-  { name: "Em Análise IA", value: 18, color: COLORS.purple },
-  { name: "Em Revisão",    value: 12, color: COLORS.orange },
-  { name: "Aprovação",     value: 9,  color: COLORS.blue   },
-  { name: "Concluídos",    value: 24, color: COLORS.green  },
+  { name: "Em Análise IA", value: 0, color: COLORS.purple },
+  { name: "Em Revisão",    value: 0, color: COLORS.orange },
+  { name: "Aprovação",     value: 0,  color: COLORS.blue   },
+  { name: "Concluídos",    value: 0, color: COLORS.green  },
 ];
 
-const evolucao = [
-  { m: "Jan", v: 12 }, { m: "Fev", v: 18 }, { m: "Mar", v: 22 },
-  { m: "Abr", v: 28 }, { m: "Mai", v: 24 },
-];
+const evolucao: any[] = [];
+
 
 const equipeBar = consultores.map(c => ({ name: c.nome.split(" ")[0], prospecções: c.prospecções }));
 
@@ -48,7 +37,7 @@ export default function Dashboard() {
   const { userName } = useUser();
 
   const stats = useMemo(() => ({
-    total: 63, ativos: 9, equipe: consultores.length, aprovacoes: aprovacoes.length, sla: "94%", score: 78,
+    total: 0, ativos: 0, equipe: consultores.length, aprovacoes: aprovacoes.length, sla: "—", score: 0,
   }), []);
 
   return (

@@ -116,8 +116,8 @@ export default function GestorAuditoria() {
         { label: "Mensagens",        value: stats.msgs,  hint: "Prospeccao AJ & comunicação",icon: FileText,      tone: "purple" },
         { label: "Conversas",        value: stats.convs, hint: "Criadas/alteradas",icon: CheckCircle2,  tone: "green" },
         { label: "Ocorrências",      value: stats.occ,   hint: "Abertas/transições",icon: AlertTriangle, tone: "red" },
-        { label: "Hash Chain",       value: "OK",        hint: "Integridade",      icon: Lock,          tone: "green" },
-        { label: "Compliance",       value: "100%",      hint: "WORM",             icon: Shield,        tone: "blue" },
+        { label: "Hash Chain",       value: "—",        hint: "Integridade",      icon: Lock,          tone: "green" },
+        { label: "Compliance",       value: "—",      hint: "WORM",             icon: Shield,        tone: "blue" },
       ]}
     >
       {/* Filtros */}

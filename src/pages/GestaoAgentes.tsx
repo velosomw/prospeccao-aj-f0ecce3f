@@ -54,15 +54,7 @@ const accuracyDistribution: any[] = [];
 const learningEvolution: any[] = [];
 const datasetItems: any[] = [];
 
-const performanceStages = [
-  { step: "Parser estrutural",  p50: 1.2,  p95: 3.4,  p99: 5.1 },
-  { step: "OCR (Google Vision)", p50: 8.7,  p95: 22.3, p99: 38.5 },
-  { step: "Embedding",          p50: 0.9,  p95: 2.1,  p99: 3.4 },
-  { step: "Prompt Builder (RAG)", p50: 0.6, p95: 1.4,  p99: 2.0 },
-  { step: "LLM Agente",         p50: 12.4, p95: 31.8, p99: 47.2 },
-  { step: "Validação + Antifraude", p50: 0.4, p95: 1.2, p99: 1.9 },
-  { step: "Pipeline total (E2E)", p50: 28.5, p95: 72.4, p99: 105.3 },
-];
+const performanceStages: { step: string; p50: number; p95: number; p99: number }[] = [];
 
 const personaVarLabels = [
   { key: "Rn", label: "Rigor Normativo (Rₙ)" },

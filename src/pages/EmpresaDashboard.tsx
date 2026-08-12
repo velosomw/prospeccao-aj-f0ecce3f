@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import PlatformLayout from "@/components/PlatformLayout";
-import { mockProspeccoes, type ProspeccaoEntry } from "@/data/prospeccoesMockData";
+import { type ProspeccaoEntry } from "@/data/prospeccoesMockData";
 import { listMyAssignedCompanies, activateAssignedProspeccao, type Company } from "@/services/companiesService";
 import { startProspeccaoAnalysis, listProspeccaoAnalyses, type ProspeccaoAnalysisResult } from "@/services/prospeccaoAnalysisService";
 import { listPeriodsForCompanies, type ProspeccaoPeriodAnalysis } from "@/services/prospeccaoPeriodService";
@@ -157,7 +157,7 @@ const EmpresaDashboard = () => {
     }
   };
 
-  // Combina Prospeccoes ativados (reais) + mocks para exibir nas abas Alertas e Prospeccoes
+  // Prospecções reais (dados carregados via upload/pipeline)
   const filesByCompany = useMemo(() => groupFilesByCompany(scoreFiles), [scoreFiles]);
 
   const realProspeccoes = useMemo(() => activatedCompanies.map(c => {

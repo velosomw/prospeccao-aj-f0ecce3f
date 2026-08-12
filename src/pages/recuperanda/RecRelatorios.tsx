@@ -1,12 +1,8 @@
 import { FileBarChart, CheckCircle2, Eye, Download, Award } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
-const rels = [
-  { id: "REL-104", periodo: "05/2026", status: "Publicado",  score: 87, data: "Há 4h" },
-  { id: "REL-103", periodo: "04/2026", status: "Publicado",  score: 72, data: "Há 1m" },
-  { id: "REL-102", periodo: "03/2026", status: "Publicado",  score: 91, data: "Há 2m" },
-  { id: "REL-101", periodo: "02/2026", status: "Publicado",  score: 78, data: "Há 3m" },
-];
+const rels: any[] = [];
+
 const scoreColor = (s: number) => s < 33 ? "hsl(0,84%,55%)" : s < 67 ? "hsl(38,92%,50%)" : "hsl(142,76%,40%)";
 
 export default function RecRelatorios() {
@@ -15,11 +11,11 @@ export default function RecRelatorios() {
       title="Meus Relatórios" subtitle="Prospeccoes AJ publicados sobre seu processo de recuperação."
       kpis={[
         { label: "Publicados",  value: rels.length, hint: "Total",       icon: CheckCircle2, tone: "green" },
-        { label: "Score Atual", value: 87, hint: "Último Prospeccao AJ",           icon: Award,        tone: "green" },
-        { label: "Score Médio", value: 82, hint: "Histórico",            icon: FileBarChart, tone: "blue" },
-        { label: "Tendência",   value: "↑ 5pts", hint: "Vs período anterior", icon: Award,   tone: "green" },
-        { label: "Downloads",   value: 12, hint: "30d",                  icon: Download,     tone: "purple" },
-        { label: "Próxima Entrega", value: "20/05", hint: "Prospeccao AJ Jun/2026",icon: FileBarChart, tone: "orange" },
+        { label: "Score Atual", value: 0, hint: "Último Prospeccao AJ",           icon: Award,        tone: "green" },
+        { label: "Score Médio", value: 0, hint: "Histórico",            icon: FileBarChart, tone: "blue" },
+        { label: "Tendência",   value: "—", hint: "Vs período anterior", icon: Award,   tone: "green" },
+        { label: "Downloads",   value: 0, hint: "30d",                  icon: Download,     tone: "purple" },
+        { label: "Próxima Entrega", value: "—", hint: "Prospeccao AJ Jun/2026",icon: FileBarChart, tone: "orange" },
       ]}
     >
       <div className="bg-white rounded-xl border">

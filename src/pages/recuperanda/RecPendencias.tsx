@@ -1,14 +1,8 @@
 import { AlertTriangle, AlertCircle, Clock, CheckCircle2, ArrowRight } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
-const pend = [
-  { item: "Balancete Mai/2026",       sev: "critica", sla: "Vence em 2h",  pasta: "P05" },
-  { item: "DRE Abr/2026",             sev: "critica", sla: "Vence hoje",   pasta: "P07" },
-  { item: "Folha de pagamento Abril", sev: "alta",    sla: "Vence em 1d",  pasta: "P12" },
-  { item: "Notas fiscais série B",    sev: "alta",    sla: "Vence em 1d",  pasta: "P18" },
-  { item: "Contratos expirados",      sev: "media",   sla: "Vence em 3d",  pasta: "P22" },
-  { item: "Inventário desatualizado", sev: "media",   sla: "Vence em 4d",  pasta: "P31" },
-];
+const pend: any[] = [];
+
 const sevMeta: Record<string, { label: string; bg: string; fg: string; ring: string }> = {
   critica: { label: "Crítica", bg: "hsl(0,84%,95%)",  fg: "hsl(0,84%,45%)",  ring: "hsl(0,84%,60%)" },
   alta:    { label: "Alta",    bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)", ring: "hsl(38,92%,50%)" },
@@ -24,8 +18,8 @@ export default function RecPendencias() {
         { label: "Críticas",       value: pend.filter(p => p.sev === "critica").length, hint: "SLA < 24h", icon: AlertCircle,    tone: "red" },
         { label: "Altas",          value: pend.filter(p => p.sev === "alta").length, hint: "SLA < 48h",   icon: AlertTriangle,  tone: "orange" },
         { label: "Médias",         value: pend.filter(p => p.sev === "media").length, hint: "SLA < 5d",   icon: Clock,          tone: "purple" },
-        { label: "Resolvidas (30d)",value: 22,  hint: "Concluídas",         icon: CheckCircle2,   tone: "green" },
-        { label: "SLA Médio",      value: "1.8d", hint: "Tempo resposta",  icon: Clock,          tone: "blue" },
+        { label: "Resolvidas (30d)",value: 0,  hint: "Concluídas",         icon: CheckCircle2,   tone: "green" },
+        { label: "SLA Médio",      value: "—", hint: "Tempo resposta",  icon: Clock,          tone: "blue" },
       ]}
     >
       <div className="bg-white rounded-xl border">

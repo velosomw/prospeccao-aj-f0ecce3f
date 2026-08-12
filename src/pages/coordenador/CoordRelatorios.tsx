@@ -1,12 +1,8 @@
 import { FileBarChart, Download, Eye, CheckCircle2, Clock, FileText } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
-const rels = [
-  { id: "REL-104", titulo: "Prospeccao Maio/2026 - DIPLOMATA",  empresa: "DIPLOMATA",  consultor: "Ana Silva",      status: "Publicado", score: 87, data: "Há 4h" },
-  { id: "REL-103", titulo: "Prospeccao Abril/2026 - TECNOMAX",  empresa: "TECNOMAX",   consultor: "Carlos Mendes",  status: "Publicado", score: 72, data: "Há 1d" },
-  { id: "REL-102", titulo: "Prospeccao Maio/2026 - BENTOIA",    empresa: "BENTOIA",    consultor: "Fernanda Costa", status: "Em Revisão", score: 91, data: "Há 2d" },
-  { id: "REL-101", titulo: "Prospeccao Maio/2026 - MOVAG",      empresa: "MOVAG",      consultor: "Rafael Souza",   status: "Rascunho",  score: 41, data: "Há 3d" },
-];
+const rels: any[] = [];
+
 
 const statusMeta: Record<string, { bg: string; fg: string }> = {
   "Publicado":   { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
@@ -20,12 +16,12 @@ export default function CoordRelatorios() {
     <ConsultorPageShell
       title="Relatórios" subtitle="Acompanhamento consolidado de Prospeccoes AJ publicados e em produção."
       kpis={[
-        { label: "Publicados",      value: 47, hint: "Total geral",   icon: CheckCircle2, tone: "green" },
-        { label: "Em Revisão",      value: 8,  hint: "Coordenação",   icon: Eye,          tone: "orange" },
-        { label: "Rascunhos",       value: 5,  hint: "Em construção", icon: FileText,     tone: "purple" },
-        { label: "Score Médio",     value: 76, hint: "Qualidade IA",  icon: FileBarChart, tone: "blue" },
-        { label: "Downloads (30d)", value: 213, hint: "Acessos",      icon: Download,     tone: "blue" },
-        { label: "Tempo Médio",     value: "2.4d", hint: "Geração",   icon: Clock,        tone: "slate" },
+        { label: "Publicados",      value: 0, hint: "Total geral",   icon: CheckCircle2, tone: "green" },
+        { label: "Em Revisão",      value: 0,  hint: "Coordenação",   icon: Eye,          tone: "orange" },
+        { label: "Rascunhos",       value: 0,  hint: "Em construção", icon: FileText,     tone: "purple" },
+        { label: "Score Médio",     value: 0, hint: "Qualidade IA",  icon: FileBarChart, tone: "blue" },
+        { label: "Downloads (30d)", value: 0, hint: "Acessos",      icon: Download,     tone: "blue" },
+        { label: "Tempo Médio",     value: "—", hint: "Geração",   icon: Clock,        tone: "slate" },
       ]}
     >
       <div className="bg-white rounded-xl border">
