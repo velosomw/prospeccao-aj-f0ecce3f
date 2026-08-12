@@ -132,7 +132,7 @@ export default function ConsultorDashboard() {
     { label: "Cartas em Processamento", value: emProcessamento,  sub: `${safePct(emProcessamento)}% do total`, icon: Activity,    color: "hsl(258,90%,56%)" },
     { label: "Uploads Pendentes",       value: uploadsPendentes, sub: `Críticas: ${criticas}`,   icon: Upload,       color: "hsl(38,92%,50%)" },
     { label: "Cartas Enviadas",         value: enviadas,         sub: `${safePct(enviadas)}% do total`, icon: Send,        color: "hsl(142,76%,36%)" },
-    { label: "Taxa de Envio",            value: `${taxaEnvio}%`,  sub: "↑ 8 pts vs. período anterior", icon: CheckCircle2, color: "hsl(217,91%,50%)" },
+    { label: "Taxa de Envio",            value: `${taxaEnvio}%`,  sub: "Período atual", icon: CheckCircle2, color: "hsl(217,91%,50%)" },
     { label: "Empresas com Carta",      value: empresasComCarta, sub: "Ativas no período",       icon: Building2,   color: "hsl(217,91%,50%)" },
   ];
 
@@ -151,12 +151,7 @@ export default function ConsultorDashboard() {
     { faixa: "Vencidas", cls: "Vencida",  count: rows.filter(r => r.envio < 31).length || 0,            color: "hsl(0,84%,60%)"   },
   ];
 
-  const evolucao = [
-    { mes: "Fev/2026", enviadas: 48 },
-    { mes: "Mar/2026", enviadas: 52 },
-    { mes: "Abr/2026", enviadas: 56 },
-    { mes: "Mai/2026", enviadas: enviadas || 62 },
-  ];
+  const evolucao: { mes: string; enviadas: number }[] = [];
 
   const openCarta = (companyId?: string) => {
     if (companyId) navigate(`/consultor/clientes`);
