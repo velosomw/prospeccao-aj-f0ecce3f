@@ -56,26 +56,31 @@ const FILE_CONFIGS: Record<string, { title: string; columns: any[] }> = {
       { key: "cliente", header: "Cliente", cell: (r: any) => r.cliente },
       { key: "recuperanda", header: "Recuperanda", cell: (r: any) => r.recuperanda },
       { key: "data_agc", header: "Data AGC", cell: (r: any) => r.data_agc },
+      { key: "mes_referencia", header: "Mês", cell: (r: any) => r.mes_referencia },
       { key: "cidade", header: "Cidade", cell: (r: any) => r.cidade },
-      { key: "estado", header: "Estado", cell: (r: any) => r.estado },
+      { key: "uf", header: "Estado", cell: (r: any) => r.uf },
     ]
   },
   "CADASTRO_AJ": {
     title: "Cadastro de Administradores Judiciais",
     columns: [
-      { key: "nome", header: "Nome", cell: (r: any) => r.nome },
+      { key: "nome", header: "Administrador / Escritório", cell: (r: any) => r.nome },
       { key: "sigla", header: "Sigla", cell: (r: any) => r.sigla },
+      { key: "contato", header: "Contato", cell: (r: any) => r.contato },
       { key: "email", header: "E-mail", cell: (r: any) => r.email },
       { key: "telefone", header: "Telefone", cell: (r: any) => r.telefone },
       { key: "cidade", header: "Cidade", cell: (r: any) => r.cidade },
+      { key: "uf", header: "UF", cell: (r: any) => r.uf },
     ]
   },
   "CARTAS_AJ": {
     title: "Relação de Cartas Impressas aos AJ",
     columns: [
       { key: "data_distribuicao", header: "Data Distribuição", cell: (r: any) => r.data_distribuicao },
+      { key: "mes_referencia", header: "Mês", cell: (r: any) => r.mes_referencia },
       { key: "cliente", header: "Cliente", cell: (r: any) => r.cliente },
       { key: "processo", header: "Processo", cell: (r: any) => r.processo },
+      { key: "contato", header: "Administrador (Contato)", cell: (r: any) => r.contato },
       { key: "sigla", header: "Sigla", cell: (r: any) => r.sigla },
       { key: "status", header: "Status", cell: (r: any) => r.status },
     ]
@@ -114,12 +119,13 @@ export default function DetalheBaseDeDados() {
           valor_pleito: l.valor_pleito,
           aj_nomeado: l.advogado_nome,
           magistrado_nome: l.pedidos_principais?.includes("Juiz:") ? l.pedidos_principais.split("|")[0].replace("Juiz:", "").trim() : l.pedidos_principais,
-          // Mantendo campos compatíveis para outros arquivos se necessário
+          // Mapeamento dinâmico baseado no conteúdo real das colunas importadas
           recuperanda: l.parte_pro_nome,
           cliente: l.parte_con_nome,
           data_agc: l.dt_inicio,
           cidade: l.municipio,
-          nome: l.advogado_nome,
+          nome: l.parte_con_nome || l.advogado_nome, // Para Cadastro AJ o nome costuma vir em Clientes ou Advogado
+          contato: l.pedidos_principais || l.advogado_nome, // Usado para nome do DR./Contato
           sigla: l.denominacao,
           email: l.link_documento,
           telefone: l.advogado_oab,

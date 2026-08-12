@@ -58,13 +58,23 @@ const HEADER_MAP: Record<string, string> = {
   "vara e comarca": "orgao_tribunal",
   "juiz / juíza": "pedidos_principais", 
   "aj nomeado": "advogado_nome",
-  "contato": "advogado_nome",
+  "contato": "pedidos_principais", // Armazena nome do contato/DR em pedidos_principais para Cadastro/Cartas
+  "aj": "advogado_nome",
   "clientes": "parte_con_nome",
   "cliente": "parte_con_nome",
   "email": "link_documento",
+  "e-mail": "link_documento",
   "telefone": "advogado_oab",
   "sigla": "denominacao",
   "mês": "mes_referencia",
+  "ano": "instancia", // Reutilizando instância para Ano se necessário
+  "cidade": "municipio",
+  "estado": "uf",
+  "uf": "uf",
+  "n processo": "numero_processo",
+  "n° processo": "numero_processo",
+  "nº processo": "numero_processo",
+  "processo": "numero_processo",
 };
 
 function normalizeHeader(h: string): string {
