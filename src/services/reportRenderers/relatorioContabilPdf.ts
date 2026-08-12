@@ -15,7 +15,7 @@ function drawHeader(doc: jsPDF, c: Cursor): void {
   doc.setTextColor(...NAVY);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(11);
-  doc.text("BEX AUDITORIA", 14, c.y);
+  doc.text("BEX PROSPECÇÃO", 14, c.y);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   doc.setTextColor(...BLUE);
