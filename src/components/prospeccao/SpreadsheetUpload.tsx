@@ -134,7 +134,7 @@ export function SpreadsheetUpload({ datasetType, onSuccess }: SpreadsheetUploadP
                 <span className="text-slate-600 font-medium">Processando dados...</span>
                 <span className="text-[#10b981] font-bold">{progress}%</span>
               </div>
-              <Progress value={progress} className="h-2 bg-slate-200" indicatorClassName="bg-[#10b981]" />
+              <Progress value={progress} className="h-2 bg-slate-200" />
               <p className="text-[10px] text-center text-slate-400 uppercase tracking-wider font-semibold">
                 Executando Reconciliação MD-BEX-001
               </p>
