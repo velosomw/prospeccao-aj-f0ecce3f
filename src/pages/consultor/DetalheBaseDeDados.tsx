@@ -279,7 +279,58 @@ export default function DetalheBaseDeDados() {
         </div>
       </div>
 
+      <Dialog open={isLogOpen} onOpenChange={setIsLogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-slate-500" />
+              Histórico de Sincronizações Enterprise
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4 space-y-4">
+            {importBatches.length === 0 ? (
+              <p className="text-center py-8 text-slate-500 text-sm">Nenhuma sincronização realizada ainda.</p>
+            ) : (
+              <div className="space-y-3">
+                {importBatches.map((batch) => (
+                  <div key={batch.id} className="p-4 rounded-lg border bg-slate-50/50 flex flex-col gap-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-sm text-slate-700">{batch.file_name}</span>
+                      <Badge variant={batch.status === 'completed' ? 'secondary' : 'outline'} className={batch.status === 'completed' ? 'bg-green-100 text-green-700 hover:bg-green-100 border-none' : ''}>
+                        {batch.status === 'completed' ? 'Concluído' : batch.status}
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-4 gap-2 text-[11px] text-slate-500">
+                      <div>
+                        <p className="font-bold text-slate-700">Lidas</p>
+                        <p>{batch.rows_count}</p>
+                      </div>
+                      <div>
+                        <p className="font-bold text-green-700">Novas</p>
+                        <p>{batch.inserted_count}</p>
+                      </div>
+                      <div>
+                        <p className="font-bold text-blue-700">Atu.</p>
+                        <p>{batch.updated_count}</p>
+                      </div>
+                      <div>
+                        <p className="font-bold text-slate-400">Mantidas</p>
+                        <p>{batch.unchanged_count}</p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      {new Date(batch.created_at).toLocaleString('pt-BR')} • ID: {batch.id.split('-')[0]}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <AlertDialog open={!!isDeleting} onOpenChange={() => setIsDeleting(null)}>
+
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmar exclusão?</AlertDialogTitle>
