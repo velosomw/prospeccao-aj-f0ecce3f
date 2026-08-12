@@ -53,6 +53,8 @@ export default function DetalheBaseDeDados() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [rows, setRows] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLogOpen, setIsLogOpen] = useState(false);
+  const [importBatches, setImportBatches] = useState<any[]>([]);
   
   const datasetType = code as DatasetType;
   const config = DATASET_CONFIGS[datasetType];
@@ -70,7 +72,18 @@ export default function DetalheBaseDeDados() {
 
         if (error) throw error;
         setRows(data || []);
+
+        // Load batches
+        const { data: batches } = await supabase
+          .from('spreadsheet_import_batches')
+          .select('*')
+          .eq('dataset_type', datasetType)
+          .order('created_at', { ascending: false })
+          .limit(10);
+        
+        setImportBatches(batches || []);
       } catch (e) {
+
         console.error("Erro ao carregar dados:", e);
         toast({
           title: "Erro ao carregar dados",
