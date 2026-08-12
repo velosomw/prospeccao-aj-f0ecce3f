@@ -40,57 +40,38 @@ interface NavGroup { label: string; items: NavItem[]; }
 const buildNav = (role: string | null): NavGroup[] => {
   const home = role ? roleHome[role] : "/";
   const groups: NavGroup[] = [];
-  if (role !== "consultor") {
+  if (role !== "consultor" && role !== "coordenador") {
     groups.push({ label: "Principal", items: [{ label: "Visão Geral", to: home, icon: LayoutDashboard }] });
   }
 
-  if (role === "coordenador") {
-    groups.push({
-      label: "Coordenação",
-      items: [
-        { label: "Dashboard",   to: "/dashboard/analitico",   icon: LayoutDashboard },
-        { label: "Processamento IA", to: "/processo-prospeccao", icon: Briefcase },
-        { label: "Upload Planilha", to: "/treinar-ia",           icon: Brain },
-        
-        { label: "Planilha de Carga",  to: "/dashboard/relatorios",  icon: FileBarChart },
-        { label: "Base de Dados",      to: "/consultor/base-de-dados", icon: Database },
-        { label: "Empresa Prospecção", to: "/dashboard/empresas",    icon: Building2 },
-        
-        { label: "Cadastros",   to: "/cadastro-prospeccao-aj", icon: FilePlus },
-        { label: "Relatórios & Cartas", to: "/relatorios-contabeis", icon: FileBarChart },
-        { label: "Aprovações",  to: "/dashboard/aprovacoes",  icon: CheckCircle2, badge: 9 },
-        { label: "Equipe",      to: "/dashboard/equipe",      icon: Users },
-        { label: "Histórico",   to: "/dashboard/historico",   icon: History },
-        
-      ],
-    });
+  if (role === "consultor" || role === "coordenador") {
+    const items: NavItem[] = [
+      { label: "Home",          to: "/consultor",               icon: Home },
+      { label: "Dashboard",     to: role === "coordenador" ? "/dashboard/analitico" : "/consultor/dashboard", icon: LayoutDashboard },
+      { label: "Processamento IA", to: "/processo-prospeccao",     icon: Briefcase },
+      { label: "Upload Planilha",  to: "/treinar-ia",              icon: Brain },
+
+      { label: "Planilha de Carga",    to: "/consultor/relatorios",    icon: FileBarChart },
+      { label: "Base de Dados",        to: "/consultor/base-de-dados",  icon: Database },
+      { label: "Planilha Padrão Prospecção", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
+      { label: "Empresa Prospecção", to: "/consultor/clientes",      icon: Building2 },
+
+      { label: "Cadastros",     to: "/consultor/cadastro",      icon: FilePlus, children: [
+        { label: "Administrador Judicial", to: "/consultor/cadastro/admjudicial" },
+        { label: "Empresa Prospecção",            to: "/consultor/cadastro/recuperandas" },
+        { label: "Magistrado",              to: "/consultor/cadastro/magistrados" },
+        { label: "Técnicos",                to: "/consultor/cadastro/tecnicos" },
+      ] },
+      { label: "Relatórios & Cartas", to: "/relatorios-contabeis", icon: FileBarChart },
+    ];
+
+    if (role === "coordenador") {
+      items.push({ label: "Equipe", to: "/dashboard/equipe", icon: Users });
+    }
+
+    groups.push({ label: "Gestão", items });
   }
 
-  if (role === "consultor") {
-    groups.push({
-      label: "Gestão",
-      items: [
-        { label: "Home",          to: "/consultor",               icon: Home },
-        { label: "Dashboard",     to: "/consultor/dashboard",     icon: LayoutDashboard },
-        { label: "Processamento IA", to: "/processo-prospeccao",     icon: Briefcase },
-        { label: "Upload Planilha",  to: "/treinar-ia",              icon: Brain },
-        
-        { label: "Planilha de Carga",    to: "/consultor/relatorios",    icon: FileBarChart },
-        { label: "Base de Dados",        to: "/consultor/base-de-dados",  icon: Database },
-        { label: "Planilha Padrão Prospecção", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
-        { label: "Empresa Prospecção", to: "/consultor/clientes",      icon: Building2 },
-        
-        { label: "Cadastros",     to: "/consultor/cadastro",      icon: FilePlus, children: [
-          { label: "Administrador Judicial", to: "/consultor/cadastro/admjudicial" },
-          { label: "Empresa Prospecção",            to: "/consultor/cadastro/recuperandas" },
-          { label: "Magistrado",              to: "/consultor/cadastro/magistrados" },
-          { label: "Técnicos",                to: "/consultor/cadastro/tecnicos" },
-        ] },
-        { label: "Relatórios & Cartas", to: "/relatorios-contabeis", icon: FileBarChart },
-        
-      ],
-    });
-  }
 
   if (role === "gestor_ia") {
     groups.push({
