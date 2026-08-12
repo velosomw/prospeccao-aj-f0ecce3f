@@ -1,13 +1,8 @@
 import { Calendar, Clock, CheckCircle2, AlertTriangle, FileText } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
-const eventos = [
-  { data: "20/05/2026", item: "Entrega Prospeccao Jun/2026",      tipo: "entrega",   status: "futuro" },
-  { data: "13/05/2026", item: "AGC convocada",             tipo: "audiencia", status: "futuro" },
-  { data: "08/05/2026", item: "Balancete Mai entregue",    tipo: "entrega",   status: "ok" },
-  { data: "01/05/2026", item: "DRE Abr publicado",         tipo: "entrega",   status: "ok" },
-  { data: "25/04/2026", item: "Audiência inicial",         tipo: "audiencia", status: "ok" },
-];
+const eventos: any[] = [];
+
 const statusMeta: Record<string, { bg: string; fg: string; label: string }> = {
   futuro: { bg: "hsl(217,91%,96%)", fg: "hsl(217,91%,45%)", label: "Próximo" },
   ok:     { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)", label: "Concluído" },

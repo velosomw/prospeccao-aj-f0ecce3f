@@ -1,12 +1,8 @@
 import { FileBarChart, CheckCircle2, Eye, Download, Award } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
-const rels = [
-  { id: "REL-104", periodo: "05/2026", status: "Publicado",  score: 87, data: "Há 4h" },
-  { id: "REL-103", periodo: "04/2026", status: "Publicado",  score: 72, data: "Há 1m" },
-  { id: "REL-102", periodo: "03/2026", status: "Publicado",  score: 91, data: "Há 2m" },
-  { id: "REL-101", periodo: "02/2026", status: "Publicado",  score: 78, data: "Há 3m" },
-];
+const rels: any[] = [];
+
 const scoreColor = (s: number) => s < 33 ? "hsl(0,84%,55%)" : s < 67 ? "hsl(38,92%,50%)" : "hsl(142,76%,40%)";
 
 export default function RecRelatorios() {

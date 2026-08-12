@@ -13,15 +13,8 @@ const sevMeta: Record<Sev, { label: string; bg: string; fg: string; ring: string
 
 interface Pend { id: string; titulo: string; prospeccao: string; empresa: string; severidade: Sev; sla: string; topic: string; }
 
-const pendMock: Pend[] = [
-  { id: "P-2103", titulo: "Balancete Maio incompleto", prospeccao: "Prospeccao-0012", empresa: "DIPLOMATA", severidade: "critica", sla: "Vence em 2h", topic: "Pasta 5 - Balancetes" },
-  { id: "P-2104", titulo: "DRE 2025 sem assinatura",   prospeccao: "Prospeccao-0014", empresa: "TECNOMAX",  severidade: "critica", sla: "Vence hoje", topic: "Pasta 7 - DRE" },
-  { id: "P-2105", titulo: "Folha de pagamento ausente", prospeccao: "Prospeccao-0009", empresa: "BENTOIA",  severidade: "alta",   sla: "Vence em 1d", topic: "Pasta 12 - Folha" },
-  { id: "P-2106", titulo: "Notas fiscais sem OCR válido", prospeccao: "Prospeccao-0011", empresa: "MOVAG",  severidade: "alta",   sla: "Vence em 1d", topic: "Pasta 18 - NFs" },
-  { id: "P-2107", titulo: "Contratos expirados",       prospeccao: "Prospeccao-0008", empresa: "CONSTRUTEX", severidade: "media", sla: "Vence em 3d", topic: "Pasta 22 - Contratos" },
-  { id: "P-2108", titulo: "Inventário desatualizado",  prospeccao: "Prospeccao-0010", empresa: "AGRIBEN",  severidade: "media",   sla: "Vence em 4d", topic: "Pasta 31 - Estoques" },
-  { id: "P-2109", titulo: "Conciliação bancária pendente", prospeccao: "Prospeccao-0013", empresa: "DIPLOMATA", severidade: "baixa", sla: "Vence em 7d", topic: "Pasta 9 - Bancos" },
-];
+const pendMock: any[] = [];
+
 
 export default function ConsultorPendencias() {
   const [filter, setFilter] = useState<Sev | "todas">("todas");

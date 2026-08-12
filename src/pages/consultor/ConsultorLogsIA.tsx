@@ -3,15 +3,8 @@ import ConsultorPageShell from "@/components/consultor/PageShell";
 
 interface Log { id: string; tipo: "info"|"success"|"warn"|"error"; agente: string; acao: string; prospeccao: string; modelo: string; tokens: number; tempo: string; data: string; }
 
-const logs: Log[] = [
-  { id: "L-9001", tipo: "success", agente: "Auditor Contábil Sênior IA", acao: "Análise Balancete concluída", prospeccao: "Prospeccao-0012", modelo: "gemini-2.5-pro", tokens: 4820, tempo: "12.4s", data: "Há 2m" },
-  { id: "L-9000", tipo: "info",    agente: "Router IA",                  acao: "Roteamento OCR → Vision",     prospeccao: "Prospeccao-0014", modelo: "gemini-2.5-flash", tokens: 320, tempo: "0.8s", data: "Há 3m" },
-  { id: "L-8999", tipo: "warn",    agente: "Validador IA",               acao: "Score abaixo do threshold (62)", prospeccao: "Prospeccao-0009", modelo: "gemini-2.5-pro", tokens: 1240, tempo: "4.1s", data: "Há 5m" },
-  { id: "L-8998", tipo: "success", agente: "Auditor Contábil Sênior IA", acao: "DRE consolidada",             prospeccao: "Prospeccao-0011", modelo: "gpt-5",          tokens: 6320, tempo: "18.2s", data: "Há 8m" },
-  { id: "L-8997", tipo: "error",   agente: "OCR Vision",                 acao: "Falha ao processar PDF (timeout)", prospeccao: "Prospeccao-0010", modelo: "vision-doc",  tokens: 0, tempo: "30s", data: "Há 12m" },
-  { id: "L-8996", tipo: "success", agente: "GPT OSS Finance",            acao: "Cálculo Kanitz FI = 2.4",     prospeccao: "Prospeccao-0012", modelo: "gpt-oss",        tokens: 980, tempo: "3.0s", data: "Há 18m" },
-  { id: "L-8995", tipo: "info",    agente: "Cache Semântico",            acao: "Hit no cache LLM (-4200 tk)", prospeccao: "Prospeccao-0014", modelo: "—",              tokens: 0,    tempo: "0.05s", data: "Há 22m" },
-];
+const logs: any[] = [];
+
 
 const typeMeta: Record<string, { bg: string; fg: string; dot: string; label: string }> = {
   info:    { bg: "hsl(217,91%,96%)", fg: "hsl(217,91%,45%)", dot: "hsl(217,91%,55%)", label: "INFO"  },

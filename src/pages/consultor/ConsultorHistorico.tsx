@@ -3,15 +3,8 @@ import ConsultorPageShell from "@/components/consultor/PageShell";
 
 interface Ev { id: string; tipo: "criacao"|"edicao"|"aprovacao"|"publicacao"|"rejeicao"; titulo: string; prospeccao: string; usuario: string; data: string; hora: string; }
 
-const events: Ev[] = [
-  { id: "H-401", tipo: "publicacao", titulo: "Prospeccao Maio/2026 publicado",       prospeccao: "Prospeccao-0012", usuario: "Consultor Prospeccao",   data: "Hoje",       hora: "14:32" },
-  { id: "H-400", tipo: "aprovacao",  titulo: "Aprovado pelo Coordenador",     prospeccao: "Prospeccao-0012", usuario: "Coordenador",     data: "Hoje",       hora: "13:10" },
-  { id: "H-399", tipo: "edicao",     titulo: "Bloco 7 - DRE editado",         prospeccao: "Prospeccao-0014", usuario: "Consultor Prospeccao",   data: "Hoje",       hora: "11:48" },
-  { id: "H-398", tipo: "rejeicao",   titulo: "Bloco 5 reprovado - dados inconsistentes", prospeccao: "Prospeccao-0009", usuario: "Coordenador", data: "Ontem", hora: "17:20" },
-  { id: "H-397", tipo: "edicao",     titulo: "Reprocessamento IA solicitado", prospeccao: "Prospeccao-0011", usuario: "Consultor Prospeccao",   data: "Ontem",      hora: "15:02" },
-  { id: "H-396", tipo: "criacao",    titulo: "Novo Prospeccao criado",               prospeccao: "Prospeccao-0014", usuario: "Coordenador",     data: "07/05",      hora: "09:15" },
-  { id: "H-395", tipo: "publicacao", titulo: "Prospeccao Abril/2026 publicado",      prospeccao: "Prospeccao-0008", usuario: "Consultor Prospeccao",   data: "06/05",      hora: "16:40" },
-];
+const events: any[] = [];
+
 
 const typeMeta: Record<string, { icon: any; bg: string; fg: string; label: string }> = {
   criacao:    { icon: FileText,      bg: "hsl(217,91%,96%)", fg: "hsl(217,91%,45%)", label: "Criação" },

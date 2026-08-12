@@ -1,12 +1,8 @@
 import { FolderOpen, FileText, FileSpreadsheet, CheckCircle2, AlertTriangle, Upload } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
-const docs = [
-  { nome: "Balanco_2024.pdf",     tipo: "pdf",   pasta: "P05 - Balanço",      status: "ok",         data: "Há 2h" },
-  { nome: "DRE_05-2025.xlsx",     tipo: "excel", pasta: "P07 - DRE",          status: "ok",         data: "Há 4h" },
-  { nome: "Contrato_Social.pdf",  tipo: "pdf",   pasta: "P02 - Estatuto",     status: "incompleto", data: "Há 1d" },
-  { nome: "Inventario_2024.pdf",  tipo: "pdf",   pasta: "P31 - Estoques",     status: "vazio",      data: "—" },
-];
+const docs: any[] = [];
+
 const statusMeta: Record<string, { label: string; bg: string; fg: string }> = {
   ok:         { label: "Validado",   bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" },
   incompleto: { label: "Incompleto", bg: "hsl(38,92%,95%)",  fg: "hsl(38,92%,40%)"  },

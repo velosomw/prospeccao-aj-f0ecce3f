@@ -1,14 +1,8 @@
 import { AlertTriangle, AlertCircle, Clock, CheckCircle2, ArrowRight } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
-const pend = [
-  { item: "Balancete Mai/2026",       sev: "critica", sla: "Vence em 2h",  pasta: "P05" },
-  { item: "DRE Abr/2026",             sev: "critica", sla: "Vence hoje",   pasta: "P07" },
-  { item: "Folha de pagamento Abril", sev: "alta",    sla: "Vence em 1d",  pasta: "P12" },
-  { item: "Notas fiscais série B",    sev: "alta",    sla: "Vence em 1d",  pasta: "P18" },
-  { item: "Contratos expirados",      sev: "media",   sla: "Vence em 3d",  pasta: "P22" },
-  { item: "Inventário desatualizado", sev: "media",   sla: "Vence em 4d",  pasta: "P31" },
-];
+const pend: any[] = [];
+
 const sevMeta: Record<string, { label: string; bg: string; fg: string; ring: string }> = {
   critica: { label: "Crítica", bg: "hsl(0,84%,95%)",  fg: "hsl(0,84%,45%)",  ring: "hsl(0,84%,60%)" },
   alta:    { label: "Alta",    bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)", ring: "hsl(38,92%,50%)" },

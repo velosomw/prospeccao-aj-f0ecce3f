@@ -1,13 +1,8 @@
 import { Users, Award, Activity, Briefcase, AlertTriangle, Plus } from "lucide-react";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 
-const team = [
-  { nome: "Ana Silva",      email: "ana@bex.com",      prospecções: 12, score: 87, sla: 96, status: "Ativo" },
-  { nome: "Carlos Mendes",  email: "carlos@bex.com",   prospecções: 9,  score: 74, sla: 90, status: "Ativo" },
-  { nome: "Fernanda Costa", email: "fernanda@bex.com", prospecções: 7,  score: 91, sla: 98, status: "Ativo" },
-  { nome: "Rafael Souza",   email: "rafael@bex.com",   prospecções: 5,  score: 62, sla: 84, status: "Sobrecarga" },
-  { nome: "Julia Pereira",  email: "julia@bex.com",    prospecções: 4,  score: 80, sla: 92, status: "Ativo" },
-];
+const team: any[] = [];
+
 
 const statusColor = (s: string) => s === "Sobrecarga" ? { bg: "hsl(38,92%,95%)", fg: "hsl(38,92%,40%)" } : { bg: "hsl(142,76%,93%)", fg: "hsl(142,76%,30%)" };
 
