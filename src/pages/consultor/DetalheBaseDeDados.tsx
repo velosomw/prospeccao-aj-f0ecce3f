@@ -40,8 +40,12 @@ const FILE_CONFIGS: Record<string, { title: string; columns: any[] }> = {
     title: "Administradores Judiciais Nomeados e Não Nomeados",
     columns: [
       { key: "data_distribuicao", header: "Data Distribuição", cell: (r: any) => r.data_distribuicao },
+      { key: "mes_referencia", header: "Mês", cell: (r: any) => r.mes_referencia },
       { key: "numero_processo", header: "Nº Processo", cell: (r: any) => r.numero_processo },
       { key: "empresa", header: "Empresa", cell: (r: any) => r.empresa },
+      { key: "orgao_tribunal", header: "Vara e Comarca", cell: (r: any) => r.orgao_tribunal },
+      { key: "uf", header: "Estado", cell: (r: any) => r.uf },
+      { key: "valor_pleito", header: "Valor Passivo", cell: (r: any) => r.valor_pleito?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || "—" },
       { key: "aj_nomeado", header: "AJ Nomeado", cell: (r: any) => r.aj_nomeado },
       { key: "magistrado_nome", header: "Juiz / Juíza", cell: (r: any) => r.magistrado_nome },
     ]
@@ -101,16 +105,20 @@ export default function DetalheBaseDeDados() {
         // Mapear ProspeccaoLinha para o formato esperado pela tabela
         const mapped = allLinhas.map(l => ({
           id: l.id,
-          data_distribuicao: l.dt_inicio || l.data_distribuicao,
+          data_distribuicao: l.data_distribuicao || l.dt_inicio,
+          mes_referencia: l.mes_referencia,
           numero_processo: l.numero_processo,
           empresa: l.parte_pro_nome,
-          recuperanda: l.parte_pro_nome,
+          orgao_tribunal: l.orgao_tribunal,
+          uf: l.uf,
+          valor_pleito: l.valor_pleito,
           aj_nomeado: l.advogado_nome,
           magistrado_nome: l.pedidos_principais?.includes("Juiz:") ? l.pedidos_principais.split("|")[0].replace("Juiz:", "").trim() : l.pedidos_principais,
+          // Mantendo campos compatíveis para outros arquivos se necessário
+          recuperanda: l.parte_pro_nome,
           cliente: l.parte_con_nome,
-          data_agc: l.dt_inicio, // Simplificação
+          data_agc: l.dt_inicio,
           cidade: l.municipio,
-          estado: l.uf,
           nome: l.advogado_nome,
           sigla: l.denominacao,
           email: l.link_documento,
@@ -241,7 +249,8 @@ export default function DetalheBaseDeDados() {
               columns={tableColumns}
               rowKey={(r) => r.id}
               maxHeight={600}
-              headerClassName="bg-gray-50 text-gray-500 font-medium border-b"
+              headerClassName="bg-[hsl(222,47%,14%)] text-white font-medium border-b"
+              rowClassName="border-b border-border/60 hover:bg-blue-50/50 transition-colors"
             />
           )}
         </div>
