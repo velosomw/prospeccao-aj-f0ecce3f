@@ -19,7 +19,7 @@ function drawHeader(doc: jsPDF, c: Cursor): void {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   doc.setTextColor(...BLUE);
-  doc.text("Auditor Contábil Sênior IA", 14, c.y + 5);
+  doc.text("IA de Prospecção", 14, c.y + 5);
   doc.setDrawColor(220);
   doc.line(14, c.y + 8, 196, c.y + 8);
   c.y += 14;

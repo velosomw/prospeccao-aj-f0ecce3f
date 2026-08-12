@@ -1,5 +1,5 @@
-// Página "Relatórios Contábeis" — seleciona Empresa → Prospeccao → Período/Foprospeccaoto e gera o
-// Relatório Contábil de Dados (DOCX/PDF) usando balancete_consolidado da empresa.
+// Página "Registros de Prospecção" — seleciona Empresa → Prospeccao → Período/Foprospeccaoto e gera o
+// Registros de Prospecção (DOCX/PDF) usando balancete_consolidado da empresa.
 import { useEffect, useMemo, useState } from "react";
 import PlatformLayout from "@/components/PlatformLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,7 +36,7 @@ const AGREG_LABEL: Record<Agregacao, string> = {
 const REPORT_CATALOG = [
   {
     id: "contabil-dados",
-    label: "Relatório Contábil de Dados",
+    label: "Registros de Prospecção",
     description: "Composição patrimonial, endividamento detalhado, DRE, indicadores, Kanitz e Score BEx-RJ.",
     enabled: true,
   },
@@ -56,7 +56,7 @@ export default function RelatoriosContabeis() {
   const [fromKey, setFromKey] = useState<string | null>(null);
   const [toKey, setToKey] = useState<string | null>(null);
   const [blocks, setBlocks] = useState<ReportBlocks>({
-    balanco: true, endividamento: true, dre: true, kanitz: true, scoreRJ: true,
+    balanco: true, endividamento: true, dre: true, kanitz: false, scoreRJ: true,
   });
   const [generating, setGenerating] = useState(false);
 
@@ -146,9 +146,9 @@ export default function RelatoriosContabeis() {
             <FileBarChart className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-foreground">Relatórios Contábeis</h1>
+            <h1 className="text-xl font-bold text-foreground">Registros de Prospecção</h1>
             <p className="text-sm text-muted-foreground">
-              Geração de relatórios analíticos (PDF e DOCX) a partir dos dados consolidados da empresa.
+              
             </p>
           </div>
         </div>

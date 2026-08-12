@@ -235,7 +235,7 @@ export async function generateRelatorioContabilDocx(d: ReportDataset, filename?:
 
   const cover: (Paragraph | Table)[] = [
     new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "BEX AUDITORIA", bold: true, size: 36, color: NAVY })] }),
-    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Auditor Contábil Sênior IA", size: 22, color: BLUE })] }),
+    new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "IA de Prospecção", size: 22, color: BLUE })] }),
     new Paragraph({ spacing: { before: 240 }, alignment: AlignmentType.CENTER,
       children: [new TextRun({ text: "Relatório Contábil de Dados — Composição, Endividamento e Balanço", bold: true, size: 28, color: NAVY })] }),
     new Paragraph({ alignment: AlignmentType.CENTER,

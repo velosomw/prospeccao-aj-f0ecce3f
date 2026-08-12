@@ -1,7 +1,7 @@
 // Regras de processamento, análise e finalização independentes
 // para cada tipo de documento Prospeccao dentro do workspace.
 //
-// - Parecer Técnico Contábil: documento PERICIAL — exige rigor alto
+// - Parecer Técnico Documental: documento PERICIAL — exige rigor alto
 //   (todas as seções aprovadas) e gera o "Parecer Final" em .docx.
 // - Prospeccao Mensal (CNJ 72/2020): documento de ACOMPANHAMENTO — pode ser
 //   emitido com dados parciais; gera o "Prospeccao Final" em .docx.
@@ -31,7 +31,7 @@ export interface RmaDocRules {
 export const Prospeccao_DOC_RULES: Record<RmaDocTipo, RmaDocRules> = {
   parecer_tecnico: {
     tipo: "parecer_tecnico",
-    label: "Parecer Técnico Contábil",
+    label: "Parecer Técnico Documental",
     finalLabel: "Parecer Técnico Final",
     finalFileLabel: "Parecer Técnico Final (.docx)",
     minPctAutoFinal: 100,

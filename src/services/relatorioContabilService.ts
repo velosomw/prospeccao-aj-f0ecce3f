@@ -1,4 +1,4 @@
-// Relatório Contábil de Dados — agregação por período (mensal/bimestral/trimestral/semestral/anual/custom)
+// Registros de Prospecção — agregação por período (mensal/bimestral/trimestral/semestral/anual/custom)
 // Consome BSDadosRow[] (já produzido por buildBSDados) e devolve um ReportDataset
 // pronto para os renderers DOCX/PDF.
 import type { BSDadosRow } from "@/services/bsDadosBuilder";
@@ -185,7 +185,7 @@ const DEFAULT_BLOCKS: ReportBlocks = {
   balanco: true,
   endividamento: true,
   dre: true,
-  kanitz: true,
+  kanitz: false,
   scoreRJ: true,
 };
 
