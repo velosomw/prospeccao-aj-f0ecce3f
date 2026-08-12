@@ -52,7 +52,12 @@ const buildNav = (role: string | null): NavGroup[] => {
       { label: "Upload Planilha",  to: "/treinar-ia",              icon: Brain },
 
       { label: "Planilha de Carga",    to: "/consultor/relatorios",    icon: FileBarChart },
-      { label: "Base de Dados",        to: "/consultor/base-de-dados",  icon: Database },
+      { label: "Base de Dados",        to: "/consultor/base-de-dados",  icon: Database, children: [
+        { label: "Administradores Judiciais", to: "/consultor/base-de-dados/AJ_NOMEADOS" },
+        { label: "AGCs Realizadas",           to: "/consultor/base-de-dados/AGCS_REALIZADAS" },
+        { label: "Cadastro de Administradores", to: "/consultor/base-de-dados/CADASTRO_AJ" },
+        { label: "Relação de Cartas Impressas", to: "/consultor/base-de-dados/CARTAS_AJ" },
+      ] },
       { label: "Planilha Padrão Prospecção", to: "/consultor/planilha-padrao-prospeccao", icon: FileSpreadsheet },
       { label: "Empresa Prospecção", to: "/consultor/clientes",      icon: Building2 },
 
