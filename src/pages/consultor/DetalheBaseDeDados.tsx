@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 import { 
@@ -10,14 +10,18 @@ import {
   Trash2, 
   ArrowLeft,
   FileSpreadsheet,
-  X
+  History,
+  Info,
+  Clock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import VirtualTable from "@/components/shared/VirtualTable";
-import GenericSpreadsheetUpload from "@/components/consultor/GenericSpreadsheetUpload";
+import { SpreadsheetUpload } from "@/components/prospeccao/SpreadsheetUpload";
 import AdvancedFilters from "@/components/consultor/AdvancedFilters";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { DATASET_CONFIGS, DatasetType } from "@/config/datasets";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,59 +39,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-// Mock data mapping based on the requirement
-const FILE_CONFIGS: Record<string, { title: string; columns: any[] }> = {
-  "AJ_NOMEADOS": {
-    title: "Administradores Judiciais Nomeados e Não Nomeados",
-    columns: [
-      { key: "data_distribuicao", header: "Data Distribuição", cell: (r: any) => r.data_distribuicao },
-      { key: "mes_referencia", header: "Mês", cell: (r: any) => r.mes_referencia },
-      { key: "numero_processo", header: "Nº Processo", cell: (r: any) => r.numero_processo },
-      { key: "empresa", header: "Empresa", cell: (r: any) => r.empresa },
-      { key: "orgao_tribunal", header: "Vara e Comarca", cell: (r: any) => r.orgao_tribunal },
-      { key: "uf", header: "Estado", cell: (r: any) => r.uf },
-      { key: "valor_pleito", header: "Valor Passivo", cell: (r: any) => r.valor_pleito?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || "—" },
-      { key: "aj_nomeado", header: "AJ Nomeado", cell: (r: any) => r.aj_nomeado },
-      { key: "magistrado_nome", header: "Juiz / Juíza", cell: (r: any) => r.magistrado_nome },
-    ]
-  },
-  "AGCS_REALIZADAS": {
-    title: "AGCs Realizadas",
-    columns: [
-      { key: "cliente", header: "Cliente", cell: (r: any) => r.cliente },
-      { key: "recuperanda", header: "Recuperanda", cell: (r: any) => r.recuperanda },
-      { key: "data_agc", header: "Data AGC", cell: (r: any) => r.data_agc },
-      { key: "mes_referencia", header: "Mês", cell: (r: any) => r.mes_referencia },
-      { key: "cidade", header: "Cidade", cell: (r: any) => r.cidade },
-      { key: "uf", header: "Estado", cell: (r: any) => r.uf },
-    ]
-  },
-  "CADASTRO_AJ": {
-    title: "Cadastro de Administradores Judiciais",
-    columns: [
-      { key: "nome", header: "Administrador / Escritório", cell: (r: any) => r.nome },
-      { key: "sigla", header: "Sigla", cell: (r: any) => r.sigla },
-      { key: "contato", header: "Contato", cell: (r: any) => r.contato },
-      { key: "email", header: "E-mail", cell: (r: any) => r.email },
-      { key: "telefone", header: "Telefone", cell: (r: any) => r.telefone },
-      { key: "cidade", header: "Cidade", cell: (r: any) => r.cidade },
-      { key: "uf", header: "UF", cell: (r: any) => r.uf },
-    ]
-  },
-  "CARTAS_AJ": {
-    title: "Relação de Cartas Impressas aos AJ",
-    columns: [
-      { key: "data_distribuicao", header: "Data Distribuição", cell: (r: any) => r.data_distribuicao },
-      { key: "mes_referencia", header: "Mês", cell: (r: any) => r.mes_referencia },
-      { key: "cliente", header: "Cliente", cell: (r: any) => r.cliente },
-      { key: "processo", header: "Processo", cell: (r: any) => r.processo },
-      { key: "contato", header: "Administrador (Contato)", cell: (r: any) => r.contato },
-      { key: "sigla", header: "Sigla", cell: (r: any) => r.sigla },
-      { key: "status", header: "Status", cell: (r: any) => r.status },
-    ]
-  }
-};
+import { Badge } from "@/components/ui/badge";
 
 export default function DetalheBaseDeDados() {
   const { code } = useParams();
@@ -101,74 +53,109 @@ export default function DetalheBaseDeDados() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [rows, setRows] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLogOpen, setIsLogOpen] = useState(false);
+  const [importBatches, setImportBatches] = useState<any[]>([]);
   
-  const config = FILE_CONFIGS[code || ""] || { title: "Arquivo não encontrado", columns: [] };
+  const datasetType = code as DatasetType;
+  const config = DATASET_CONFIGS[datasetType];
 
   useEffect(() => {
+    if (!config) return;
+
     async function loadData() {
       setIsLoading(true);
       try {
-        const { listLinhas } = await import("@/services/prospeccaoService");
-        const allLinhas = await listLinhas();
+        const { data, error } = await supabase
+          .from(config.tableName as any)
+          .select("*")
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setRows(data || []);
+
+        // Load batches
+        const { data: batches } = await supabase
+          .from('spreadsheet_import_batches')
+          .select('*')
+          .eq('dataset_type', datasetType)
+          .order('created_at', { ascending: false })
+          .limit(10);
         
-        // Mapear ProspeccaoLinha para o formato esperado pela tabela
-        const mapped = allLinhas.map(l => ({
-          id: l.id,
-          data_distribuicao: l.data_distribuicao || l.dt_inicio,
-          mes_referencia: l.mes_referencia,
-          numero_processo: l.numero_processo,
-          empresa: l.parte_pro_nome,
-          orgao_tribunal: l.orgao_tribunal,
-          uf: l.uf,
-          valor_pleito: l.valor_pleito,
-          aj_nomeado: l.advogado_nome,
-          magistrado_nome: l.pedidos_principais?.includes("Juiz:") ? l.pedidos_principais.split("|")[0].replace("Juiz:", "").trim() : l.pedidos_principais,
-          // Mapeamento dinâmico baseado no conteúdo real das colunas importadas
-          recuperanda: l.parte_pro_nome,
-          cliente: l.parte_con_nome,
-          data_agc: l.dt_inicio,
-          cidade: l.municipio,
-          nome: l.parte_con_nome || l.advogado_nome, // Para Cadastro AJ o nome costuma vir em Clientes ou Advogado
-          contato: l.pedidos_principais || l.advogado_nome, // Usado para nome do DR./Contato
-          sigla: l.denominacao,
-          email: l.link_documento,
-          telefone: l.advogado_oab,
-          processo: l.numero_processo,
-          status: l.status_processo,
-        }));
-        setRows(mapped);
+        setImportBatches(batches || []);
       } catch (e) {
+
         console.error("Erro ao carregar dados:", e);
+        toast({
+          title: "Erro ao carregar dados",
+          description: "Não foi possível sincronizar com o banco de dados.",
+          variant: "destructive"
+        });
       } finally {
         setIsLoading(false);
       }
     }
     loadData();
-  }, [code, refreshKey]);
+  }, [code, refreshKey, config]);
 
-  const handleUpload = () => {
-    setIsUploadOpen(true);
-  };
+  if (!config) {
+    return (
+      <ConsultorPageShell 
+        title="Arquivo não encontrado"
+        subtitle="Verifique o código da base de dados"
+        kpis={[]}
+      >
+
+        <div className="flex flex-col items-center justify-center py-20">
+          <Info className="w-12 h-12 text-slate-300 mb-4" />
+          <p className="text-slate-500">A base de dados selecionada não existe ou foi removida.</p>
+          <Button variant="link" onClick={() => navigate("/consultor/base-de-dados")}>
+            Voltar para Base de Dados
+          </Button>
+        </div>
+      </ConsultorPageShell>
+    );
+  }
 
   const handleUploadComplete = () => {
     setRefreshKey(prev => prev + 1);
-    // Ideally we would also re-fetch the data here
+    setIsUploadOpen(false);
   };
 
   const handleDelete = (id: string) => {
     setIsDeleting(id);
   };
 
-  const confirmDelete = () => {
-    toast({
-      title: "Registro removido",
-      description: "O registro foi excluído com sucesso da base de dados.",
-    });
-    setIsDeleting(null);
+  const confirmDelete = async () => {
+    try {
+      const { error } = await supabase
+        .from(config.tableName as any)
+        .delete()
+        .eq('id', isDeleting);
+
+      if (error) throw error;
+
+      toast({
+        title: "Registro removido",
+        description: "O registro foi excluído com sucesso da base de dados.",
+      });
+      setRefreshKey(prev => prev + 1);
+    } catch (e) {
+      toast({
+        title: "Erro ao excluir",
+        description: "Não foi possível excluir o registro.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsDeleting(null);
+    }
   };
 
   const tableColumns = [
-    ...config.columns,
+    ...config.columns.map(col => ({
+      key: col.key,
+      header: col.header,
+      cell: (r: any) => col.format ? col.format(r[col.key]) : r[col.key] || "—"
+    })),
     {
       key: "acoes",
       header: <span className="text-right w-full block">Ações</span>,
@@ -194,10 +181,10 @@ export default function DetalheBaseDeDados() {
   return (
     <ConsultorPageShell
       title={config.title}
-      subtitle="Gerencie, edite e adicione informações diretamente nesta base de dados."
+      subtitle="Sincronização Enterprise MD-BEX-001 ativada com reconciliação automática."
       kpis={[
         { label: "Total de Registros", value: rows.length, icon: FileSpreadsheet, tone: "blue" },
-        { label: "Filtrados", value: 0, icon: Search, tone: "purple" },
+        { label: "Sincronizados", value: rows.length, icon: History, tone: "green" },
       ]}
       actions={
         <div className="flex gap-2">
@@ -205,11 +192,13 @@ export default function DetalheBaseDeDados() {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Button>
-          <Button size="sm" onClick={handleUpload} className="gap-2 bg-[hsl(217,91%,50%)]">
-            <Upload className="w-4 h-4" />
-            Upload dados
+          <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="gap-2 border-slate-200">
+            <Clock className="w-4 h-4" />
+            Log Sinc
           </Button>
+          <SpreadsheetUpload datasetType={datasetType} onSuccess={handleUploadComplete} />
         </div>
+
       }
     >
       <div className="space-y-4">
@@ -255,22 +244,23 @@ export default function DetalheBaseDeDados() {
               <p>Carregando registros...</p>
             </div>
           ) : rows.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-muted-foreground flex-1">
-              <FileSpreadsheet className="w-12 h-12 mb-4 opacity-20" />
-              <p>Nenhum registro encontrado para este arquivo.</p>
-              <Button variant="link" onClick={handleUpload} className="text-primary mt-2">
-                Fazer primeiro upload
-              </Button>
+            <div className="flex flex-col items-center justify-center py-20 text-muted-foreground flex-1 text-center px-4">
+              <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+                <FileSpreadsheet className="w-8 h-8 text-slate-300" />
+              </div>
+              <p className="font-semibold text-slate-700">Nenhum registro sincronizado</p>
+              <p className="text-sm text-slate-500 max-w-xs mt-1">Carregue sua planilha oficial para iniciar o processo de reconciliação e análise.</p>
+              <div className="mt-6">
+                <SpreadsheetUpload datasetType={datasetType} onSuccess={handleUploadComplete} />
+              </div>
             </div>
           ) : (
             <VirtualTable
               data={rows.filter(r => {
-                // Filtro de busca global
                 const searchMatch = !search || Object.values(r).some(v => 
                   String(v || "").toLowerCase().includes(search.toLowerCase())
                 );
                 
-                // Filtros por coluna
                 const columnMatch = Object.entries(columnFilters).every(([key, value]) => {
                   if (!value) return true;
                   const rowValue = String(r[key] || "").toLowerCase();
@@ -289,18 +279,58 @@ export default function DetalheBaseDeDados() {
         </div>
       </div>
 
-      <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
-        <DialogContent className="sm:max-w-[500px]">
+      <Dialog open={isLogOpen} onOpenChange={setIsLogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Upload de Dados: {config.title}</DialogTitle>
+            <DialogTitle className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-slate-500" />
+              Histórico de Sincronizações Enterprise
+            </DialogTitle>
           </DialogHeader>
-          <div className="py-4">
-            <GenericSpreadsheetUpload onComplete={handleUploadComplete} />
+          <div className="py-4 space-y-4">
+            {importBatches.length === 0 ? (
+              <p className="text-center py-8 text-slate-500 text-sm">Nenhuma sincronização realizada ainda.</p>
+            ) : (
+              <div className="space-y-3">
+                {importBatches.map((batch) => (
+                  <div key={batch.id} className="p-4 rounded-lg border bg-slate-50/50 flex flex-col gap-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-sm text-slate-700">{batch.file_name}</span>
+                      <Badge variant={batch.status === 'completed' ? 'secondary' : 'outline'} className={batch.status === 'completed' ? 'bg-green-100 text-green-700 hover:bg-green-100 border-none' : ''}>
+                        {batch.status === 'completed' ? 'Concluído' : batch.status}
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-4 gap-2 text-[11px] text-slate-500">
+                      <div>
+                        <p className="font-bold text-slate-700">Lidas</p>
+                        <p>{batch.rows_count}</p>
+                      </div>
+                      <div>
+                        <p className="font-bold text-green-700">Novas</p>
+                        <p>{batch.inserted_count}</p>
+                      </div>
+                      <div>
+                        <p className="font-bold text-blue-700">Atu.</p>
+                        <p>{batch.updated_count}</p>
+                      </div>
+                      <div>
+                        <p className="font-bold text-slate-400">Mantidas</p>
+                        <p>{batch.unchanged_count}</p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      {new Date(batch.created_at).toLocaleString('pt-BR')} • ID: {batch.id.split('-')[0]}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={!!isDeleting} onOpenChange={() => setIsDeleting(null)}>
+
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmar exclusão?</AlertDialogTitle>

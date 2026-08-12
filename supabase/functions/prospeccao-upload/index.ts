@@ -1,107 +1,60 @@
-// Recebe upload (xlsx/csv/pdf) já no Storage e cria registros.
-// Body: { storage_path: string, file_name: string, file_type: 'xlsx'|'csv'|'pdf' }
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import * as XLSX from "npm:xlsx@0.18.5";
+import { 
+  DATASET_CONFIGS, 
+  DatasetType, 
+  normalizeHeader, 
+  reconcileBatch 
+} from "../_shared/reconciliation-engine.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-interface XlsxRow {
-  [k: string]: unknown;
+function detectDatasetType(headers: string[]): DatasetType | null {
+  const normalizedHeaders = headers.map(normalizeHeader);
+  
+  // Scoring each dataset based on matching headers
+  const scores: Record<string, number> = {};
+  
+  for (const [type, config] of Object.entries(DATASET_CONFIGS)) {
+    let score = 0;
+    const configHeaders = Object.keys(config.headerMap).map(normalizeHeader);
+    for (const h of normalizedHeaders) {
+      if (configHeaders.includes(h)) score++;
+    }
+    scores[type] = score;
+  }
+
+  // Find best score
+  let bestType: DatasetType | null = null;
+  let maxScore = 0;
+  for (const [type, score] of Object.entries(scores)) {
+    if (score > maxScore) {
+      maxScore = score;
+      bestType = type as DatasetType;
+    }
+  }
+
+  // Threshold to avoid false positives
+  return maxScore >= 3 ? bestType : null;
 }
 
-// Mapeamento dos cabeçalhos do arquivo de processos para colunas da tabela
-const HEADER_MAP: Record<string, string> = {
-  "id servico": "id_servico",
-  "n processo": "numero_processo",
-  "n° processo": "numero_processo",
-  "nº processo": "numero_processo",
-  "numero processo": "numero_processo",
-  "processo": "numero_processo",
-  "parte con principal - nome": "parte_con_nome",
-  "parte con principal - cpf/cnpj": "parte_con_cnpj",
-  "parte con principal - qualificação": "parte_con_qualif",
-  "parte pro principal - nome": "parte_pro_nome",
-  "parte pro principal - cpf/cnpj": "parte_pro_cnpj",
-  "denominação": "denominacao",
-  "órgão/tribunal": "orgao_tribunal",
-  "orgao/tribunal": "orgao_tribunal",
-  "esfera": "esfera",
-  "instância": "instancia",
-  "instancia": "instancia",
-  "uf": "uf",
-  "estado": "uf",
-  "municipio": "municipio",
-  "município": "municipio",
-  "cidade": "municipio",
-  "área judicial": "area_judicial",
-  "area judicial": "area_judicial",
-  "assunto judicial": "assunto_judicial",
-  "ação judicial": "acao_judicial",
-  "acao judicial": "acao_judicial",
-  "valor pleito": "valor_pleito",
-  "valor do passivo": "valor_pleito",
-  "status do processo": "status_processo",
-  "status": "status_processo",
-  "dt. inicio": "dt_inicio",
-  "dt. início": "dt_inicio",
-  "data da distribuição": "dt_inicio",
-  "dt. cad. causa": "dt_cad_causa",
-  "processo eletrônico?": "processo_eletronico",
-  "processo eletronico?": "processo_eletronico",
-  "link_documento": "link_documento",
-  "link documento": "link_documento",
-  // Novos mapeamentos para a planilha padrão de prospecção
-  "empresa": "parte_pro_nome",
-  "recuperanda": "parte_pro_nome",
-  "vara e comarca": "orgao_tribunal",
-  "juiz / juíza": "pedidos_principais", 
-  "aj nomeado": "advogado_nome",
-  "contato": "pedidos_principais", // Armazena nome do contato/DR em pedidos_principais para Cadastro/Cartas
-  "aj": "advogado_nome",
-  "clientes": "parte_con_nome",
-  "cliente": "parte_con_nome",
-  "email": "link_documento",
-  "e-mail": "link_documento",
-  "telefone": "advogado_oab",
-  "sigla": "denominacao",
-  "mês": "mes_referencia",
-  "ano": "instancia", // Reutilizando instância para Ano se necessário
-  "cidade": "municipio",
-  "estado": "uf",
-  "uf": "uf",
-  "n processo": "numero_processo",
-  "n° processo": "numero_processo",
-  "nº processo": "numero_processo",
-  "processo": "numero_processo",
-};
+function parseExcelValue(v: any, type: string): any {
+  if (v === null || v === undefined || v === "") return null;
+  
+  // Excel Serial Date check (Item 20)
+  if (typeof v === "number" && (type === "date" || type === "datetime")) {
+    // Basic Excel date to JS Date conversion
+    const date = new Date(Math.round((v - 25569) * 86400 * 1000));
+    return date.toISOString().split("T")[0];
+  }
 
-function normalizeHeader(h: string): string {
-  return String(h || "").trim().toLowerCase().replace(/\s+/g, " ");
-}
+  if (v instanceof Date) {
+    return v.toISOString().split("T")[0];
+  }
 
-function parseDate(v: unknown): string | null {
-  if (!v) return null;
-  if (v instanceof Date) return v.toISOString().slice(0, 10);
-  const s = String(v);
-  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
-  return null;
-}
-
-function parseBool(v: unknown): boolean | null {
-  if (v == null) return null;
-  const s = String(v).trim().toUpperCase();
-  if (s === "SIM" || s === "TRUE" || s === "1") return true;
-  if (s === "NAO" || s === "NÃO" || s === "FALSE" || s === "0") return false;
-  return null;
-}
-
-function parseNumber(v: unknown): number | null {
-  if (v == null || v === "") return null;
-  const n = typeof v === "number" ? v : Number(String(v).replace(/\./g, "").replace(",", "."));
-  return Number.isFinite(n) ? n : null;
+  return v;
 }
 
 Deno.serve(async (req) => {
@@ -112,112 +65,116 @@ Deno.serve(async (req) => {
     const token = authHeader.replace("Bearer ", "");
     if (!token) return json({ error: "Não autenticado" }, 401);
 
-    const supabaseUser = createClient(SUPABASE_URL, SERVICE_ROLE, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const { data: userData } = await supabaseUser.auth.getUser(token);
+    const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
+    const { data: userData } = await supabase.auth.getUser(token);
     const user = userData?.user;
     if (!user) return json({ error: "Token inválido" }, 401);
 
-    const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
     const body = await req.json();
-    const { storage_path, file_name, file_type } = body as {
-      storage_path: string; file_name: string; file_type: string;
-    };
-    if (!storage_path || !file_name || !file_type) return json({ error: "Campos faltando" }, 400);
-
-    const { data: uploadRow, error: insErr } = await admin.from("prospeccao_uploads").insert({
-      user_id: user.id,
-      file_name,
-      file_type,
-      storage_path,
-      status: "processando",
-    }).select().single();
-    if (insErr) throw insErr;
-
-    let rowsCount = 0;
-    if (file_type === "xlsx" || file_type === "csv") {
-      const { data: file, error: dlErr } = await admin.storage.from("prospeccao-uploads").download(storage_path);
-      if (dlErr) throw dlErr;
-      const buf = new Uint8Array(await file.arrayBuffer());
-      const wb = XLSX.read(buf, { type: "array", cellDates: true });
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json<XlsxRow>(ws, { defval: null });
-
-      const seenRows = new Set<string>();
-      const linhas = rows.map((r) => {
-        const out: Record<string, unknown> = { user_id: user.id, upload_id: uploadRow.id };
-        let rowIdentifier = "";
-        
-        for (const [k, v] of Object.entries(r)) {
-          const col = HEADER_MAP[normalizeHeader(k)];
-          if (!col) continue;
-          
-          let val: any = v;
-          if (col === "valor_pleito") val = parseNumber(v);
-          else if (col === "dt_inicio" || col === "dt_cad_causa") val = parseDate(v);
-          else if (col === "processo_eletronico") val = parseBool(v);
-          else val = v == null ? null : String(v);
-          
-          out[col] = val;
-          // Cria um identificador único baseado no número do processo e empresa para remover duplicatas
-          if (col === "numero_processo" || col === "parte_pro_nome") {
-            rowIdentifier += String(val || "").toLowerCase().trim();
-          }
-        }
-        
-        if (rowIdentifier && seenRows.has(rowIdentifier)) {
-          return null; // Marca para remoção
-        }
-        if (rowIdentifier) seenRows.add(rowIdentifier);
-        
-        if (!out.link_documento) out.ai_status = "sem_link";
-        return out;
-      }).filter(l => l !== null); // Remove duplicatas detectadas no lote atual
-
-      // Insere em lotes
-      for (let i = 0; i < linhas.length; i += 200) {
-        const batch = linhas.slice(i, i + 200);
-        const { data: inserted, error: linErr } = await admin
-          .from("prospeccao_linhas")
-          .insert(batch)
-          .select("id, link_documento");
-        if (linErr) throw linErr;
-
-        // Cria jobs para linhas com link
-        const jobs = (inserted || [])
-          .filter((l) => l.link_documento && String(l.link_documento).trim())
-          .map((l) => ({ linha_id: l.id, user_id: user.id, link: String(l.link_documento).trim() }));
-        if (jobs.length) {
-          const { error: jErr } = await admin.from("prospeccao_pdf_jobs").insert(jobs);
-          if (jErr) throw jErr;
-        }
-        rowsCount += batch.length;
-      }
-    } else if (file_type === "pdf") {
-      // PDF avulso: cria 1 linha + 1 job apontando para o storage_path local
-      const { data: linha, error: linErr } = await admin.from("prospeccao_linhas").insert({
-        user_id: user.id,
-        upload_id: uploadRow.id,
-        ai_status: "baixado",
-      }).select().single();
-      if (linErr) throw linErr;
-      const { error: jErr } = await admin.from("prospeccao_pdf_jobs").insert({
-        linha_id: linha.id,
-        user_id: user.id,
-        link: `storage://${storage_path}`,
-        status: "baixado",
-        storage_path,
-      });
-      if (jErr) throw jErr;
-      rowsCount = 1;
+    const { storage_path, file_name, file_type, dataset_type: forcedDatasetType } = body;
+    
+    if (!storage_path || !file_name || !file_type) {
+      return json({ error: "Campos obrigatórios faltando" }, 400);
     }
 
-    await admin.from("prospeccao_uploads").update({
-      status: "concluido", rows_count: rowsCount,
-    }).eq("id", uploadRow.id);
+    // Download file
+    const { data: file, error: dlErr } = await supabase.storage.from("prospeccao-uploads").download(storage_path);
+    if (dlErr) throw dlErr;
+    
+    const buf = new Uint8Array(await file.arrayBuffer());
+    const wb = XLSX.read(buf, { type: "array", cellDates: true });
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    
+    // Get headers (Item 13: Detect header row)
+    const jsonData = XLSX.utils.sheet_to_json(ws, { header: 1 }) as any[][];
+    let headerRowIndex = 0;
+    let headers: string[] = [];
+    
+    // Simple header detection: look for a row with at least 3 recognizable headers in the first 20 rows
+    for (let i = 0; i < Math.min(jsonData.length, 20); i++) {
+      const row = jsonData[i];
+      if (!row || !row.length) continue;
+      
+      const potentialHeaders = row.map(h => normalizeHeader(String(h || "")));
+      const matches = potentialHeaders.filter(h => 
+        Object.values(DATASET_CONFIGS).some(config => 
+          Object.keys(config.headerMap).map(normalizeHeader).includes(h)
+        )
+      );
+      
+      if (matches.length >= 3) {
+        headerRowIndex = i;
+        headers = row.map(h => String(h || ""));
+        break;
+      }
+    }
 
-    return json({ ok: true, upload_id: uploadRow.id, rows: rowsCount });
+    if (!headers.length && jsonData.length > 0) {
+      headers = jsonData[0].map(h => String(h || ""));
+    }
+
+    const datasetType = forcedDatasetType || detectDatasetType(headers);
+    if (!datasetType) {
+      return json({ error: "Não foi possível identificar o tipo de planilha. Verifique os cabeçalhos." }, 400);
+    }
+
+    const config = DATASET_CONFIGS[datasetType as DatasetType];
+    
+    // Create Import Batch
+    const { data: batch, error: batchErr } = await supabase.from("spreadsheet_import_batches").insert({
+      user_id: user.id,
+      dataset_type: datasetType,
+      file_name,
+      file_size: buf.length,
+      status: "processing"
+    }).select().single();
+    if (batchErr) throw batchErr;
+
+    // Parse Rows
+    const dataRows = XLSX.utils.sheet_to_json<any>(ws, { range: headerRowIndex, defval: null });
+    const normalizedRows: any[] = [];
+    
+    for (const rawRow of dataRows) {
+      const normalizedRow: any = {};
+      let hasData = false;
+      
+      for (const [key, val] of Object.entries(rawRow)) {
+        const mappedField = config.headerMap[normalizeHeader(key)];
+        if (mappedField) {
+          // Determine type for parsing (date, numeric, etc)
+          let type = "text";
+          if (mappedField.includes("data") || mappedField.includes("dt_")) type = "date";
+          if (mappedField.includes("valor") || mappedField.includes("passivo")) type = "numeric";
+          
+          normalizedRow[mappedField] = parseExcelValue(val, type);
+          if (val !== null && val !== "") hasData = true;
+        }
+      }
+      
+      if (hasData) normalizedRows.push(normalizedRow);
+    }
+
+    // Reconcile
+    const results = await reconcileBatch(supabase, datasetType as DatasetType, normalizedRows, user.id, batch.id);
+
+    // Update Batch status
+    await supabase.from("spreadsheet_import_batches").update({
+      status: "completed",
+      rows_count: normalizedRows.length,
+      inserted_count: results.inserted,
+      updated_count: results.updated,
+      unchanged_count: results.unchanged,
+      conflict_count: results.conflicts,
+      error_count: results.errors
+    }).eq("id", batch.id);
+
+    return json({
+      ok: true,
+      batch_id: batch.id,
+      dataset_type: datasetType,
+      results
+    });
+
   } catch (e) {
     console.error(e);
     return json({ error: String((e as Error).message ?? e) }, 500);

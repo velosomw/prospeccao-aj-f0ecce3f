@@ -4902,6 +4902,139 @@ export type Database = {
         }
         Relationships: []
       }
+      prospeccao_agcs_realizadas: {
+        Row: {
+          ano: number | null
+          business_key: string | null
+          cidade: string | null
+          cliente: string | null
+          created_at: string
+          data_agc: string | null
+          estado: string | null
+          field_lineage: Json | null
+          id: string
+          import_batch_id: string | null
+          mes: string | null
+          recuperanda: string | null
+          source_type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ano?: number | null
+          business_key?: string | null
+          cidade?: string | null
+          cliente?: string | null
+          created_at?: string
+          data_agc?: string | null
+          estado?: string | null
+          field_lineage?: Json | null
+          id?: string
+          import_batch_id?: string | null
+          mes?: string | null
+          recuperanda?: string | null
+          source_type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ano?: number | null
+          business_key?: string | null
+          cidade?: string | null
+          cliente?: string | null
+          created_at?: string
+          data_agc?: string | null
+          estado?: string | null
+          field_lineage?: Json | null
+          id?: string
+          import_batch_id?: string | null
+          mes?: string | null
+          recuperanda?: string | null
+          source_type?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_agcs_realizadas_import_batch_id_fkey"
+            columns: ["import_batch_id"]
+            isOneToOne: false
+            referencedRelation: "spreadsheet_import_batches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prospeccao_aj_nomeados: {
+        Row: {
+          aj_nomeado: string | null
+          business_key: string | null
+          created_at: string
+          data_distribuicao: string | null
+          empresa: string | null
+          estado: string | null
+          field_lineage: Json | null
+          id: string
+          import_batch_id: string | null
+          juiz: string | null
+          mes: string | null
+          numero_processo: string | null
+          numero_processo_normalizado: string | null
+          source_type: string | null
+          updated_at: string
+          user_id: string
+          valor_passivo: number | null
+          vara_comarca: string | null
+        }
+        Insert: {
+          aj_nomeado?: string | null
+          business_key?: string | null
+          created_at?: string
+          data_distribuicao?: string | null
+          empresa?: string | null
+          estado?: string | null
+          field_lineage?: Json | null
+          id?: string
+          import_batch_id?: string | null
+          juiz?: string | null
+          mes?: string | null
+          numero_processo?: string | null
+          numero_processo_normalizado?: string | null
+          source_type?: string | null
+          updated_at?: string
+          user_id: string
+          valor_passivo?: number | null
+          vara_comarca?: string | null
+        }
+        Update: {
+          aj_nomeado?: string | null
+          business_key?: string | null
+          created_at?: string
+          data_distribuicao?: string | null
+          empresa?: string | null
+          estado?: string | null
+          field_lineage?: Json | null
+          id?: string
+          import_batch_id?: string | null
+          juiz?: string | null
+          mes?: string | null
+          numero_processo?: string | null
+          numero_processo_normalizado?: string | null
+          source_type?: string | null
+          updated_at?: string
+          user_id?: string
+          valor_passivo?: number | null
+          vara_comarca?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_aj_nomeados_import_batch_id_fkey"
+            columns: ["import_batch_id"]
+            isOneToOne: false
+            referencedRelation: "spreadsheet_import_batches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       prospeccao_analytics: {
         Row: {
           aj_nomeado: number | null
@@ -5079,6 +5212,166 @@ export type Database = {
             columns: ["linha_id"]
             isOneToOne: false
             referencedRelation: "vw_prospeccao_certification_status"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prospeccao_cadastro_aj: {
+        Row: {
+          bairro: string | null
+          business_key: string | null
+          cep: string | null
+          cidade: string | null
+          cliente: string | null
+          complemento: string | null
+          contato: string | null
+          created_at: string
+          email: string | null
+          endereco: string | null
+          field_lineage: Json | null
+          id: string
+          import_batch_id: string | null
+          numero: string | null
+          sigla: string | null
+          source_type: string | null
+          telefone: string | null
+          uf: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bairro?: string | null
+          business_key?: string | null
+          cep?: string | null
+          cidade?: string | null
+          cliente?: string | null
+          complemento?: string | null
+          contato?: string | null
+          created_at?: string
+          email?: string | null
+          endereco?: string | null
+          field_lineage?: Json | null
+          id?: string
+          import_batch_id?: string | null
+          numero?: string | null
+          sigla?: string | null
+          source_type?: string | null
+          telefone?: string | null
+          uf?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bairro?: string | null
+          business_key?: string | null
+          cep?: string | null
+          cidade?: string | null
+          cliente?: string | null
+          complemento?: string | null
+          contato?: string | null
+          created_at?: string
+          email?: string | null
+          endereco?: string | null
+          field_lineage?: Json | null
+          id?: string
+          import_batch_id?: string | null
+          numero?: string | null
+          sigla?: string | null
+          source_type?: string | null
+          telefone?: string | null
+          uf?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_cadastro_aj_import_batch_id_fkey"
+            columns: ["import_batch_id"]
+            isOneToOne: false
+            referencedRelation: "spreadsheet_import_batches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prospeccao_cartas_aj: {
+        Row: {
+          ano: number | null
+          business_key: string | null
+          cliente: string | null
+          contato: string | null
+          created_at: string
+          data_120_dias: string | null
+          data_150_dias: string | null
+          data_90_dias: string | null
+          data_carta_impressa: string | null
+          data_distribuicao: string | null
+          dia: number | null
+          field_lineage: Json | null
+          id: string
+          import_batch_id: string | null
+          mes: string | null
+          numero_processo: string | null
+          numero_processo_normalizado: string | null
+          sigla: string | null
+          source_type: string | null
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ano?: number | null
+          business_key?: string | null
+          cliente?: string | null
+          contato?: string | null
+          created_at?: string
+          data_120_dias?: string | null
+          data_150_dias?: string | null
+          data_90_dias?: string | null
+          data_carta_impressa?: string | null
+          data_distribuicao?: string | null
+          dia?: number | null
+          field_lineage?: Json | null
+          id?: string
+          import_batch_id?: string | null
+          mes?: string | null
+          numero_processo?: string | null
+          numero_processo_normalizado?: string | null
+          sigla?: string | null
+          source_type?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ano?: number | null
+          business_key?: string | null
+          cliente?: string | null
+          contato?: string | null
+          created_at?: string
+          data_120_dias?: string | null
+          data_150_dias?: string | null
+          data_90_dias?: string | null
+          data_carta_impressa?: string | null
+          data_distribuicao?: string | null
+          dia?: number | null
+          field_lineage?: Json | null
+          id?: string
+          import_batch_id?: string | null
+          mes?: string | null
+          numero_processo?: string | null
+          numero_processo_normalizado?: string | null
+          sigla?: string | null
+          source_type?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prospeccao_cartas_aj_import_batch_id_fkey"
+            columns: ["import_batch_id"]
+            isOneToOne: false
+            referencedRelation: "spreadsheet_import_batches"
             referencedColumns: ["id"]
           },
         ]
@@ -6839,6 +7132,116 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      spreadsheet_change_log: {
+        Row: {
+          batch_id: string | null
+          changed_at: string
+          dataset_type: string
+          field_name: string
+          id: string
+          new_value: string | null
+          old_value: string | null
+          record_id: string
+          source_file: string | null
+          source_row: number | null
+          source_type: string
+          user_id: string | null
+        }
+        Insert: {
+          batch_id?: string | null
+          changed_at?: string
+          dataset_type: string
+          field_name: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          record_id: string
+          source_file?: string | null
+          source_row?: number | null
+          source_type: string
+          user_id?: string | null
+        }
+        Update: {
+          batch_id?: string | null
+          changed_at?: string
+          dataset_type?: string
+          field_name?: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          record_id?: string
+          source_file?: string | null
+          source_row?: number | null
+          source_type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spreadsheet_change_log_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "spreadsheet_import_batches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spreadsheet_import_batches: {
+        Row: {
+          conflict_count: number | null
+          created_at: string
+          dataset_type: string
+          error_count: number | null
+          file_hash: string | null
+          file_name: string
+          file_size: number | null
+          id: string
+          inserted_count: number | null
+          metadata: Json | null
+          rows_count: number | null
+          status: string
+          unchanged_count: number | null
+          updated_at: string
+          updated_count: number | null
+          user_id: string
+        }
+        Insert: {
+          conflict_count?: number | null
+          created_at?: string
+          dataset_type: string
+          error_count?: number | null
+          file_hash?: string | null
+          file_name: string
+          file_size?: number | null
+          id?: string
+          inserted_count?: number | null
+          metadata?: Json | null
+          rows_count?: number | null
+          status?: string
+          unchanged_count?: number | null
+          updated_at?: string
+          updated_count?: number | null
+          user_id: string
+        }
+        Update: {
+          conflict_count?: number | null
+          created_at?: string
+          dataset_type?: string
+          error_count?: number | null
+          file_hash?: string | null
+          file_name?: string
+          file_size?: number | null
+          id?: string
+          inserted_count?: number | null
+          metadata?: Json | null
+          rows_count?: number | null
+          status?: string
+          unchanged_count?: number | null
+          updated_at?: string
+          updated_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       suppressed_emails: {
         Row: {
