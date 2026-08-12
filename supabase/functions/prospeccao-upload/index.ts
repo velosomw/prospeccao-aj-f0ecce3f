@@ -18,6 +18,7 @@ const HEADER_MAP: Record<string, string> = {
   "n° processo": "numero_processo",
   "nº processo": "numero_processo",
   "numero processo": "numero_processo",
+  "processo": "numero_processo",
   "parte con principal - nome": "parte_con_nome",
   "parte con principal - cpf/cnpj": "parte_con_cnpj",
   "parte con principal - qualificação": "parte_con_qualif",
@@ -30,30 +31,39 @@ const HEADER_MAP: Record<string, string> = {
   "instância": "instancia",
   "instancia": "instancia",
   "uf": "uf",
+  "estado": "uf",
   "municipio": "municipio",
   "município": "municipio",
+  "cidade": "municipio",
   "área judicial": "area_judicial",
   "area judicial": "area_judicial",
   "assunto judicial": "assunto_judicial",
   "ação judicial": "acao_judicial",
   "acao judicial": "acao_judicial",
   "valor pleito": "valor_pleito",
+  "valor do passivo": "valor_pleito",
   "status do processo": "status_processo",
+  "status": "status_processo",
   "dt. inicio": "dt_inicio",
   "dt. início": "dt_inicio",
+  "data da distribuição": "dt_inicio",
   "dt. cad. causa": "dt_cad_causa",
   "processo eletrônico?": "processo_eletronico",
   "processo eletronico?": "processo_eletronico",
   "link_documento": "link_documento",
   "link documento": "link_documento",
   // Novos mapeamentos para a planilha padrão de prospecção
-  "data da distribuição": "dt_inicio",
   "empresa": "parte_pro_nome",
+  "recuperanda": "parte_pro_nome",
   "vara e comarca": "orgao_tribunal",
-  "estado": "uf",
-  "valor do passivo": "valor_pleito",
-  "juiz / juíza": "pedidos_principais", // Mapeando juiz para pedidos_principais temporariamente se não houver coluna juiz
-  "aj nomeado": "advogado_nome", // Mapeando AJ nomeado para advogado_nome
+  "juiz / juíza": "pedidos_principais", 
+  "aj nomeado": "advogado_nome",
+  "contato": "advogado_nome",
+  "clientes": "parte_con_nome",
+  "cliente": "parte_con_nome",
+  "email": "link_documento", // Reutilizando para e-mail no cadastro se necessário
+  "telefone": "advogado_oab", // Reutilizando telefone
+  "sigla": "denominacao",
 };
 
 function normalizeHeader(h: string): string {
