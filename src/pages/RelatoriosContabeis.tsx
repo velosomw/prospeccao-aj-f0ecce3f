@@ -37,7 +37,7 @@ const REPORT_CATALOG = [
   {
     id: "contabil-dados",
     label: "Registros de Prospecção",
-    description: "Composição patrimonial, endividamento detalhado, DRE, indicadores, Kanitz e Score BEx-RJ.",
+    description: "Composição patrimonial, endividamento detalhado, DRE, indicadores e Score BEx-RJ.",
     enabled: true,
   },
 ] as const;
@@ -56,7 +56,7 @@ export default function RelatoriosContabeis() {
   const [fromKey, setFromKey] = useState<string | null>(null);
   const [toKey, setToKey] = useState<string | null>(null);
   const [blocks, setBlocks] = useState<ReportBlocks>({
-    balanco: true, endividamento: true, dre: true, kanitz: false, scoreRJ: true,
+    balanco: true, endividamento: true, dre: true, scoreRJ: true,
   });
   const [generating, setGenerating] = useState(false);
 
@@ -312,7 +312,6 @@ export default function RelatoriosContabeis() {
                         ["balanco", "Balanço Patrimonial"],
                         ["endividamento", "Composição Endividamento"],
                         ["dre", "DRE"],
-                        ["kanitz", "Kanitz"],
                         ["scoreRJ", "Score BEx-RJ"],
                       ] as Array<[keyof ReportBlocks, string]>).map(([k, label]) => (
                         <label key={k} className="flex items-center gap-2 text-sm border rounded-md px-3 py-2 cursor-pointer hover:bg-muted/40">

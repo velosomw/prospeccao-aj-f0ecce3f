@@ -249,7 +249,7 @@ export default function OneDriveFoldersStatus({ companyId, ano, mes, lockMonth =
   const folderAliases = useMemo(() => buildFolderAliasMap(monthFilteredRows), [monthFilteredRows]);
 
   // Extrai o "nome curto" da pasta (último segmento do path do diretório),
-  // ex.: "Projeto Prospeccao/DIPLOMATA/2025/11.2025/01 - Fluxo de Caixa" → "01 - Fluxo de Caixa".
+  // ex.: "Projeto Prospeccao/NOME_EMPRESA/2025/11.2025/01 - Fluxo de Caixa" → "01 - Fluxo de Caixa".
   // Usado como CHAVE de agrupamento para que variações de prefixo
   // ("Projeto Prospeccao/..." vs "DIPLOMATA/...") sejam consolidadas em UMA única pasta.
   const folderKey = (path: string): { key: string; full: string } => {

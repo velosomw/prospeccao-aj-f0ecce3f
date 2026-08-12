@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import VirtualTable from "@/components/shared/VirtualTable";
+import GenericSpreadsheetUpload from "@/components/consultor/GenericSpreadsheetUpload";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -25,6 +26,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 // Mock data mapping based on the requirement
 const FILE_CONFIGS: Record<string, { title: string; columns: any[] }> = {
@@ -76,17 +84,21 @@ export default function DetalheBaseDeDados() {
   const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   
   const config = FILE_CONFIGS[code || ""] || { title: "Arquivo não encontrado", columns: [] };
 
   // Sample empty data for now as per instructions (cleared database)
-  const rows: any[] = [];
+  const rows: any[] = []; // In a real scenario, this would use a hook to fetch data based on `code` and `refreshKey`
 
   const handleUpload = () => {
-    toast({
-      title: "Upload de dados",
-      description: "Funcionalidade de processamento de planilha sendo inicializada...",
-    });
+    setIsUploadOpen(true);
+  };
+
+  const handleUploadComplete = () => {
+    setRefreshKey(prev => prev + 1);
+    // Ideally we would also re-fetch the data here
   };
 
   const handleDelete = (id: string) => {
@@ -189,6 +201,17 @@ export default function DetalheBaseDeDados() {
           )}
         </div>
       </div>
+
+      <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Upload de Dados: {config.title}</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <GenericSpreadsheetUpload onComplete={handleUploadComplete} />
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <AlertDialog open={!!isDeleting} onOpenChange={() => setIsDeleting(null)}>
         <AlertDialogContent>
