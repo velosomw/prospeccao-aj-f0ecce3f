@@ -163,14 +163,17 @@ export default function VirtualTable<T>({
                                 className={`${typeof rowClassName === "function" ? rowClassName(row, virtualItem.index) : rowClassName}${onRowClick ? " cursor-pointer" : ""}`}
                                 onClick={onRowClick ? () => onRowClick(row) : undefined}
                               >
-                                {columns.map((col) => (
-                                  <td
-                                    key={col.key}
-                                    className={`px-4 py-3 ${col.className ?? ""}`}
-                                  >
-                                    {typeof col.cell === 'function' ? col.cell(row) : (row as any)[col.key]}
-                                  </td>
-                                ))}
+                                {columns.map((col) => {
+                                  if (!col) return null;
+                                  return (
+                                    <td
+                                      key={col.key}
+                                      className={`px-4 py-3 ${col.className ?? ""}`}
+                                    >
+                                      {typeof col.cell === 'function' ? col.cell(row) : (row as any)[col.key]}
+                                    </td>
+                                  );
+                                })}
                               </tr>
                             </tbody>
                           </table>
