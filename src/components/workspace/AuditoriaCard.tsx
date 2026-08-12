@@ -47,7 +47,7 @@ type TabKey =
   | "pivot"
   | "graficos"
   | "riscorj"
-  | "kanitz";
+  ;
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: "indicadores",   label: "Indicadores" },
@@ -715,7 +715,7 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
             {tab === "pivot"         && <TabPivotConsolidado companyId={companyId} runToken={runToken} fallbackRows={rows} />}
             {tab === "graficos"      && <TabGraficosAuditoria parsedData={bsParsed} entries={bsEntries} />}
             {tab === "riscorj"       && <PanelRiscoRJ rows={rows} />}
-            {tab === "kanitz"        && <TabKanitz parsedData={bsParsed} />}
+            
             
           </div>
         )}
