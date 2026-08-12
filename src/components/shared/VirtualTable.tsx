@@ -168,7 +168,7 @@ export default function VirtualTable<T>({
                                     key={col.key}
                                     className={`px-4 py-3 ${col.className ?? ""}`}
                                   >
-                                    {col.cell(row)}
+                                    {typeof col.cell === 'function' ? col.cell(row) : (row as any)[col.key]}
                                   </td>
                                 ))}
                               </tr>
