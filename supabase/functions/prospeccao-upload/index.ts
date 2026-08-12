@@ -61,9 +61,10 @@ const HEADER_MAP: Record<string, string> = {
   "contato": "advogado_nome",
   "clientes": "parte_con_nome",
   "cliente": "parte_con_nome",
-  "email": "link_documento", // Reutilizando para e-mail no cadastro se necessário
-  "telefone": "advogado_oab", // Reutilizando telefone
+  "email": "link_documento",
+  "telefone": "advogado_oab",
   "sigla": "denominacao",
+  "mês": "mes_referencia",
 };
 
 function normalizeHeader(h: string): string {
