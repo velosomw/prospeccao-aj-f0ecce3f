@@ -125,7 +125,7 @@ export default function RoleCadastroPage({
       return;
     }
     setSaving(true);
-    const { error } = await invokeAuthed("admin-create-user", { action: "create", ...form, role });
+    const { error } = await invokeAuthed("admin-create-user", { action: "create", ...form, role, execution_year: new Date().getFullYear() });
     setSaving(false);
     if (error) { 
       console.error("Erro detalhado ao criar:", error);
@@ -194,6 +194,7 @@ export default function RoleCadastroPage({
               email: data.email,
               password: Math.random().toString(36).slice(-8) + "!", // Senha temporária
               role,
+              execution_year: new Date().getFullYear(),
               ...data
             });
             setSaving(false);

@@ -159,10 +159,7 @@ export default function AppSidebar() {
   // Pré-carrega em tempo ocioso todas as páginas do menu do perfil atual,
   // para que o clique renderize praticamente na hora.
   useEffect(() => {
-    const paths = groups.flatMap((g) =>
-      g.items.flatMap((it) => [it.to, ...(it.children?.map((c) => c.to) ?? [])]),
-    );
-    prefetchRoutesIdle(paths);
+    prefetchRoutesIdle(prefetchPaths);
   }, [role]);
 
   const toggleSubmenu = (label: string) => {
