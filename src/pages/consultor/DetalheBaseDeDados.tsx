@@ -249,7 +249,8 @@ export default function DetalheBaseDeDados() {
               columns={tableColumns}
               rowKey={(r) => r.id}
               maxHeight={600}
-              headerClassName="bg-gray-50 text-gray-500 font-medium border-b"
+              headerClassName="bg-[hsl(222,47%,14%)] text-white font-medium border-b"
+              rowClassName="border-b border-border/60 hover:bg-blue-50/50 transition-colors"
             />
           )}
         </div>
