@@ -25,10 +25,10 @@ import TabBSDados from "@/components/bsDados/TabBSDados";
 import TabPivotConsolidado from "@/components/bsDados/TabPivotConsolidado";
 import TabGraficosAuditoria from "@/components/audit/TabGraficosAuditoria";
 import TabIndicadores from "@/components/audit/TabIndicadores";
-import TabKanitz from "@/components/audit/TabKanitz";
+
 import { buildBSDados, type BSDadosRow } from "@/services/bsDadosBuilder";
 import { buildIndicatorSeries, buildISGSeries } from "@/services/indicatorsEngine";
-import { buildKanitzMonthlySeries, summarizeKanitzSeries } from "@/services/kanitzMonthly";
+
 
 interface AuditoriaCardProps {
   companyId: string | null;
@@ -57,7 +57,7 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: "pivot",         label: "Pivot" },
   { key: "graficos",      label: "Gráficos de Auditoria" },
   { key: "riscorj",       label: "Risco RJ" },
-  { key: "kanitz",        label: "Kanitz" },
+  
 ];
 
 const fmt = (v?: number | null, dec = 2) =>
