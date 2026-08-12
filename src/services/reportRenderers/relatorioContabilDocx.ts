@@ -216,7 +216,6 @@ function buildBlock(p: ReportPeriodBlock, blocks: ReportDataset["blocks"]): Para
   out.push(h2("Indicadores Calculados"));
   out.push(indicadoresTable(p));
 
-  }
   if (blocks.scoreRJ && p.scoreRJ) {
     out.push(h2("Score BEx-RJ"));
     out.push(para(`Score: ${p.scoreRJ.score}/100 — ${p.scoreRJ.classificacao}`, { bold: true }));

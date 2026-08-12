@@ -36,7 +36,6 @@ export interface ReportPeriodBlock {
     capital_terceiros: number;         // PT / (PT+PL)
     imobilizacao_pl: number;           // (AT-AC) / PL
   };
-  kanitz: { fi: number; classificacao: "solvente" | "penumbra" | "insolvente" } | null;
   scoreRJ: { score: number; classificacao: string } | null;
 }
 
@@ -94,7 +93,6 @@ function labelForBucket(rows: BSDadosRow[], a: Agregacao): string {
   if (a === "annual") return `${parseKey(rows[0].mesKey).ano}`;
   return `${ini} → ${fim}`;
 }
-
 
 function scoreRJFor(r: BSDadosRow, ind: ReportPeriodBlock["indicators"]): ReportPeriodBlock["scoreRJ"] {
   const liqPenalty = Math.max(0, 1 - ind.liquidez_corrente) * 35;
@@ -168,7 +166,6 @@ const DEFAULT_BLOCKS: ReportBlocks = {
   balanco: true,
   endividamento: true,
   dre: true,
-  kanitz: false,
   scoreRJ: true,
 };
 
