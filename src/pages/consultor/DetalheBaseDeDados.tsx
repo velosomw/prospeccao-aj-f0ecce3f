@@ -40,8 +40,12 @@ const FILE_CONFIGS: Record<string, { title: string; columns: any[] }> = {
     title: "Administradores Judiciais Nomeados e Não Nomeados",
     columns: [
       { key: "data_distribuicao", header: "Data Distribuição", cell: (r: any) => r.data_distribuicao },
+      { key: "mes_referencia", header: "Mês", cell: (r: any) => r.mes_referencia },
       { key: "numero_processo", header: "Nº Processo", cell: (r: any) => r.numero_processo },
       { key: "empresa", header: "Empresa", cell: (r: any) => r.empresa },
+      { key: "orgao_tribunal", header: "Vara e Comarca", cell: (r: any) => r.orgao_tribunal },
+      { key: "uf", header: "Estado", cell: (r: any) => r.uf },
+      { key: "valor_pleito", header: "Valor Passivo", cell: (r: any) => r.valor_pleito?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || "—" },
       { key: "aj_nomeado", header: "AJ Nomeado", cell: (r: any) => r.aj_nomeado },
       { key: "magistrado_nome", header: "Juiz / Juíza", cell: (r: any) => r.magistrado_nome },
     ]
