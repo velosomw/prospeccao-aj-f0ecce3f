@@ -77,7 +77,7 @@ SAÍDA:
   "confianca": 0.0
 }`;
 
-export const PROMPT_CONTABIL_ANALITICO = `Você é um contador especialista em análise de demonstrativos financeiros.
+export const PROMPT_DOCUMENTAL_ANALITICO = `Você é um analista especialista em análise de demonstrativos financeiros.
 
 Analise o texto OCR e extraia:
 

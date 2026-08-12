@@ -85,7 +85,7 @@ export default function StageRelatorioProspeccao({
     (async () => {
       const { data } = await supabase
         .from("prospeccao_analysis_results" as any)
-        .select("percentual, kanitz, pendencias, indicadores, score_rj, topics, diagnostico")
+        .select("percentual, pendencias, indicadores, score_rj, topics, diagnostico")
         .eq("company_id", companyId)
         .maybeSingle();
       if (!cancel) setAnalysis(data ?? null);
@@ -122,7 +122,7 @@ export default function StageRelatorioProspeccao({
     if (!sec.length) return null;
     return Math.round(sec.reduce((a, s) => a + (s.grounding_score ?? 0), 0) / sec.length);
   })();
-  const kanitzAtual = analysis?.kanitz?.fi ?? analysis?.kanitz?.score ?? null;
+  
   const healthScore = (() => {
     if (scoreFinal >= 90) return "AA";
     if (scoreFinal >= 75) return "A";

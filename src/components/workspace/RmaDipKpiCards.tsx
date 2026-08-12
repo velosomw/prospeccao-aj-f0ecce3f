@@ -31,7 +31,7 @@ export default function RmaDipKpiCards({ prospeccaoId, companyId, scoreFinal }: 
     (async () => {
       const { data } = await supabase
         .from("prospeccao_analysis_results")
-        .select("percentual, kanitz, pendencias, indicadores, score_rj, topics, diagnostico")
+        .select("percentual, pendencias, indicadores, score_rj, topics, diagnostico")
         .eq("company_id", companyId)
         .maybeSingle();
       if (!cancel) setAnalysis(data ?? null);
@@ -54,7 +54,7 @@ export default function RmaDipKpiCards({ prospeccaoId, companyId, scoreFinal }: 
     if (!sec.length) return null;
     return Math.round(sec.reduce((a, s) => a + (s.grounding_score ?? 0), 0) / sec.length);
   }, [sections]);
-  const kanitzAtual = analysis?.kanitz?.fi ?? analysis?.kanitz?.score ?? null;
+  const indicators = analysis?.indicadores ?? null;
   const healthScore =
     scoreFinal >= 90 ? "AA" :
     scoreFinal >= 75 ? "A" :
