@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";
-import { BarChart3, FileText, Clock, CheckCircle2, AlertTriangle, Activity, TrendingUp, PlayCircle, Building2, ChevronDown, ChevronUp, Sparkles, History, Search, RefreshCw, AlertCircle, Calendar } from "lucide-react";
+import { BarChart3, FileText, Clock, CheckCircle2, AlertTriangle, Activity, TrendingUp, PlayCircle, Building2, ChevronDown, ChevronUp, Sparkles, History, Search, RefreshCw, AlertCircle, Calendar, RefreshCcw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,7 @@ import Prospeccao360Panel from "@/components/coordenador/Prospeccao360Panel";
 import { DeferredBatchIndicator } from "@/components/prospeccao/DeferredBatchIndicator";
 import ProspeccaoCompanySearch from "@/components/prospeccao/ProspeccaoCompanySearch";
 import { buildLiveScoreTopics, computeProspeccaoScore, groupFilesByCompany, fetchProspeccaoScores, type ScoreFile } from "@/lib/prospeccaoScore";
+import { useRecentSyncs } from "@/hooks/useRecentSyncs";
 
 const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
   em_processamento: { label: "Em Processamento", color: "text-accent", bg: "bg-accent/15" },
@@ -29,6 +30,7 @@ const statusConfig: Record<string, { label: string; color: string; bg: string }>
   concluido: { label: "Concluído", color: "text-primary", bg: "bg-primary/15" },
   pendente: { label: "Pendente", color: "text-muted-foreground", bg: "bg-muted/30" },
 };
+
 
 const EmpresaDashboard = () => {
   const navigate = useNavigate();
