@@ -37,7 +37,7 @@ const REPORT_CATALOG = [
   {
     id: "contabil-dados",
     label: "Registros de Prospecção",
-    description: "Composição patrimonial, endividamento detalhado, DRE, indicadores, Kanitz e Score BEx-RJ.",
+    description: "Composição patrimonial, endividamento detalhado, DRE, indicadores e Score BEx-RJ.",
     enabled: true,
   },
 ] as const;

@@ -229,7 +229,7 @@ export function buildReportDataset(opts: BuildOpts): ReportDataset {
   };
 }
 
-// Foprospeccaotadores reutilizáveis pelos renderers
+// Formatadores reutilizáveis pelos renderers
 export const fmtBRL = (v: number): string =>
   (v ?? 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 export const fmtPct = (v: number, dec = 2): string =>
