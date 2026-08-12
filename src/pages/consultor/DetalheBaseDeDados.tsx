@@ -217,9 +217,14 @@ export default function DetalheBaseDeDados() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border shadow-sm overflow-hidden min-h-[400px]">
-          {rows.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
+        <div className="bg-white rounded-xl border shadow-sm overflow-hidden min-h-[400px] flex flex-col">
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-20 text-muted-foreground flex-1">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+              <p>Carregando registros...</p>
+            </div>
+          ) : rows.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 text-muted-foreground flex-1">
               <FileSpreadsheet className="w-12 h-12 mb-4 opacity-20" />
               <p>Nenhum registro encontrado para este arquivo.</p>
               <Button variant="link" onClick={handleUpload} className="text-primary mt-2">
@@ -228,7 +233,11 @@ export default function DetalheBaseDeDados() {
             </div>
           ) : (
             <VirtualTable
-              data={rows}
+              data={rows.filter(r => 
+                Object.values(r).some(v => 
+                  String(v || "").toLowerCase().includes(search.toLowerCase())
+                )
+              )}
               columns={tableColumns}
               rowKey={(r) => r.id}
               maxHeight={600}
