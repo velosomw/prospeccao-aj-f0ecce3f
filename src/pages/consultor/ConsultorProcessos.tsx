@@ -18,11 +18,11 @@ export default function ConsultorProcessos() {
       title="Processos" subtitle="Pipelines de IA, OCR e validação em execução em tempo real."
       kpis={[
         { label: "Em Execução",   value: running.length,  hint: "Pipelines ativos", icon: Activity,    tone: "purple" },
-        { label: "Concluídos Hoje", value: 12,            hint: "Últimas 24h",      icon: CheckCircle2, tone: "green" },
-        { label: "Falhas",        value: 1,               hint: "Requer atenção",   icon: AlertTriangle, tone: "red" },
-        { label: "Tempo Médio",   value: "4m 12s",        hint: "Por documento",    icon: Clock,        tone: "blue" },
-        { label: "Taxa Sucesso",  value: "97%",           hint: "Últimos 7d",       icon: Zap,          tone: "green" },
-        { label: "GPU Workers",   value: "3/4",           hint: "Capacidade",       icon: Cpu,          tone: "orange" },
+        { label: "Concluídos Hoje", value: 0,            hint: "Últimas 24h",      icon: CheckCircle2, tone: "green" },
+        { label: "Falhas",        value: 0,               hint: "Requer atenção",   icon: AlertTriangle, tone: "red" },
+        { label: "Tempo Médio",   value: "—",        hint: "Por documento",    icon: Clock,        tone: "blue" },
+        { label: "Taxa Sucesso",  value: "—",           hint: "Últimos 7d",       icon: Zap,          tone: "green" },
+        { label: "GPU Workers",   value: "—",           hint: "Capacidade",       icon: Cpu,          tone: "orange" },
       ]}
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

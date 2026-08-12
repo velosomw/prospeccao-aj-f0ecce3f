@@ -18,12 +18,12 @@ export default function GestorIA() {
         { label: "Auditoria",         desc: "Trilha WORM imutável de todas as ações.",       icon: Shield,        to: "/gestor-ia/auditoria",       tone: "amber"  },
       ]}
       summary={[
-        { label: "Agentes Ativos",  value: 12,      icon: Brain,         tone: "purple" },
+        { label: "Agentes Ativos",  value: 0,      icon: Brain,         tone: "purple" },
         { label: "Chamadas (24h)",  value: "1.84k", icon: Activity,      tone: "blue"   },
         { label: "Tokens (24h)",    value: "412k",  icon: Cpu,           tone: "purple" },
         { label: "Cache Hit",       value: "62%",   icon: Zap,           tone: "green"  },
         { label: "Failed Jobs",     value: "03",    icon: AlertTriangle, tone: "red"    },
-        { label: "Score Global IA", value: 91,      icon: Award,         tone: "green"  },
+        { label: "Score Global IA", value: 0,      icon: Award,         tone: "green"  },
       ]}
       avisos={[
         { icon: AlertTriangle, tone: "red",    title: "3 jobs falharam no pipeline OCR", sub: "Agente: ocr-vision", time: "10:42" },

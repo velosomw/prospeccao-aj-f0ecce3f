@@ -16,12 +16,12 @@ export default function CoordRelatorios() {
     <ConsultorPageShell
       title="Relatórios" subtitle="Acompanhamento consolidado de Prospeccoes AJ publicados e em produção."
       kpis={[
-        { label: "Publicados",      value: 47, hint: "Total geral",   icon: CheckCircle2, tone: "green" },
-        { label: "Em Revisão",      value: 8,  hint: "Coordenação",   icon: Eye,          tone: "orange" },
-        { label: "Rascunhos",       value: 5,  hint: "Em construção", icon: FileText,     tone: "purple" },
-        { label: "Score Médio",     value: 76, hint: "Qualidade IA",  icon: FileBarChart, tone: "blue" },
-        { label: "Downloads (30d)", value: 213, hint: "Acessos",      icon: Download,     tone: "blue" },
-        { label: "Tempo Médio",     value: "2.4d", hint: "Geração",   icon: Clock,        tone: "slate" },
+        { label: "Publicados",      value: 0, hint: "Total geral",   icon: CheckCircle2, tone: "green" },
+        { label: "Em Revisão",      value: 0,  hint: "Coordenação",   icon: Eye,          tone: "orange" },
+        { label: "Rascunhos",       value: 0,  hint: "Em construção", icon: FileText,     tone: "purple" },
+        { label: "Score Médio",     value: 0, hint: "Qualidade IA",  icon: FileBarChart, tone: "blue" },
+        { label: "Downloads (30d)", value: 0, hint: "Acessos",      icon: Download,     tone: "blue" },
+        { label: "Tempo Médio",     value: "—", hint: "Geração",   icon: Clock,        tone: "slate" },
       ]}
     >
       <div className="bg-white rounded-xl border">

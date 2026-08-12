@@ -17,12 +17,12 @@ export default function RecuperandaDashboard() {
         { label: "Upload",      desc: "Envie novos documentos agora.",          icon: Upload,        to: "/recuperanda/documentos",  tone: "teal"   },
       ]}
       summary={[
-        { label: "Score Saúde",     value: 72,   icon: Award,         tone: "green"  },
-        { label: "Documentos",      value: 60,   icon: FileText,      tone: "blue"   },
-        { label: "Pendências",      value: 14,   icon: AlertTriangle, tone: "orange", to: "/recuperanda/pendencias" },
+        { label: "Score Saúde",     value: 0,   icon: Award,         tone: "green"  },
+        { label: "Documentos",      value: 0,   icon: FileText,      tone: "blue"   },
+        { label: "Pendências",      value: 0,   icon: AlertTriangle, tone: "orange", to: "/recuperanda/pendencias" },
         { label: "Próximo Prazo",   value: "8d", icon: Calendar,      tone: "blue"    },
         { label: "Prospeccoes AJ Publicados", value: "04", icon: CheckCircle2,  tone: "green"  },
-        { label: "Uploads (30d)",   value: 47,   icon: Upload,        tone: "purple" },
+        { label: "Uploads (30d)",   value: 0,   icon: Upload,        tone: "purple" },
       ]}
       avisos={[
         { icon: AlertTriangle, tone: "red",    title: "Envie o Balancete de Maio/2026", sub: "Vencimento em 8 dias", time: "Hoje" },

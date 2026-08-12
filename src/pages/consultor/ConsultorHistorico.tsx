@@ -19,12 +19,12 @@ export default function ConsultorHistorico() {
     <ConsultorPageShell
       title="Histórico" subtitle="Trilha completa de auditoria com versões, alterações e aprovações."
       kpis={[
-        { label: "Eventos (30d)", value: 412, hint: "Total registrado", icon: History, tone: "blue" },
-        { label: "Publicações",   value: 47,  hint: "Prospeccoes AJ concluídos",  icon: CheckCircle2, tone: "green" },
-        { label: "Edições",       value: 198, hint: "Blocos alterados", icon: GitCommit,    tone: "purple" },
-        { label: "Aprovações",    value: 89,  hint: "Coordenação",      icon: CheckCircle2, tone: "green" },
-        { label: "Rejeições",     value: 14,  hint: "Para revisão",     icon: AlertTriangle, tone: "red" },
-        { label: "Usuários Ativos", value: 6, hint: "Equipe",           icon: User,         tone: "slate" },
+        { label: "Eventos (30d)", value: 0, hint: "Total registrado", icon: History, tone: "blue" },
+        { label: "Publicações",   value: 0,  hint: "Prospeccoes AJ concluídos",  icon: CheckCircle2, tone: "green" },
+        { label: "Edições",       value: 0, hint: "Blocos alterados", icon: GitCommit,    tone: "purple" },
+        { label: "Aprovações",    value: 0,  hint: "Coordenação",      icon: CheckCircle2, tone: "green" },
+        { label: "Rejeições",     value: 0,  hint: "Para revisão",     icon: AlertTriangle, tone: "red" },
+        { label: "Usuários Ativos", value: 0, hint: "Equipe",           icon: User,         tone: "slate" },
       ]}
     >
       <div className="bg-white rounded-xl border p-5">

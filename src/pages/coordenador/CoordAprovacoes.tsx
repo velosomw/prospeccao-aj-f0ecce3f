@@ -13,10 +13,10 @@ export default function CoordAprovacoes() {
       kpis={[
         { label: "Aguardando",      value: aprovacoes.length, hint: "Total na fila",    icon: Clock,        tone: "orange" },
         { label: "Críticas",        value: aprovacoes.filter(a => a.critico).length, hint: "Vence hoje",   icon: AlertTriangle, tone: "red" },
-        { label: "Aprovadas (30d)", value: 47, hint: "Concluídas",                       icon: CheckCircle2, tone: "green" },
-        { label: "Reprovadas",      value: 5,  hint: "Para revisão",                     icon: AlertTriangle, tone: "red" },
-        { label: "Tempo Médio",     value: "1.4d", hint: "Para aprovação",                icon: Clock,        tone: "blue" },
-        { label: "Score Médio",     value: 74, hint: "Da fila atual",                    icon: Eye,          tone: "purple" },
+        { label: "Aprovadas (30d)", value: 0, hint: "Concluídas",                       icon: CheckCircle2, tone: "green" },
+        { label: "Reprovadas",      value: 0,  hint: "Para revisão",                     icon: AlertTriangle, tone: "red" },
+        { label: "Tempo Médio",     value: "—", hint: "Para aprovação",                icon: Clock,        tone: "blue" },
+        { label: "Score Médio",     value: 0, hint: "Da fila atual",                    icon: Eye,          tone: "purple" },
       ]}
     >
       <div className="bg-white rounded-xl border">

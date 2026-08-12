@@ -19,7 +19,7 @@ export default function CoordEquipe() {
         { label: "Score Médio",   value: avgScore,    hint: "Qualidade",      icon: Award,        tone: "green" },
         { label: "SLA Médio",     value: `${avgSLA}%`, hint: "Cumprimento",    icon: Activity,     tone: "blue" },
         { label: "Sobrecarga",    value: team.filter(t => t.status === "Sobrecarga").length, hint: "Atenção", icon: AlertTriangle, tone: "orange" },
-        { label: "Disponíveis",   value: 2,           hint: "Capacidade livre", icon: Users,      tone: "green" },
+        { label: "Disponíveis",   value: 0,           hint: "Capacidade livre", icon: Users,      tone: "green" },
       ]}
     >
       <div className="bg-white rounded-xl border">

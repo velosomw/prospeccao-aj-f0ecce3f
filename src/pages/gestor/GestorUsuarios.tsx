@@ -26,9 +26,9 @@ export default function GestorUsuarios() {
         { label: "Total",        value: users.length, hint: "Cadastrados",  icon: Users,      tone: "blue" },
         { label: "Ativos",       value: users.filter(u => u.status === "Ativo").length, hint: "Online recente", icon: UserCheck, tone: "green" },
         { label: "Inativos",     value: users.filter(u => u.status === "Inativo").length, hint: "30d sem acesso", icon: UserX,    tone: "red" },
-        { label: "Coordenadores",value: 1, hint: "Gestão",                  icon: Shield,     tone: "blue" },
-        { label: "Consultores",  value: 2, hint: "Operação",                icon: Users,      tone: "purple" },
-        { label: "Externos",     value: 3, hint: "Magistrado/AJ/RJ",        icon: Users,      tone: "orange" },
+        { label: "Coordenadores",value: 0, hint: "Gestão",                  icon: Shield,     tone: "blue" },
+        { label: "Consultores",  value: 0, hint: "Operação",                icon: Users,      tone: "purple" },
+        { label: "Externos",     value: 0, hint: "Magistrado/AJ/RJ",        icon: Users,      tone: "orange" },
       ]}
     >
       <div className="bg-white rounded-xl border">

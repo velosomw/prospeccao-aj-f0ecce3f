@@ -13,12 +13,12 @@ export default function RecCronograma() {
     <ConsultorPageShell
       title="Cronograma" subtitle="Calendário de obrigações e marcos do processo."
       kpis={[
-        { label: "Próximas (30d)", value: 4,  hint: "Agendadas",  icon: Calendar,     tone: "blue" },
-        { label: "Próxima",        value: "8d", hint: "Balancete",icon: Clock,        tone: "orange" },
-        { label: "Cumpridas (30d)",value: 12, hint: "No prazo",   icon: CheckCircle2, tone: "green" },
-        { label: "Atrasadas",      value: 1,  hint: "Recuperar",  icon: AlertTriangle, tone: "red" },
-        { label: "Total Anuais",   value: 24, hint: "Marcos",     icon: FileText,     tone: "purple" },
-        { label: "Aderência",      value: "92%", hint: "Compliance", icon: CheckCircle2, tone: "green" },
+        { label: "Próximas (30d)", value: 0,  hint: "Agendadas",  icon: Calendar,     tone: "blue" },
+        { label: "Próxima",        value: "—", hint: "Balancete",icon: Clock,        tone: "orange" },
+        { label: "Cumpridas (30d)",value: 0, hint: "No prazo",   icon: CheckCircle2, tone: "green" },
+        { label: "Atrasadas",      value: 0,  hint: "Recuperar",  icon: AlertTriangle, tone: "red" },
+        { label: "Total Anuais",   value: 0, hint: "Marcos",     icon: FileText,     tone: "purple" },
+        { label: "Aderência",      value: "—", hint: "Compliance", icon: CheckCircle2, tone: "green" },
       ]}
     >
       <div className="bg-white rounded-xl border p-5">

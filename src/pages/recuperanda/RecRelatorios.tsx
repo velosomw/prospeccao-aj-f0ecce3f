@@ -11,11 +11,11 @@ export default function RecRelatorios() {
       title="Meus Relatórios" subtitle="Prospeccoes AJ publicados sobre seu processo de recuperação."
       kpis={[
         { label: "Publicados",  value: rels.length, hint: "Total",       icon: CheckCircle2, tone: "green" },
-        { label: "Score Atual", value: 87, hint: "Último Prospeccao AJ",           icon: Award,        tone: "green" },
-        { label: "Score Médio", value: 82, hint: "Histórico",            icon: FileBarChart, tone: "blue" },
-        { label: "Tendência",   value: "↑ 5pts", hint: "Vs período anterior", icon: Award,   tone: "green" },
-        { label: "Downloads",   value: 12, hint: "30d",                  icon: Download,     tone: "purple" },
-        { label: "Próxima Entrega", value: "20/05", hint: "Prospeccao AJ Jun/2026",icon: FileBarChart, tone: "orange" },
+        { label: "Score Atual", value: 0, hint: "Último Prospeccao AJ",           icon: Award,        tone: "green" },
+        { label: "Score Médio", value: 0, hint: "Histórico",            icon: FileBarChart, tone: "blue" },
+        { label: "Tendência",   value: "—", hint: "Vs período anterior", icon: Award,   tone: "green" },
+        { label: "Downloads",   value: 0, hint: "30d",                  icon: Download,     tone: "purple" },
+        { label: "Próxima Entrega", value: "—", hint: "Prospeccao AJ Jun/2026",icon: FileBarChart, tone: "orange" },
       ]}
     >
       <div className="bg-white rounded-xl border">

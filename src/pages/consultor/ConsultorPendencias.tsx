@@ -34,8 +34,8 @@ export default function ConsultorPendencias() {
         { label: "Críticas",     value: counts.critica,  hint: "SLA < 24h",  icon: AlertCircle,    tone: "red" },
         { label: "Altas",        value: counts.alta,     hint: "SLA < 48h",  icon: AlertTriangle,  tone: "orange" },
         { label: "Médias",       value: counts.media,    hint: "SLA < 5d",   icon: Clock,          tone: "purple" },
-        { label: "Resolvidas Hoje", value: 14,           hint: "+3 vs ontem",icon: CheckCircle2,   tone: "green" },
-        { label: "SLA Médio",    value: "2.3d",          hint: "Tempo resp.",icon: Clock,          tone: "blue" },
+        { label: "Resolvidas Hoje", value: 0,           hint: "+3 vs ontem",icon: CheckCircle2,   tone: "green" },
+        { label: "SLA Médio",    value: "—",          hint: "Tempo resp.",icon: Clock,          tone: "blue" },
       ]}
     >
       <div className="bg-white rounded-xl border">

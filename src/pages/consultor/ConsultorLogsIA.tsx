@@ -18,12 +18,12 @@ export default function ConsultorLogsIA() {
     <ConsultorPageShell
       title="Logs IA" subtitle="Telemetria em tempo real dos agentes de inteligência artificial."
       kpis={[
-        { label: "Eventos (24h)", value: 1842, hint: "Total processado", icon: Activity, tone: "blue" },
-        { label: "Sucesso",       value: "97%", hint: "Taxa global",     icon: CheckCircle2, tone: "green" },
-        { label: "Warnings",      value: 41,   hint: "Para revisar",     icon: AlertTriangle, tone: "orange" },
-        { label: "Erros",         value: 12,   hint: "Críticos",         icon: AlertTriangle, tone: "red" },
-        { label: "Tokens (24h)",  value: "412k", hint: "Consumo LLM",    icon: Brain,        tone: "purple" },
-        { label: "Latência Média",value: "8.2s", hint: "Por chamada",    icon: Clock,        tone: "slate" },
+        { label: "Eventos (24h)", value: 0, hint: "Total processado", icon: Activity, tone: "blue" },
+        { label: "Sucesso",       value: "—", hint: "Taxa global",     icon: CheckCircle2, tone: "green" },
+        { label: "Warnings",      value: 0,   hint: "Para revisar",     icon: AlertTriangle, tone: "orange" },
+        { label: "Erros",         value: 0,   hint: "Críticos",         icon: AlertTriangle, tone: "red" },
+        { label: "Tokens (24h)",  value: "—", hint: "Consumo LLM",    icon: Brain,        tone: "purple" },
+        { label: "Latência Média",value: "—", hint: "Por chamada",    icon: Clock,        tone: "slate" },
       ]}
     >
       <div className="bg-white rounded-xl border">

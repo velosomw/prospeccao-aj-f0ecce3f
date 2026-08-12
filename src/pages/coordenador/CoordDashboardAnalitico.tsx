@@ -22,10 +22,10 @@ const aprovacoes: any[] = [];
 
 
 const distStatus = [
-  { name: "Em Análise IA", value: 18, color: COLORS.purple },
-  { name: "Em Revisão",    value: 12, color: COLORS.orange },
-  { name: "Aprovação",     value: 9,  color: COLORS.blue   },
-  { name: "Concluídos",    value: 24, color: COLORS.green  },
+  { name: "Em Análise IA", value: 0, color: COLORS.purple },
+  { name: "Em Revisão",    value: 0, color: COLORS.orange },
+  { name: "Aprovação",     value: 0,  color: COLORS.blue   },
+  { name: "Concluídos",    value: 0, color: COLORS.green  },
 ];
 
 const evolucao: any[] = [];

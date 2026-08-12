@@ -17,12 +17,12 @@ export default function CoordHistorico() {
     <ConsultorPageShell
       title="Histórico" subtitle="Todas as ações de coordenação ao longo do tempo."
       kpis={[
-        { label: "Eventos (30d)", value: 412, hint: "Total",        icon: History,      tone: "blue" },
-        { label: "Publicações",   value: 47,  hint: "Prospeccoes AJ",         icon: CheckCircle2, tone: "green" },
-        { label: "Edições",       value: 198, hint: "Blocos",       icon: GitCommit,    tone: "purple" },
-        { label: "Aprovações",    value: 89,  hint: "Coordenação",  icon: CheckCircle2, tone: "green" },
-        { label: "Rejeições",     value: 14,  hint: "Revisão",      icon: AlertTriangle, tone: "red" },
-        { label: "Usuários",      value: 6,   hint: "Ativos",       icon: User,         tone: "slate" },
+        { label: "Eventos (30d)", value: 0, hint: "Total",        icon: History,      tone: "blue" },
+        { label: "Publicações",   value: 0,  hint: "Prospeccoes AJ",         icon: CheckCircle2, tone: "green" },
+        { label: "Edições",       value: 0, hint: "Blocos",       icon: GitCommit,    tone: "purple" },
+        { label: "Aprovações",    value: 0,  hint: "Coordenação",  icon: CheckCircle2, tone: "green" },
+        { label: "Rejeições",     value: 0,  hint: "Revisão",      icon: AlertTriangle, tone: "red" },
+        { label: "Usuários",      value: 0,   hint: "Ativos",       icon: User,         tone: "slate" },
       ]}
     >
       <div className="bg-white rounded-xl border p-5">

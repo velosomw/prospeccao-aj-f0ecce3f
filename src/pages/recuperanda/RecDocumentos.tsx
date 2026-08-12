@@ -15,12 +15,12 @@ export default function RecDocumentos() {
     <ConsultorPageShell
       title="Meus Documentos" subtitle="Documentos enviados ao processo de recuperação judicial."
       kpis={[
-        { label: "Total",       value: 60, hint: "Acervo",        icon: FolderOpen,    tone: "blue" },
-        { label: "Validados",   value: 38, hint: "63%",           icon: CheckCircle2,  tone: "green" },
-        { label: "Incompletos", value: 14, hint: "Reenviar",      icon: AlertTriangle, tone: "orange" },
-        { label: "Vazios",      value: 8,  hint: "Pendente",      icon: AlertTriangle, tone: "red" },
-        { label: "PDFs",        value: 41, hint: "Documentos",    icon: FileText,      tone: "purple" },
-        { label: "Planilhas",   value: 19, hint: "Financeiros",   icon: FileSpreadsheet, tone: "green" },
+        { label: "Total",       value: 0, hint: "Acervo",        icon: FolderOpen,    tone: "blue" },
+        { label: "Validados",   value: 0, hint: "63%",           icon: CheckCircle2,  tone: "green" },
+        { label: "Incompletos", value: 0, hint: "Reenviar",      icon: AlertTriangle, tone: "orange" },
+        { label: "Vazios",      value: 0,  hint: "Pendente",      icon: AlertTriangle, tone: "red" },
+        { label: "PDFs",        value: 0, hint: "Documentos",    icon: FileText,      tone: "purple" },
+        { label: "Planilhas",   value: 0, hint: "Financeiros",   icon: FileSpreadsheet, tone: "green" },
       ]}
     >
       <div className="bg-white rounded-xl border">

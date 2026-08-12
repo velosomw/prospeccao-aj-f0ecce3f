@@ -18,8 +18,8 @@ export default function RecPendencias() {
         { label: "Críticas",       value: pend.filter(p => p.sev === "critica").length, hint: "SLA < 24h", icon: AlertCircle,    tone: "red" },
         { label: "Altas",          value: pend.filter(p => p.sev === "alta").length, hint: "SLA < 48h",   icon: AlertTriangle,  tone: "orange" },
         { label: "Médias",         value: pend.filter(p => p.sev === "media").length, hint: "SLA < 5d",   icon: Clock,          tone: "purple" },
-        { label: "Resolvidas (30d)",value: 22,  hint: "Concluídas",         icon: CheckCircle2,   tone: "green" },
-        { label: "SLA Médio",      value: "1.8d", hint: "Tempo resposta",  icon: Clock,          tone: "blue" },
+        { label: "Resolvidas (30d)",value: 0,  hint: "Concluídas",         icon: CheckCircle2,   tone: "green" },
+        { label: "SLA Médio",      value: "—", hint: "Tempo resposta",  icon: Clock,          tone: "blue" },
       ]}
     >
       <div className="bg-white rounded-xl border">

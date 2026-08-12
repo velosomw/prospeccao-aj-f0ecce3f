@@ -9,12 +9,12 @@ export default function CoordAuditoria() {
     <ConsultorPageShell
       title="Auditoria PDF" subtitle="Trilha imutável WORM de todas as ações de governança."
       kpis={[
-        { label: "Eventos (30d)", value: 412, hint: "Registrados",       icon: Activity,     tone: "blue" },
-        { label: "Aprovações",    value: 89,  hint: "Coordenação",       icon: CheckCircle2, tone: "green" },
-        { label: "Rejeições",     value: 14,  hint: "Para revisão",      icon: AlertTriangle, tone: "red" },
-        { label: "Documentos",    value: 1842, hint: "Indexados",        icon: FileText,     tone: "purple" },
-        { label: "Hash Chain",    value: "OK", hint: "Integridade",      icon: Lock,         tone: "green" },
-        { label: "Compliance",    value: "100%", hint: "WORM",           icon: Shield,       tone: "blue" },
+        { label: "Eventos (30d)", value: 0, hint: "Registrados",       icon: Activity,     tone: "blue" },
+        { label: "Aprovações",    value: 0,  hint: "Coordenação",       icon: CheckCircle2, tone: "green" },
+        { label: "Rejeições",     value: 0,  hint: "Para revisão",      icon: AlertTriangle, tone: "red" },
+        { label: "Documentos",    value: 0, hint: "Indexados",        icon: FileText,     tone: "purple" },
+        { label: "Hash Chain",    value: "—", hint: "Integridade",      icon: Lock,         tone: "green" },
+        { label: "Compliance",    value: "—", hint: "WORM",           icon: Shield,       tone: "blue" },
       ]}
     >
       <div className="bg-white rounded-xl border">
