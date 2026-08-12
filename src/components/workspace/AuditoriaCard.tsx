@@ -532,11 +532,6 @@ export default function AuditoriaCard({ companyId, runToken, bsParsed, bsEntries
     if (brokenEq > 0) {
       out.push({ level: "warn", msg: `${brokenEq} mês(es) com equilíbrio contábil quebrado (AT ≠ P + PL).` });
     }
-    const kanitzSeries = buildKanitzMonthlySeries(rows);
-    const lastK = kanitzSeries[kanitzSeries.length - 1];
-    if (lastK && Number.isFinite(lastK.score) && lastK.score < 0) {
-      out.push({ level: "crit", msg: `Kanitz em zona de insolvência (${fmt(lastK.score, 2)}) em ${lastK.mes ?? last.mes}.` });
-    }
     if (lastSerie && Number.isFinite(lastSerie.endividamentoGeral) && lastSerie.endividamentoGeral > 0.8) {
       out.push({ level: "warn", msg: `Endividamento Geral elevado em ${last.mes} (${fmtPct(lastSerie.endividamentoGeral)}).` });
     }

@@ -1,4 +1,4 @@
-// Renderer DOCX — Relatório Contábil de Dados (fidelidade ao template BEX).
+// Renderer DOCX — Registros de Prospecção (fidelidade ao template BEX).
 import {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
   HeadingLevel, AlignmentType, WidthType, BorderStyle, ShadingType,
@@ -237,7 +237,7 @@ export async function generateRelatorioContabilDocx(d: ReportDataset, filename?:
     new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "BEX AUDITORIA", bold: true, size: 36, color: NAVY })] }),
     new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "IA de Prospecção", size: 22, color: BLUE })] }),
     new Paragraph({ spacing: { before: 240 }, alignment: AlignmentType.CENTER,
-      children: [new TextRun({ text: "Relatório Contábil de Dados — Composição, Endividamento e Balanço", bold: true, size: 28, color: NAVY })] }),
+      children: [new TextRun({ text: "Registros de Prospecção — Composição, Endividamento e Balanço", bold: true, size: 28, color: NAVY })] }),
     new Paragraph({ alignment: AlignmentType.CENTER,
       children: [new TextRun({ text: `Empresa: ${d.empresaNome}${d.empresaCnpj ? ` — CNPJ ${d.empresaCnpj}` : ""}`, size: 22 })] }),
     d.prospeccaoId ? new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: `Prospeccao: ${d.prospeccaoId}`, size: 20, color: "555555" })] }) : new Paragraph({}),

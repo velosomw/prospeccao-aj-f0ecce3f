@@ -1,4 +1,4 @@
-// Renderer PDF — Relatório Contábil de Dados (layout enxuto, mesmas seções do DOCX).
+// Renderer PDF — Registros de Prospecção (layout enxuto, mesmas seções do DOCX).
 import jsPDF from "jspdf";
 import {
   type ReportDataset, type ReportPeriodBlock,
@@ -179,7 +179,7 @@ export function generateRelatorioContabilPdf(d: ReportDataset, filename?: string
   doc.setFont("helvetica", "bold");
   doc.setFontSize(18);
   doc.setTextColor(...NAVY);
-  doc.text("Relatório Contábil de Dados", 14, c.y);
+  doc.text("Registros de Prospecção", 14, c.y);
   c.y += 7;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
