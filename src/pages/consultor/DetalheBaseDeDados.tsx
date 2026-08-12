@@ -39,41 +39,41 @@ const FILE_CONFIGS: Record<string, { title: string; columns: any[] }> = {
   "AJ_NOMEADOS": {
     title: "Administradores Judiciais Nomeados e Não Nomeados",
     columns: [
-      { key: "data_distribuicao", header: "Data Distribuição" },
-      { key: "numero_processo", header: "Nº Processo" },
-      { key: "empresa", header: "Empresa" },
-      { key: "aj_nomeado", header: "AJ Nomeado" },
-      { key: "magistrado_nome", header: "Juiz / Juíza" },
+      { key: "data_distribuicao", header: "Data Distribuição", cell: (r: any) => r.data_distribuicao },
+      { key: "numero_processo", header: "Nº Processo", cell: (r: any) => r.numero_processo },
+      { key: "empresa", header: "Empresa", cell: (r: any) => r.empresa },
+      { key: "aj_nomeado", header: "AJ Nomeado", cell: (r: any) => r.aj_nomeado },
+      { key: "magistrado_nome", header: "Juiz / Juíza", cell: (r: any) => r.magistrado_nome },
     ]
   },
   "AGCS_REALIZADAS": {
     title: "AGCs Realizadas",
     columns: [
-      { key: "cliente", header: "Cliente" },
-      { key: "recuperanda", header: "Recuperanda" },
-      { key: "data_agc", header: "Data AGC" },
-      { key: "cidade", header: "Cidade" },
-      { key: "estado", header: "Estado" },
+      { key: "cliente", header: "Cliente", cell: (r: any) => r.cliente },
+      { key: "recuperanda", header: "Recuperanda", cell: (r: any) => r.recuperanda },
+      { key: "data_agc", header: "Data AGC", cell: (r: any) => r.data_agc },
+      { key: "cidade", header: "Cidade", cell: (r: any) => r.cidade },
+      { key: "estado", header: "Estado", cell: (r: any) => r.estado },
     ]
   },
   "CADASTRO_AJ": {
     title: "Cadastro de Administradores Judiciais",
     columns: [
-      { key: "nome", header: "Nome" },
-      { key: "sigla", header: "Sigla" },
-      { key: "email", header: "E-mail" },
-      { key: "telefone", header: "Telefone" },
-      { key: "cidade", header: "Cidade" },
+      { key: "nome", header: "Nome", cell: (r: any) => r.nome },
+      { key: "sigla", header: "Sigla", cell: (r: any) => r.sigla },
+      { key: "email", header: "E-mail", cell: (r: any) => r.email },
+      { key: "telefone", header: "Telefone", cell: (r: any) => r.telefone },
+      { key: "cidade", header: "Cidade", cell: (r: any) => r.cidade },
     ]
   },
   "CARTAS_AJ": {
     title: "Relação de Cartas Impressas aos AJ",
     columns: [
-      { key: "data_distribuicao", header: "Data Distribuição" },
-      { key: "cliente", header: "Cliente" },
-      { key: "processo", header: "Processo" },
-      { key: "sigla", header: "Sigla" },
-      { key: "status", header: "Status" },
+      { key: "data_distribuicao", header: "Data Distribuição", cell: (r: any) => r.data_distribuicao },
+      { key: "cliente", header: "Cliente", cell: (r: any) => r.cliente },
+      { key: "processo", header: "Processo", cell: (r: any) => r.processo },
+      { key: "sigla", header: "Sigla", cell: (r: any) => r.sigla },
+      { key: "status", header: "Status", cell: (r: any) => r.status },
     ]
   }
 };
