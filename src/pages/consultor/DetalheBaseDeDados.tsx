@@ -192,8 +192,13 @@ export default function DetalheBaseDeDados() {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </Button>
+          <Button variant="outline" size="sm" onClick={() => setIsLogOpen(true)} className="gap-2 border-slate-200">
+            <Clock className="w-4 h-4" />
+            Log Sinc
+          </Button>
           <SpreadsheetUpload datasetType={datasetType} onSuccess={handleUploadComplete} />
         </div>
+
       }
     >
       <div className="space-y-4">
