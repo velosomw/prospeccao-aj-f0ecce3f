@@ -1,7 +1,5 @@
 -- 1. Knowledge Base Scoping (Role-based restriction)
 -- Restricted to gestor_ia and coordenador (and service_role).
--- Note: 'authenticated' users (Consultors) can view entities if they have access to a related company, 
--- but generic SELECT is restricted here for security.
 
 DROP POLICY IF EXISTS "knowledge_entities_read" ON public.knowledge_entities;
 CREATE POLICY "knowledge_entities_read_scoped" ON public.knowledge_entities
@@ -62,8 +60,8 @@ CREATE POLICY "pbf_read_scoped" ON public.prospeccao_business_facts
     public.has_role(auth.uid(), 'coordenador') OR
     EXISTS (
       SELECT 1 FROM public.prospeccao_linhas l
-      JOIN public.company_consultants cc ON cc.company_id = l.prospeccao_id -- assuming company_id in cc links to the entity/prospecting ID
-      WHERE l.id = prospeccao_business_facts.linha_id
+      JOIN public.company_consultants cc ON cc.company_id = l.prospeccao_id
+      WHERE l.id = public.prospeccao_business_facts.linha_id
         AND cc.consultant_user_id = auth.uid()
     )
   );
@@ -114,7 +112,7 @@ CREATE POLICY "prospeccao_document_registry_read_scoped" ON public.prospeccao_do
     public.has_role(auth.uid(), 'coordenador') OR
     EXISTS (
       SELECT 1 FROM public.company_consultants cc
-      WHERE cc.company_id = prospeccao_document_registry.linha_id -- mapping linha_id to company_id assignment
+      WHERE cc.company_id = public.prospeccao_document_registry.linha_id
         AND cc.consultant_user_id = auth.uid()
     )
   );
@@ -147,6 +145,6 @@ CREATE POLICY "prospeccao_analytics_scoped" ON public.prospeccao_analytics
 ALTER FUNCTION public.knowledge_upsert_entity(text,text,text,jsonb,jsonb,text,text,text,text,numeric,text) SET search_path = public;
 ALTER FUNCTION public.knowledge_search(text,text,integer) SET search_path = public;
 ALTER FUNCTION public.knowledge_indicators() SET search_path = public;
-ALTER FUNCTION public.has_role(uuid, app_role) SET search_path = public;
+ALTER FUNCTION public.has_role(uuid, public.app_role) SET search_path = public;
 ALTER FUNCTION public.handle_new_user() SET search_path = public;
 ALTER FUNCTION public.update_updated_at_column() SET search_path = public;
