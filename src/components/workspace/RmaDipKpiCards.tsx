@@ -87,10 +87,10 @@ export default function RmaDipKpiCards({ prospeccaoId, companyId, scoreFinal }: 
       tone: (confiabilidade ?? 0) >= 80 ? "emerald" : (confiabilidade ?? 0) >= 60 ? "amber" : "rose",
     },
     {
-      label: "Kanitz Atual",
-      value: kanitzAtual != null ? Number(kanitzAtual).toFixed(2) : "—",
-      hint: "Fator de Insolvência",
-      tone: (kanitzAtual ?? 0) > 0 ? "emerald" : (kanitzAtual ?? 0) > -3 ? "amber" : "rose",
+      label: "Saúde Operacional",
+      value: scoreFinal >= 50 ? "Estável" : "Crítica",
+      hint: "Baseado no processamento",
+      tone: scoreFinal >= 67 ? "emerald" : scoreFinal >= 33 ? "amber" : "rose",
     },
     {
       label: "Health Score Prospeccao AJ",
