@@ -105,16 +105,20 @@ export default function DetalheBaseDeDados() {
         // Mapear ProspeccaoLinha para o formato esperado pela tabela
         const mapped = allLinhas.map(l => ({
           id: l.id,
-          data_distribuicao: l.dt_inicio || l.data_distribuicao,
+          data_distribuicao: l.data_distribuicao || l.dt_inicio,
+          mes_referencia: l.mes_referencia,
           numero_processo: l.numero_processo,
           empresa: l.parte_pro_nome,
-          recuperanda: l.parte_pro_nome,
+          orgao_tribunal: l.orgao_tribunal,
+          uf: l.uf,
+          valor_pleito: l.valor_pleito,
           aj_nomeado: l.advogado_nome,
           magistrado_nome: l.pedidos_principais?.includes("Juiz:") ? l.pedidos_principais.split("|")[0].replace("Juiz:", "").trim() : l.pedidos_principais,
+          // Mantendo campos compatíveis para outros arquivos se necessário
+          recuperanda: l.parte_pro_nome,
           cliente: l.parte_con_nome,
-          data_agc: l.dt_inicio, // Simplificação
+          data_agc: l.dt_inicio,
           cidade: l.municipio,
-          estado: l.uf,
           nome: l.advogado_nome,
           sigla: l.denominacao,
           email: l.link_documento,
