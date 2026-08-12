@@ -24,31 +24,6 @@ export const defaultDreRows: BalancoRow[] = [];
 
 export const defaultEntityData: CompanyDataMultiYear = {};
 
-function calcIndicators(d: import("@/types/audit").CompanyData): import("@/types/audit").FinancialIndicators {
-  const at = d.ativoCirculante + d.ativoNaoCirculante;
-  const pt = d.passivoCirculante + d.passivoNaoCirculante;
-  return {
-    liquidezCorrente: d.passivoCirculante ? d.ativoCirculante / d.passivoCirculante : 0,
-    liquidezSeca: d.passivoCirculante ? (d.ativoCirculante - d.estoques) / d.passivoCirculante : 0,
-    liquidezGeral: (d.passivoCirculante + d.passivoNaoCirculante) ? (d.ativoCirculante + d.ativoNaoCirculante * 0.1) / (d.passivoCirculante + d.passivoNaoCirculante) : 0,
-    liquidezImediata: d.passivoCirculante ? d.caixaEquivalentes / d.passivoCirculante : 0,
-    endividamentoGeral: at ? pt / at : 0,
-    composicaoEndividamento: pt ? d.passivoCirculante / pt : 0,
-    imobilizacaoPL: d.patrimonioLiquido ? d.imobilizado / d.patrimonioLiquido : 0,
-    giroAtivo: at ? d.receitaLiquida / at : 0,
-    pmr: d.receitaLiquida ? (d.contasReceber * 360) / d.receitaLiquida : 0,
-    pmp: d.custoMercadoriasVendidas ? (d.fornecedores * 360) / d.custoMercadoriasVendidas : 0,
-    margemLiquida: d.receitaLiquida ? d.lucroLiquido / d.receitaLiquida : 0,
-    margemOperacional: d.receitaLiquida ? d.resultadoOperacional / d.receitaLiquida : 0,
-    roa: at ? d.lucroLiquido / at : 0,
-    roe: d.patrimonioLiquido ? d.lucroLiquido / d.patrimonioLiquido : 0,
-    idadeMediaEstoque: d.custoMercadoriasVendidas ? (d.estoques * 360) / d.custoMercadoriasVendidas : 0,
-    cicloOperacional: 0,
-    cicloCaixa: 0,
-    coberturaJuros: d.despesasFinanceiras ? d.resultadoOperacional / d.despesasFinanceiras : 0,
-  };
-}
-
 export const defaultFinancialAnalysis: FinancialAnalysis = {
   indicators: {},
   horizontalAnalysis: { rows: [] },
