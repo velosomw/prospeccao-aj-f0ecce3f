@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 import { 
   Database, 
@@ -50,6 +51,7 @@ const StatusBadge = ({ status }: { status: ExportDefinition['status'] }) => {
 };
 
 export default function BaseDeDados() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [definitions, setDefinitions] = useState<ExportDefinition[]>([]);
   const [loading, setLoading] = useState(true);
@@ -189,7 +191,7 @@ export default function BaseDeDados() {
                 definitions
                   .filter(d => d.name.toLowerCase().includes(search.toLowerCase()))
                   .map((def) => (
-                  <tr key={def.id} className="hover:bg-gray-50/50 transition-colors">
+                  <tr key={def.id} className="hover:bg-gray-50/50 transition-colors cursor-pointer" onClick={() => navigate(`/consultor/base-de-dados/${def.code}`)}>
                     <td className="px-6 py-4">
                       <div>
                         <div className="font-semibold text-gray-900">{def.name}</div>
@@ -223,7 +225,7 @@ export default function BaseDeDados() {
                       <StatusBadge status={def.status} />
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-2" onClick={(e) => e.stopPropagation()}>
                         <Button 
                           variant="ghost" 
                           size="sm" 

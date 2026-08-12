@@ -1,3 +1,13 @@
+/**
+ * na página /base-de-dados, vamos configurar páginas para cada nome de arquivo (Administradores Judiciais Nomeados e Não Nomeados, AGCs Realizadas, Cadastro de Administradores Judiciais e Relação de Cartas Impressas enviadas aos AJ Parabenizando). O usuário ao clicar no nome do arquivo na página base de dados, abre a página mostrando:
+ * - Campo de busca por palavras-chave
+ * - Filtros de pesquisa acima da tabela para o usuário poder fazer buscas específicas ou listar itens na tabela.
+ * - Tabela com dados do arquivo
+ * - Botão Upload dados (permite o usuário fazer upload de novas informações para adicionar na tabela do arquivo.
+ * 
+ * A tabela mostra dados do arquivo que o usuário pode na página base de dados exportar como arquivo excel, processo já implementado, somente valide.
+ * O usuário pode editar as informações da linha da tabela, qualquer informação e deletar o registro (pergunte novamente a deleção antes deletar)
+ */
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
