@@ -2,14 +2,14 @@ import {
   Building2, Briefcase, AlertTriangle, FileBarChart, History,
   CheckCircle2, Award, FileText, Clock,
 } from "lucide-react";
-import ProfileHome from "@/components/shell/ProfileHome";
+import ProfileHome, { ProfileSummary } from "@/components/shell/ProfileHome";
 import { useCompaniesStats } from "@/hooks/useCompaniesStats";
 import { useMemo } from "react";
 
 export default function AdmjudicialDashboard() {
   const { data: statsData } = useCompaniesStats("released");
 
-  const summary = useMemo(() => {
+  const summary = useMemo<ProfileSummary[]>(() => {
     const bs = statsData?.byStatus ?? {};
     const total = statsData?.total ?? 0;
     const vigentes = (bs["ativa"] || 0) + (bs["em_analise"] || 0);
@@ -47,4 +47,5 @@ export default function AdmjudicialDashboard() {
     />
   );
 }
+
 
