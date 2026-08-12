@@ -203,7 +203,7 @@ export default function ConsultorRelatorios() {
           <div className="p-10 text-center text-sm text-muted-foreground">Carregando…</div>
         ) : filtered.length === 0 ? (
           <div className="p-10 text-center text-sm text-muted-foreground">
-            Nenhuma linha. Envie uma planilha em <strong>Upload Planilha</strong>.
+            Nenhuma linha. Envie uma planilha em <strong>Upload Planilha</strong> ou clique em <strong>Processar PDFs</strong> se houver documentos.
           </div>
         ) : (
           <div className="overflow-x-auto">
