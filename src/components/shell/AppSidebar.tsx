@@ -18,7 +18,7 @@ import { useUser } from "@/contexts/UserContext";
 import { prefetchRoute, prefetchRoutesIdle } from "@/lib/routePrefetch";
 
 const roleHome: Record<string, string> = {
-  coordenador: "/dashboard",
+  coordenador: "/dashboard/analitico",
   consultor: "/consultor",
   magistrado: "/magistrado",
   recuperanda: "/recuperanda",
