@@ -142,6 +142,18 @@ export default function AppSidebar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const groups = buildNav(role);
+  
+  // Prefetching logic for faster navigation
+  const prefetchPaths = groups.flatMap((g) =>
+    g.items.flatMap((it) => [it.to, ...(it.children?.map((c) => c.to) ?? [])]),
+  );
+  
+  // Make sure Base de Dados sub-routes are also prefetched
+  prefetchPaths.push("/consultor/base-de-dados/AJ_NOMEADOS");
+  prefetchPaths.push("/consultor/base-de-dados/AGCS_REALIZADAS");
+  prefetchPaths.push("/consultor/base-de-dados/CADASTRO_AJ");
+  prefetchPaths.push("/consultor/base-de-dados/CARTAS_AJ");
+
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
 
   // Pré-carrega em tempo ocioso todas as páginas do menu do perfil atual,
