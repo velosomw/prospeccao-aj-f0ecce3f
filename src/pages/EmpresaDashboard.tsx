@@ -263,8 +263,30 @@ const EmpresaDashboard = () => {
     return new Date(iso).toLocaleDateString("pt-BR");
   };
 
+  const { data: syncBatches } = useRecentSyncs(6);
+
   const recentActivities = useMemo(() => {
-    const items: { id: string; text: string; time: string; ts: number }[] = [];
+    const items: { id: string; text: string; time: string; ts: number; type: 'prospeccao' | 'sync' }[] = [];
+    
+    // Adiciona logs de sincronização reais (MD-BEX-001)
+    if (syncBatches) {
+      syncBatches.forEach(batch => {
+        const ts = new Date(batch.created_at).getTime();
+        const datasetLabel = batch.dataset_type.replace(/_/g, ' ').toUpperCase();
+        let text = `Sincronização ${datasetLabel}: `;
+        
+        if (batch.status === 'completed') {
+          text += `${batch.rows_created} criados, ${batch.rows_updated} atualizados`;
+        } else if (batch.status === 'error') {
+          text += `Erro no processamento`;
+        } else {
+          text += `Processamento iniciado`;
+        }
+        
+        items.push({ id: `s-${batch.id}`, text, time: formatRelative(batch.created_at), ts, type: 'sync' });
+      });
+    }
+
     activatedCompanies.forEach(c => {
       const a = analyses[c.id];
       const prospeccaoLabel = c.prospeccao_id || c.name;
@@ -280,7 +302,7 @@ const EmpresaDashboard = () => {
         } else {
           text = `${prospeccaoLabel} — ${a.status}`;
         }
-        items.push({ id: `a-${c.id}`, text, time: formatRelative(a.updated_at || a.started_at), ts });
+        items.push({ id: `a-${c.id}`, text, time: formatRelative(a.updated_at || a.started_at), ts, type: 'prospeccao' });
       } else {
         const ts = new Date(c.updated_at || c.created_at).getTime();
         items.push({
@@ -288,30 +310,14 @@ const EmpresaDashboard = () => {
           text: `${prospeccaoLabel} — Prospeccao ativado para ${c.name}`,
           time: formatRelative(c.updated_at || c.created_at),
           ts,
+          type: 'prospeccao'
         });
       }
     });
-    pendingCompanies.forEach(c => {
-      const ts = new Date(c.updated_at || c.created_at).getTime();
-      items.push({
-        id: `p-${c.id}`,
-        text: `${c.prospeccao_id || c.name} — Atribuído pelo Coordenador, aguardando ativação`,
-        time: formatRelative(c.updated_at || c.created_at),
-        ts,
-      });
-    });
-    periods.slice(0, 20).forEach(p => {
-      const ts = new Date(p.updated_at || p.created_at || 0).getTime();
-      if (!ts) return;
-      items.push({
-        id: `pe-${p.id}`,
-        text: `${companyNameById[p.company_id] || "Prospeccao"} — Período ${String(p.month).padStart(2, "0")}/${p.year} atualizado (${Math.round(p.percentual ?? 0)}%)`,
-        time: formatRelative(p.updated_at || p.created_at),
-        ts,
-      });
-    });
-    return items.sort((a, b) => b.ts - a.ts).slice(0, 6);
-  }, [activatedCompanies, pendingCompanies, analyses, periods, companyNameById]);
+    
+    return items.sort((a, b) => b.ts - a.ts).slice(0, 10);
+  }, [activatedCompanies, analyses, syncBatches]);
+
 
   return (
     <PlatformLayout>
@@ -602,13 +608,16 @@ const EmpresaDashboard = () => {
                     <p className="text-xs text-muted-foreground">Sem atividades recentes registradas para os seus Prospeccoes AJ.</p>
                   ) : recentActivities.map((act) => (
                     <div key={act.id} className="flex items-start gap-3">
-                      <div className="w-2 h-2 rounded-full bg-accent mt-1.5 shrink-0" />
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${act.type === 'sync' ? 'bg-blue-50 text-blue-600' : 'bg-accent/10 text-accent'}`}>
+                        {act.type === 'sync' ? <RefreshCcw className="w-4 h-4" /> : <Activity className="w-4 h-4" />}
+                      </div>
                       <div className="flex-1">
-                        <p className="text-sm text-foreground">{act.text}</p>
-                        <p className="text-xs text-muted-foreground">{act.time}</p>
+                        <p className="text-sm text-foreground font-medium">{act.text}</p>
+                        <p className="text-[11px] text-muted-foreground">{act.time}</p>
                       </div>
                     </div>
                   ))}
+
                 </div>
               </CardContent>
             </Card>
