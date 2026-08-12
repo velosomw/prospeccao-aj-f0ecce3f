@@ -9,12 +9,14 @@ import {
   Edit2, 
   Trash2, 
   ArrowLeft,
-  FileSpreadsheet
+  FileSpreadsheet,
+  X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import VirtualTable from "@/components/shared/VirtualTable";
 import GenericSpreadsheetUpload from "@/components/consultor/GenericSpreadsheetUpload";
+import AdvancedFilters from "@/components/consultor/AdvancedFilters";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -94,6 +96,8 @@ export default function DetalheBaseDeDados() {
   const [search, setSearch] = useState("");
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [columnFilters, setColumnFilters] = useState<Record<string, string>>({});
   const [refreshKey, setRefreshKey] = useState(0);
   const [rows, setRows] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -220,9 +224,14 @@ export default function DetalheBaseDeDados() {
             />
           </div>
           <div className="flex items-center gap-2 w-full md:w-auto">
-            <Button variant="outline" size="sm" className="gap-2">
+            <Button 
+              variant={isFiltersOpen ? "secondary" : "outline"} 
+              size="sm" 
+              className={`gap-2 ${isFiltersOpen ? 'bg-blue-50 text-blue-600 border-blue-200' : ''}`}
+              onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+            >
               <Filter className="w-4 h-4" />
-              Filtros Avançados
+              {isFiltersOpen ? "Fechar Filtros" : "Filtros Avançados"}
             </Button>
             <Button variant="outline" size="sm" className="gap-2 text-green-600 border-green-200 bg-green-50">
               <Download className="w-4 h-4" />
@@ -230,6 +239,14 @@ export default function DetalheBaseDeDados() {
             </Button>
           </div>
         </div>
+        
+        {isFiltersOpen && (
+          <AdvancedFilters 
+            columns={config.columns} 
+            onFilterChange={setColumnFilters}
+            onClose={() => setIsFiltersOpen(false)}
+          />
+        )}
 
         <div className="bg-white rounded-xl border shadow-sm overflow-hidden min-h-[400px] flex flex-col">
           {isLoading ? (
@@ -247,11 +264,21 @@ export default function DetalheBaseDeDados() {
             </div>
           ) : (
             <VirtualTable
-              data={rows.filter(r => 
-                Object.values(r).some(v => 
+              data={rows.filter(r => {
+                // Filtro de busca global
+                const searchMatch = !search || Object.values(r).some(v => 
                   String(v || "").toLowerCase().includes(search.toLowerCase())
-                )
-              )}
+                );
+                
+                // Filtros por coluna
+                const columnMatch = Object.entries(columnFilters).every(([key, value]) => {
+                  if (!value) return true;
+                  const rowValue = String(r[key] || "").toLowerCase();
+                  return rowValue.includes(value.toLowerCase());
+                });
+
+                return searchMatch && columnMatch;
+              })}
               columns={tableColumns}
               rowKey={(r) => r.id}
               maxHeight={600}
