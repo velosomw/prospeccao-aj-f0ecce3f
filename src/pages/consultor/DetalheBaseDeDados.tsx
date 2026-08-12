@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ConsultorPageShell from "@/components/consultor/PageShell";
 import { 
@@ -10,14 +10,15 @@ import {
   Trash2, 
   ArrowLeft,
   FileSpreadsheet,
-  X
+  History
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import VirtualTable from "@/components/shared/VirtualTable";
-import GenericSpreadsheetUpload from "@/components/consultor/GenericSpreadsheetUpload";
+import { SpreadsheetUpload } from "@/components/prospeccao/SpreadsheetUpload";
 import AdvancedFilters from "@/components/consultor/AdvancedFilters";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,6 +36,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { DATASET_CONFIGS } from "../../../supabase/functions/_shared/reconciliation-engine";
+
 
 // Mock data mapping based on the requirement
 const FILE_CONFIGS: Record<string, { title: string; columns: any[] }> = {
