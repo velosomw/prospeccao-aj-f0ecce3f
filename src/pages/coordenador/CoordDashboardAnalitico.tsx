@@ -37,7 +37,7 @@ export default function Dashboard() {
   const { userName } = useUser();
 
   const stats = useMemo(() => ({
-    total: 63, ativos: 9, equipe: consultores.length, aprovacoes: aprovacoes.length, sla: "94%", score: 78,
+    total: 0, ativos: 0, equipe: consultores.length, aprovacoes: aprovacoes.length, sla: "—", score: 0,
   }), []);
 
   return (
